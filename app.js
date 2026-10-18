@@ -1,7 +1,7 @@
-import {createSalesPanel} from './sales-panel.js?v=20';
-import {CloudInventory} from './cloud.js?v=20';
-import {createDictationPanel} from './dictation.js?v=20';
-import {initialState,applyMovement,recipeFor,registerCustomer,productionPreview,confirmProduction,completedQuantity,batchProgress,completeBatchItem,readyBatch,setBottleStocks,readyMovement,validateBackup,attributeSessionChanges,extraBottles,bottleStock} from './inventory.js?v=20';
+import {createSalesPanel} from './sales-panel.js?v=21';
+import {CloudInventory} from './cloud.js?v=21';
+import {createDictationPanel} from './dictation.js?v=21';
+import {initialState,applyMovement,recipeFor,registerCustomer,productionPreview,confirmProduction,completedQuantity,batchProgress,completeBatchItem,readyBatch,setBottleStocks,readyMovement,validateBackup,attributeSessionChanges,extraBottles,bottleStock} from './inventory.js?v=21';
 const catalog=await fetch('./catalog.json').then(r=>{if(!r.ok)throw Error('No se pudo cargar el catálogo');return r.json()});
 let cloud=null,cloudUiError='',remoteRenderPending=false;
 const key='alma-mia-inventory-v1';let state=initialState(catalog),view='overview',search='',category='Todas',kind='Todos',materialGroup='Todas',batchFilter='all',storageError=false;
@@ -63,7 +63,7 @@ function open(type,id,size){
  }else return;
  $('#modal').showModal();
 }
-document.addEventListener('click',e=>{const group=e.target.closest('[data-material-group]');if(group){materialGroup=group.dataset.materialGroup;render();return;}const b=e.target.closest('[data-view],[data-action]');if(!b)return;if(b.dataset.view){dictation.stop();view=b.dataset.view;search='';render();}else open(b.dataset.action,b.dataset.id,b.dataset.size);});
+document.addEventListener('click',e=>{const group=e.target.closest('[data-material-group]');if(group){materialGroup=group.dataset.materialGroup;render();return;}const b=e.target.closest('[data-view],[data-action]');if(!b)return;if(b.dataset.view){dictation.stop();if(b.dataset.view==='sales')salesPanel.showHistory();view=b.dataset.view;search='';render();}else open(b.dataset.action,b.dataset.id,b.dataset.size);});
 document.addEventListener('input',e=>{if(e.target.id==='search'){search=e.target.value;render();}});
 document.addEventListener('change',e=>{if(e.target.id==='category'){category=e.target.value;render();}if(e.target.id==='kind'){kind=e.target.value;render();}if(e.target.id==='batch-filter'){batchFilter=e.target.value;render();}});
 $('#close').onclick=()=>$('#modal').close();$('#form').onsubmit=async e=>{e.preventDefault();try{const next=submit(Object.fromEntries(new FormData(e.target)));if(next===null)return;await persist(next);$('#modal').close();render();toast('Movimiento guardado.');}catch(err){$('#form-error').textContent=err.name==='QuotaExceededError'?'No hay espacio de almacenamiento. Exporta un respaldo.':err.message;}};
