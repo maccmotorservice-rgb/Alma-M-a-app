@@ -121,3 +121,9 @@ Cada nota nueva permite seleccionar **Contado** (pagada al registrarse) o **Cré
 No se permiten importes negativos, cero, más de dos decimales ni abonos mayores que el saldo. Editar conserva los abonos; el nuevo total no puede quedar por debajo de lo ya abonado. Una nota con abonos conserva el tipo Crédito. Las canceladas conservan el historial de abonos para consulta, sin admitir nuevos ingresos ni generar devoluciones automáticas.
 
 Las notas anteriores sin tipo de pago aparecen como Pago por definir. Se pueden editar para indicar Crédito o Contado; no se presume que hayan sido pagadas.
+
+### Cancelar lotes y pedidos
+
+En Lotes y pedidos, Cancelar lote o Cancelar pedido solicita un motivo obligatorio de 3 a 240 caracteres. La acción también está disponible desde la edición y el detalle. Los registros se conservan en la pestaña Cancelados con motivo, fecha y usuario; su detalle permanece disponible para consulta.
+
+Cancelar detiene los pendientes y bloquea los cambios de avance. Conserva las unidades terminadas, el stock producido y los consumos reales de materia prima, sin devolver insumos automáticamente. El movimiento de cancelación registra cantidad cero y no altera saldos. Si otra sesión cambia el avance mientras el diálogo de cancelación está abierto, hay que revisar el registro actualizado antes de cancelar.
