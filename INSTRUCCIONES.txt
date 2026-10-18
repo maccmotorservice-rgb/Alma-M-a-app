@@ -40,7 +40,8 @@ INVENTARIO POR DICTADO
 Abre “Inventario por dictado”, pulsa “Iniciar dictado” y permite el micrófono.
 Di una materia prima por frase, por ejemplo “Alcohol, dos galones”.
 También puedes escribir las instrucciones en el panel.
-Revisa y corrige cada fila antes de confirmar “Revisar y guardar inventario”.
+Revisa la lista completa con “Previsualizar inventario”.
+Solo “Aceptar y actualizar inventario” guarda todos los registros.
 No se modifica el inventario hasta confirmar. Las filas indican lo que queda,
 no compras nuevas. El segundo frasco necesita su capacidad.
 Si el navegador no ofrece dictado, prueba Chrome/Edge o usa el texto.
@@ -54,3 +55,11 @@ editar sin perder tu selección. Solo “Confirmar” registra la producción.
 Consulta el folio, la fecha, el cliente y el detalle en “Lotes y pedidos”.
 Desde “Ver lista” puedes volver a abrir cada lista confirmada.
 Las producciones anteriores siguen disponibles en “Movimientos”.
+
+DOS VISTAS DEL DICTADO
+Continúa dictando varias materias primas sin confirmar una por una.
+“Orden de dictado” muestra desde la primera mención hasta la última.
+“Hombre, Dama y Unisex” organiza esas mismas filas por categoría.
+Los cambios y eliminaciones se comparten entre ambas vistas.
+Previsualiza toda la lista, vuelve a editar si es necesario y acepta
+una sola vez para actualizar oficialmente el inventario.
