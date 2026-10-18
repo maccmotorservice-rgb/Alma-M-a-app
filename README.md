@@ -111,3 +111,13 @@ El historial tiene las pestañas **Vigentes** y **Canceladas**. Desde Vigentes p
 **Cancelar nota** solicita confirmación y permite indicar un motivo opcional. La nota permanece en Canceladas con su detalle e importes, fecha y usuario de cancelación. Puede consultarse y descargarse; el PDF muestra CANCELADA en todas sus páginas. Las notas canceladas no se editan. La cancelación no modifica stock ni entregas.
 
 Descargar el PDF de una nota nueva también guarda la nota automáticamente. Si se descarga mientras se edita, primero se guardan los cambios. Si otra sesión ya modificó o canceló la nota, la edición pendiente se rechaza para conservar la versión reciente.
+
+### Crédito, contado y abonos
+
+Notas de venta abre en el historial. **Generar nueva nota** muestra el formulario separado; **Volver a notas de venta** regresa al historial. Editar una nota abre el mismo formulario con sus datos.
+
+Cada nota nueva permite seleccionar **Contado** (pagada al registrarse) o **Crédito**. Las notas de crédito con saldo muestran estado Pendiente en naranja y la acción Agregar abono. Al registrar el saldo restante cambian a Pagada en verde. Los abonos conservan importe, fecha del pago, fecha de registro y usuario, se sincronizan con el resto del inventario y aparecen en la vista de la nota y su PDF.
+
+No se permiten importes negativos, cero, más de dos decimales ni abonos mayores que el saldo. Editar conserva los abonos; el nuevo total no puede quedar por debajo de lo ya abonado. Una nota con abonos conserva el tipo Crédito. Las canceladas conservan el historial de abonos para consulta, sin admitir nuevos ingresos ni generar devoluciones automáticas.
+
+Las notas anteriores sin tipo de pago aparecen como Pago por definir. Se pueden editar para indicar Crédito o Contado; no se presume que hayan sido pagadas.

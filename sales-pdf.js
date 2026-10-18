@@ -1,4 +1,4 @@
-import {salesMoney,salesGroups,salesDate,salesCapacity,salesFilename} from './sales.js?v=20';
+import {salesMoney,salesGroups,salesDate,salesCapacity,salesFilename,salesPaymentSummary} from './sales.js?v=21';
 export async function createSalesPdf(note,{logo=true}={}){
  const {jsPDF,autoTable}=await import('./assets/pdf-client.js');const doc=new jsPDF({unit:'mm',format:'a4'}),margin=16,width=178;
  doc.setProperties({title:`Nota de venta · ${note.customer}`,author:'Alma Mía Perfumes',subject:'Nota de venta'});
@@ -17,6 +17,9 @@ export async function createSalesPdf(note,{logo=true}={}){
  if(note.discountPercent>0){doc.setFont('helvetica','normal');doc.setFontSize(9);doc.text(`Incluye ${note.discountPercent}% de descuento.`,190,y+16,{align:'right'});}
  doc.setFont('helvetica','bold');doc.setFontSize(16);doc.text(salesMoney(note.totals.totalCents)+' MXN',190,y+25,{align:'right'});
  if(note.discountPercent>0){text(`Subtotal: ${salesMoney(note.totals.subtotalCents)}. Descuento: ${salesMoney(note.totals.discountCents)}. Total: ${salesMoney(note.totals.totalCents)}.`,margin,y+39,9);}
+ const payment=salesPaymentSummary(note),paymentType=note.paymentType==='credit'?'Crédito':note.paymentType==='cash'?'Contado':'Por definir';
+ let paymentY=y+(note.discountPercent>0?47:39);if(paymentY+25>275){doc.addPage();paymentY=22;}
+ table([['TIPO DE PAGO','IMPORTE PAGADO','SALDO PENDIENTE','ESTADO']],[[paymentType,payment.type?salesMoney(payment.paidCents):'—',payment.type?salesMoney(payment.balanceCents):'—',note.status==='cancelled'?'Cancelada':payment.label]],paymentY,{styles:{fontSize:8,cellPadding:3}});
  doc.addPage();y=22;
  for(const group of groups){if(y+30>270){doc.addPage();y=22;}text(group.category,margin,y,11,true);
  table([['Perfume Alma Mía','Perfume real / inspirado en','Cap.','Cant.','P. unitario','Total']],[...group.items.map(i=>[i.name,i.reference||'—',i.size?i.size+' ml':'—',String(i.qty),salesMoney(i.unitCents),salesMoney(i.unitCents*i.qty)]),['Subtotal','','',String(group.pieces),'',salesMoney(group.subtotalCents)]],y+4,{rowPageBreak:'avoid',columnStyles:{0:{cellWidth:38},1:{cellWidth:58},2:{cellWidth:18},3:{cellWidth:14,halign:'right'},4:{cellWidth:25,halign:'right'},5:{cellWidth:25,halign:'right'}},styles:{font:'helvetica',fontSize:8,cellPadding:2.5,lineColor:190,lineWidth:.15,textColor:25},didParseCell:d=>{if(d.section==='body'&&d.row.index===group.items.length){d.cell.styles.fillColor=[245,245,245];d.cell.styles.fontStyle='bold';}}});y=doc.lastAutoTable.finalY+12;
@@ -24,6 +27,7 @@ export async function createSalesPdf(note,{logo=true}={}){
  if(y+33>275){doc.addPage();y=22;}
  table([],[[ 'TOTAL GENERAL',note.totals.pieces+' piezas',salesMoney(note.totals.totalCents)+' MXN']],y,{columnStyles:{0:{cellWidth:80},1:{cellWidth:40},2:{cellWidth:58,halign:'right'}},styles:{fillColor:[242,242,242],fontStyle:'bold',fontSize:11,cellPadding:4}});
  if(note.discountPercent>0)text(`Subtotal ${salesMoney(note.totals.subtotalCents)} - descuento ${note.discountPercent}% (${salesMoney(note.totals.discountCents)}) = ${salesMoney(note.totals.totalCents)}.`,margin,doc.lastAutoTable.finalY+9,9);
+ if((note.payments??[]).length){y=doc.lastAutoTable.finalY+(note.discountPercent>0?20:12);if(y+30>272){doc.addPage();y=22;}text('Historial de abonos',margin,y,11,true);table([['Fecha del abono','Importe','Usuario','Fecha de registro']],note.payments.map(p=>[salesDate(p.date),salesMoney(p.amountCents),p.recordedBy,new Date(p.recordedAt).toLocaleString('es-MX')]),y+4,{columnStyles:{0:{cellWidth:47},1:{cellWidth:30,halign:'right'},2:{cellWidth:30},3:{cellWidth:71}}});}
  const pages=doc.getNumberOfPages();for(let p=1;p<=pages;p++){doc.setPage(p);if(note.status==='cancelled'){doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(170,45,35);doc.text('CANCELADA · Documento sin vigencia',105,278,{align:'center'});}doc.setDrawColor(190);doc.line(margin,282,194,282);doc.setTextColor(110);doc.setFont('helvetica','normal');doc.setFontSize(8);doc.text('Alma Mía Perfumes | Nota de venta',margin,287);doc.text(`Página ${p}`,194,287,{align:'right'});}
  return doc;
 }
