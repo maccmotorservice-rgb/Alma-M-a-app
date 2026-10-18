@@ -1,0 +1,20 @@
+ALMA MÍA · INVENTARIO
+
+1. Instala Node.js (versión 20 o superior) desde https://nodejs.org si aún no lo tienes.
+2. Descomprime el ZIP y abre una terminal dentro de la carpeta Alma-M-a-app.
+3. Escribe: npm start
+4. Abre en tu navegador: http://localhost:3000
+
+Mantén abierta la terminal mientras usas la aplicación.
+No necesitas ejecutar npm install: esta aplicación no tiene dependencias externas.
+
+Empieza registrando tus existencias reales en “Insumos y esencias”.
+En “Listos para entregar” puedes ingresar perfumes que ya tienes preparados.
+Para nuevos lotes, introduce tus porcentajes reales de esencia y galaxolide:
+el alcohol completa el total y se descuentan los insumos.
+
+Los datos solo se guardan en ese navegador y dirección. No se sincronizan
+con otro teléfono o computadora. Usa “Exportar respaldo” con frecuencia.
+
+Esta entrega contiene los archivos del proyecto. No es una aplicación
+publicada en Internet ni un instalador para teléfono.
