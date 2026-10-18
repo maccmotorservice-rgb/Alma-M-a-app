@@ -28,3 +28,10 @@ publicada en Internet ni un instalador para teléfono.
 Para un envase adicional, activa “Segundo frasco” al actualizar una materia
 prima. Indica su capacidad y su saldo; se sumará al primer frasco.
 Las esencias están separadas en Mujer, Hombre, Unisex y sus grupos de nicho.
+
+INICIAR PRODUCCIÓN
+Elige si produces para generar stock o para el pedido de un cliente.
+Para un pedido puedes seleccionar un cliente registrado o registrar uno
+nuevo (nombre y teléfono opcional) sin perder tus perfumes seleccionados.
+También puedes consultar y registrar clientes en la sección “Clientes”.
+El destino y el cliente del pedido quedan guardados en el historial.
