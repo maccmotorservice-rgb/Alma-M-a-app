@@ -141,3 +141,9 @@ Las pruebas de navegador simulan transcripciones parciales y finales; la calidad
 Activa Iniciar dictado una vez. Di **Siguiente perfume** o **Siguiente materia prima** al terminar el nombre y las existencias del registro actual. Ambos comandos cierran ese registro y permiten continuar con otro manteniendo el micrófono activo, incluso si el navegador transcribe las palabras del comando por separado. También se admite el separador anterior Siguiente.
 
 Ejemplo: “Sauvage, tres cuartos. Siguiente perfume. Candy Scent, dos cuartos. Siguiente materia prima. Alcohol, un galón”. Los comandos no crean filas vacías. Si falta una cantidad, el registro se conserva pendiente para corregirlo. Al terminar, revisa y confirma toda la lista una sola vez.
+
+### Catálogo oficial corregido
+
+Se compararon las 112 referencias con `Catalogo_Alma_Mia_2026_Corregido.pdf`. El cambio identificado es el número 94: Raspberry Amber Luxe pasa a Saffron 750, inspirado en Dubai Amber. Se conserva su ID, categoría, presentaciones y precios.
+
+Al leer inventarios y respaldos, los nombres de materias primas y artículos de lotes se obtienen del catálogo vigente mediante sus IDs. La corrección conserva cantidades, consumos, avances e historial de movimientos. Las notas de venta emitidas mantienen su contenido histórico; las nuevas utilizan el catálogo corregido.
