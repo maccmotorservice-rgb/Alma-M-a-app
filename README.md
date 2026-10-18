@@ -94,7 +94,7 @@ La numeración se hace sobre la lista de dictado actual; volver a inventariar un
 
 ## Notas de venta
 
-En **Notas de venta**, indica cliente y fecha, agrega perfumes por nombre o referencia de inspiración y selecciona su presentación. Las cantidades y precios se pueden editar; los conceptos personalizados permiten material promocional o reposiciones a precio cero.
+En **Notas de venta**, indica cliente y fecha, busca perfumes por nombre o referencia de inspiración y marca varios con las casillas de 50 o 100 ml. El catálogo está agrupado por categoría y permite seleccionar una categoría completa por presentación. La lista inferior muestra toda la selección y sus importes en tiempo real, con cantidades y precios editables. Las cantidades y precios se pueden editar; los conceptos personalizados permiten material promocional o reposiciones a precio cero.
 
 El descuento es opcional y no puede superar el 30 %. Si está desactivado o es 0 %, el documento no incluye ninguna mención de descuento. Los importes se calculan en centavos.
 
