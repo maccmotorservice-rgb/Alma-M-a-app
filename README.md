@@ -193,3 +193,7 @@ En Ver reporte, Descargar PDF genera un documento sencillo con fecha de Guatemal
 ### Marca y género de las referencias
 
 Las 112 referencias muestran el nombre original, la marca o casa de la guía oficial y su género (Dama, Caballero o Unisex). Se conserva el nombre original como alias para dictado. Las búsquedas en catálogo, materias primas, producción y selección de notas permiten combinar marca, perfume y género en cualquier orden; Hombre y Mujer también encuentran Caballero y Dama. Los nombres y precios de Alma Mía permanecen iguales. Las nuevas notas incluyen la referencia completa; las notas emitidas conservan su texto histórico y pueden seguir editándose.
+
+### Eliminar stock
+
+Cada perfume y presentación disponible en Stock permite Eliminar stock. Se puede retirar una cantidad parcial o todas las unidades y se exige elegir Esto fue una prueba u Otro. Otro requiere una explicación de 5 a 240 caracteres. La operación no admite retirar más existencias de las disponibles y comprueba que el stock no cambió desde que se abrió el formulario. Conserva un movimiento negativo con motivo, fecha y usuario. No altera la producción ni devuelve materias primas.
