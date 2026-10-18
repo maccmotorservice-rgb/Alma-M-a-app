@@ -1,4 +1,4 @@
-import {setNumberedBottle,bottleInfo,bottleStock} from './inventory.js?v=15';
+import {setNumberedBottle,bottleInfo,bottleStock} from './inventory.js?v=16';
 const norm=s=>String(s).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9/.,\s]/g,' ').replace(/\s+/g,' ').trim();
 const words={cero:0,un:1,una:1,uno:1,dos:2,tres:3,cuatro:4,cinco:5,seis:6,siete:7,ocho:8,nueve:9,diez:10,once:11,doce:12,trece:13,catorce:14,quince:15,dieciseis:16,diecisiete:17,dieciocho:18,diecinueve:19,veinte:20,veintiuno:21,veintidos:22,veintitres:23,veinticuatro:24,veinticinco:25,treinta:30,cuarenta:40,cincuenta:50,sesenta:60,setenta:70,ochenta:80,noventa:90,cien:100,ciento:100,doscientos:200,trescientos:300,cuatrocientos:400,quinientos:500,seiscientos:600,setecientos:700,ochocientos:800,novecientos:900};
 export function spokenNumber(text){const t=norm(text).replace(/,/g,'.');if(/^\d+(\.\d+)?$/.test(t))return Number(t);if(t.includes(' punto ')||t.includes(' coma ')){const[a,b]=t.split(/ punto | coma /);const n=spokenNumber(a),parts=b.split(' '),decimal=parts.every(w=>w in words&&words[w]<10)?parts.map(w=>words[w]).join(''):spokenNumber(b);return n===null||decimal===null?null:Number(n+'.'+decimal);}let n=0,seen=false;for(const w of t.split(' ')){if(w==='y')continue;if(w==='mil'){n=(n||1)*1000;seen=true;}else if(w in words){n+=words[w];seen=true;}else return null;}return seen?n:null;}
@@ -70,8 +70,8 @@ export function createDictationPanel({catalog,getState,save,notify}){
  const host=$('#dictation-summary');if(!host)return;let changes=null,error='';try{changes=previewDictation(getState(),rows,catalog);}catch(e){error=e.message;}let group='';
  host.innerHTML=rows.length?`<div class="table-wrap"><table><thead><tr><th>Materia prima</th><th>Cantidad</th><th>Saldo nuevo</th></tr></thead><tbody>${orderedDictationRows(rows,catalog,'category').map(({row:r,index,group:g})=>{const heading=g!==group?`<tr class="group-heading"><th colspan="3">${g}</th></tr>`:'';group=g;const m=getState().materials.find(m=>m.id===r.id),c=changes?.find(c=>c.index===index);return `${heading}<tr data-summary-mention="${r.mention}"><td><small>Mención ${r.mention} · Frasco ${r.bottle}</small>${esc(m?.name??'Por identificar')}</td><td>${r.amount===null?'Pendiente':r.amount+' '+({quarters:'cuartos',ml:'ml',gallons:'galones'}[r.unit])}</td><td>${c?c.currentMl+' ml':'Revisar'}</td></tr>`;}).join('')}</tbody></table></div>${error?`<p class="dictation-warning">${esc(error)}</p>`:'<p class="unit-help">Lista completa lista para confirmar. Solo se actualizarán estos frascos.</p>'}`:'<div class="empty">Aquí verás la misma lista agrupada por Hombre, Dama y Unisex.</div>';
  }
- function saveAll(){
- stop();try{const next=applyDictation(getState(),structuredClone(rows));save(next);rows.length=0;mention=0;table();notify('Lista completa confirmada. Inventario actualizado.');}catch(e){$('#dictation-save-error').textContent=e.message;}
+ async function saveAll(){
+ stop();try{const next=applyDictation(getState(),structuredClone(rows));await save(next);rows.length=0;mention=0;table();notify('Lista completa confirmada. Inventario actualizado.');}catch(e){$('#dictation-save-error').textContent=e.message;}
  }
  function capture(text){
  const lines=text.split(/\n|;|\bsiguiente\b/i).filter(s=>s.trim());
