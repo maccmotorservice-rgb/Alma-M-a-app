@@ -1,7 +1,12 @@
-import {resolveCancellationReason} from './cancellation.js?v=32';
-import {validateSalesNotes} from './sales.js?v=32';
+import {resolveCancellationReason} from './cancellation.js?v=33';
+import {validateSalesNotes} from './sales.js?v=33';
 export function extraBottles(material){return [...(material.secondBottle?[{number:2,...material.secondBottle}]:[]),...(material.additionalBottles??[])].sort((a,b)=>a.number-b.number);}
 export function bottleStock(material,number=1){return number===1?Math.round((material.stock-extraBottles(material).reduce((n,b)=>n+b.stock,0))*1000)/1000:extraBottles(material).find(b=>b.number===number)?.stock??0;}
+export function isMaterialLow(material){
+ if(material.stock<=0)return false;
+ if(material.kind!=='Esencia')return material.stock<=material.min;
+ return [{stock:bottleStock(material,1),capacity:250},...extraBottles(material)].every(b=>b.stock<=b.capacity/4+0.000001);
+}
 export function bottleInfo(material,number){return extraBottles(material).find(b=>b.number===number);}
 function bottleRef(material,number){return number===2?material.secondBottle:material.additionalBottles?.find(b=>b.number===number);}
 export function initialState(catalog){return {version:1,salesNotes:[],customers:[],batches:[],unitSettings:{quarterMl:62.5,gallonMl:4000},materials:[{id:'alcohol',name:'Alcohol',kind:'Base',stock:0,min:500},{id:'galaxolide',name:'Galaxolide',kind:'Fijador',stock:0,min:100},...catalog.map(p=>({id:'ess-'+p.id,name:p.name,kind:'Esencia',stock:0,min:30}))],ready:{},movements:[]};}
