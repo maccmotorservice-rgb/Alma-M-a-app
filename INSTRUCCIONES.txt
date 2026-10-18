@@ -46,3 +46,11 @@ no compras nuevas. El segundo frasco necesita su capacidad.
 Si el navegador no ofrece dictado, prueba Chrome/Edge o usa el texto.
 Si la escucha se detiene, pulsa “Iniciar dictado” otra vez.
 Guarda la revisión antes de recargar: el borrador no se conserva al recargar.
+
+CONFIRMAR Y CONSULTAR LOTES
+“Preparar perfumes seleccionados” ahora abre una vista previa oficial.
+Revisa perfumes, cantidades, destino y materias primas. Puedes volver a
+editar sin perder tu selección. Solo “Confirmar” registra la producción.
+Consulta el folio, la fecha, el cliente y el detalle en “Lotes y pedidos”.
+Desde “Ver lista” puedes volver a abrir cada lista confirmada.
+Las producciones anteriores siguen disponibles en “Movimientos”.
