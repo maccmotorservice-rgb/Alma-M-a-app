@@ -21,3 +21,9 @@ Puerto 3000; se puede cambiar mediante `PORT`. Para comprobar el inventario: `np
 Los inventarios empiezan en cero. Los datos se guardan en localStorage del navegador: no se sincronizan entre dispositivos o usuarios. Usar el mismo navegador y dirección conserva los datos; borrar datos del sitio los elimina. Los respaldos contienen el inventario y su historial. No hay cuentas ni base de datos remota. No expongas esta versión directamente a Internet como sistema multiusuario.
 
 El catálogo es referencia comercial; no representa tus existencias. Los logotipos se extrajeron del PDF original proporcionado. Las marcas mencionadas son referencias olfativas.
+
+## Publicación gratuita en GitHub Pages
+Los recursos usan rutas relativas para funcionar en /Alma-M-a-app/.
+En GitHub → Settings → Pages, selecciona Deploy from a branch, rama gh-pages y carpeta / (root). No se necesita un servicio de pago. La rama gh-pages contiene únicamente los archivos públicos.
+Dirección prevista: https://maccmotorservice-rgb.github.io/Alma-M-a-app/
+El inventario sigue guardándose solo en cada navegador; no se sube al repositorio.

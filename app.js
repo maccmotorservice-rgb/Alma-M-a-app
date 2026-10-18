@@ -1,5 +1,5 @@
 import {initialState,applyMovement,produce,readyMovement,validateBackup} from './inventory.js';
-const catalog=await fetch('/catalog.json').then(r=>{if(!r.ok)throw Error('No se pudo cargar el catálogo');return r.json()});
+const catalog=await fetch('./catalog.json').then(r=>{if(!r.ok)throw Error('No se pudo cargar el catálogo');return r.json()});
 const key='alma-mia-inventory-v1';let state=initialState(catalog),view='overview',search='',category='Todas',kind='Todos',storageError=false;
 try{const saved=localStorage.getItem(key);if(saved)state=validateBackup(JSON.parse(saved),catalog);}catch{storageError=true;}
 const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])),num=n=>new Intl.NumberFormat('es-MX',{maximumFractionDigits:2}).format(n),money=n=>new Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',maximumFractionDigits:0}).format(n),product=id=>catalog.find(p=>p.id===id);
