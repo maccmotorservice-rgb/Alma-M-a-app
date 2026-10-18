@@ -127,3 +127,11 @@ Las notas anteriores sin tipo de pago aparecen como Pago por definir. Se pueden 
 En Lotes y pedidos, Cancelar lote o Cancelar pedido solicita un motivo obligatorio de 3 a 240 caracteres. La acción también está disponible desde la edición y el detalle. Los registros se conservan en la pestaña Cancelados con motivo, fecha y usuario; su detalle permanece disponible para consulta.
 
 Cancelar detiene los pendientes y bloquea los cambios de avance. Conserva las unidades terminadas, el stock producido y los consumos reales de materia prima, sin devolver insumos automáticamente. El movimiento de cancelación registra cantidad cero y no altera saldos. Si otra sesión cambia el avance mientras el diálogo de cancelación está abierto, hay que revisar el registro actualizado antes de cancelar.
+
+### Coincidencias por sonido en el dictado
+
+El reconocimiento compara escritura y aproximaciones fonéticas de los nombres propios y sus referencias de inspiración. Reconoce variantes como Candy Cent / candi sent para Candy Scent y conserva la distinción entre Rose e Intense. Busca el nombre dentro de frases con palabras adicionales, sin exigir que toda la frase sea idéntica al catálogo. Los números de las referencias deben coincidir.
+
+Solo selecciona automáticamente cuando hay una coincidencia clara. Si aparecen dos perfumes distintos en una misma frase o la coincidencia es incierta, muestra sugerencias para revisar. Vicente y otras palabras sin coincidencia no se convierten en perfumes. Una elección manual de materia prima se conserva durante la actualización de la frase en curso.
+
+Las pruebas de navegador simulan transcripciones parciales y finales; la calidad de la transcripción del micrófono depende del navegador y su servicio de voz. Se mantiene la revisión de la lista completa antes de actualizar inventario.
