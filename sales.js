@@ -1,5 +1,5 @@
-import {resolveCancellationReason} from './cancellation.js?v=34';
-import {validateEvidenceMetadata} from './evidence.js?v=34';
+import {resolveCancellationReason} from './cancellation.js?v=35';
+import {validateEvidenceMetadata} from './evidence.js?v=35';
 export const salesCategories=['Perfumes unisex - Nicho','Perfumes de dama - Nicho','Perfumes de caballero - Nicho','Perfumes de dama - Diseñador','Perfumes de caballero - Diseñador','Perfumes unisex - Diseñador','Material promocional'];
 export const salesCategory=p=>`Perfumes ${p.category==='Dama'?'de dama':p.category==='Caballero'?'de caballero':'unisex'} - ${p.line}`;
 export const salesMoney=cents=>new Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',minimumFractionDigits:2,maximumFractionDigits:2}).format(cents/100);
@@ -56,7 +56,7 @@ export function addSalesPayment(state,id,{actor,expectedRevision,amount,date,met
 }
 export function salesDraftFromBatch(batch,catalog,{date,customer=''}={}){
  if(!batch||batch.status==='cancelled')throw Error('Selecciona un lote o pedido vigente.');
- const items=batch.items.map(item=>{const p=catalog.find(p=>p.id===item.id);if(!p||![50,100].includes(item.size)||!Number.isSafeInteger(item.qty)||item.qty<1)throw Error('El lote contiene un perfume o cantidad inválidos.');return {productId:p.id,name:p.name,reference:p.reference,category:salesCategory(p),size:item.size,qty:item.qty,price:p['price'+item.size]};});if(!items.length)throw Error('El lote no contiene perfumes.');
+ const items=batch.items.map(item=>{const p=catalog.find(p=>p.id===item.id);if(!p||![50,100].includes(item.size)||!Number.isSafeInteger(item.qty)||item.qty<1)throw Error('El lote contiene un perfume o cantidad inválidos.');return {productId:p.id,name:p.name,reference:p.displayReference??p.reference,category:salesCategory(p),size:item.size,qty:item.qty,price:p['price'+item.size]};});if(!items.length)throw Error('El lote no contiene perfumes.');
  return {customer:batch.purpose.type==='customer'?batch.purpose.customerName:customer,date,discountEnabled:false,discountPercent:0,paymentType:'cash',items,sourceBatch:{id:batch.id,number:batch.number,type:batch.purpose.type}};
 }
 export function salesSourceLabel(note){const source=note.sourceBatch;return source?`${source.type==='customer'?'Pedido':'Lote de stock'} AM-${String(source.number).padStart(4,'0')}`:'';}

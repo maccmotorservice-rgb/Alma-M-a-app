@@ -1,4 +1,4 @@
-import {setNumberedBottle,bottleInfo,bottleStock} from './inventory.js?v=34';
+import {setNumberedBottle,bottleInfo,bottleStock} from './inventory.js?v=35';
 const norm=s=>String(s).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9/.,\s]/g,' ').replace(/\s+/g,' ').trim();
 const words={cero:0,un:1,una:1,uno:1,dos:2,tres:3,cuatro:4,cinco:5,seis:6,siete:7,ocho:8,nueve:9,diez:10,once:11,doce:12,trece:13,catorce:14,quince:15,dieciseis:16,diecisiete:17,dieciocho:18,diecinueve:19,veinte:20,veintiuno:21,veintidos:22,veintitres:23,veinticuatro:24,veinticinco:25,treinta:30,cuarenta:40,cincuenta:50,sesenta:60,setenta:70,ochenta:80,noventa:90,cien:100,ciento:100,doscientos:200,trescientos:300,cuatrocientos:400,quinientos:500,seiscientos:600,setecientos:700,ochocientos:800,novecientos:900};
 export function spokenNumber(text){const t=norm(text).replace(/,/g,'.');if(/^\d+(\.\d+)?$/.test(t))return Number(t);if(t.includes(' punto ')||t.includes(' coma ')){const[a,b]=t.split(/ punto | coma /);const n=spokenNumber(a),parts=b.split(' '),decimal=parts.every(w=>w in words&&words[w]<10)?parts.map(w=>words[w]).join(''):spokenNumber(b);return n===null||decimal===null?null:Number(n+'.'+decimal);}let n=0,seen=false;for(const w of t.split(' ')){if(w==='y')continue;if(w==='mil'){n=(n||1)*1000;seen=true;}else if(w in words){n+=words[w];seen=true;}else return null;}return seen?n:null;}
@@ -12,7 +12,7 @@ function matchNameCore(text,catalog){
  query=query.split(/[,;]|\b(?:primer|primero|segundo|segunda|frasco|botella|tengo|queda|quedan)\b/)[0];
  const measured=[...query.matchAll(new RegExp('('+numberPattern+')\\s*(mililitros?|ml|litros?|galon(?:es)?|cuartos?)\\b','g'))].at(-1);if(measured)query=query.slice(0,measured.index);
  query=query.replace(/\b[0-4]\s*\/\s*4\b.*$/,'').replace(/\b(?:la mitad|mitad|medio galon|completo|lleno|vacio|sin existencias|sin stock)\b.*$/,'').trim();
- const key=nameKey(query),aliases=[{id:'alcohol',names:['alcohol']},{id:'galaxolide',names:['galaxolide']},...catalog.map(p=>({id:'ess-'+p.id,names:[p.name,p.reference]}))];
+ const key=nameKey(query),aliases=[{id:'alcohol',names:['alcohol']},{id:'galaxolide',names:['galaxolide']},...catalog.map(p=>({id:'ess-'+p.id,names:[...new Set([p.name,p.reference,p.displayReference].filter(Boolean))]}))];
  if(key.length<4)return {candidates:[],autoSelect:false,matchType:'none'};
  const digits=key.match(/\d+/g)?.join('|')??'';
  const scores=aliases.map(a=>{let best=0,exact=false,originalExact=false;for(const name of a.names){const alias=nameKey(name),aliasDigits=alias.match(/\d+/g)?.join('|')??'';if(digits&&digits!==aliasDigits)continue;const score=1-editDistance(key,alias)/Math.max(key.length,alias.length);best=Math.max(best,score);if(key===alias){exact=true;originalExact=norm(query).replace(/[^a-z0-9]/g,'')===norm(name).replace(/[^a-z0-9]/g,'');}}return{id:a.id,score:best,exact,originalExact};}).sort((a,b)=>b.score-a.score);
@@ -24,7 +24,7 @@ function matchNameCore(text,catalog){
 // Compare short name spans independently of quantities and conversational filler.
 const phoneticKey=text=>nameKey(text).replace(/sci/g,'si').replace(/sce/g,'se').replace(/ph/g,'f').replace(/th/g,'t').replace(/sch|sh|ch/g,'x').replace(/qu/g,'k').replace(/c(?=[ei])/g,'s').replace(/c/g,'k').replace(/z/g,'s').replace(/v/g,'b').replace(/ll|y/g,'i').replace(/h/g,'').replace(/([a-z])\1+/g,'$1');
 const voiceAliases=new WeakMap();
-function phoneticAliases(catalog){if(!voiceAliases.has(catalog))voiceAliases.set(catalog,[{id:'alcohol',names:['alcohol']},{id:'galaxolide',names:['galaxolide']},...catalog.map(p=>({id:'ess-'+p.id,names:[p.name,p.reference]}))].flatMap(a=>a.names.map(name=>({id:a.id,key:nameKey(name),sound:phoneticKey(name),digits:nameKey(name).match(/\d+/g)?.join('|')??''}))));return voiceAliases.get(catalog);}
+function phoneticAliases(catalog){if(!voiceAliases.has(catalog))voiceAliases.set(catalog,[{id:'alcohol',names:['alcohol']},{id:'galaxolide',names:['galaxolide']},...catalog.map(p=>({id:'ess-'+p.id,names:[...new Set([p.name,p.reference,p.displayReference].filter(Boolean))]}))].flatMap(a=>a.names.map(name=>({id:a.id,key:nameKey(name),sound:phoneticKey(name),digits:nameKey(name).match(/\d+/g)?.join('|')??''}))));return voiceAliases.get(catalog);}
 export function matchMaterialName(text,catalog){
  const original=matchNameCore(text,catalog);if(original.autoSelect)return original;
  let speech=norm(text).replace(new RegExp('(?:frasco|capacidad) (?:de )?('+numberPattern+')\\s*(ml|mililitros?|litros?|galon(?:es)?)\\b','g'),' ').replace(new RegExp('('+numberPattern+')\\s*(mililitros?|ml|litros?|galon(?:es)?|cuartos?)\\b','g'),' ').replace(/\b[0-4]\s*\/\s*4\b/g,' ').replace(/\b(?:primer|primero|primera|segundo|segunda|tercer|tercero|tercera|cuarto|cuarta|quinto|quinta|sexto|sexta)\s+frasco\b/g,' ').replace(/\bfrasco\s+(?:numero\s+)?\d+\b/g,' ').replace(/\btreinta y tres\b/g,'33').replace(/[^a-z0-9\s]/g,' ');
@@ -77,7 +77,7 @@ export function orderedDictationRows(rows,catalog,order='mention'){
 }
 export function previewDictation(state,rows,catalog){
  const next=applyDictation(state,rows);
- return orderedDictationRows(rows,catalog,'category').map(({row,index,group})=>{const old=state.materials.find(m=>m.id===row.id),current=next.materials.find(m=>m.id===row.id),p=catalog.find(p=>'ess-'+p.id===row.id);return {index,mention:row.mention??index+1,group,name:old.name,reference:p?.reference??'',bottle:row.bottle,amount:row.amount,unit:row.unit,capacityMl:row.bottle>1?row.capacityMl:old.kind==='Esencia'?250:null,previousMl:bottleStock(old,row.bottle),currentMl:bottleStock(current,row.bottle)};});
+ return orderedDictationRows(rows,catalog,'category').map(({row,index,group})=>{const old=state.materials.find(m=>m.id===row.id),current=next.materials.find(m=>m.id===row.id),p=catalog.find(p=>'ess-'+p.id===row.id);return {index,mention:row.mention??index+1,group,name:old.name,reference:p?.displayReference??p?.reference??'',bottle:row.bottle,amount:row.amount,unit:row.unit,capacityMl:row.bottle>1?row.capacityMl:old.kind==='Esencia'?250:null,previousMl:bottleStock(old,row.bottle),currentMl:bottleStock(current,row.bottle)};});
 }
 const nextEntryPattern=/\bsiguiente(?:\s+(?:perfume|materia(?:\s+prima)?))?\b|\n|;/gi;
 export function dictationSegments(text){
@@ -88,7 +88,7 @@ export function dictationSegments(text){
 }
 export function createDictationPanel({catalog,getState,save,notify}){
  const rows=[];let order='mention',mention=0,activeRows=[],wanted=false,restarts=0,restartTimer=null,pendingQualifier=null;let recognition=null,listening=false,buffer='',lastText='',status='Micrófono detenido.';const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));const $=s=>document.querySelector(s);const supported=()=>Boolean(window.SpeechRecognition||window.webkitSpeechRecognition);
- function label(m){const p=m.kind==='Esencia'?catalog.find(p=>m.id==='ess-'+p.id):null;return p?`${p.name} · ${p.reference}`:m.name;}
+ function label(m){const p=m.kind==='Esencia'?catalog.find(p=>m.id==='ess-'+p.id):null;return p?`${p.name} · ${p.displayReference??p.reference}`:m.name;}
  function options(row){return '<option value="">Elige la materia prima</option>'+[...getState().materials].sort((a,b)=>(row.candidates.includes(a.id)?row.candidates.indexOf(a.id):999)-(row.candidates.includes(b.id)?row.candidates.indexOf(b.id):999)).map(m=>`<option value="${m.id}" ${row.id===m.id?'selected':''}>${row.candidates.includes(m.id)&&row.matchType==='suggested'?'Sugerencia · ':''}${esc(label(m))}</option>`).join('');}
  function table(){
  const host=$('#dictation-rows');if(!host)return;let previousGroup='';
