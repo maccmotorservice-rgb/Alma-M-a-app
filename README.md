@@ -91,3 +91,15 @@ Reducir un avance retira los envases corregidos del stock listo y restituye sus 
 En una misma lista, cada nueva mención de la misma materia prima se asigna al siguiente número: frasco 1, 2, 3, etc. Usar el nombre Alma Mía o el de inspiración identifica el mismo perfume. Los resultados parciales de una misma frase actualizan su fila sin aumentar el número. Si dices explícitamente “segundo frasco”, “tercer frasco” o “frasco 5”, se respeta ese número. Los números explícitos repetidos no sobrescriben otra fila: deben corregirse antes de guardar.
 
 La numeración se hace sobre la lista de dictado actual; volver a inventariar una materia prima empieza por su primer frasco. Las capacidades de frascos ya existentes se reutilizan. Los nuevos frascos de esencia tienen capacidad inicial de 250 ml, editable en **Editar registro**; puedes dictar otra capacidad. Cada frasco guarda su propio saldo. Los adicionales se muestran en Materias primas, se incluyen en respaldos y se consumen en orden al registrar producción. Las correcciones de producción restituyen los saldos consumidos de los frascos adicionales registrados desde esta versión. Modificar el primer o segundo frasco manualmente conserva el tercero y los siguientes.
+
+## Notas de venta
+
+En **Notas de venta**, indica cliente y fecha, agrega perfumes por nombre o referencia de inspiración y selecciona su presentación. Las cantidades y precios se pueden editar; los conceptos personalizados permiten material promocional o reposiciones a precio cero.
+
+El descuento es opcional y no puede superar el 30 %. Si está desactivado o es 0 %, el documento no incluye ninguna mención de descuento. Los importes se calculan en centavos.
+
+**Revisar nota de venta** muestra el resumen y el detalle por categoría. Desde esa vista puedes guardar la nota y descargar el PDF. Las notas guardadas aparecen en el historial con su usuario y se incluyen en el respaldo y el inventario compartido de Supabase. No hace falta modificar las tablas existentes para esta función. Recarga la app en todos los dispositivos al actualizar.
+
+La creación de una nota no registra una entrega ni descuenta stock; esas operaciones se registran en Stock. El PDF usa el logotipo de Alma Mía, resumen en primera página y detalle en las siguientes, con numeración automática.
+
+Para reconstruir la biblioteca de PDF: `npm ci` y `npm run build:pdf`. El archivo generado se sirve localmente y no requiere un servicio externo para generar documentos.

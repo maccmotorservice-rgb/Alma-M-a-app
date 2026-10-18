@@ -6,13 +6,16 @@
   "scripts": {
     "start": "node server.mjs",
     "test": "node --test",
-    "build:cloud": "esbuild scripts/supabase-entry.js --bundle --format=esm --platform=browser --outfile=assets/supabase-client.js --minify --legal-comments=linked"
+    "build:cloud": "esbuild scripts/supabase-entry.js --bundle --format=esm --platform=browser --outfile=assets/supabase-client.js --minify --legal-comments=linked",
+    "build:pdf": "esbuild scripts/pdf-entry.js --bundle --format=esm --platform=browser --outfile=assets/pdf-client.js --minify --legal-comments=linked"
   },
   "engines": {
     "node": ">=20"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.118.0"
+    "@supabase/supabase-js": "^2.118.0",
+    "jspdf": "^4.2.1",
+    "jspdf-autotable": "^5.0.9"
   },
   "devDependencies": {
     "esbuild": "^0.28.2"
