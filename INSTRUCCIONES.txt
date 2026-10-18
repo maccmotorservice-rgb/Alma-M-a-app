@@ -8,7 +8,7 @@ ALMA MÍA · INVENTARIO
 Mantén abierta la terminal mientras usas la aplicación.
 No necesitas ejecutar npm install: esta aplicación no tiene dependencias externas.
 
-Empieza en “Inventario de materia prima” con “Actualizar información”.
+Empieza en “Materias primas” con “Actualizar información”.
 Esencias: 1/4 = 62.5 ml y 4/4 = 250 ml. Alcohol: galón de 4 litros.
 Galaxolide: mililitros. Puedes indicar el saldo que queda, sin sumarlo.
 En “Listos para entregar” puedes ingresar perfumes que ya tienes preparados.
@@ -21,3 +21,7 @@ con otro teléfono o computadora. Usa “Exportar respaldo” con frecuencia.
 
 Esta entrega contiene los archivos del proyecto. No es una aplicación
 publicada en Internet ni un instalador para teléfono.
+
+Para un envase adicional, activa “Segundo frasco” al actualizar una materia
+prima. Indica su capacidad y su saldo; se sumará al primer frasco.
+Las esencias están separadas en Mujer, Hombre, Unisex y sus grupos de nicho.

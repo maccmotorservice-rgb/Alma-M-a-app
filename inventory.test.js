@@ -31,3 +31,16 @@ test('actualiza saldos absolutos en cuartos, galones y ml y conserva respaldos a
 test('ingreso múltiple de perfumes terminados no descuenta materia prima',async()=>{
  const{readyBatch}=await import('./inventory.js'),s=initialState(catalog);const next=readyBatch(s,[{id,size:50,qty:2},{id:catalog[1].id,size:100,qty:3}],catalog);assert.deepEqual(next.materials,s.materials);assert.equal(next.ready[id+'-50'],2);assert.equal(next.ready[catalog[1].id+'-100'],3);
 });
+
+test('segundo frasco suma sus existencias y conserva capacidad en el respaldo',async()=>{
+ const{setBottleStocks}=await import('./inventory.js');const s=setBottleStocks(initialState(catalog),{id:'ess-'+id,firstStock:62.5,secondBottle:{capacity:500,stock:375}});const m=s.materials[2];assert.equal(m.stock,437.5);assert.deepEqual(m.secondBottle,{capacity:500,stock:375});assert.deepEqual(validateBackup(JSON.parse(JSON.stringify(s)),catalog),s);
+ assert.throws(()=>setBottleStocks(s,{id:'ess-'+id,firstStock:50,secondBottle:{capacity:100,stock:101}}));
+ const invalid=structuredClone(s);invalid.materials[2].secondBottle.stock=600;assert.throws(()=>validateBackup(invalid,catalog));
+});
+test('consumo usa primero el primer frasco y después el segundo, sin duplicar stock',async()=>{
+ const{setBottleStocks}=await import('./inventory.js');let s=initialState(catalog);s=setBottleStocks(s,{id:'ess-'+id,firstStock:25,secondBottle:{capacity:500,stock:375}});s=applyMovement(s,{id:'alcohol',type:'entry',amount:4000});s=applyMovement(s,{id:'galaxolide',type:'entry',amount:1000});
+ s=produce(s,{id,size:100,qty:2,essence:25,fixative:5},catalog);assert.equal(s.materials[2].stock,350);assert.equal(s.materials[2].secondBottle.stock,350);
+ s=applyMovement(s,{id:'ess-'+id,type:'entry',amount:50});assert.equal(s.materials[2].stock,400);assert.equal(s.materials[2].secondBottle.stock,350);
+ s=applyMovement(s,{id:'ess-'+id,type:'exit',amount:25});assert.equal(s.materials[2].stock,375);assert.equal(s.materials[2].secondBottle.stock,350);
+ s=setBottleStocks(s,{id:'ess-'+id,firstStock:62.5});assert.equal(s.materials[2].stock,62.5);assert.equal(s.materials[2].secondBottle,undefined);
+});
