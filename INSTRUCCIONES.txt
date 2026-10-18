@@ -8,9 +8,12 @@ ALMA MÍA · INVENTARIO
 Mantén abierta la terminal mientras usas la aplicación.
 No necesitas ejecutar npm install: esta aplicación no tiene dependencias externas.
 
-Empieza registrando tus existencias reales en “Insumos y esencias”.
+Empieza en “Inventario de materia prima” con “Actualizar información”.
+Esencias: 1/4 = 62.5 ml y 4/4 = 250 ml. Alcohol: galón de 4 litros.
+Galaxolide: mililitros. Puedes indicar el saldo que queda, sin sumarlo.
 En “Listos para entregar” puedes ingresar perfumes que ya tienes preparados.
-Para nuevos lotes, introduce tus porcentajes reales de esencia y galaxolide:
+Para nuevos lotes, busca por ambos nombres y marca varios perfumes de 50
+o 100 ml. Indica la cantidad de cada uno y tus porcentajes de esencia y galaxolide:
 el alcohol completa el total y se descuentan los insumos.
 
 Los datos solo se guardan en ese navegador y dirección. No se sincronizan

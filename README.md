@@ -12,9 +12,9 @@ npm start
 Puerto 3000; se puede cambiar mediante `PORT`. Para comprobar el inventario: `npm test`.
 
 ## Primer uso
-1. En **Insumos y esencias**, registra entradas con tus saldos reales en ml. Ajusta los mínimos de reabastecimiento según tu operación.
-2. En **Listos para entregar**, usa **Ingresar stock existente** para perfumes ya preparados. No descuenta insumos.
-3. Usa **Preparar lote** para descontar esencia, alcohol y galaxolide y sumar frascos terminados. Introduce tus porcentajes reales: no se proporciona una receta recomendada. El alcohol completa el 100%.
+1. En **Inventario de materia prima**, usa **Actualizar información** para indicar lo que queda. Las esencias se registran en cuartos de un frasco de 250 ml (1/4 = 62.5 ml), el alcohol en galones de 4 litros y el galaxolide en ml. Actualizar reemplaza el saldo; registrar una entrada suma una compra. Ajusta los mínimos de reabastecimiento según tu operación.
+2. En **Listos para entregar**, usa **Ingresar stock existente** para perfumes ya preparados. Permite seleccionar varios perfumes y no descuenta insumos.
+3. Usa **Preparar lote** para descontar esencia, alcohol y galaxolide y sumar frascos terminados. Busca por el nombre Alma Mía o por el de inspiración y marca varios perfumes en **Perfumes de 100 ml** y **Perfumes de 50 ml**, con cantidad independiente para cada uno. La selección se conserva al cambiar la búsqueda. El guardado es completo: si falta materia prima para alguno, no se registra ninguno. Introduce tus porcentajes reales: no se proporciona una receta recomendada. El alcohol completa el 100%.
 4. Registra las entregas para descontar frascos disponibles.
 5. Exporta respaldos JSON regularmente. La importación reemplaza los datos locales tras confirmación.
 
