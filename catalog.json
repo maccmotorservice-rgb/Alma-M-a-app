@@ -24,7 +24,9 @@
         "pachulí"
       ]
     },
-    "guideReference": "Armani / Acqua di Giò Parfum"
+    "guideReference": "Armani / Acqua di Giò Parfum",
+    "brand": "Armani",
+    "displayReference": "Acqua di Giò Parfum — Armani · Caballero"
   },
   {
     "id": "02",
@@ -56,7 +58,9 @@
         "cedro"
       ]
     },
-    "guideReference": "Carolina Herrera / Chic for Men EDT"
+    "guideReference": "Carolina Herrera / Chic for Men EDT",
+    "brand": "Carolina Herrera",
+    "displayReference": "Chic — Carolina Herrera · Caballero"
   },
   {
     "id": "03",
@@ -83,7 +87,9 @@
         "cacao"
       ]
     },
-    "guideReference": "Carolina Herrera / Bad Boy EDT"
+    "guideReference": "Carolina Herrera / Bad Boy EDT",
+    "brand": "Carolina Herrera",
+    "displayReference": "Bad Boy — Carolina Herrera · Caballero"
   },
   {
     "id": "04",
@@ -120,7 +126,9 @@
         "vetiver"
       ]
     },
-    "guideReference": "Carolina Herrera / CH Men"
+    "guideReference": "Carolina Herrera / CH Men",
+    "brand": "Carolina Herrera",
+    "displayReference": "CH Men — Carolina Herrera · Caballero"
   },
   {
     "id": "05",
@@ -151,7 +159,9 @@
         "ámbar"
       ]
     },
-    "guideReference": "Carolina Herrera / 212 Sexy Men"
+    "guideReference": "Carolina Herrera / 212 Sexy Men",
+    "brand": "Carolina Herrera",
+    "displayReference": "212 Sexy Men — Carolina Herrera · Caballero"
   },
   {
     "id": "06",
@@ -183,7 +193,9 @@
         "notas amaderadas"
       ]
     },
-    "guideReference": "Carolina Herrera / 212 VIP Men"
+    "guideReference": "Carolina Herrera / 212 VIP Men",
+    "brand": "Carolina Herrera",
+    "displayReference": "212 VIP Men — Carolina Herrera · Caballero"
   },
   {
     "id": "07",
@@ -207,7 +219,9 @@
         "pachulí"
       ]
     },
-    "guideReference": "Carolina Herrera / 212 VIP Black Cab"
+    "guideReference": "Carolina Herrera / 212 VIP Black Cab",
+    "brand": "Carolina Herrera",
+    "displayReference": "212 Black Cab — Carolina Herrera · Caballero"
   },
   {
     "id": "08",
@@ -242,7 +256,9 @@
         "almizcle blanco"
       ]
     },
-    "guideReference": "Chanel / Bleu de Chanel EDT"
+    "guideReference": "Chanel / Bleu de Chanel EDT",
+    "brand": "Chanel",
+    "displayReference": "Bleu — Chanel · Caballero"
   },
   {
     "id": "09",
@@ -275,7 +291,9 @@
         "resina de elemí"
       ]
     },
-    "guideReference": "Chanel / Allure Homme Sport EDT"
+    "guideReference": "Chanel / Allure Homme Sport EDT",
+    "brand": "Chanel",
+    "displayReference": "Allure Homme Sport — Chanel · Caballero"
   },
   {
     "id": "10",
@@ -307,7 +325,9 @@
         "ládano"
       ]
     },
-    "guideReference": "Dior / Sauvage EDT"
+    "guideReference": "Dior / Sauvage EDT",
+    "brand": "Dior",
+    "displayReference": "Sauvage — Dior · Caballero"
   },
   {
     "id": "11",
@@ -349,7 +369,9 @@
         "haba tonka"
       ]
     },
-    "guideReference": "Dior / Fahrenheit EDT"
+    "guideReference": "Dior / Fahrenheit EDT",
+    "brand": "Dior",
+    "displayReference": "Fahrenheit — Dior · Caballero"
   },
   {
     "id": "12",
@@ -379,7 +401,9 @@
         "vetiver de Haití"
       ]
     },
-    "guideReference": "Dior / Sauvage Elixir"
+    "guideReference": "Dior / Sauvage Elixir",
+    "brand": "Dior",
+    "displayReference": "Sauvage Elixir — Dior · Caballero"
   },
   {
     "id": "13",
@@ -410,7 +434,9 @@
         "pachulí"
       ]
     },
-    "guideReference": "Dolce & Gabbana / K by Dolce & Gabbana EDT"
+    "guideReference": "Dolce & Gabbana / K by Dolce & Gabbana EDT",
+    "brand": "Dolce & Gabbana",
+    "displayReference": "K (King) — Dolce & Gabbana · Caballero"
   },
   {
     "id": "14",
@@ -439,7 +465,9 @@
         "cedro"
       ]
     },
-    "guideReference": "Dolce & Gabbana / The One for Men EDT"
+    "guideReference": "Dolce & Gabbana / The One for Men EDT",
+    "brand": "Dolce & Gabbana",
+    "displayReference": "The One — Dolce & Gabbana · Caballero"
   },
   {
     "id": "15",
@@ -469,7 +497,9 @@
         "musgo de roble"
       ]
     },
-    "guideReference": "Dolce & Gabbana / Light Blue pour Homme EDT"
+    "guideReference": "Dolce & Gabbana / Light Blue pour Homme EDT",
+    "brand": "Dolce & Gabbana",
+    "displayReference": "Light Blue — Dolce & Gabbana · Caballero"
   },
   {
     "id": "16",
@@ -495,7 +525,9 @@
         "humo"
       ]
     },
-    "guideReference": "Emporio Armani / Stronger With You EDT"
+    "guideReference": "Emporio Armani / Stronger With You EDT",
+    "brand": "Emporio Armani",
+    "displayReference": "Stronger With You — Emporio Armani · Caballero"
   },
   {
     "id": "17",
@@ -521,7 +553,9 @@
         "vainilla"
       ]
     },
-    "guideReference": "Gucci / Guilty Pour Homme EDT (2011)"
+    "guideReference": "Gucci / Guilty Pour Homme EDT (2011)",
+    "brand": "Gucci",
+    "displayReference": "Guilty — Gucci · Caballero"
   },
   {
     "id": "18",
@@ -546,7 +580,9 @@
         "vetiver"
       ]
     },
-    "guideReference": "Jean Paul Gaultier / Scandal Pour Homme EDT"
+    "guideReference": "Jean Paul Gaultier / Scandal Pour Homme EDT",
+    "brand": "Jean Paul Gaultier",
+    "displayReference": "Scandal Pour Homme — Jean Paul Gaultier · Caballero"
   },
   {
     "id": "19",
@@ -573,7 +609,9 @@
         "tabaco"
       ]
     },
-    "guideReference": "Jean Paul Gaultier / Le Male Elixir"
+    "guideReference": "Jean Paul Gaultier / Le Male Elixir",
+    "brand": "Jean Paul Gaultier",
+    "displayReference": "Le Male Elixir — Jean Paul Gaultier · Caballero"
   },
   {
     "id": "20",
@@ -596,7 +634,9 @@
         "haba tonka"
       ]
     },
-    "guideReference": "Jean Paul Gaultier / Le Beau EDT"
+    "guideReference": "Jean Paul Gaultier / Le Beau EDT",
+    "brand": "Jean Paul Gaultier",
+    "displayReference": "Le Beau — Jean Paul Gaultier · Caballero"
   },
   {
     "id": "21",
@@ -626,7 +666,9 @@
         "ámbar gris"
       ]
     },
-    "guideReference": "Jean Paul Gaultier / Le Beau Le Parfum"
+    "guideReference": "Jean Paul Gaultier / Le Beau Le Parfum",
+    "brand": "Jean Paul Gaultier",
+    "displayReference": "Le Beau Le Parfum — Jean Paul Gaultier · Caballero"
   },
   {
     "id": "22",
@@ -655,7 +697,9 @@
         "cuero"
       ]
     },
-    "guideReference": "Lacoste / Eau de Lacoste L.12.12. White EDT (2011)"
+    "guideReference": "Lacoste / Eau de Lacoste L.12.12. White EDT (2011)",
+    "brand": "Lacoste",
+    "displayReference": "L.12.12 Blanc — Lacoste · Caballero"
   },
   {
     "id": "23",
@@ -687,7 +731,9 @@
         "sándalo"
       ]
     },
-    "guideReference": "Montblanc / Legend EDT"
+    "guideReference": "Montblanc / Legend EDT",
+    "brand": "Montblanc",
+    "displayReference": "Legend — Montblanc · Caballero"
   },
   {
     "id": "24",
@@ -717,7 +763,9 @@
         "ámbar"
       ]
     },
-    "guideReference": "Montblanc / Starwalker"
+    "guideReference": "Montblanc / Starwalker",
+    "brand": "Montblanc",
+    "displayReference": "Starwalker — Montblanc · Caballero"
   },
   {
     "id": "25",
@@ -746,7 +794,9 @@
         "pachulí"
       ]
     },
-    "guideReference": "Paco Rabanne / Invictus"
+    "guideReference": "Paco Rabanne / Invictus",
+    "brand": "Paco Rabanne",
+    "displayReference": "Invictus — Paco Rabanne · Caballero"
   },
   {
     "id": "26",
@@ -776,7 +826,9 @@
         "pachulí de la India"
       ]
     },
-    "guideReference": "Paco Rabanne / 1 Million EDT"
+    "guideReference": "Paco Rabanne / 1 Million EDT",
+    "brand": "Paco Rabanne",
+    "displayReference": "One Million — Paco Rabanne · Caballero"
   },
   {
     "id": "27",
@@ -803,7 +855,9 @@
         "vetiver"
       ]
     },
-    "guideReference": "Valentino / Uomo Born in Roma EDT"
+    "guideReference": "Valentino / Uomo Born in Roma EDT",
+    "brand": "Valentino",
+    "displayReference": "Valentino Uomo Born in Roma — Valentino · Caballero"
   },
   {
     "id": "28",
@@ -834,7 +888,9 @@
         "musgo de roble"
       ]
     },
-    "guideReference": "Versace / Eros EDT"
+    "guideReference": "Versace / Eros EDT",
+    "brand": "Versace",
+    "displayReference": "Eros — Versace · Caballero"
   },
   {
     "id": "29",
@@ -868,7 +924,9 @@
         "musgo de roble"
       ]
     },
-    "guideReference": "Versace / Eros Flame"
+    "guideReference": "Versace / Eros Flame",
+    "brand": "Versace",
+    "displayReference": "Eros Flame — Versace · Caballero"
   },
   {
     "id": "30",
@@ -898,7 +956,9 @@
         "vetiver"
       ]
     },
-    "guideReference": "Viktor & Rolf / Spicebomb EDT"
+    "guideReference": "Viktor & Rolf / Spicebomb EDT",
+    "brand": "Viktor & Rolf",
+    "displayReference": "Spicebomb — Viktor & Rolf · Caballero"
   },
   {
     "id": "31",
@@ -929,7 +989,9 @@
         "pachulí"
       ]
     },
-    "guideReference": "Amouage / Interlude Man"
+    "guideReference": "Amouage / Interlude Man",
+    "brand": "Amouage",
+    "displayReference": "Interlude Man — Amouage · Caballero"
   },
   {
     "id": "32",
@@ -960,7 +1022,9 @@
         "pachulí"
       ]
     },
-    "guideReference": "Amouage / Reflection Man"
+    "guideReference": "Amouage / Reflection Man",
+    "brand": "Amouage",
+    "displayReference": "Reflection Man — Amouage · Caballero"
   },
   {
     "id": "33",
@@ -987,7 +1051,9 @@
         "ámbar"
       ]
     },
-    "guideReference": "Bharara / King"
+    "guideReference": "Bharara / King",
+    "brand": "Bharara",
+    "displayReference": "King — Bharara · Caballero"
   },
   {
     "id": "34",
@@ -1013,7 +1079,9 @@
         "vetiver"
       ]
     },
-    "guideReference": "Bond No. 9 / The Scent of Peace for Him"
+    "guideReference": "Bond No. 9 / The Scent of Peace for Him",
+    "brand": "Bond No. 9",
+    "displayReference": "The Scent of Peace for Him — Bond No. 9 · Caballero"
   },
   {
     "id": "35",
@@ -1040,7 +1108,9 @@
         "pachulí"
       ]
     },
-    "guideReference": "Bvlgari / Tygar"
+    "guideReference": "Bvlgari / Tygar",
+    "brand": "Bvlgari",
+    "displayReference": "Tygar — Bvlgari · Caballero"
   },
   {
     "id": "36",
@@ -1065,7 +1135,9 @@
         "sándalo"
       ]
     },
-    "guideReference": "Creed / Green Irish Tweed"
+    "guideReference": "Creed / Green Irish Tweed",
+    "brand": "Creed",
+    "displayReference": "Green Irish Tweed — Creed · Caballero"
   },
   {
     "id": "37",
@@ -1094,7 +1166,9 @@
         "benjuí"
       ]
     },
-    "guideReference": "Hermès / Terre d’Hermès EDT"
+    "guideReference": "Hermès / Terre d’Hermès EDT",
+    "brand": "Hermès",
+    "displayReference": "Terre d’Hermès — Hermès · Caballero"
   },
   {
     "id": "38",
@@ -1123,7 +1197,9 @@
         "aceite de vetiver de Java"
       ]
     },
-    "guideReference": "Louis Vuitton / Météore"
+    "guideReference": "Louis Vuitton / Météore",
+    "brand": "Louis Vuitton",
+    "displayReference": "Météore — Louis Vuitton · Caballero"
   },
   {
     "id": "39",
@@ -1153,7 +1229,9 @@
         "ládano"
       ]
     },
-    "guideReference": "Louis Vuitton / L’Immensité"
+    "guideReference": "Louis Vuitton / L’Immensité",
+    "brand": "Louis Vuitton",
+    "displayReference": "L’Immensité — Louis Vuitton · Caballero"
   },
   {
     "id": "40",
@@ -1191,7 +1269,9 @@
         "vainilla"
       ]
     },
-    "guideReference": "Tom Ford / Costa Azzurra EDP (2021)"
+    "guideReference": "Tom Ford / Costa Azzurra EDP (2021)",
+    "brand": "Tom Ford",
+    "displayReference": "Costa Azzurra — Tom Ford · Caballero"
   },
   {
     "id": "41",
@@ -1225,7 +1305,9 @@
         "sándalo"
       ]
     },
-    "guideReference": "Tom Ford / Noir Extreme"
+    "guideReference": "Tom Ford / Noir Extreme",
+    "brand": "Tom Ford",
+    "displayReference": "Noir Extreme — Tom Ford · Caballero"
   },
   {
     "id": "42",
@@ -1254,7 +1336,9 @@
         "notas amaderadas"
       ]
     },
-    "guideReference": "Ariana Grande / Cloud"
+    "guideReference": "Ariana Grande / Cloud",
+    "brand": "Ariana Grande",
+    "displayReference": "Cloud — Ariana Grande · Dama"
   },
   {
     "id": "43",
@@ -1284,7 +1368,9 @@
         "musgo"
       ]
     },
-    "guideReference": "Ariana Grande / Cloud Pink"
+    "guideReference": "Ariana Grande / Cloud Pink",
+    "brand": "Ariana Grande",
+    "displayReference": "Cloud Pink — Ariana Grande · Dama"
   },
   {
     "id": "44",
@@ -1315,7 +1401,9 @@
         "notas amaderadas"
       ]
     },
-    "guideReference": "Ariana Grande / Cloud Intense"
+    "guideReference": "Ariana Grande / Cloud Intense",
+    "brand": "Ariana Grande",
+    "displayReference": "Cloud Intense — Ariana Grande · Dama"
   },
   {
     "id": "45",
@@ -1342,7 +1430,9 @@
         "manteca de cacao"
       ]
     },
-    "guideReference": "Ariana Grande / Mod Vanilla"
+    "guideReference": "Ariana Grande / Mod Vanilla",
+    "brand": "Ariana Grande",
+    "displayReference": "Mod Vanilla — Ariana Grande · Dama"
   },
   {
     "id": "46",
@@ -1369,7 +1459,9 @@
         "Ambroxan"
       ]
     },
-    "guideReference": "Armani / Sì EDP"
+    "guideReference": "Armani / Sì EDP",
+    "brand": "Armani",
+    "displayReference": "Sì — Armani · Dama"
   },
   {
     "id": "47",
@@ -1396,7 +1488,9 @@
         "cedro de Virginia"
       ]
     },
-    "guideReference": "Armani / My Way"
+    "guideReference": "Armani / My Way",
+    "brand": "Armani",
+    "displayReference": "My Way — Armani · Dama"
   },
   {
     "id": "48",
@@ -1432,7 +1526,9 @@
         "pachulí"
       ]
     },
-    "guideReference": "Burberry / Her"
+    "guideReference": "Burberry / Her",
+    "brand": "Burberry",
+    "displayReference": "Her — Burberry · Dama"
   },
   {
     "id": "49",
@@ -1458,7 +1554,9 @@
         "sándalo"
       ]
     },
-    "guideReference": "Burberry / Her Elixir de Parfum"
+    "guideReference": "Burberry / Her Elixir de Parfum",
+    "brand": "Burberry",
+    "displayReference": "Her Elixir — Burberry · Dama"
   },
   {
     "id": "50",
@@ -1484,7 +1582,9 @@
         "absoluto de vainilla"
       ]
     },
-    "guideReference": "Burberry / Goddess"
+    "guideReference": "Burberry / Goddess",
+    "brand": "Burberry",
+    "displayReference": "Goddess — Burberry · Dama"
   },
   {
     "id": "51",
@@ -1524,7 +1624,9 @@
         "cedro"
       ]
     },
-    "guideReference": "Carolina Herrera / Good Girl"
+    "guideReference": "Carolina Herrera / Good Girl",
+    "brand": "Carolina Herrera",
+    "displayReference": "Good Girl — Carolina Herrera · Dama"
   },
   {
     "id": "52",
@@ -1550,7 +1652,9 @@
         "cumarina"
       ]
     },
-    "guideReference": "Carolina Herrera / Good Girl Blush"
+    "guideReference": "Carolina Herrera / Good Girl Blush",
+    "brand": "Carolina Herrera",
+    "displayReference": "Good Girl Blush — Carolina Herrera · Dama"
   },
   {
     "id": "53",
@@ -1584,7 +1688,9 @@
         "sándalo"
       ]
     },
-    "guideReference": "Carolina Herrera / 212"
+    "guideReference": "Carolina Herrera / 212",
+    "brand": "Carolina Herrera",
+    "displayReference": "212 — Carolina Herrera · Dama"
   },
   {
     "id": "54",
@@ -1609,7 +1715,9 @@
         "pachulí"
       ]
     },
-    "guideReference": "Carolina Herrera / 212 VIP Rosé Cab"
+    "guideReference": "Carolina Herrera / 212 VIP Rosé Cab",
+    "brand": "Carolina Herrera",
+    "displayReference": "212 Rose Cab — Carolina Herrera · Dama"
   },
   {
     "id": "55",
@@ -1643,7 +1751,9 @@
         "opopónaco"
       ]
     },
-    "guideReference": "Chanel / Coco Mademoiselle EDP"
+    "guideReference": "Chanel / Coco Mademoiselle EDP",
+    "brand": "Chanel",
+    "displayReference": "Coco Mademoiselle — Chanel · Dama"
   },
   {
     "id": "56",
@@ -1675,7 +1785,9 @@
         "vainilla"
       ]
     },
-    "guideReference": "Chanel / Chance EDT"
+    "guideReference": "Chanel / Chance EDT",
+    "brand": "Chanel",
+    "displayReference": "Chance — Chanel · Dama"
   },
   {
     "id": "57",
@@ -1700,7 +1812,9 @@
         "almizcle blanco"
       ]
     },
-    "guideReference": "Chanel / Chance Eau Tendre EDP"
+    "guideReference": "Chanel / Chance Eau Tendre EDP",
+    "brand": "Chanel",
+    "displayReference": "Chance Eau Tendre — Chanel · Dama"
   },
   {
     "id": "58",
@@ -1734,7 +1848,9 @@
         "iris"
       ]
     },
-    "guideReference": "Chanel / Gabrielle EDP"
+    "guideReference": "Chanel / Gabrielle EDP",
+    "brand": "Chanel",
+    "displayReference": "Gabrielle — Chanel · Dama"
   },
   {
     "id": "59",
@@ -1772,7 +1888,9 @@
         "zarzamora"
       ]
     },
-    "guideReference": "Dior / J’adore EDP"
+    "guideReference": "Dior / J’adore EDP",
+    "brand": "Dior",
+    "displayReference": "J’adore — Dior · Dama"
   },
   {
     "id": "60",
@@ -1803,7 +1921,9 @@
         "benjuí"
       ]
     },
-    "guideReference": "Dior / Miss Dior EDP (2021)"
+    "guideReference": "Dior / Miss Dior EDP (2021)",
+    "brand": "Dior",
+    "displayReference": "Miss Dior EDP — Dior · Dama"
   },
   {
     "id": "61",
@@ -1833,7 +1953,9 @@
         "ámbar"
       ]
     },
-    "guideReference": "Dolce & Gabbana / Light Blue EDT (2001)"
+    "guideReference": "Dolce & Gabbana / Light Blue EDT (2001)",
+    "brand": "Dolce & Gabbana",
+    "displayReference": "Light Blue for Her — Dolce & Gabbana · Dama"
   },
   {
     "id": "62",
@@ -1867,7 +1989,9 @@
         "ámbar"
       ]
     },
-    "guideReference": "Escada / Sorbetto Rosso"
+    "guideReference": "Escada / Sorbetto Rosso",
+    "brand": "Escada",
+    "displayReference": "Sorbetto Rosso — Escada · Dama"
   },
   {
     "id": "63",
@@ -1890,7 +2014,9 @@
         "enredadera de Rangún"
       ]
     },
-    "guideReference": "Gucci / Bloom EDP"
+    "guideReference": "Gucci / Bloom EDP",
+    "brand": "Gucci",
+    "displayReference": "Bloom — Gucci · Dama"
   },
   {
     "id": "64",
@@ -1921,7 +2047,9 @@
         "regaliz"
       ]
     },
-    "guideReference": "Jean Paul Gaultier / Scandal"
+    "guideReference": "Jean Paul Gaultier / Scandal",
+    "brand": "Jean Paul Gaultier",
+    "displayReference": "Scandal — Jean Paul Gaultier · Dama"
   },
   {
     "id": "65",
@@ -1950,7 +2078,9 @@
         "haba tonka"
       ]
     },
-    "guideReference": "Lancôme / La Vie Est Belle"
+    "guideReference": "Lancôme / La Vie Est Belle",
+    "brand": "Lancôme",
+    "displayReference": "La Vie Est Belle — Lancôme · Dama"
   },
   {
     "id": "66",
@@ -1978,7 +2108,9 @@
         "madera de cedro"
       ]
     },
-    "guideReference": "Lancôme / La Vie Est Belle Elixir"
+    "guideReference": "Lancôme / La Vie Est Belle Elixir",
+    "brand": "Lancôme",
+    "displayReference": "La Vie Est Belle Elixir — Lancôme · Dama"
   },
   {
     "id": "67",
@@ -2007,7 +2139,9 @@
         "cedro"
       ]
     },
-    "guideReference": "Lancôme / Idôle"
+    "guideReference": "Lancôme / Idôle",
+    "brand": "Lancôme",
+    "displayReference": "Idôle — Lancôme · Dama"
   },
   {
     "id": "68",
@@ -2032,7 +2166,9 @@
         "cedro"
       ]
     },
-    "guideReference": "Marc Jacobs / Perfect EDP"
+    "guideReference": "Marc Jacobs / Perfect EDP",
+    "brand": "Marc Jacobs",
+    "displayReference": "Perfect — Marc Jacobs · Dama"
   },
   {
     "id": "69",
@@ -2057,7 +2193,9 @@
         "benjuí"
       ]
     },
-    "guideReference": "Mugler / Angel Nova EDP"
+    "guideReference": "Mugler / Angel Nova EDP",
+    "brand": "Mugler",
+    "displayReference": "Angel Nova — Mugler · Dama"
   },
   {
     "id": "70",
@@ -2079,7 +2217,9 @@
         "grosella negra"
       ]
     },
-    "guideReference": "Mugler / Angel Eau Croisière (2019)"
+    "guideReference": "Mugler / Angel Eau Croisière (2019)",
+    "brand": "Mugler",
+    "displayReference": "Angel Croisière — Mugler · Dama"
   },
   {
     "id": "71",
@@ -2105,7 +2245,9 @@
         "sándalo"
       ]
     },
-    "guideReference": "Narciso Rodriguez / For Her EDP (frasco rosa)"
+    "guideReference": "Narciso Rodriguez / For Her EDP (frasco rosa)",
+    "brand": "Narciso Rodriguez",
+    "displayReference": "For Her — Narciso Rodriguez · Dama"
   },
   {
     "id": "72",
@@ -2134,7 +2276,9 @@
         "ámbar"
       ]
     },
-    "guideReference": "Paco Rabanne / Lady Million"
+    "guideReference": "Paco Rabanne / Lady Million",
+    "brand": "Paco Rabanne",
+    "displayReference": "Lady Million — Paco Rabanne · Dama"
   },
   {
     "id": "73",
@@ -2160,7 +2304,9 @@
         "sándalo"
       ]
     },
-    "guideReference": "Paco Rabanne / Fame EDP"
+    "guideReference": "Paco Rabanne / Fame EDP",
+    "brand": "Paco Rabanne",
+    "displayReference": "Fame — Paco Rabanne · Dama"
   },
   {
     "id": "74",
@@ -2191,7 +2337,9 @@
         "benjuí"
       ]
     },
-    "guideReference": "Prada / Paradoxe"
+    "guideReference": "Prada / Paradoxe",
+    "brand": "Prada",
+    "displayReference": "Paradoxe — Prada · Dama"
   },
   {
     "id": "75",
@@ -2220,7 +2368,9 @@
         "notas amaderadas"
       ]
     },
-    "guideReference": "Ralph Lauren / Ralph Fresh"
+    "guideReference": "Ralph Lauren / Ralph Fresh",
+    "brand": "Ralph Lauren",
+    "displayReference": "Ralph Fresh — Ralph Lauren · Dama"
   },
   {
     "id": "76",
@@ -2249,7 +2399,9 @@
         "madera de guayaco"
       ]
     },
-    "guideReference": "Valentino / Donna Born in Roma"
+    "guideReference": "Valentino / Donna Born in Roma",
+    "brand": "Valentino",
+    "displayReference": "Donna Born in Roma — Valentino · Dama"
   },
   {
     "id": "77",
@@ -2278,7 +2430,9 @@
         "ámbar"
       ]
     },
-    "guideReference": "Versace / Bright Crystal"
+    "guideReference": "Versace / Bright Crystal",
+    "brand": "Versace",
+    "displayReference": "Bright Crystal — Versace · Dama"
   },
   {
     "id": "78",
@@ -2308,7 +2462,9 @@
         "ámbar"
       ]
     },
-    "guideReference": "Versace / Bright Crystal Absolu"
+    "guideReference": "Versace / Bright Crystal Absolu",
+    "brand": "Versace",
+    "displayReference": "Bright Crystal Absolu — Versace · Dama"
   },
   {
     "id": "79",
@@ -2338,7 +2494,9 @@
         "haba tonka"
       ]
     },
-    "guideReference": "Versace / Crystal Emerald"
+    "guideReference": "Versace / Crystal Emerald",
+    "brand": "Versace",
+    "displayReference": "Crystal Emeralde — Versace · Dama"
   },
   {
     "id": "80",
@@ -2369,7 +2527,9 @@
         "ámbar gris"
       ]
     },
-    "guideReference": "Yves Saint Laurent / Libre EDP"
+    "guideReference": "Yves Saint Laurent / Libre EDP",
+    "brand": "Yves Saint Laurent",
+    "displayReference": "Libre — Yves Saint Laurent · Dama"
   },
   {
     "id": "81",
@@ -2400,7 +2560,9 @@
         "cedro"
       ]
     },
-    "guideReference": "Yves Saint Laurent / Black Opium EDP"
+    "guideReference": "Yves Saint Laurent / Black Opium EDP",
+    "brand": "Yves Saint Laurent",
+    "displayReference": "Black Opium — Yves Saint Laurent · Dama"
   },
   {
     "id": "82",
@@ -2439,7 +2601,9 @@
         "cedro"
       ]
     },
-    "guideReference": "Yves Saint Laurent / Mon Paris"
+    "guideReference": "Yves Saint Laurent / Mon Paris",
+    "brand": "Yves Saint Laurent",
+    "displayReference": "Mon Paris — Yves Saint Laurent · Dama"
   },
   {
     "id": "83",
@@ -2472,7 +2636,9 @@
         "cedro"
       ]
     },
-    "guideReference": "Kayali / Eden Sparkling Lychee | 39"
+    "guideReference": "Kayali / Eden Sparkling Lychee | 39",
+    "brand": "Kayali",
+    "displayReference": "Eden Sparkling Lychee — Kayali · Dama"
   },
   {
     "id": "84",
@@ -2509,7 +2675,9 @@
         "vetiver"
       ]
     },
-    "guideReference": "Kayali / Vanilla Candy Rock Sugar | 42"
+    "guideReference": "Kayali / Vanilla Candy Rock Sugar | 42",
+    "brand": "Kayali",
+    "displayReference": "Vanilla Candy Rock Sugar 42 — Kayali · Dama"
   },
   {
     "id": "85",
@@ -2544,7 +2712,9 @@
         "pachulí"
       ]
     },
-    "guideReference": "Kilian / Good Girl Gone Bad"
+    "guideReference": "Kilian / Good Girl Gone Bad",
+    "brand": "Kilian",
+    "displayReference": "Good Girl Gone Bad — Kilian · Dama"
   },
   {
     "id": "86",
@@ -2580,7 +2750,9 @@
         "ládano"
       ]
     },
-    "guideReference": "Kilian / Love, Don’t Be Shy"
+    "guideReference": "Kilian / Love, Don’t Be Shy",
+    "brand": "Kilian",
+    "displayReference": "Love, Don’t Be Shy — Kilian · Dama"
   },
   {
     "id": "87",
@@ -2611,7 +2783,9 @@
         "ambreta"
       ]
     },
-    "guideReference": "Louis Vuitton / Contre Moi"
+    "guideReference": "Louis Vuitton / Contre Moi",
+    "brand": "Louis Vuitton",
+    "displayReference": "Contre Moi — Louis Vuitton · Dama"
   },
   {
     "id": "88",
@@ -2638,7 +2812,9 @@
         "pachulí"
       ]
     },
-    "guideReference": "Louis Vuitton / Attrape-Rêves"
+    "guideReference": "Louis Vuitton / Attrape-Rêves",
+    "brand": "Louis Vuitton",
+    "displayReference": "Attrape-Rêves — Louis Vuitton · Dama"
   },
   {
     "id": "89",
@@ -2663,7 +2839,9 @@
         "cedro"
       ]
     },
-    "guideReference": "Mancera / Roses Vanille"
+    "guideReference": "Mancera / Roses Vanille",
+    "brand": "Mancera",
+    "displayReference": "Roses Vanille — Mancera · Dama"
   },
   {
     "id": "90",
@@ -2697,7 +2875,9 @@
         "vainilla"
       ]
     },
-    "guideReference": "Parfums De Marly / Valaya"
+    "guideReference": "Parfums De Marly / Valaya",
+    "brand": "Parfums De Marly",
+    "displayReference": "Valaya — Parfums De Marly · Dama"
   },
   {
     "id": "91",
@@ -2728,7 +2908,9 @@
         "vainilla"
       ]
     },
-    "guideReference": "Parfums De Marly / Oriana"
+    "guideReference": "Parfums De Marly / Oriana",
+    "brand": "Parfums De Marly",
+    "displayReference": "Oriana — Parfums De Marly · Dama"
   },
   {
     "id": "92",
@@ -2763,7 +2945,9 @@
         "caramelo"
       ]
     },
-    "guideReference": "Parfums De Marly / Delina"
+    "guideReference": "Parfums De Marly / Delina",
+    "brand": "Parfums De Marly",
+    "displayReference": "Delina — Parfums De Marly · Dama"
   },
   {
     "id": "93",
@@ -2791,7 +2975,9 @@
         "verbena"
       ]
     },
-    "guideReference": "Acqua Di Parma / Acqua di Parma Colonia"
+    "guideReference": "Acqua Di Parma / Acqua di Parma Colonia",
+    "brand": "Acqua Di Parma",
+    "displayReference": "Acqua di Parma Colonia — Acqua Di Parma · Unisex"
   },
   {
     "id": "94",
@@ -2822,7 +3008,9 @@
         "vainilla"
       ]
     },
-    "guideReference": "Bond No. 9 / Dubai Amber"
+    "guideReference": "Bond No. 9 / Dubai Amber",
+    "brand": "Bond No. 9",
+    "displayReference": "Dubai Amber — Bond No. 9 · Unisex"
   },
   {
     "id": "95",
@@ -2850,7 +3038,9 @@
         "resinas"
       ]
     },
-    "guideReference": "Bond No. 9 / Wall Street"
+    "guideReference": "Bond No. 9 / Wall Street",
+    "brand": "Bond No. 9",
+    "displayReference": "Wall Street — Bond No. 9 · Unisex"
   },
   {
     "id": "96",
@@ -2883,7 +3073,9 @@
         "Ambroxan"
       ]
     },
-    "guideReference": "Creed / Aventus"
+    "guideReference": "Creed / Aventus",
+    "brand": "Creed",
+    "displayReference": "Aventus — Creed · Unisex"
   },
   {
     "id": "97",
@@ -2911,7 +3103,9 @@
         "gálbano"
       ]
     },
-    "guideReference": "Creed / Silver Mountain Water"
+    "guideReference": "Creed / Silver Mountain Water",
+    "brand": "Creed",
+    "displayReference": "Silver Mountain Water — Creed · Unisex"
   },
   {
     "id": "98",
@@ -2944,7 +3138,9 @@
         "musgo"
       ]
     },
-    "guideReference": "Kayali / Eden Juicy Apple | 01"
+    "guideReference": "Kayali / Eden Juicy Apple | 01",
+    "brand": "Kayali",
+    "displayReference": "Eden Juicy Apple — Kayali · Unisex"
   },
   {
     "id": "99",
@@ -2975,7 +3171,9 @@
         "Ambrettolide"
       ]
     },
-    "guideReference": "Le Labo / Another 13"
+    "guideReference": "Le Labo / Another 13",
+    "brand": "Le Labo",
+    "displayReference": "Another 13 — Le Labo · Unisex"
   },
   {
     "id": "100",
@@ -3000,7 +3198,9 @@
         "ámbar"
       ]
     },
-    "guideReference": "Le Labo / Bergamote 22"
+    "guideReference": "Le Labo / Bergamote 22",
+    "brand": "Le Labo",
+    "displayReference": "Bergamote 22 — Le Labo · Unisex"
   },
   {
     "id": "101",
@@ -3024,7 +3224,9 @@
         "ámbar"
       ]
     },
-    "guideReference": "Le Labo / Santal 33"
+    "guideReference": "Le Labo / Santal 33",
+    "brand": "Le Labo",
+    "displayReference": "Santal 33 — Le Labo · Unisex"
   },
   {
     "id": "102",
@@ -3045,7 +3247,9 @@
         "vetiver"
       ]
     },
-    "guideReference": "Le Labo / Thé Matcha 26"
+    "guideReference": "Le Labo / Thé Matcha 26",
+    "brand": "Le Labo",
+    "displayReference": "The Matcha 23 — Le Labo · Unisex"
   },
   {
     "id": "103",
@@ -3064,7 +3268,9 @@
         "bergamota de Calabria"
       ]
     },
-    "guideReference": "Louis Vuitton / Cactus Garden"
+    "guideReference": "Louis Vuitton / Cactus Garden",
+    "brand": "Louis Vuitton",
+    "displayReference": "Cactus Garden — Louis Vuitton · Unisex"
   },
   {
     "id": "104",
@@ -3094,7 +3300,9 @@
         "olíbano"
       ]
     },
-    "guideReference": "Louis Vuitton / Imagination"
+    "guideReference": "Louis Vuitton / Imagination",
+    "brand": "Louis Vuitton",
+    "displayReference": "Imagination — Louis Vuitton · Unisex"
   },
   {
     "id": "105",
@@ -3119,7 +3327,9 @@
         "geranio"
       ]
     },
-    "guideReference": "Louis Vuitton / Ombre Nomade"
+    "guideReference": "Louis Vuitton / Ombre Nomade",
+    "brand": "Louis Vuitton",
+    "displayReference": "Ombre Nomade — Louis Vuitton · Unisex"
   },
   {
     "id": "106",
@@ -3149,7 +3359,9 @@
         "musgo de roble"
       ]
     },
-    "guideReference": "Maison Francis Kurkdjian / Baccarat Rouge 540 EDP"
+    "guideReference": "Maison Francis Kurkdjian / Baccarat Rouge 540 EDP",
+    "brand": "Maison Francis Kurkdjian",
+    "displayReference": "Baccarat Rouge 540 — Maison Francis Kurkdjian · Unisex"
   },
   {
     "id": "107",
@@ -3178,7 +3390,9 @@
         "Cashmeran"
       ]
     },
-    "guideReference": "Maison Francis Kurkdjian / Baccarat Rouge 540 Extrait de Parfum"
+    "guideReference": "Maison Francis Kurkdjian / Baccarat Rouge 540 Extrait de Parfum",
+    "brand": "Maison Francis Kurkdjian",
+    "displayReference": "Baccarat Rouge 540 Extrait — Maison Francis Kurkdjian · Unisex"
   },
   {
     "id": "108",
@@ -3206,7 +3420,9 @@
         "ámbar gris"
       ]
     },
-    "guideReference": "Parfums De Marly / Habdan"
+    "guideReference": "Parfums De Marly / Habdan",
+    "brand": "Parfums De Marly",
+    "displayReference": "Habdan — Parfums De Marly · Unisex"
   },
   {
     "id": "109",
@@ -3241,7 +3457,9 @@
         "cumarina"
       ]
     },
-    "guideReference": "Parfums De Marly / Layton"
+    "guideReference": "Parfums De Marly / Layton",
+    "brand": "Parfums De Marly",
+    "displayReference": "Layton — Parfums De Marly · Unisex"
   },
   {
     "id": "110",
@@ -3267,7 +3485,9 @@
         "pachulí"
       ]
     },
-    "guideReference": "Tom Ford / Ombré Leather EDP (2018)"
+    "guideReference": "Tom Ford / Ombré Leather EDP (2018)",
+    "brand": "Tom Ford",
+    "displayReference": "Ombré Leather — Tom Ford · Unisex"
   },
   {
     "id": "111",
@@ -3292,7 +3512,9 @@
         "ámbar"
       ]
     },
-    "guideReference": "Tom Ford / Oud Wood"
+    "guideReference": "Tom Ford / Oud Wood",
+    "brand": "Tom Ford",
+    "displayReference": "Oud Wood — Tom Ford · Unisex"
   },
   {
     "id": "112",
@@ -3323,6 +3545,8 @@
         "benjuí"
       ]
     },
-    "guideReference": "Tom Ford / Soleil Blanc"
+    "guideReference": "Tom Ford / Soleil Blanc",
+    "brand": "Tom Ford",
+    "displayReference": "Soleil Blanc — Tom Ford · Unisex"
   }
 ]

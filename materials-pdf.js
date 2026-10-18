@@ -1,4 +1,4 @@
-import {isMaterialLow,extraBottles,bottleStock} from './inventory.js?v=34';
+import {isMaterialLow,extraBottles,bottleStock} from './inventory.js?v=35';
 export async function downloadMaterialsPdf(state,catalog){
  const {jsPDF,autoTable}=await import('./assets/pdf-client.js');
  const doc=new jsPDF({unit:'mm',format:'a4'}),margin=16,now=new Date(),zone='America/Guatemala';
@@ -11,7 +11,7 @@ export async function downloadMaterialsPdf(state,catalog){
  const missing=state.materials.filter(m=>m.stock===0),low=state.materials.filter(isMaterialLow).sort((a,b)=>a.stock-b.stock);
  doc.text(`Faltantes: ${missing.length}   |   Por terminar: ${low.length}`,margin,48);
  let y=59;
- const name=m=>{const p=m.kind==='Esencia'?catalog.find(p=>p.id===m.id.slice(4)):null;return m.name+(p?'\nInspirado en '+p.reference:'');};
+ const name=m=>{const p=m.kind==='Esencia'?catalog.find(p=>p.id===m.id.slice(4)):null;return m.name+(p?'\nInspirado en '+(p.displayReference??p.reference):'');};
  const amount=m=>{if(m.stock===0)return '0 ml';if(m.id==='alcohol')return `${number(m.stock/(state.unitSettings?.gallonMl||4000))} galones\n${number(m.stock)} ml`;if(m.kind!=='Esencia')return number(m.stock)+' ml';const bottles=[{number:1,stock:bottleStock(m,1),capacity:250},...extraBottles(m)].filter(b=>b.stock>0);return `${number(m.stock)} ml en total\n`+bottles.map(b=>`Frasco ${b.number}: ${number(b.stock)} ml (${number(b.stock/b.capacity*4)}/4)`).join('\n');};
  for(const [title,items,empty] of [['Insumos faltantes',missing,'No hay insumos faltantes.'],['Insumos por terminar',low,'No hay insumos por terminar.']]){
   if(y>250){doc.addPage();y=22;}
