@@ -1,5 +1,5 @@
-import {createDictationPanel} from './dictation.js?v=9';
-import {initialState,applyMovement,recipeFor,registerCustomer,productionPreview,confirmProduction,readyBatch,setBottleStocks,readyMovement,validateBackup} from './inventory.js?v=9';
+import {createDictationPanel} from './dictation.js?v=10';
+import {initialState,applyMovement,recipeFor,registerCustomer,productionPreview,confirmProduction,readyBatch,setBottleStocks,readyMovement,validateBackup} from './inventory.js?v=10';
 const catalog=await fetch('./catalog.json').then(r=>{if(!r.ok)throw Error('No se pudo cargar el catálogo');return r.json()});
 const key='alma-mia-inventory-v1';let state=initialState(catalog),view='overview',search='',category='Todas',kind='Todos',materialGroup='Todas',batchFilter='all',storageError=false;
 try{const saved=localStorage.getItem(key);if(saved)state=validateBackup(JSON.parse(saved),catalog);}catch{storageError=true;}
