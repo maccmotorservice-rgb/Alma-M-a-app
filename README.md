@@ -161,3 +161,9 @@ La nota conserva el ID y número de su lote o pedido de origen, visibles en el h
 Los botones de cada registro se agrupan con separación uniforme: la generación de notas ocupa una acción principal, edición y consulta se muestran juntas y la cancelación usa un estilo diferenciado. En celular y tablet, inventarios e historiales se distribuyen en tarjetas con campos etiquetados. La selección de perfumes de una nota también se adapta a tarjetas para editar cantidades y precios sin desplazar una tabla lateralmente.
 
 Los diálogos y formularios muestran sus acciones al final del contenido para evitar que tapen información. El menú móvil muestra todas las secciones. La distribución se comprobó en 320, 390, 768, 1024 y 1440 px; las reglas compartidas están en `layout.css`.
+
+### Una nota vigente por lote o pedido
+
+Cada origen admite una única nota de venta vigente, tanto pendiente de pago como pagada. Después de guardarla, Generar nota de venta cambia a Ver nota de venta en el listado, detalle y editor de producción. Ese origen deja de aparecer en el selector de nuevas notas.
+
+Cancelar la nota libera el origen para generar una nueva, conservando la cancelada en su historial. La regla se verifica al preparar el formulario y al guardar; la revisión compartida evita que dos sesiones guarden simultáneamente una nota nueva para el mismo lote. Las notas duplicadas que ya existían se conservan para revisión y cancelación. Mientras quede alguna vigente, no se permite crear otra.

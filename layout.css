@@ -36,8 +36,8 @@ header { gap: 16px 24px; padding: 22px 0; }
 td { vertical-align: middle; }
 .batch-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--action-gap); width: 220px; max-width: 100%; }
 .batch-actions > button { width: 100%; min-width: 0; margin: 0; }
-.batch-actions [data-action=batch-sale], .batch-actions [data-action=batch-cancel], .batch-actions > :only-child { grid-column: 1 / -1; }
-.batch-actions [data-action=batch-sale] { background: #f1ece4; border-color: #d9cbb9; color: #493323; }
+.batch-actions [data-action=batch-sale], .batch-actions [data-action=batch-sale-view], .batch-actions [data-action=batch-cancel], .batch-actions > :only-child { grid-column: 1 / -1; }
+.batch-actions [data-action=batch-sale], .batch-actions [data-action=batch-sale-view] { background: #f1ece4; border-color: #d9cbb9; color: #493323; }
 .sales-note-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--action-gap); width: 230px; min-width: 0; max-width: 100%; }
 .sales-note-actions > button { min-width: 0; margin: 0; white-space: normal; }
 .sales-note-actions > :first-child, .sales-note-actions [data-sale-payment] { grid-column: 1 / -1; }
