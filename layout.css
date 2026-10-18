@@ -224,3 +224,12 @@ input[type="file"] { width: 100%; min-width: 0; white-space: normal; }
 .financial-overview .section-head { margin-bottom: 18px; }
 .sales-page-actions { display: flex; flex-wrap: wrap; gap: 10px; max-width: 560px; }
 .sales-page-actions > button { flex: 1 1 160px; }
+
+body.access-locked > aside, body.access-locked > main, body.access-locked > dialog, body.access-locked > #toast { display: none !important; }
+body.access-locked { display: block; }
+#access-screen { min-height: 100dvh; display: grid; place-items: center; padding: 24px; }
+.access-card { width: min(100%, 440px); padding: 32px; border: 1px solid #e7e2da; border-radius: 20px; background: #fff; }
+.access-card > img { width: 180px; max-width: 100%; margin-bottom: 24px; }
+.access-card h1 { font-size: 28px; }
+.access-card form .primary { width: 100%; }
+.access-card [role=status] { overflow-wrap: anywhere; }
