@@ -1,3 +1,5 @@
+import {resolveCancellationReason} from './cancellation.js?v=31';
+import {validateEvidenceMetadata} from './evidence.js?v=31';
 export const salesCategories=['Perfumes unisex - Nicho','Perfumes de dama - Nicho','Perfumes de caballero - Nicho','Perfumes de dama - Diseñador','Perfumes de caballero - Diseñador','Perfumes unisex - Diseñador','Material promocional'];
 export const salesCategory=p=>`Perfumes ${p.category==='Dama'?'de dama':p.category==='Caballero'?'de caballero':'unisex'} - ${p.line}`;
 export const salesMoney=cents=>new Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',minimumFractionDigits:2,maximumFractionDigits:2}).format(cents/100);
@@ -33,8 +35,8 @@ function existingSalesNote(state,id,expectedRevision){const note=(state.salesNot
 export function editSalesNote(state,candidate,{actor,expectedRevision,at=new Date().toISOString()}){
  salesActor(actor);const original=existingSalesNote(state,candidate.id,expectedRevision);validateSalesNotes([candidate]);if(candidate.sourceBatch&&activeSalesNoteForBatch(state,candidate.sourceBatch.id,candidate.id))throw Error('Este lote o pedido ya tiene otra nota vigente. Cancela las notas duplicadas antes de editar.');if((original.payments??[]).length&&candidate.paymentType!=='credit')throw Error('Una nota con abonos debe conservar el tipo Crédito.');const note={...candidate,payments:structuredClone(original.payments??[]),id:original.id,createdAt:original.createdAt,createdBy:original.createdBy,status:'active',revision:(original.revision??0)+1,updatedAt:at,updatedBy:actor,events:[...(original.events??[]),{type:'edited',at,by:actor}]};validateSalesPayments(note);return {...state,salesNotes:state.salesNotes.map(n=>n.id===note.id?note:n)};
 }
-export function cancelSalesNote(state,id,{actor,expectedRevision,reason='',at=new Date().toISOString()}){
- salesActor(actor);const original=existingSalesNote(state,id,expectedRevision);if(typeof reason!=='string'||reason.trim().length<3||reason.trim().length>240)throw Error('Escribe un motivo de cancelación de entre 3 y 240 caracteres.');const note={...original,status:'cancelled',revision:(original.revision??0)+1,cancelledAt:at,cancelledBy:actor,cancellationReason:reason.trim(),events:[...(original.events??[]),{type:'cancelled',at,by:actor}]};return {...state,salesNotes:state.salesNotes.map(n=>n.id===id?note:n)};
+export function cancelSalesNote(state,id,{actor,expectedRevision,reason='',reasonCode='other',at=new Date().toISOString()}){
+ salesActor(actor);const original=existingSalesNote(state,id,expectedRevision);reason=resolveCancellationReason(reasonCode,reason);const note={...original,status:'cancelled',revision:(original.revision??0)+1,cancelledAt:at,cancelledBy:actor,cancellationReason:reason.trim(),cancellationCode:reasonCode,events:[...(original.events??[]),{type:'cancelled',at,by:actor}]};return {...state,salesNotes:state.salesNotes.map(n=>n.id===id?note:n)};
 }
 export function salesPaymentSummary(note){
  const type=note.paymentType??null;if(type===null)return {type:null,paidCents:0,balanceCents:note.totals.totalCents,status:'unrecorded',label:'Pago por definir'};
@@ -44,12 +46,13 @@ function validPaymentDate(date){return typeof date==='string'&&/^\d{4}-\d{2}-\d{
 export function validateSalesPayments(note){
  if(note.paymentType!==undefined&&!['cash','credit'].includes(note.paymentType))throw Error('Tipo de pago inválido.');const payments=note.payments??[];
  if(!Array.isArray(payments)||new Set(payments.map(p=>p?.id)).size!==payments.length||payments.some(p=>!p||typeof p.id!=='string'||!p.id||!Number.isSafeInteger(p.amountCents)||p.amountCents<=0||!validPaymentDate(p.date)||!Number.isFinite(Date.parse(p.recordedAt))||!['Luis','Ximena'].includes(p.recordedBy)))throw Error('Historial de abonos inválido.');
+ for(const p of payments){if(p.method!==undefined&&!['cash','transfer'].includes(p.method))throw Error('Método de abono inválido.');if(p.reminder!==undefined&&(typeof p.reminder!=='string'||p.reminder.length>240))throw Error('Recordatorio de abono inválido.');if(p.method==='transfer')validateEvidenceMetadata(p.evidence);if(p.evidence)validateEvidenceMetadata(p.evidence);}
  if(payments.length&&note.paymentType!=='credit')throw Error('Los abonos solo corresponden a notas de crédito.');const paid=payments.reduce((sum,p)=>sum+p.amountCents,0);if(!Number.isSafeInteger(paid)||paid>note.totals.totalCents)throw Error('Los abonos no pueden superar el total de la nota.');
 }
-export function addSalesPayment(state,id,{actor,expectedRevision,amount,date,paymentId=crypto.randomUUID(),at=new Date().toISOString()}){
- salesActor(actor);const original=existingSalesNote(state,id,expectedRevision);if(original.paymentType!=='credit')throw Error('Solo puedes registrar abonos en notas de crédito.');
+export function addSalesPayment(state,id,{actor,expectedRevision,amount,date,method='cash',evidence,reminder='',paymentId=crypto.randomUUID(),at=new Date().toISOString()}){
+ salesActor(actor);if(!['cash','transfer'].includes(method))throw Error('Selecciona Efectivo o Transferencia.');if(typeof reminder!=='string'||reminder.trim().length>240)throw Error('El recordatorio admite un máximo de 240 caracteres.');if(method==='transfer')validateEvidenceMetadata(evidence);const original=existingSalesNote(state,id,expectedRevision);if(original.paymentType!=='credit')throw Error('Solo puedes registrar abonos en notas de crédito.');
  const value=String(amount).trim();if(!/^\d+(\.\d{1,2})?$/.test(value))throw Error('Indica un importe positivo con un máximo de dos decimales.');const amountCents=Math.round(Number(value)*100);if(!Number.isSafeInteger(amountCents)||amountCents<=0)throw Error('El abono debe ser mayor que cero.');const summary=salesPaymentSummary(original);if(amountCents>summary.balanceCents)throw Error('El abono supera el saldo pendiente de la nota.');if(!validPaymentDate(date))throw Error('Indica una fecha válida para el abono.');
- if((original.payments??[]).some(p=>p.id===paymentId))throw Error('Este abono ya está registrado.');const payment={id:paymentId,amountCents,date,recordedAt:at,recordedBy:actor},note={...original,payments:[...(original.payments??[]),payment],revision:(original.revision??0)+1,events:[...(original.events??[]),{type:'payment',at,by:actor}]};validateSalesPayments(note);return {...state,salesNotes:state.salesNotes.map(n=>n.id===id?note:n)};
+ if((original.payments??[]).some(p=>p.id===paymentId))throw Error('Este abono ya está registrado.');const payment={id:paymentId,amountCents,date,recordedAt:at,recordedBy:actor,method,reminder:reminder.trim(),...(method==='transfer'?{evidence:structuredClone(evidence)}:{})},note={...original,payments:[...(original.payments??[]),payment],revision:(original.revision??0)+1,events:[...(original.events??[]),{type:'payment',at,by:actor}]};validateSalesPayments(note);return {...state,salesNotes:state.salesNotes.map(n=>n.id===id?note:n)};
 }
 export function salesDraftFromBatch(batch,catalog,{date,customer=''}={}){
  if(!batch||batch.status==='cancelled')throw Error('Selecciona un lote o pedido vigente.');
@@ -63,3 +66,5 @@ export function insertSalesNote(state,note){
  if(note.sourceBatch){if(activeSalesNoteForBatch(state,note.sourceBatch.id))throw Error('Este lote o pedido ya tiene una nota de venta vigente. Cancela esa nota antes de generar otra.');if(!(state.batches??[]).some(b=>b.id===note.sourceBatch.id&&b.status!=='cancelled'))throw Error('El lote o pedido de origen ya no está vigente.');}
  return {...state,salesNotes:[note,...(state.salesNotes??[])]};
 }
+
+export function salesAccounts(notes){return (notes??[]).filter(n=>salesNoteStatus(n)==='active').reduce((sum,n)=>{const p=salesPaymentSummary(n);if(!p.type){sum.unclassified++;return sum;}sum.receivableCents+=p.balanceCents;sum.receivedCents+=p.paidCents;if(p.status==='paid')sum.paidNotes++;return sum;},{receivableCents:0,receivedCents:0,paidNotes:0,unclassified:0});}

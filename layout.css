@@ -174,3 +174,33 @@ footer { gap: 15px; flex-wrap: wrap; line-height: 1.6; }
   aside nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .number { font-size: 30px; }
 }
+
+/* Cobros, guía olfativa y comprobantes */
+.financial-overview { margin: 24px 0; }
+.financial-overview > h2 { margin-bottom: 16px; }
+.financial-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.financial-stats .number { font-size: clamp(25px, 3vw, 40px); overflow-wrap: anywhere; }
+.financial-pending { color: #a65c18; }
+.financial-paid { color: #397654; }
+.catalog-filters { margin-bottom: 20px; }
+.catalog-advanced { margin-bottom: 24px; }
+.catalog-advanced .field { margin-top: 18px; max-width: 520px; }
+.aroma-section { margin: 32px 0; }
+.aroma-section > h2 { margin-bottom: 18px; }
+.olfactory-profile { border-top: 1px solid #e7e2da; padding-top: 16px; margin-bottom: 20px; }
+.product .olfactory-profile p { min-height: 0; height: auto; line-height: 1.6; margin: 12px 0; }
+.olfactory-profile summary { cursor: pointer; min-height: 44px; padding: 12px 0; }
+.olfactory-profile details small { display: block; line-height: 1.5; }
+#evidence-content img { display: block; max-width: 100%; max-height: 65dvh; object-fit: contain; margin: 16px auto; }
+#evidence-content iframe { width: 100%; height: 65dvh; border: 1px solid #e7e2da; margin-top: 16px; }
+.evidence-link { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; text-decoration: none; }
+.sales-payment-summary td small { display: block; max-width: 280px; white-space: normal; margin: 8px 0; }
+.sales-payment-summary td button { margin-top: 8px; }
+input[type="file"] { width: 100%; min-width: 0; white-space: normal; }
+[hidden] { display: none !important; }
+@media (max-width: 600px) {
+ .financial-stats { grid-template-columns: minmax(0, 1fr); }
+ .catalog-filters button { flex: 1 1 110px; }
+ .aroma-section > h2 { font-size: 21px; }
+ .evidence-link { width: 100%; }
+}

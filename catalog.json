@@ -6,7 +6,25 @@
     "category": "Caballero",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Amaderada acuática",
+    "description": "Brisa marina con bergamota y hierbas verdes. Al asentarse, el incienso y el pachulí aportan una profundidad seca que recuerda la costa al atardecer.",
+    "notes": {
+      "top": [
+        "notas marinas",
+        "bergamota"
+      ],
+      "heart": [
+        "romero",
+        "salvia esclarea",
+        "geranio"
+      ],
+      "base": [
+        "olíbano",
+        "pachulí"
+      ]
+    },
+    "guideReference": "Armani / Acqua di Giò Parfum"
   },
   {
     "id": "02",
@@ -15,7 +33,30 @@
     "category": "Caballero",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Amaderada especiada",
+    "description": "Sandía fresca y cítricos con un contraste cálido de cardamomo, pimienta y canela. El sándalo y la tonka dejan una sensación suave, ligeramente dulce.",
+    "notes": {
+      "top": [
+        "sandía",
+        "cardamomo",
+        "limón",
+        "bergamota",
+        "mandarina"
+      ],
+      "heart": [
+        "pimienta",
+        "canela"
+      ],
+      "base": [
+        "sándalo",
+        "haba tonka",
+        "almizcle",
+        "ámbar",
+        "cedro"
+      ]
+    },
+    "guideReference": "Carolina Herrera / Chic for Men EDT"
   },
   {
     "id": "03",
@@ -24,7 +65,25 @@
     "category": "Caballero",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Ambarada especiada",
+    "description": "Pimienta vibrante sobre bergamota, seguida de maderas y salvia. El cacao y la tonka le dan un acabado cálido, tostado y dulce sin perder su filo especiado.",
+    "notes": {
+      "top": [
+        "pimienta blanca",
+        "bergamota",
+        "pimienta rosa"
+      ],
+      "heart": [
+        "madera de cedro",
+        "salvia esclarea"
+      ],
+      "base": [
+        "haba tonka",
+        "cacao"
+      ]
+    },
+    "guideReference": "Carolina Herrera / Bad Boy EDT"
   },
   {
     "id": "04",
@@ -33,7 +92,35 @@
     "category": "Caballero",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Ambarada especiada",
+    "description": "Hierba recién cortada y cítricos sobre cuero dulce. Las especias, la vainilla y las maderas crean una sensación de gamuza cálida con un matiz azucarado.",
+    "notes": {
+      "top": [
+        "hierba",
+        "bergamota",
+        "toronja"
+      ],
+      "heart": [
+        "notas amaderadas",
+        "nuez moscada",
+        "violeta",
+        "azafrán",
+        "jazmín"
+      ],
+      "base": [
+        "azúcar",
+        "cuero",
+        "vainilla",
+        "gamuza",
+        "ámbar",
+        "madera de cachemira",
+        "sándalo",
+        "musgo de roble",
+        "vetiver"
+      ]
+    },
+    "guideReference": "Carolina Herrera / CH Men"
   },
   {
     "id": "05",
@@ -42,7 +129,29 @@
     "category": "Caballero",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Ambarada fougère",
+    "description": "Mandarina y bergamota que evolucionan hacia cardamomo, vainilla y maderas suaves. Se percibe cálido, envolvente y un poco empolvado, con dulzor cremoso.",
+    "notes": {
+      "top": [
+        "mandarina",
+        "bergamota",
+        "notas verdes"
+      ],
+      "heart": [
+        "pimienta",
+        "cardamomo",
+        "flores"
+      ],
+      "base": [
+        "vainilla",
+        "madera de guayaco",
+        "sándalo",
+        "almizcle",
+        "ámbar"
+      ]
+    },
+    "guideReference": "Carolina Herrera / 212 Sexy Men"
   },
   {
     "id": "06",
@@ -51,7 +160,30 @@
     "category": "Caballero",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Ambarada amaderada",
+    "description": "Un cóctel de maracuyá y lima con jengibre, ginebra y menta. El fondo de cuero y ámbar transforma la frescura inicial en un aroma nocturno y cálido.",
+    "notes": {
+      "top": [
+        "maracuyá",
+        "lima",
+        "pimienta",
+        "jengibre",
+        "lima caviar"
+      ],
+      "heart": [
+        "vodka",
+        "ginebra",
+        "menta",
+        "especias"
+      ],
+      "base": [
+        "ámbar",
+        "cuero",
+        "notas amaderadas"
+      ]
+    },
+    "guideReference": "Carolina Herrera / 212 VIP Men"
   },
   {
     "id": "07",
@@ -60,7 +192,22 @@
     "category": "Caballero",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Ambarada amaderada (orientativa)",
+    "description": "Piña jugosa contrastada con el matiz verde y amargo del ajenjo. El caramelo aporta dulzor y el pachulí deja una base terrosa que equilibra la fruta.",
+    "notes": {
+      "top": [
+        "piña",
+        "ajenjo"
+      ],
+      "heart": [
+        "caramelo"
+      ],
+      "base": [
+        "pachulí"
+      ]
+    },
+    "guideReference": "Carolina Herrera / 212 VIP Black Cab"
   },
   {
     "id": "08",
@@ -69,7 +216,33 @@
     "category": "Caballero",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Amaderada aromática",
+    "description": "Toronja y limón con menta, jengibre y pimienta. Termina en cedro e incienso: una frescura limpia y seca con un fondo amaderado ligeramente ahumado.",
+    "notes": {
+      "top": [
+        "toronja",
+        "limón",
+        "menta",
+        "pimienta rosa"
+      ],
+      "heart": [
+        "jengibre",
+        "nuez moscada",
+        "jazmín",
+        "Iso E Super"
+      ],
+      "base": [
+        "incienso",
+        "cedro",
+        "vetiver",
+        "sándalo",
+        "pachulí",
+        "ládano",
+        "almizcle blanco"
+      ]
+    },
+    "guideReference": "Chanel / Bleu de Chanel EDT"
   },
   {
     "id": "09",
@@ -78,7 +251,31 @@
     "category": "Caballero",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Amaderada especiada",
+    "description": "Naranja fresca y un efecto de brisa marina con un toque jabonoso. La vainilla, la tonka y el almizcle dejan un acabado cremoso y limpio.",
+    "notes": {
+      "top": [
+        "naranja",
+        "notas marinas",
+        "aldehídos",
+        "mandarina roja"
+      ],
+      "heart": [
+        "pimienta",
+        "neroli",
+        "cedro"
+      ],
+      "base": [
+        "vainilla",
+        "haba tonka",
+        "almizcle blanco",
+        "ámbar",
+        "vetiver",
+        "resina de elemí"
+      ]
+    },
+    "guideReference": "Chanel / Allure Homme Sport EDT"
   },
   {
     "id": "10",
@@ -87,7 +284,30 @@
     "category": "Caballero",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Aromática fougère",
+    "description": "Bergamota intensa y pimienta sobre hierbas aromáticas. El Ambroxan aporta una sensación mineral, seca y expansiva, acompañada de cedro y un fondo resinoso.",
+    "notes": {
+      "top": [
+        "bergamota de Calabria",
+        "pimienta"
+      ],
+      "heart": [
+        "pimienta de Sichuan",
+        "lavanda",
+        "pimienta rosa",
+        "vetiver",
+        "pachulí",
+        "geranio",
+        "elemí"
+      ],
+      "base": [
+        "Ambroxan",
+        "cedro",
+        "ládano"
+      ]
+    },
+    "guideReference": "Dior / Sauvage EDT"
   },
   {
     "id": "11",
@@ -96,7 +316,40 @@
     "category": "Caballero",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Aromática fougère",
+    "description": "Hojas de violeta verdes sobre cuero y maderas. Su contraste floral, especiado y seco puede recordar un matiz de gasolina, sin que esta sea una nota declarada.",
+    "notes": {
+      "top": [
+        "flor de nuez moscada",
+        "lavanda",
+        "cedro",
+        "mandarina",
+        "manzanilla",
+        "bergamota",
+        "espino blanco",
+        "limón"
+      ],
+      "heart": [
+        "hoja de violeta",
+        "nuez moscada",
+        "cedro",
+        "sándalo",
+        "clavel",
+        "madreselva",
+        "jazmín",
+        "lirio de los valles"
+      ],
+      "base": [
+        "cuero",
+        "vetiver",
+        "almizcle",
+        "ámbar",
+        "pachulí",
+        "haba tonka"
+      ]
+    },
+    "guideReference": "Dior / Fahrenheit EDT"
   },
   {
     "id": "12",
@@ -105,7 +358,28 @@
     "category": "Caballero",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Aromática",
+    "description": "Especias cálidas muy marcadas, lavanda y regaliz. La canela y la nuez moscada se apoyan en sándalo y ámbar para un aroma oscuro, seco y envolvente.",
+    "notes": {
+      "top": [
+        "nuez moscada",
+        "canela",
+        "cardamomo",
+        "toronja"
+      ],
+      "heart": [
+        "lavanda"
+      ],
+      "base": [
+        "regaliz",
+        "sándalo",
+        "ámbar",
+        "pachulí",
+        "vetiver de Haití"
+      ]
+    },
+    "guideReference": "Dior / Sauvage Elixir"
   },
   {
     "id": "13",
@@ -114,7 +388,29 @@
     "category": "Caballero",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Amaderada aromática",
+    "description": "Cítricos con enebro y un corazón de hierbas y pimiento. Deja una impresión fresca y mediterránea, sobre vetiver, cedro y pachulí secos.",
+    "notes": {
+      "top": [
+        "bayas de enebro",
+        "cítricos",
+        "naranja sanguina",
+        "limón siciliano"
+      ],
+      "heart": [
+        "pimiento",
+        "lavanda",
+        "salvia esclarea",
+        "geranio"
+      ],
+      "base": [
+        "vetiver",
+        "cedro",
+        "pachulí"
+      ]
+    },
+    "guideReference": "Dolce & Gabbana / K by Dolce & Gabbana EDT"
   },
   {
     "id": "14",
@@ -123,7 +419,27 @@
     "category": "Caballero",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Amaderada especiada",
+    "description": "Toronja, albahaca y cardamomo sobre tabaco suave. El ámbar aporta calidez y dulzor moderado, mientras el cedro mantiene un acabado elegante y seco.",
+    "notes": {
+      "top": [
+        "toronja",
+        "cilantro",
+        "albahaca"
+      ],
+      "heart": [
+        "jengibre",
+        "cardamomo",
+        "flor de azahar"
+      ],
+      "base": [
+        "ámbar",
+        "tabaco",
+        "cedro"
+      ]
+    },
+    "guideReference": "Dolce & Gabbana / The One for Men EDT"
   },
   {
     "id": "15",
@@ -132,7 +448,28 @@
     "category": "Caballero",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Cítrica aromática",
+    "description": "Toronja y mandarina con romero y enebro. Se siente cítrico, herbal y ligeramente salino, con un fondo limpio de almizcle, incienso y musgo.",
+    "notes": {
+      "top": [
+        "toronja",
+        "bergamota",
+        "mandarina siciliana",
+        "enebro"
+      ],
+      "heart": [
+        "pimienta",
+        "romero",
+        "palisandro brasileño"
+      ],
+      "base": [
+        "almizcle",
+        "incienso",
+        "musgo de roble"
+      ]
+    },
+    "guideReference": "Dolce & Gabbana / Light Blue pour Homme EDT"
   },
   {
     "id": "16",
@@ -141,7 +478,24 @@
     "category": "Caballero",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Aromática fougère",
+    "description": "Castaña dulce y vainilla con lavanda y salvia. Evoca una golosina tostada sobre hierbas aromáticas, con un matiz de humo que aporta profundidad.",
+    "notes": {
+      "top": [
+        "castaña",
+        "azúcar"
+      ],
+      "heart": [
+        "lavanda",
+        "salvia"
+      ],
+      "base": [
+        "vainilla",
+        "humo"
+      ]
+    },
+    "guideReference": "Emporio Armani / Stronger With You EDT"
   },
   {
     "id": "17",
@@ -150,7 +504,24 @@
     "category": "Caballero",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Amaderada aromática",
+    "description": "Limón y lavanda que se suavizan con flor de azahar. El cedro y el pachulí dejan un acabado limpio, cálido y amaderado con un toque de vainilla.",
+    "notes": {
+      "top": [
+        "lavanda",
+        "limón de Amalfi"
+      ],
+      "heart": [
+        "flor de azahar africana"
+      ],
+      "base": [
+        "cedro de Virginia",
+        "pachulí",
+        "vainilla"
+      ]
+    },
+    "guideReference": "Gucci / Guilty Pour Homme EDT (2011)"
   },
   {
     "id": "18",
@@ -159,7 +530,23 @@
     "category": "Caballero",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Ambarada amaderada",
+    "description": "Mandarina aromática que pronto se vuelve caramelo y tonka. Es dulce y cremoso, con vetiver en el fondo para aportar un contraste seco y terroso.",
+    "notes": {
+      "top": [
+        "mandarina",
+        "salvia esclarea"
+      ],
+      "heart": [
+        "caramelo",
+        "haba tonka"
+      ],
+      "base": [
+        "vetiver"
+      ]
+    },
+    "guideReference": "Jean Paul Gaultier / Scandal Pour Homme EDT"
   },
   {
     "id": "19",
@@ -168,7 +555,25 @@
     "category": "Caballero",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Ambarada fougère",
+    "description": "Lavanda fresca sobre miel, vainilla y tabaco. Se percibe denso, dulce y resinoso, como una calidez dorada con un fondo aromático y ligeramente tostado.",
+    "notes": {
+      "top": [
+        "lavanda",
+        "menta"
+      ],
+      "heart": [
+        "vainilla",
+        "benjuí"
+      ],
+      "base": [
+        "miel",
+        "haba tonka",
+        "tabaco"
+      ]
+    },
+    "guideReference": "Jean Paul Gaultier / Le Male Elixir"
   },
   {
     "id": "20",
@@ -177,7 +582,21 @@
     "category": "Caballero",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Amaderada aromática",
+    "description": "Bergamota luminosa, coco y tonka. Recuerda una brisa tropical cremosa, donde el coco conserva cierta frescura y la tonka deja un dulzor cálido.",
+    "notes": {
+      "top": [
+        "bergamota"
+      ],
+      "heart": [
+        "coco"
+      ],
+      "base": [
+        "haba tonka"
+      ]
+    },
+    "guideReference": "Jean Paul Gaultier / Le Beau EDT"
   },
   {
     "id": "21",
@@ -186,7 +605,28 @@
     "category": "Caballero",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Ambarada amaderada",
+    "description": "Piña y coco sobre maderas cálidas. Más profundo y ambarado que una simple fruta tropical, con tonka, sándalo y un fondo de textura cremosa.",
+    "notes": {
+      "top": [
+        "piña",
+        "iris",
+        "jengibre",
+        "ciprés"
+      ],
+      "heart": [
+        "coco",
+        "notas amaderadas"
+      ],
+      "base": [
+        "haba tonka",
+        "sándalo",
+        "ámbar",
+        "ámbar gris"
+      ]
+    },
+    "guideReference": "Jean Paul Gaultier / Le Beau Le Parfum"
   },
   {
     "id": "22",
@@ -195,7 +635,27 @@
     "category": "Caballero",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Amaderada aromática",
+    "description": "Toronja con romero y flores blancas suaves. El cedro y la gamuza crean una impresión de ropa limpia, con un fondo amaderado y discretamente aterciopelado.",
+    "notes": {
+      "top": [
+        "toronja",
+        "romero",
+        "cardamomo"
+      ],
+      "heart": [
+        "ylang-ylang",
+        "nardo"
+      ],
+      "base": [
+        "cedro de Virginia",
+        "gamuza",
+        "vetiver",
+        "cuero"
+      ]
+    },
+    "guideReference": "Lacoste / Eau de Lacoste L.12.12. White EDT (2011)"
   },
   {
     "id": "23",
@@ -204,7 +664,30 @@
     "category": "Caballero",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Aromática fougère",
+    "description": "Lavanda y piña con manzana, frutas secas y musgo. Combina una salida fresca con una base suave de tonka y sándalo, de aire clásico y limpio.",
+    "notes": {
+      "top": [
+        "lavanda",
+        "piña",
+        "bergamota",
+        "hierba luisa"
+      ],
+      "heart": [
+        "manzana roja",
+        "frutas deshidratadas",
+        "musgo de roble",
+        "geranio",
+        "cumarina",
+        "rosa"
+      ],
+      "base": [
+        "haba tonka",
+        "sándalo"
+      ]
+    },
+    "guideReference": "Montblanc / Legend EDT"
   },
   {
     "id": "24",
@@ -213,7 +696,28 @@
     "category": "Caballero",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Amaderada especiada",
+    "description": "Bambú y cítricos sobre almizcle y sándalo. Se siente ligero, transparente y amaderado, con jengibre y resinas que dejan un final suave y especiado.",
+    "notes": {
+      "top": [
+        "bambú",
+        "bergamota",
+        "mandarina"
+      ],
+      "heart": [
+        "almizcle blanco",
+        "sándalo",
+        "cedro"
+      ],
+      "base": [
+        "jengibre",
+        "resina de abeto",
+        "nuez moscada",
+        "ámbar"
+      ]
+    },
+    "guideReference": "Montblanc / Starwalker"
   },
   {
     "id": "25",
@@ -222,7 +726,27 @@
     "category": "Caballero",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Amaderada acuática",
+    "description": "Toronja, notas marinas y un dulzor ambarado. Laurel y maderas aportan un contraste verde y seco a un aroma acuático de sensación luminosa.",
+    "notes": {
+      "top": [
+        "notas marinas",
+        "toronja",
+        "mandarina"
+      ],
+      "heart": [
+        "laurel",
+        "jazmín"
+      ],
+      "base": [
+        "ámbar gris",
+        "madera de guayaco",
+        "musgo de roble",
+        "pachulí"
+      ]
+    },
+    "guideReference": "Paco Rabanne / Invictus"
   },
   {
     "id": "26",
@@ -231,7 +755,28 @@
     "category": "Caballero",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Amaderada especiada",
+    "description": "Mandarina y menta que desembocan en canela, rosa y cuero. Dulce y especiado, con ámbar cálido y un fondo amaderado de presencia marcada.",
+    "notes": {
+      "top": [
+        "mandarina roja",
+        "toronja",
+        "menta"
+      ],
+      "heart": [
+        "canela",
+        "notas especiadas",
+        "rosa"
+      ],
+      "base": [
+        "ámbar",
+        "cuero",
+        "notas amaderadas",
+        "pachulí de la India"
+      ]
+    },
+    "guideReference": "Paco Rabanne / 1 Million EDT"
   },
   {
     "id": "27",
@@ -240,7 +785,25 @@
     "category": "Caballero",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Amaderada especiada",
+    "description": "Un acorde mineral y salado con hojas verdes de violeta. Jengibre, salvia y vetiver le dan una frescura seca, moderna y ligeramente terrosa.",
+    "notes": {
+      "top": [
+        "notas minerales",
+        "hoja de violeta",
+        "sal"
+      ],
+      "heart": [
+        "salvia",
+        "jengibre"
+      ],
+      "base": [
+        "notas amaderadas",
+        "vetiver"
+      ]
+    },
+    "guideReference": "Valentino / Uomo Born in Roma EDT"
   },
   {
     "id": "28",
@@ -249,7 +812,29 @@
     "category": "Caballero",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Aromática fougère",
+    "description": "Menta y manzana verde con limón. La vainilla y la tonka forman un fondo dulce y cremoso, contrastado por cedro y vetiver secos.",
+    "notes": {
+      "top": [
+        "menta",
+        "manzana verde",
+        "limón"
+      ],
+      "heart": [
+        "haba tonka",
+        "Ambroxan",
+        "geranio"
+      ],
+      "base": [
+        "vainilla de Madagascar",
+        "cedro de Virginia",
+        "cedro del Atlas",
+        "vetiver",
+        "musgo de roble"
+      ]
+    },
+    "guideReference": "Versace / Eros EDT"
   },
   {
     "id": "29",
@@ -258,7 +843,32 @@
     "category": "Caballero",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Amaderada especiada",
+    "description": "Mandarina jugosa y cítricos amargos con pimienta y romero. Al secar aparece una mezcla cálida de vainilla, tonka y maderas, especiada y envolvente.",
+    "notes": {
+      "top": [
+        "mandarina",
+        "pimienta de Madagascar",
+        "limón",
+        "chinotto (cítrico amargo)",
+        "romero"
+      ],
+      "heart": [
+        "geranio",
+        "rosa",
+        "Pepperwood"
+      ],
+      "base": [
+        "vainilla",
+        "haba tonka",
+        "sándalo",
+        "cedro de Texas",
+        "pachulí",
+        "musgo de roble"
+      ]
+    },
+    "guideReference": "Versace / Eros Flame"
   },
   {
     "id": "30",
@@ -267,7 +877,28 @@
     "category": "Caballero",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Amaderada especiada",
+    "description": "Una nube de pimienta, canela y azafrán con tabaco y cuero. Los cítricos iluminan el inicio, pero domina una calidez seca, picante y ligeramente ahumada.",
+    "notes": {
+      "top": [
+        "pimienta rosa",
+        "elemí",
+        "bergamota",
+        "toronja"
+      ],
+      "heart": [
+        "canela",
+        "paprika",
+        "azafrán"
+      ],
+      "base": [
+        "tabaco",
+        "cuero",
+        "vetiver"
+      ]
+    },
+    "guideReference": "Viktor & Rolf / Spicebomb EDT"
   },
   {
     "id": "31",
@@ -276,7 +907,29 @@
     "category": "Caballero",
     "line": "Nicho",
     "price50": 499,
-    "price100": 729
+    "price100": 729,
+    "family": "Ambarada amaderada",
+    "description": "Incienso espeso con orégano, resinas y oud. Ámbar y cuero crean una sensación oscura, balsámica y ahumada, con una apertura herbal muy característica.",
+    "notes": {
+      "top": [
+        "orégano",
+        "pimienta",
+        "bergamota"
+      ],
+      "heart": [
+        "incienso",
+        "opopónaco",
+        "ámbar",
+        "ládano"
+      ],
+      "base": [
+        "madera de oud",
+        "cuero",
+        "sándalo",
+        "pachulí"
+      ]
+    },
+    "guideReference": "Amouage / Interlude Man"
   },
   {
     "id": "32",
@@ -285,7 +938,29 @@
     "category": "Caballero",
     "line": "Nicho",
     "price50": 449,
-    "price100": 699
+    "price100": 699,
+    "family": "Amaderada floral almizclada",
+    "description": "Flores blancas limpias con neroli, jazmín y un toque de romero. El sándalo suaviza el conjunto hasta dejar una textura cremosa y pulida.",
+    "notes": {
+      "top": [
+        "romero",
+        "pimienta rosa",
+        "petitgrain"
+      ],
+      "heart": [
+        "jazmín",
+        "neroli",
+        "raíz de iris",
+        "ylang-ylang"
+      ],
+      "base": [
+        "sándalo",
+        "cedro",
+        "vetiver",
+        "pachulí"
+      ]
+    },
+    "guideReference": "Amouage / Reflection Man"
   },
   {
     "id": "33",
@@ -294,7 +969,25 @@
     "category": "Caballero",
     "line": "Nicho",
     "price50": 450,
-    "price100": 699
+    "price100": 699,
+    "family": "Aromática",
+    "description": "Naranja, limón y frutas dulces sobre vainilla y almizcle blanco. Se percibe jugoso, cálido y aterciopelado, con ámbar que redondea el dulzor.",
+    "notes": {
+      "top": [
+        "naranja",
+        "bergamota",
+        "limón"
+      ],
+      "heart": [
+        "notas frutales"
+      ],
+      "base": [
+        "vainilla",
+        "almizcle blanco",
+        "ámbar"
+      ]
+    },
+    "guideReference": "Bharara / King"
   },
   {
     "id": "34",
@@ -303,7 +996,24 @@
     "category": "Caballero",
     "line": "Nicho",
     "price50": 499,
-    "price100": 729
+    "price100": 729,
+    "family": "Amaderada aromática",
+    "description": "Piña y enebro con un matiz verde de grosellero. Cedro y vetiver aportan un fondo seco que contrasta con la frescura frutal del inicio.",
+    "notes": {
+      "top": [
+        "piña",
+        "bayas de enebro",
+        "bergamota"
+      ],
+      "heart": [
+        "brotes de grosellero"
+      ],
+      "base": [
+        "cedro",
+        "vetiver"
+      ]
+    },
+    "guideReference": "Bond No. 9 / The Scent of Peace for Him"
   },
   {
     "id": "35",
@@ -312,7 +1022,25 @@
     "category": "Caballero",
     "line": "Nicho",
     "price50": 499,
-    "price100": 729
+    "price100": 729,
+    "family": "Cítrica aromática",
+    "description": "Toronja brillante con jengibre y una base de Ambroxan. El efecto es cítrico, mineral y amaderado, con almizcle que suaviza los bordes.",
+    "notes": {
+      "top": [
+        "toronja"
+      ],
+      "heart": [
+        "jengibre",
+        "ambreta"
+      ],
+      "base": [
+        "Ambroxan",
+        "almizcle",
+        "vetiver",
+        "pachulí"
+      ]
+    },
+    "guideReference": "Bvlgari / Tygar"
   },
   {
     "id": "36",
@@ -321,7 +1049,23 @@
     "category": "Caballero",
     "line": "Nicho",
     "price50": 499,
-    "price100": 729
+    "price100": 729,
+    "family": "Amaderada floral almizclada",
+    "description": "Hojas verdes de violeta, verbena e iris sobre sándalo. Recuerda aire fresco entre vegetación y tela limpia, con una base suave de ámbar gris.",
+    "notes": {
+      "top": [
+        "iris",
+        "verbena"
+      ],
+      "heart": [
+        "hoja de violeta"
+      ],
+      "base": [
+        "ámbar gris",
+        "sándalo"
+      ]
+    },
+    "guideReference": "Creed / Green Irish Tweed"
   },
   {
     "id": "37",
@@ -330,7 +1074,27 @@
     "category": "Caballero",
     "line": "Nicho",
     "price50": 449,
-    "price100": 699
+    "price100": 699,
+    "family": "Amaderada especiada",
+    "description": "Naranja amarga, toronja y pimienta sobre vetiver. El sílex aporta un efecto mineral que recuerda tierra seca y piedra, acompañado de cedro y resinas.",
+    "notes": {
+      "top": [
+        "naranja",
+        "toronja"
+      ],
+      "heart": [
+        "pimienta",
+        "pelargonio",
+        "sílex"
+      ],
+      "base": [
+        "vetiver",
+        "cedro",
+        "pachulí",
+        "benjuí"
+      ]
+    },
+    "guideReference": "Hermès / Terre d’Hermès EDT"
   },
   {
     "id": "38",
@@ -339,7 +1103,27 @@
     "category": "Caballero",
     "line": "Nicho",
     "price50": 449,
-    "price100": 699
+    "price100": 699,
+    "family": "Cítrica aromática",
+    "description": "Cítricos chispeantes y neroli con abundantes especias. El vetiver del fondo deja una sensación limpia y seca, como una frescura luminosa con relieve picante.",
+    "notes": {
+      "top": [
+        "bergamota de Calabria",
+        "mandarina",
+        "naranja siciliana"
+      ],
+      "heart": [
+        "neroli de Túnez",
+        "nuez moscada de Indonesia",
+        "pimienta rosa",
+        "pimienta",
+        "cardamomo de Guatemala"
+      ],
+      "base": [
+        "aceite de vetiver de Java"
+      ]
+    },
+    "guideReference": "Louis Vuitton / Météore"
   },
   {
     "id": "39",
@@ -348,7 +1132,28 @@
     "category": "Caballero",
     "line": "Nicho",
     "price50": 449,
-    "price100": 699
+    "price100": 699,
+    "family": "Ambarada especiada",
+    "description": "Toronja y jengibre con hierbas y notas acuáticas. El Ambroxan y el ámbar aportan cuerpo a una frescura ligeramente amarga, mineral y cálida al final.",
+    "notes": {
+      "top": [
+        "toronja",
+        "bergamota",
+        "jengibre"
+      ],
+      "heart": [
+        "romero",
+        "salvia",
+        "geranio",
+        "notas acuáticas"
+      ],
+      "base": [
+        "ámbar",
+        "Ambroxan",
+        "ládano"
+      ]
+    },
+    "guideReference": "Louis Vuitton / L’Immensité"
   },
   {
     "id": "40",
@@ -357,7 +1162,36 @@
     "category": "Caballero",
     "line": "Nicho",
     "price50": 499,
-    "price100": 699
+    "price100": 699,
+    "family": "Aromática acuática",
+    "description": "Madera salada, algas y hierbas mediterráneas con limón y ciprés. Combina una sensación costera con resinas, vetiver y maderas secas.",
+    "notes": {
+      "top": [
+        "madera a la deriva",
+        "algas",
+        "madera de oud",
+        "ambreta",
+        "cardamomo",
+        "semillas de apio"
+      ],
+      "heart": [
+        "limón",
+        "ciprés",
+        "mandarina amarilla",
+        "lavanda",
+        "mirto",
+        "artemisa"
+      ],
+      "base": [
+        "incienso",
+        "vetiver",
+        "roble",
+        "olíbano",
+        "lentisco",
+        "vainilla"
+      ]
+    },
+    "guideReference": "Tom Ford / Costa Azzurra EDP (2021)"
   },
   {
     "id": "41",
@@ -366,7 +1200,32 @@
     "category": "Caballero",
     "line": "Nicho",
     "price50": 499,
-    "price100": 699
+    "price100": 699,
+    "family": "Ambarada amaderada",
+    "description": "Cardamomo y azafrán con un acorde cremoso de kulfi, un postre lácteo especiado. Vainilla, ámbar y sándalo lo vuelven cálido, dulce y envolvente.",
+    "notes": {
+      "top": [
+        "cardamomo",
+        "nuez moscada",
+        "azafrán",
+        "mandarina",
+        "neroli"
+      ],
+      "heart": [
+        "kulfi (postre lácteo especiado)",
+        "rosa",
+        "lentisco",
+        "flor de azahar",
+        "jazmín"
+      ],
+      "base": [
+        "vainilla",
+        "ámbar",
+        "notas amaderadas",
+        "sándalo"
+      ]
+    },
+    "guideReference": "Tom Ford / Noir Extreme"
   },
   {
     "id": "42",
@@ -375,7 +1234,27 @@
     "category": "Dama",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Floral frutal gourmand",
+    "description": "Pera y lavanda que se vuelven crema batida, coco y praliné. Su fondo de almizcle y maderas deja un dulzor suave, esponjoso y ligeramente aireado.",
+    "notes": {
+      "top": [
+        "lavanda",
+        "pera",
+        "bergamota"
+      ],
+      "heart": [
+        "crema batida",
+        "coco",
+        "praliné",
+        "orquídea de vainilla"
+      ],
+      "base": [
+        "almizcle",
+        "notas amaderadas"
+      ]
+    },
+    "guideReference": "Ariana Grande / Cloud"
   },
   {
     "id": "43",
@@ -384,7 +1263,28 @@
     "category": "Dama",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Ambarada avainillada",
+    "description": "Pitahaya, piña y frutos rojos con agua de coco. El praliné y el almizcle crean una sensación dulce y acolchada, con un fondo ambarado suave.",
+    "notes": {
+      "top": [
+        "pitahaya",
+        "frutos rojos silvestres",
+        "piña"
+      ],
+      "heart": [
+        "agua de coco",
+        "orquídea de vainilla",
+        "ambreta"
+      ],
+      "base": [
+        "praliné",
+        "almizcle",
+        "madera ambarada",
+        "musgo"
+      ]
+    },
+    "guideReference": "Ariana Grande / Cloud Pink"
   },
   {
     "id": "44",
@@ -393,7 +1293,29 @@
     "category": "Dama",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Ambarada avainillada",
+    "description": "Crema batida, coco y praliné con pera y lavanda. La base de Cashmeran y Ambroxan añade profundidad amaderada a un dulzor cremoso y envolvente.",
+    "notes": {
+      "top": [
+        "lavanda",
+        "pera",
+        "bergamota"
+      ],
+      "heart": [
+        "crema batida",
+        "praliné",
+        "coco",
+        "orquídea de vainilla"
+      ],
+      "base": [
+        "Cashmeran",
+        "almizcle",
+        "Ambroxan",
+        "notas amaderadas"
+      ]
+    },
+    "guideReference": "Ariana Grande / Cloud Intense"
   },
   {
     "id": "45",
@@ -402,7 +1324,25 @@
     "category": "Dama",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Ambarada avainillada",
+    "description": "Almizcle y ciruela sobre praliné, vainilla y manteca de cacao. Evoca una crema dulce y suave, con una textura ligeramente empolvada aportada por el iris.",
+    "notes": {
+      "top": [
+        "almizcle",
+        "ciruela",
+        "fresia rosa"
+      ],
+      "heart": [
+        "praliné",
+        "raíz de iris"
+      ],
+      "base": [
+        "vainilla",
+        "manteca de cacao"
+      ]
+    },
+    "guideReference": "Ariana Grande / Mod Vanilla"
   },
   {
     "id": "46",
@@ -411,7 +1351,25 @@
     "category": "Dama",
     "line": "Diseñador",
     "price50": 449,
-    "price100": 699
+    "price100": 699,
+    "family": "Chipre frutal",
+    "description": "Grosella negra con rosa y fresia sobre vainilla y pachulí. Frutal y cálido, combina una dulzura aterciopelada con un fondo seco y elegante.",
+    "notes": {
+      "top": [
+        "grosella negra"
+      ],
+      "heart": [
+        "rosa de mayo",
+        "fresia"
+      ],
+      "base": [
+        "vainilla",
+        "pachulí",
+        "notas amaderadas",
+        "Ambroxan"
+      ]
+    },
+    "guideReference": "Armani / Sì EDP"
   },
   {
     "id": "47",
@@ -420,7 +1378,25 @@
     "category": "Dama",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Floral",
+    "description": "Un ramo luminoso de nardos y jazmín con azahar y bergamota. Vainilla y almizcle suavizan las flores blancas sin quitarles protagonismo.",
+    "notes": {
+      "top": [
+        "flor de azahar",
+        "bergamota"
+      ],
+      "heart": [
+        "nardo",
+        "jazmín de la India"
+      ],
+      "base": [
+        "vainilla de Madagascar",
+        "almizcle blanco",
+        "cedro de Virginia"
+      ]
+    },
+    "guideReference": "Armani / My Way"
   },
   {
     "id": "48",
@@ -429,7 +1405,34 @@
     "category": "Dama",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Floral frutal gourmand",
+    "description": "Fresa, frambuesa y otras bayas con violeta y jazmín. La vainilla y las maderas dejan una impresión de frutos rojos dulces sobre una base suave y almizclada.",
+    "notes": {
+      "top": [
+        "fresa",
+        "frambuesa",
+        "zarzamora",
+        "cereza ácida",
+        "grosella negra",
+        "mandarina",
+        "limón"
+      ],
+      "heart": [
+        "violeta",
+        "jazmín"
+      ],
+      "base": [
+        "almizcle",
+        "vainilla",
+        "Cashmeran",
+        "notas amaderadas",
+        "ámbar",
+        "musgo de roble",
+        "pachulí"
+      ]
+    },
+    "guideReference": "Burberry / Her"
   },
   {
     "id": "49",
@@ -438,7 +1441,24 @@
     "category": "Dama",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Floral frutal gourmand (orientativa)",
+    "description": "Fresa y zarzamora sobre jazmín, vainilla y sándalo. Recuerda una crema de frutos rojos, más densa y aterciopelada que una frescura frutal ligera.",
+    "notes": {
+      "top": [
+        "fresa",
+        "zarzamora"
+      ],
+      "heart": [
+        "jazmín"
+      ],
+      "base": [
+        "vainilla",
+        "ámbar",
+        "sándalo"
+      ]
+    },
+    "guideReference": "Burberry / Her Elixir de Parfum"
   },
   {
     "id": "50",
@@ -447,7 +1467,24 @@
     "category": "Dama",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Aromática",
+    "description": "Vainilla en varias texturas, desde suave hasta profunda, con lavanda, cacao y jengibre. Se percibe cremoso y cálido, con un contraste herbal aromático.",
+    "notes": {
+      "top": [
+        "vainilla",
+        "lavanda",
+        "cacao",
+        "jengibre"
+      ],
+      "heart": [
+        "caviar de vainilla"
+      ],
+      "base": [
+        "absoluto de vainilla"
+      ]
+    },
+    "guideReference": "Burberry / Goddess"
   },
   {
     "id": "51",
@@ -456,7 +1493,38 @@
     "category": "Dama",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Ambarada floral",
+    "description": "Almendra y café sobre nardos y jazmín. El fondo de cacao, tonka, vainilla y praliné crea un dulzor cálido con contraste de flores blancas.",
+    "notes": {
+      "top": [
+        "almendra",
+        "café",
+        "bergamota",
+        "limón"
+      ],
+      "heart": [
+        "nardo",
+        "jazmín sambac",
+        "flor de azahar",
+        "rosa búlgara",
+        "iris"
+      ],
+      "base": [
+        "haba tonka",
+        "cacao",
+        "vainilla",
+        "praliné",
+        "sándalo",
+        "almizcle",
+        "ámbar",
+        "madera de cachemira",
+        "pachulí",
+        "canela",
+        "cedro"
+      ]
+    },
+    "guideReference": "Carolina Herrera / Good Girl"
   },
   {
     "id": "52",
@@ -465,7 +1533,24 @@
     "category": "Dama",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Chipre floral",
+    "description": "Bergamota y almendra amarga con peonía y ylang-ylang. La vainilla suaviza el ramo hasta dejar una sensación floral cremosa y ligeramente empolvada.",
+    "notes": {
+      "top": [
+        "bergamota",
+        "almendra amarga"
+      ],
+      "heart": [
+        "peonía",
+        "ylang-ylang"
+      ],
+      "base": [
+        "vainilla",
+        "cumarina"
+      ]
+    },
+    "guideReference": "Carolina Herrera / Good Girl Blush"
   },
   {
     "id": "53",
@@ -474,7 +1559,32 @@
     "category": "Dama",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Floral amaderada almizclada",
+    "description": "Flores blancas frescas con cítricos y flor de cactus. Almizcle y sándalo dejan una sensación limpia, suave y urbana, con un corazón floral amplio.",
+    "notes": {
+      "top": [
+        "flor de azahar",
+        "flor de cactus",
+        "bergamota",
+        "mandarina"
+      ],
+      "heart": [
+        "azucena",
+        "fresia",
+        "gardenia",
+        "jazmín",
+        "camelia blanca",
+        "lirio de los valles",
+        "rosa",
+        "peonía"
+      ],
+      "base": [
+        "almizcle",
+        "sándalo"
+      ]
+    },
+    "guideReference": "Carolina Herrera / 212"
   },
   {
     "id": "54",
@@ -483,7 +1593,23 @@
     "category": "Dama",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Ambarada floral",
+    "description": "Piña y champaña rosada con jazmín. La vainilla aporta dulzor y el pachulí deja un fondo más cálido y terroso, con un efecto frutal chispeante.",
+    "notes": {
+      "top": [
+        "piña",
+        "champaña rosada"
+      ],
+      "heart": [
+        "jazmín"
+      ],
+      "base": [
+        "vainilla",
+        "pachulí"
+      ]
+    },
+    "guideReference": "Carolina Herrera / 212 VIP Rosé Cab"
   },
   {
     "id": "55",
@@ -492,7 +1618,32 @@
     "category": "Dama",
     "line": "Diseñador",
     "price50": 449,
-    "price100": 699
+    "price100": 699,
+    "family": "Ambarada floral",
+    "description": "Naranja y bergamota con rosa y jazmín. El pachulí marca un fondo seco y elegante, suavizado por vainilla y almizcle blanco.",
+    "notes": {
+      "top": [
+        "naranja",
+        "mandarina",
+        "bergamota",
+        "flor de azahar"
+      ],
+      "heart": [
+        "rosa turca",
+        "jazmín",
+        "mimosa",
+        "ylang-ylang"
+      ],
+      "base": [
+        "pachulí",
+        "almizcle blanco",
+        "vainilla",
+        "vetiver",
+        "haba tonka",
+        "opopónaco"
+      ]
+    },
+    "guideReference": "Chanel / Coco Mademoiselle EDP"
   },
   {
     "id": "56",
@@ -501,7 +1652,30 @@
     "category": "Dama",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Chipre floral",
+    "description": "Cítricos y flores con un marcado contraste de pachulí. La pimienta rosa aporta chispa y el fondo de almizcle y vetiver deja una sensación terrosa y pulida.",
+    "notes": {
+      "top": [
+        "pachulí",
+        "pimienta rosa",
+        "piña",
+        "jacinto",
+        "iris"
+      ],
+      "heart": [
+        "limón",
+        "jazmín",
+        "rosa"
+      ],
+      "base": [
+        "pachulí",
+        "almizcle",
+        "vetiver",
+        "vainilla"
+      ]
+    },
+    "guideReference": "Chanel / Chance EDT"
   },
   {
     "id": "57",
@@ -510,7 +1684,23 @@
     "category": "Dama",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Floral frutal",
+    "description": "Membrillo y toronja sobre rosa y jazmín. El almizcle blanco deja una impresión de flores limpias y fruta suave, delicada y ligeramente aterciopelada.",
+    "notes": {
+      "top": [
+        "membrillo",
+        "toronja"
+      ],
+      "heart": [
+        "rosa",
+        "jazmín"
+      ],
+      "base": [
+        "almizcle blanco"
+      ]
+    },
+    "guideReference": "Chanel / Chance Eau Tendre EDP"
   },
   {
     "id": "58",
@@ -519,7 +1709,32 @@
     "category": "Dama",
     "line": "Diseñador",
     "price50": 449,
-    "price100": 699
+    "price100": 699,
+    "family": "Floral",
+    "description": "Un ramo de azahar, jazmín, nardo y ylang-ylang, iluminado por cítricos. El fondo de sándalo y almizcle aporta suavidad cremosa a las flores.",
+    "notes": {
+      "top": [
+        "toronja",
+        "mandarina",
+        "grosella negra"
+      ],
+      "heart": [
+        "flor de azahar",
+        "jazmín",
+        "ylang-ylang",
+        "nardo",
+        "lirio de los valles",
+        "pera",
+        "pimienta rosa"
+      ],
+      "base": [
+        "almizcle",
+        "sándalo",
+        "Cashmeran",
+        "iris"
+      ]
+    },
+    "guideReference": "Chanel / Gabrielle EDP"
   },
   {
     "id": "59",
@@ -528,7 +1743,36 @@
     "category": "Dama",
     "line": "Diseñador",
     "price50": 449,
-    "price100": 699
+    "price100": 699,
+    "family": "Floral frutal",
+    "description": "Jazmín y otras flores con pera, melón y durazno. Es un ramo luminoso y redondo, con un fondo suave de almizcle, vainilla y cedro.",
+    "notes": {
+      "top": [
+        "pera",
+        "melón",
+        "magnolia",
+        "durazno",
+        "mandarina",
+        "bergamota"
+      ],
+      "heart": [
+        "jazmín",
+        "lirio de los valles",
+        "nardo",
+        "fresia",
+        "rosa",
+        "orquídea",
+        "violeta",
+        "ciruela"
+      ],
+      "base": [
+        "almizcle",
+        "vainilla",
+        "cedro",
+        "zarzamora"
+      ]
+    },
+    "guideReference": "Dior / J’adore EDP"
   },
   {
     "id": "60",
@@ -537,7 +1781,29 @@
     "category": "Dama",
     "line": "Diseñador",
     "price50": 449,
-    "price100": 699
+    "price100": 699,
+    "family": "Ambarada floral",
+    "description": "Iris y peonía con rosa y fruta suave de durazno y chabacano. La vainilla, la tonka y el sándalo crean un acabado cremoso y empolvado.",
+    "notes": {
+      "top": [
+        "iris",
+        "peonía",
+        "lirio de los valles"
+      ],
+      "heart": [
+        "rosa",
+        "chabacano",
+        "durazno"
+      ],
+      "base": [
+        "vainilla",
+        "almizcle",
+        "haba tonka",
+        "sándalo",
+        "benjuí"
+      ]
+    },
+    "guideReference": "Dior / Miss Dior EDP (2021)"
   },
   {
     "id": "61",
@@ -546,7 +1812,28 @@
     "category": "Dama",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Floral frutal",
+    "description": "Limón siciliano y manzana con bambú y flores blancas. El cedro mantiene una frescura seca, limpia y aireada, con un fondo suave de almizcle.",
+    "notes": {
+      "top": [
+        "limón siciliano",
+        "manzana",
+        "cedro",
+        "campanilla"
+      ],
+      "heart": [
+        "bambú",
+        "jazmín",
+        "rosa blanca"
+      ],
+      "base": [
+        "cedro",
+        "almizcle",
+        "ámbar"
+      ]
+    },
+    "guideReference": "Dolce & Gabbana / Light Blue EDT (2001)"
   },
   {
     "id": "62",
@@ -555,7 +1842,32 @@
     "category": "Dama",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Aromática frutal",
+    "description": "Sandía acuosa y dulce con pera, mandarina y un toque salino. Recuerda un sorbete de fruta fresca, con un fondo suave de praliné y almizcle.",
+    "notes": {
+      "top": [
+        "pera",
+        "Calone (acorde acuático)",
+        "mandarina"
+      ],
+      "heart": [
+        "sandía",
+        "notas acuosas",
+        "fresa",
+        "manzana",
+        "sal marina",
+        "flor de tiaré",
+        "Hedione",
+        "rosa"
+      ],
+      "base": [
+        "praliné",
+        "almizcle",
+        "ámbar"
+      ]
+    },
+    "guideReference": "Escada / Sorbetto Rosso"
   },
   {
     "id": "63",
@@ -564,7 +1876,21 @@
     "category": "Dama",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Floral",
+    "description": "Nardos y jazmín con enredadera de Rangún. Huele a un jardín de flores blancas, cremoso y ligeramente verde, con un carácter floral directo.",
+    "notes": {
+      "top": [
+        "jazmín"
+      ],
+      "heart": [
+        "nardo"
+      ],
+      "base": [
+        "enredadera de Rangún"
+      ]
+    },
+    "guideReference": "Gucci / Bloom EDP"
   },
   {
     "id": "64",
@@ -573,7 +1899,29 @@
     "category": "Dama",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Chipre floral",
+    "description": "Miel y flores blancas sobre caramelo y cera de abeja. La naranja ilumina el inicio y el pachulí equilibra un dulzor espeso y envolvente.",
+    "notes": {
+      "top": [
+        "naranja sanguina",
+        "mandarina"
+      ],
+      "heart": [
+        "miel",
+        "gardenia",
+        "flor de azahar",
+        "jazmín",
+        "durazno"
+      ],
+      "base": [
+        "cera de abeja",
+        "caramelo",
+        "pachulí",
+        "regaliz"
+      ]
+    },
+    "guideReference": "Jean Paul Gaultier / Scandal"
   },
   {
     "id": "65",
@@ -582,7 +1930,27 @@
     "category": "Dama",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Floral frutal gourmand",
+    "description": "Pera y grosella negra con iris, praliné y vainilla. Recuerda una golosina cremosa y floral, con el fondo terroso del pachulí que contrasta el azúcar.",
+    "notes": {
+      "top": [
+        "grosella negra",
+        "pera"
+      ],
+      "heart": [
+        "iris",
+        "jazmín",
+        "flor de azahar"
+      ],
+      "base": [
+        "praliné",
+        "vainilla",
+        "pachulí",
+        "haba tonka"
+      ]
+    },
+    "guideReference": "Lancôme / La Vie Est Belle"
   },
   {
     "id": "66",
@@ -591,7 +1959,26 @@
     "category": "Dama",
     "line": "Diseñador",
     "price50": 449,
-    "price100": 699
+    "price100": 699,
+    "family": "Floral frutal gourmand",
+    "description": "Frambuesa con un matiz de licor, violeta y rosa. La manteca de cacao, el cuero y el cedro le dan una textura cálida y más oscura que la fruta inicial.",
+    "notes": {
+      "top": [
+        "frambuesa",
+        "licor",
+        "bergamota de Calabria"
+      ],
+      "heart": [
+        "hoja de violeta",
+        "rosa"
+      ],
+      "base": [
+        "cuero",
+        "manteca de cacao",
+        "madera de cedro"
+      ]
+    },
+    "guideReference": "Lancôme / La Vie Est Belle Elixir"
   },
   {
     "id": "67",
@@ -600,7 +1987,27 @@
     "category": "Dama",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Chipre floral",
+    "description": "Pera y rosa con jazmín y un toque cítrico. Almizcle y vainilla dejan un acabado limpio y suave, con pachulí que aporta una profundidad discreta.",
+    "notes": {
+      "top": [
+        "pera",
+        "bergamota",
+        "pimienta rosa"
+      ],
+      "heart": [
+        "rosa",
+        "jazmín"
+      ],
+      "base": [
+        "almizcle blanco",
+        "vainilla",
+        "pachulí",
+        "cedro"
+      ]
+    },
+    "guideReference": "Lancôme / Idôle"
   },
   {
     "id": "68",
@@ -609,7 +2016,23 @@
     "category": "Dama",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Ambarada floral",
+    "description": "Ruibarbo ácido y narciso sobre leche de almendra. Cashmeran y cedro aportan una suavidad amaderada a un aroma cremoso, verde y ligeramente frutal.",
+    "notes": {
+      "top": [
+        "ruibarbo",
+        "narciso"
+      ],
+      "heart": [
+        "leche de almendra"
+      ],
+      "base": [
+        "Cashmeran",
+        "cedro"
+      ]
+    },
+    "guideReference": "Marc Jacobs / Perfect EDP"
   },
   {
     "id": "69",
@@ -618,7 +2041,23 @@
     "category": "Dama",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Ambarada floral",
+    "description": "Frambuesa y lichi con una rosa muy presente. Akigalawood y benjuí añaden madera especiada y calidez resinosa a una fruta dulce y vibrante.",
+    "notes": {
+      "top": [
+        "frambuesa",
+        "lichi"
+      ],
+      "heart": [
+        "rosa de Damasco"
+      ],
+      "base": [
+        "Akigalawood",
+        "benjuí"
+      ]
+    },
+    "guideReference": "Mugler / Angel Nova EDP"
   },
   {
     "id": "70",
@@ -627,7 +2066,20 @@
     "category": "Dama",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Ambarada avainillada",
+    "description": "Mango y sorbete con toronja y grosella negra. El praliné aporta un dulzor de postre, mientras el pachulí crea un contraste terroso bajo la fruta tropical.",
+    "notes": {
+      "combined": [
+        "mango",
+        "sorbete",
+        "praliné",
+        "toronja",
+        "pachulí",
+        "grosella negra"
+      ]
+    },
+    "guideReference": "Mugler / Angel Eau Croisière (2019)"
   },
   {
     "id": "71",
@@ -636,7 +2088,24 @@
     "category": "Dama",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Floral amaderada almizclada",
+    "description": "Rosa y durazno alrededor de un corazón de almizcle. Sándalo, ámbar y pachulí dejan una sensación de piel limpia, cremosa y ligeramente empolvada.",
+    "notes": {
+      "top": [
+        "rosa",
+        "durazno"
+      ],
+      "heart": [
+        "almizcle",
+        "ámbar"
+      ],
+      "base": [
+        "pachulí",
+        "sándalo"
+      ]
+    },
+    "guideReference": "Narciso Rodriguez / For Her EDP (frasco rosa)"
   },
   {
     "id": "72",
@@ -645,7 +2114,27 @@
     "category": "Dama",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Floral frutal",
+    "description": "Frambuesa y neroli con jazmín y gardenia. La miel aporta una calidez dulce y el pachulí deja un fondo terroso que sostiene las flores blancas.",
+    "notes": {
+      "top": [
+        "frambuesa",
+        "neroli",
+        "limón de Amalfi"
+      ],
+      "heart": [
+        "jazmín",
+        "flor de azahar africana",
+        "gardenia"
+      ],
+      "base": [
+        "miel blanca",
+        "pachulí",
+        "ámbar"
+      ]
+    },
+    "guideReference": "Paco Rabanne / Lady Million"
   },
   {
     "id": "73",
@@ -654,7 +2143,24 @@
     "category": "Dama",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Floral amaderada almizclada",
+    "description": "Mango jugoso con bergamota y jazmín. Vainilla y sándalo forman una base cremosa, con un matiz resinoso de olíbano que aporta profundidad.",
+    "notes": {
+      "top": [
+        "mango",
+        "bergamota"
+      ],
+      "heart": [
+        "jazmín",
+        "olíbano"
+      ],
+      "base": [
+        "vainilla",
+        "sándalo"
+      ]
+    },
+    "guideReference": "Paco Rabanne / Fame EDP"
   },
   {
     "id": "74",
@@ -663,7 +2169,29 @@
     "category": "Dama",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Ambarada floral",
+    "description": "Pera y cítricos sobre azahar, neroli y jazmín. La vainilla, el benjuí y el ámbar dejan un dulzor limpio y cálido, de textura suave.",
+    "notes": {
+      "top": [
+        "pera",
+        "mandarina",
+        "bergamota"
+      ],
+      "heart": [
+        "flor de azahar",
+        "esencia de neroli",
+        "neroli",
+        "jazmín sambac"
+      ],
+      "base": [
+        "vainilla Bourbon",
+        "ámbar",
+        "almizcle blanco",
+        "benjuí"
+      ]
+    },
+    "guideReference": "Prada / Paradoxe"
   },
   {
     "id": "75",
@@ -672,7 +2200,27 @@
     "category": "Dama",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Floral frutal",
+    "description": "Sandía y limón con mandarina, fresia y magnolia. Se siente acuoso, frutal y luminoso, con un fondo ligero de almizcle y maderas.",
+    "notes": {
+      "top": [
+        "limón",
+        "sandía",
+        "mandarina"
+      ],
+      "heart": [
+        "magnolia",
+        "fresia",
+        "rosa"
+      ],
+      "base": [
+        "azucena blanca",
+        "almizcle",
+        "notas amaderadas"
+      ]
+    },
+    "guideReference": "Ralph Lauren / Ralph Fresh"
   },
   {
     "id": "76",
@@ -681,7 +2229,27 @@
     "category": "Dama",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Ambarada floral",
+    "description": "Grosella negra con jazmines y un toque de pimienta rosa. La vainilla Bourbon y el Cashmeran aportan una calidez dulce y amaderada bajo las flores.",
+    "notes": {
+      "top": [
+        "grosella negra",
+        "pimienta rosa",
+        "bergamota"
+      ],
+      "heart": [
+        "jazmín",
+        "jazmín sambac",
+        "té de jazmín"
+      ],
+      "base": [
+        "vainilla Bourbon",
+        "Cashmeran",
+        "madera de guayaco"
+      ]
+    },
+    "guideReference": "Valentino / Donna Born in Roma"
   },
   {
     "id": "77",
@@ -690,7 +2258,27 @@
     "category": "Dama",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Floral frutal",
+    "description": "Yuzu y granada con una sensación helada. Peonía, loto y magnolia forman un ramo acuoso y delicado que termina en almizcle y ámbar suave.",
+    "notes": {
+      "top": [
+        "yuzu",
+        "granada",
+        "hielo"
+      ],
+      "heart": [
+        "peonía",
+        "flor de loto",
+        "magnolia"
+      ],
+      "base": [
+        "almizcle",
+        "caoba",
+        "ámbar"
+      ]
+    },
+    "guideReference": "Versace / Bright Crystal"
   },
   {
     "id": "78",
@@ -699,7 +2287,28 @@
     "category": "Dama",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Floral frutal",
+    "description": "Granada, yuzu y frambuesa alrededor de peonía y magnolia. La fruta aporta más dulzor, sobre una base suave de almizcle y caoba.",
+    "notes": {
+      "top": [
+        "granada",
+        "yuzu",
+        "notas acuáticas"
+      ],
+      "heart": [
+        "peonía",
+        "frambuesa",
+        "flor de loto",
+        "magnolia"
+      ],
+      "base": [
+        "almizcle",
+        "caoba",
+        "ámbar"
+      ]
+    },
+    "guideReference": "Versace / Bright Crystal Absolu"
   },
   {
     "id": "79",
@@ -708,7 +2317,28 @@
     "category": "Dama",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Floral frutal",
+    "description": "Bergamota y durazno con rosa, frambuesa y un acorde de sorbete. El almizcle y la tonka suavizan el fondo, con un ligero matiz de incienso.",
+    "notes": {
+      "top": [
+        "bergamota",
+        "durazno",
+        "pimienta rosa"
+      ],
+      "heart": [
+        "capullo de rosa",
+        "sorbete",
+        "jazmín",
+        "frambuesa"
+      ],
+      "base": [
+        "almizcle blanco",
+        "incienso",
+        "haba tonka"
+      ]
+    },
+    "guideReference": "Versace / Crystal Emerald"
   },
   {
     "id": "80",
@@ -717,7 +2347,29 @@
     "category": "Dama",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Ambarada fougère",
+    "description": "Lavanda aromática contrastada con azahar y mandarina. La vainilla aporta calidez y dulzor a un aroma floral que mantiene una faceta herbal muy reconocible.",
+    "notes": {
+      "top": [
+        "lavanda",
+        "mandarina",
+        "grosella negra",
+        "petitgrain"
+      ],
+      "heart": [
+        "lavanda",
+        "flor de azahar",
+        "jazmín"
+      ],
+      "base": [
+        "vainilla de Madagascar",
+        "almizcle",
+        "cedro",
+        "ámbar gris"
+      ]
+    },
+    "guideReference": "Yves Saint Laurent / Libre EDP"
   },
   {
     "id": "81",
@@ -726,7 +2378,29 @@
     "category": "Dama",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Ambarada avainillada",
+    "description": "Café dulce con vainilla, pera y flores blancas. La almendra amarga y el regaliz aportan contraste, mientras las maderas dejan un fondo cálido.",
+    "notes": {
+      "top": [
+        "pera",
+        "pimienta rosa",
+        "flor de azahar"
+      ],
+      "heart": [
+        "café",
+        "jazmín",
+        "almendra amarga",
+        "regaliz"
+      ],
+      "base": [
+        "vainilla",
+        "pachulí",
+        "madera de cachemira",
+        "cedro"
+      ]
+    },
+    "guideReference": "Yves Saint Laurent / Black Opium EDP"
   },
   {
     "id": "82",
@@ -735,7 +2409,37 @@
     "category": "Dama",
     "line": "Diseñador",
     "price50": 429,
-    "price100": 649
+    "price100": 649,
+    "family": "Chipre frutal",
+    "description": "Fresa y frambuesa con pera, peonía y jazmín. El pachulí y el almizcle crean una base suave y terrosa bajo un dulzor frutal luminoso.",
+    "notes": {
+      "top": [
+        "fresa",
+        "frambuesa",
+        "pera",
+        "naranja",
+        "bergamota de Calabria",
+        "mandarina",
+        "Calone (acorde acuático)"
+      ],
+      "heart": [
+        "peonía",
+        "jazmín sambac",
+        "jazmín chino",
+        "datura",
+        "flor de azahar"
+      ],
+      "base": [
+        "hoja de pachulí de Indonesia",
+        "pachulí",
+        "almizcle blanco",
+        "vainilla",
+        "Ambroxan",
+        "musgo",
+        "cedro"
+      ]
+    },
+    "guideReference": "Yves Saint Laurent / Mon Paris"
   },
   {
     "id": "83",
@@ -744,7 +2448,31 @@
     "category": "Dama",
     "line": "Nicho",
     "price50": 449,
-    "price100": 699
+    "price100": 699,
+    "family": "Floral frutal",
+    "description": "Lichi, manzana y grosella negra con rosa y violeta. El azúcar y la vainilla dejan una sensación de dulce frutal, ligera y almizclada al final.",
+    "notes": {
+      "top": [
+        "lichi",
+        "grosella negra",
+        "manzana roja",
+        "limón italiano"
+      ],
+      "heart": [
+        "violeta",
+        "rosa",
+        "jazmín sambac"
+      ],
+      "base": [
+        "azúcar",
+        "absoluto de vainilla",
+        "almizcle",
+        "ámbar",
+        "sándalo",
+        "cedro"
+      ]
+    },
+    "guideReference": "Kayali / Eden Sparkling Lychee | 39"
   },
   {
     "id": "84",
@@ -753,7 +2481,35 @@
     "category": "Dama",
     "line": "Nicho",
     "price50": 449,
-    "price100": 699
+    "price100": 699,
+    "family": "Floral frutal gourmand",
+    "description": "Pera, malvavisco y vainilla con chicle y caramelo. Evoca una dulcería con un toque de ron, sobre tonka y maderas que aportan calidez.",
+    "notes": {
+      "top": [
+        "vainilla",
+        "pera",
+        "malvavisco",
+        "ron",
+        "hojas de violeta",
+        "ylang-ylang"
+      ],
+      "heart": [
+        "chicle",
+        "caramelo de goma",
+        "caramelo",
+        "jazmín",
+        "ládano"
+      ],
+      "base": [
+        "azúcar",
+        "pachulí",
+        "haba tonka",
+        "madera de cachemira",
+        "sándalo",
+        "vetiver"
+      ]
+    },
+    "guideReference": "Kayali / Vanilla Candy Rock Sugar | 42"
   },
   {
     "id": "85",
@@ -762,7 +2518,33 @@
     "category": "Dama",
     "line": "Nicho",
     "price50": 449,
-    "price100": 699
+    "price100": 699,
+    "family": "Floral frutal",
+    "description": "Osmanto y durazno con abundantes nardos, jazmín y narciso. Combina fruta suave con flores cremosas y un fondo ambarado, amaderado y ligeramente terroso.",
+    "notes": {
+      "top": [
+        "osmanto",
+        "durazno",
+        "neroli",
+        "bergamota",
+        "mandarina",
+        "canela"
+      ],
+      "heart": [
+        "nardo de la India",
+        "jazmín",
+        "narciso",
+        "rosa de mayo"
+      ],
+      "base": [
+        "ámbar",
+        "cedro",
+        "sándalo",
+        "vetiver",
+        "pachulí"
+      ]
+    },
+    "guideReference": "Kilian / Good Girl Gone Bad"
   },
   {
     "id": "86",
@@ -771,7 +2553,34 @@
     "category": "Dama",
     "line": "Nicho",
     "price50": 449,
-    "price100": 699
+    "price100": 699,
+    "family": "Ambarada avainillada",
+    "description": "Azahar y neroli con malvavisco, azúcar y vainilla. Recuerda una golosina floral muy cremosa, con caramelo y almizcle que redondean el dulzor.",
+    "notes": {
+      "top": [
+        "neroli",
+        "bergamota",
+        "pimienta rosa",
+        "cilantro"
+      ],
+      "heart": [
+        "flor de azahar",
+        "madreselva",
+        "jazmín",
+        "malvavisco",
+        "iris",
+        "rosa"
+      ],
+      "base": [
+        "azúcar",
+        "vainilla",
+        "caramelo",
+        "almizcle",
+        "civeta",
+        "ládano"
+      ]
+    },
+    "guideReference": "Kilian / Love, Don’t Be Shy"
   },
   {
     "id": "87",
@@ -780,7 +2589,29 @@
     "category": "Dama",
     "line": "Nicho",
     "price50": 449,
-    "price100": 699
+    "price100": 699,
+    "family": "Ambarada floral",
+    "description": "Dos tipos de vainilla con cacao, flores y cítricos. El inicio herbal y luminoso se vuelve cálido y cremoso, sin perder un matiz floral suave.",
+    "notes": {
+      "top": [
+        "notas herbales",
+        "limón",
+        "bergamota"
+      ],
+      "heart": [
+        "magnolia",
+        "flor de azahar",
+        "pera",
+        "rosa"
+      ],
+      "base": [
+        "vainilla de Tahití",
+        "vainilla de Madagascar",
+        "cacao",
+        "ambreta"
+      ]
+    },
+    "guideReference": "Louis Vuitton / Contre Moi"
   },
   {
     "id": "88",
@@ -789,7 +2620,25 @@
     "category": "Dama",
     "line": "Nicho",
     "price50": 449,
-    "price100": 699
+    "price100": 699,
+    "family": "Ambarada floral",
+    "description": "Lichi y jengibre con peonía, rosa y cacao. El pachulí crea un fondo terroso que equilibra la fruta dulce y aporta profundidad al ramo floral.",
+    "notes": {
+      "top": [
+        "lichi",
+        "jengibre",
+        "bergamota"
+      ],
+      "heart": [
+        "peonía",
+        "rosa turca",
+        "cacao"
+      ],
+      "base": [
+        "pachulí"
+      ]
+    },
+    "guideReference": "Louis Vuitton / Attrape-Rêves"
   },
   {
     "id": "89",
@@ -798,7 +2647,23 @@
     "category": "Dama",
     "line": "Nicho",
     "price50": 449,
-    "price100": 699
+    "price100": 699,
+    "family": "Ambarada avainillada",
+    "description": "Rosa turca con vainilla y un inicio de limón. La impresión es de un dulce cremoso de rosas, con almizcle blanco y cedro en el fondo.",
+    "notes": {
+      "top": [
+        "limón italiano"
+      ],
+      "heart": [
+        "rosa turca"
+      ],
+      "base": [
+        "vainilla",
+        "almizcle blanco",
+        "cedro"
+      ]
+    },
+    "guideReference": "Mancera / Roses Vanille"
   },
   {
     "id": "90",
@@ -807,7 +2672,32 @@
     "category": "Dama",
     "line": "Nicho",
     "price50": 449,
-    "price100": 699
+    "price100": 699,
+    "family": "Floral frutal",
+    "description": "Durazno blanco y cítricos con un efecto aireado de aldehídos. Flores suaves y almizcle dejan una impresión de tela limpia, con un fondo amaderado luminoso.",
+    "notes": {
+      "top": [
+        "aldehídos",
+        "durazno blanco",
+        "bergamota",
+        "mandarina"
+      ],
+      "heart": [
+        "flor de azahar",
+        "lirio de los valles",
+        "Petalia",
+        "Nympheal",
+        "vetiver",
+        "mahonia"
+      ],
+      "base": [
+        "almizcle",
+        "Ambroxan",
+        "Akigalawood",
+        "vainilla"
+      ]
+    },
+    "guideReference": "Parfums De Marly / Valaya"
   },
   {
     "id": "91",
@@ -816,7 +2706,29 @@
     "category": "Dama",
     "line": "Nicho",
     "price50": 449,
-    "price100": 699
+    "price100": 699,
+    "family": "Floral frutal gourmand",
+    "description": "Azahar y frutos rojos sobre malvavisco y crema batida. Los cítricos iluminan una textura dulce, esponjosa y almizclada, como un postre floral.",
+    "notes": {
+      "top": [
+        "mandarina",
+        "bergamota",
+        "toronja"
+      ],
+      "heart": [
+        "flor de azahar",
+        "frambuesa",
+        "grosella negra"
+      ],
+      "base": [
+        "malvavisco",
+        "crema batida",
+        "almizcle",
+        "ambreta",
+        "vainilla"
+      ]
+    },
+    "guideReference": "Parfums De Marly / Oriana"
   },
   {
     "id": "92",
@@ -825,7 +2737,33 @@
     "category": "Dama",
     "line": "Nicho",
     "price50": 449,
-    "price100": 699
+    "price100": 699,
+    "family": "Floral",
+    "description": "Rosa turca con lichi y ruibarbo ácido. Peonía y almizcle suavizan el ramo, mientras las maderas y el incienso equilibran la dulzura frutal.",
+    "notes": {
+      "top": [
+        "lichi",
+        "ruibarbo",
+        "bergamota",
+        "nuez moscada",
+        "grosella negra"
+      ],
+      "heart": [
+        "rosa turca",
+        "peonía",
+        "almizcle",
+        "Petalia",
+        "vainilla"
+      ],
+      "base": [
+        "Cashmeran",
+        "incienso",
+        "cedro",
+        "vetiver de Haití",
+        "caramelo"
+      ]
+    },
+    "guideReference": "Parfums De Marly / Delina"
   },
   {
     "id": "93",
@@ -834,7 +2772,26 @@
     "category": "Unisex",
     "line": "Nicho",
     "price50": 449,
-    "price100": 699
+    "price100": 699,
+    "family": "Cítrica",
+    "description": "Cítricos luminosos con lavanda, romero y hierba luisa. Rosas y maderas suaves aportan un fondo limpio y clásico, con una sensación de frescura herbal.",
+    "notes": {
+      "combined": [
+        "cítricos sicilianos",
+        "lavanda",
+        "hierba luisa",
+        "romero",
+        "almizcle blanco",
+        "vetiver",
+        "rosa búlgara",
+        "jazmín",
+        "sándalo",
+        "pachulí",
+        "ámbar",
+        "verbena"
+      ]
+    },
+    "guideReference": "Acqua Di Parma / Acqua di Parma Colonia"
   },
   {
     "id": "94",
@@ -843,7 +2800,29 @@
     "category": "Unisex",
     "line": "Nicho",
     "price50": 499,
-    "price100": 749
+    "price100": 749,
+    "family": "Ambarada",
+    "description": "Frambuesa y azafrán con pimienta rosa y maderas balsámicas. Rosa, ámbar y vainilla aportan una calidez dulce y resinosa, de carácter especiado.",
+    "notes": {
+      "top": [
+        "pimienta rosa",
+        "azafrán",
+        "bergamota",
+        "frambuesa"
+      ],
+      "heart": [
+        "bálsamo de gurjun",
+        "madera de guayaco",
+        "rosa búlgara",
+        "jazmín"
+      ],
+      "base": [
+        "ámbar",
+        "cedro",
+        "vainilla"
+      ]
+    },
+    "guideReference": "Bond No. 9 / Dubai Amber"
   },
   {
     "id": "95",
@@ -852,7 +2831,26 @@
     "category": "Unisex",
     "line": "Nicho",
     "price50": 499,
-    "price100": 749
+    "price100": 749,
+    "family": "Aromática acuática",
+    "description": "Pepino, algas y cítricos con un contraste salino y verde. Pistache, cuero y resinas aportan una profundidad peculiar bajo la frescura acuática.",
+    "notes": {
+      "combined": [
+        "pepino",
+        "algas",
+        "limón",
+        "naranja amarga",
+        "almizcle",
+        "lavanda",
+        "ámbar gris",
+        "pistache",
+        "vetiver",
+        "cuero",
+        "alcaravea",
+        "resinas"
+      ]
+    },
+    "guideReference": "Bond No. 9 / Wall Street"
   },
   {
     "id": "96",
@@ -861,7 +2859,31 @@
     "category": "Unisex",
     "line": "Nicho",
     "price50": 449,
-    "price100": 699
+    "price100": 699,
+    "family": "Chipre frutal",
+    "description": "Fruta cítrica y piña sobre abedul, pachulí y almizcle. Combina un inicio jugoso con una base seca, amaderada y ligeramente ahumada.",
+    "notes": {
+      "top": [
+        "bergamota",
+        "grosella negra",
+        "manzana",
+        "limón",
+        "pimienta rosa"
+      ],
+      "heart": [
+        "piña",
+        "pachulí",
+        "jazmín de Marruecos"
+      ],
+      "base": [
+        "abedul",
+        "almizcle",
+        "musgo de roble",
+        "madera de cedro",
+        "Ambroxan"
+      ]
+    },
+    "guideReference": "Creed / Aventus"
   },
   {
     "id": "97",
@@ -870,7 +2892,26 @@
     "category": "Unisex",
     "line": "Nicho",
     "price50": 449,
-    "price100": 699
+    "price100": 699,
+    "family": "Aromática",
+    "description": "Cítricos y té verde con grosella negra. El almizcle deja una sensación limpia y fresca, con un contraste vegetal y ligeramente amargo de gálbano.",
+    "notes": {
+      "top": [
+        "bergamota",
+        "mandarina"
+      ],
+      "heart": [
+        "té verde",
+        "grosella negra"
+      ],
+      "base": [
+        "almizcle",
+        "petitgrain",
+        "sándalo",
+        "gálbano"
+      ]
+    },
+    "guideReference": "Creed / Silver Mountain Water"
   },
   {
     "id": "98",
@@ -879,7 +2920,31 @@
     "category": "Unisex",
     "line": "Nicho",
     "price50": 449,
-    "price100": 699
+    "price100": 699,
+    "family": "Floral frutal gourmand",
+    "description": "Manzana roja y lichi con bayas y rosa. El azúcar y la vainilla prolongan una impresión jugosa y dulce, suavizada por almizcle y musgo.",
+    "notes": {
+      "top": [
+        "manzana roja",
+        "lichi",
+        "grosella negra",
+        "toronja rosada"
+      ],
+      "heart": [
+        "frutos rojos silvestres",
+        "flor de frambuesa",
+        "jazmín",
+        "rosa de mayo"
+      ],
+      "base": [
+        "azúcar",
+        "almizcle",
+        "flor de vainilla",
+        "ámbar",
+        "musgo"
+      ]
+    },
+    "guideReference": "Kayali / Eden Juicy Apple | 01"
   },
   {
     "id": "99",
@@ -888,7 +2953,29 @@
     "category": "Unisex",
     "line": "Nicho",
     "price50": 449,
-    "price100": 699
+    "price100": 699,
+    "family": "Ambarada amaderada",
+    "description": "Pera y manzana muy suaves sobre almizcles y maderas transparentes. Produce una sensación abstracta de piel limpia, aire cálido y una textura seca, casi de papel.",
+    "notes": {
+      "top": [
+        "pera",
+        "manzana",
+        "cítricos"
+      ],
+      "heart": [
+        "ambreta",
+        "salicilato de amilo",
+        "musgo",
+        "jazmín"
+      ],
+      "base": [
+        "Iso E Super",
+        "Cetalox",
+        "Helvetolide",
+        "Ambrettolide"
+      ]
+    },
+    "guideReference": "Le Labo / Another 13"
   },
   {
     "id": "100",
@@ -897,7 +2984,23 @@
     "category": "Unisex",
     "line": "Nicho",
     "price50": 449,
-    "price100": 699
+    "price100": 699,
+    "family": "Amaderada aromática",
+    "description": "Bergamota y toronja con azahar y petitgrain. El vetiver y el cedro aportan sequedad verde, mientras almizcle y vainilla suavizan el fondo.",
+    "notes": {
+      "combined": [
+        "bergamota",
+        "vetiver",
+        "toronja",
+        "flor de azahar",
+        "petitgrain",
+        "almizcle",
+        "cedro",
+        "vainilla",
+        "ámbar"
+      ]
+    },
+    "guideReference": "Le Labo / Bergamote 22"
   },
   {
     "id": "101",
@@ -906,7 +3009,22 @@
     "category": "Unisex",
     "line": "Nicho",
     "price50": 449,
-    "price100": 699
+    "price100": 699,
+    "family": "Amaderada aromática",
+    "description": "Sándalo seco con papiro, cedro, cuero y cardamomo. Violeta e iris suavizan una impresión de madera, piel y papel, ligeramente especiada y empolvada.",
+    "notes": {
+      "combined": [
+        "sándalo",
+        "cuero",
+        "papiro",
+        "cedro de Virginia",
+        "cardamomo",
+        "violeta",
+        "iris",
+        "ámbar"
+      ]
+    },
+    "guideReference": "Le Labo / Santal 33"
   },
   {
     "id": "102",
@@ -915,7 +3033,19 @@
     "category": "Unisex",
     "line": "Nicho",
     "price50": 449,
-    "price100": 699
+    "price100": 699,
+    "family": "Amaderada aromática (orientativa)",
+    "description": "Higo cremoso y té matcha con naranja amarga. Cedro y vetiver dejan un acabado seco y suave, de sensación verde, tranquila y ligeramente amaderada.",
+    "notes": {
+      "combined": [
+        "higo",
+        "cedro",
+        "té matcha",
+        "naranja amarga",
+        "vetiver"
+      ]
+    },
+    "guideReference": "Le Labo / Thé Matcha 26"
   },
   {
     "id": "103",
@@ -924,7 +3054,17 @@
     "category": "Unisex",
     "line": "Nicho",
     "price50": 449,
-    "price100": 699
+    "price100": 699,
+    "family": "Cítrica aromática",
+    "description": "Hierba limón y bergamota con mate. Se percibe verde, cítrico y herbal, como una infusión fresca con un toque seco y ligeramente amargo.",
+    "notes": {
+      "combined": [
+        "hierba limón",
+        "mate",
+        "bergamota de Calabria"
+      ]
+    },
+    "guideReference": "Louis Vuitton / Cactus Garden"
   },
   {
     "id": "104",
@@ -933,7 +3073,28 @@
     "category": "Unisex",
     "line": "Nicho",
     "price50": 449,
-    "price100": 699
+    "price100": 699,
+    "family": "Cítrica aromática",
+    "description": "Cítricos y jengibre con neroli y té negro. Ambroxan y maderas dan cuerpo a una frescura limpia, especiada y ligeramente ambarada.",
+    "notes": {
+      "top": [
+        "cidra",
+        "bergamota de Calabria",
+        "naranja siciliana"
+      ],
+      "heart": [
+        "neroli de Túnez",
+        "jengibre de Nigeria",
+        "canela de Ceilán"
+      ],
+      "base": [
+        "té negro de China",
+        "Ambroxan",
+        "madera de guayaco",
+        "olíbano"
+      ]
+    },
+    "guideReference": "Louis Vuitton / Imagination"
   },
   {
     "id": "105",
@@ -942,7 +3103,23 @@
     "category": "Unisex",
     "line": "Nicho",
     "price50": 449,
-    "price100": 699
+    "price100": 699,
+    "family": "Ambarada amaderada",
+    "description": "Oud y rosa con frambuesa, azafrán e incienso. El benjuí y las maderas ambaradas crean una sensación oscura, resinosa y ahumada con un matiz frutal.",
+    "notes": {
+      "combined": [
+        "madera de oud",
+        "rosa",
+        "frambuesa",
+        "azafrán",
+        "madera ambarada",
+        "benjuí",
+        "abedul",
+        "incienso",
+        "geranio"
+      ]
+    },
+    "guideReference": "Louis Vuitton / Ombre Nomade"
   },
   {
     "id": "106",
@@ -951,7 +3128,28 @@
     "category": "Unisex",
     "line": "Nicho",
     "price50": 449,
-    "price100": 699
+    "price100": 699,
+    "family": "Ambarada floral",
+    "description": "Azafrán y jazmín sobre maderas ambaradas y ámbar gris. El efecto combina dulzor de azúcar, resinas y una textura aérea, mineral y amaderada.",
+    "notes": {
+      "top": [
+        "azafrán",
+        "jazmín"
+      ],
+      "heart": [
+        "madera ambarada",
+        "ámbar gris",
+        "Hedione"
+      ],
+      "base": [
+        "resina de abeto",
+        "cedro",
+        "azúcar",
+        "Ambroxan",
+        "musgo de roble"
+      ]
+    },
+    "guideReference": "Maison Francis Kurkdjian / Baccarat Rouge 540 EDP"
   },
   {
     "id": "107",
@@ -960,7 +3158,27 @@
     "category": "Unisex",
     "line": "Nicho",
     "price50": 499,
-    "price100": 749
+    "price100": 749,
+    "family": "Ambarada floral",
+    "description": "Almendra amarga y azafrán con jazmín y cedro. Más cremoso y denso en su impresión que una simple madera dulce, con almizcle y un fondo mineral ambarado.",
+    "notes": {
+      "top": [
+        "almendra amarga",
+        "azafrán"
+      ],
+      "heart": [
+        "jazmín egipcio",
+        "cedro de Virginia"
+      ],
+      "base": [
+        "ámbar gris",
+        "notas amaderadas",
+        "almizcle",
+        "Ambroxan",
+        "Cashmeran"
+      ]
+    },
+    "guideReference": "Maison Francis Kurkdjian / Baccarat Rouge 540 Extrait de Parfum"
   },
   {
     "id": "108",
@@ -969,7 +3187,26 @@
     "category": "Unisex",
     "line": "Nicho",
     "price50": 449,
-    "price100": 699
+    "price100": 699,
+    "family": "Ambarada avainillada",
+    "description": "Manzana y azafrán sobre incienso, mirra y caramelo. Mezcla fruta dulce con resinas cálidas, maderas y un fondo balsámico de profundidad ambarada.",
+    "notes": {
+      "top": [
+        "azafrán",
+        "olíbano"
+      ],
+      "heart": [
+        "manzana",
+        "notas amaderadas",
+        "rosa"
+      ],
+      "base": [
+        "mirra",
+        "caramelo",
+        "ámbar gris"
+      ]
+    },
+    "guideReference": "Parfums De Marly / Habdan"
   },
   {
     "id": "109",
@@ -978,7 +3215,33 @@
     "category": "Unisex",
     "line": "Nicho",
     "price50": 449,
-    "price100": 699
+    "price100": 699,
+    "family": "Ambarada floral",
+    "description": "Manzana, lavanda y cítricos con vainilla y cardamomo. Las flores y las maderas forman una textura cálida y cremosa con un contraste aromático especiado.",
+    "notes": {
+      "top": [
+        "manzana",
+        "lavanda",
+        "bergamota",
+        "mandarina"
+      ],
+      "heart": [
+        "geranio",
+        "violeta",
+        "jazmín"
+      ],
+      "base": [
+        "vainilla",
+        "cardamomo",
+        "sándalo",
+        "pimienta",
+        "madera de guayaco",
+        "pachulí",
+        "Ambermax",
+        "cumarina"
+      ]
+    },
+    "guideReference": "Parfums De Marly / Layton"
   },
   {
     "id": "110",
@@ -987,7 +3250,24 @@
     "category": "Unisex",
     "line": "Nicho",
     "price50": 449,
-    "price100": 699
+    "price100": 699,
+    "family": "Cuero",
+    "description": "Cuero suave y seco con cardamomo y jazmín. Ámbar, musgo y pachulí aportan una base cálida y terrosa, como una prenda de piel nueva.",
+    "notes": {
+      "top": [
+        "cardamomo"
+      ],
+      "heart": [
+        "cuero",
+        "jazmín sambac"
+      ],
+      "base": [
+        "ámbar",
+        "musgo",
+        "pachulí"
+      ]
+    },
+    "guideReference": "Tom Ford / Ombré Leather EDP (2018)"
   },
   {
     "id": "111",
@@ -996,7 +3276,23 @@
     "category": "Unisex",
     "line": "Nicho",
     "price50": 449,
-    "price100": 699
+    "price100": 699,
+    "family": "Ambarada amaderada",
+    "description": "Oud, palisandro y sándalo con cardamomo y pimienta. Vainilla, tonka y ámbar redondean un aroma amaderado seco, suave y ligeramente ahumado.",
+    "notes": {
+      "combined": [
+        "madera de oud",
+        "palisandro brasileño",
+        "cardamomo",
+        "sándalo",
+        "pimienta de Sichuan",
+        "vainilla",
+        "vetiver",
+        "haba tonka",
+        "ámbar"
+      ]
+    },
+    "guideReference": "Tom Ford / Oud Wood"
   },
   {
     "id": "112",
@@ -1005,6 +3301,28 @@
     "category": "Unisex",
     "line": "Nicho",
     "price50": 449,
-    "price100": 699
+    "price100": 699,
+    "family": "Ambarada floral",
+    "description": "Coco cremoso y flores blancas con pistache y cardamomo. Ámbar, tonka y benjuí dejan una sensación solar y cálida que recuerda una crema de playa sofisticada.",
+    "notes": {
+      "top": [
+        "pistache",
+        "bergamota",
+        "cardamomo",
+        "pimienta rosa"
+      ],
+      "heart": [
+        "nardo",
+        "ylang-ylang",
+        "jazmín"
+      ],
+      "base": [
+        "coco",
+        "ámbar",
+        "haba tonka",
+        "benjuí"
+      ]
+    },
+    "guideReference": "Tom Ford / Soleil Blanc"
   }
 ]
