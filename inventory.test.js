@@ -11,7 +11,7 @@ test('lote de varios perfumes y tamaños descuenta el total de cada materia prim
  for(const[id,amount]of[['alcohol',4000],['galaxolide',1000],['ess-'+catalog[0].id,250],['ess-'+catalog[1].id,250]])s=applyMovement(s,{type:'entry',id,amount});
  const next=produceBatch(s,[{id:catalog[0].id,size:100,qty:2},{id:catalog[1].id,size:50,qty:3},{id:catalog[0].id,size:50,qty:1}],catalog);
  assert.equal(next.ready[catalog[0].id+'-100'],2);assert.equal(next.ready[catalog[1].id+'-50'],3);assert.equal(next.ready[catalog[0].id+'-50'],1);
- assert.equal(next.materials[0].stock,3792);assert.equal(next.materials[1].stock,988);assert.equal(next.materials[2].stock,160);assert.equal(next.materials[3].stock,160);
+ assert.equal(next.materials[0].stock,3728);assert.equal(next.materials[1].stock,992);assert.equal(next.materials[2].stock,175);assert.equal(next.materials[3].stock,205);
  assert.equal(s.materials[0].stock,4000);
 });
 test('un fallo tardío en el lote no guarda las filas anteriores',async()=>{
@@ -45,7 +45,7 @@ test('consumo usa primero el primer frasco y después el segundo, sin duplicar s
  s=setBottleStocks(s,{id:'ess-'+id,firstStock:62.5});assert.equal(s.materials[2].stock,62.5);assert.equal(s.materials[2].secondBottle,undefined);
 });
 
-test('fórmula fija por envase: 30 ml esencia, 2 ml galaxolide y alcohol según presentación',async()=>{
- const{recipeFor}=await import('./inventory.js');assert.deepEqual(recipeFor(50),{essence:30,fixative:2,alcohol:18});assert.deepEqual(recipeFor(100),{essence:30,fixative:2,alcohol:68});assert.throws(()=>recipeFor(30));
- for(const size of [50,100]){let s=initialState(catalog);for(const[key,amount]of[['alcohol',300],['galaxolide',20],['ess-'+id,200]])s=applyMovement(s,{type:'entry',id:key,amount});const next=produce(s,{id,size,qty:3},catalog);assert.equal(next.materials[0].stock,300-3*(size-32));assert.equal(next.materials[1].stock,14);assert.equal(next.materials[2].stock,110);assert.match(next.movements[0].detail,/30 ml esencia, 2 ml galaxolide/);}
+test('fórmula de 50 ml es exactamente la mitad de la de 100 ml',async()=>{
+ const{recipeFor}=await import('./inventory.js');assert.deepEqual(recipeFor(50),{essence:15,fixative:1,alcohol:34});assert.deepEqual(recipeFor(100),{essence:30,fixative:2,alcohol:68});assert.throws(()=>recipeFor(30));
+ for(const size of [50,100]){let s=initialState(catalog);for(const[key,amount]of[['alcohol',300],['galaxolide',20],['ess-'+id,200]])s=applyMovement(s,{type:'entry',id:key,amount});const next=produce(s,{id,size,qty:3},catalog);assert.equal(next.materials[0].stock,size===50?198:96);assert.equal(next.materials[1].stock,size===50?17:14);assert.equal(next.materials[2].stock,size===50?155:110);assert.match(next.movements[0].detail,size===50?/15 ml esencia, 1 ml galaxolide/:/30 ml esencia, 2 ml galaxolide/);}
 });

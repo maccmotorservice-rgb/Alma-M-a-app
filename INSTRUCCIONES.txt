@@ -13,8 +13,9 @@ Esencias: 1/4 = 62.5 ml y 4/4 = 250 ml. Alcohol: galón de 4 litros.
 Galaxolide: mililitros. Puedes indicar el saldo que queda, sin sumarlo.
 En “Listos para entregar” puedes ingresar perfumes que ya tienes preparados.
 Para nuevos lotes, busca por ambos nombres y marca varios perfumes de 50
-o 100 ml. La fórmula es automática: 30 ml de esencia y 2 ml de galaxolide
-por envase. Alcohol: 18 ml para 50 ml y 68 ml para 100 ml.
+o 100 ml. La fórmula es automática:
+100 ml: 30 ml de esencia, 2 ml de galaxolide y 68 ml de alcohol.
+50 ml: 15 ml de esencia, 1 ml de galaxolide y 34 ml de alcohol.
 La tabla “Tus selecciones” permite editar cantidades o quitar perfumes
 y se actualiza al instante, agrupada en Dama, Caballero y Unisex.
 
