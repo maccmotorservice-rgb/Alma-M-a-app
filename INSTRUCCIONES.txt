@@ -72,3 +72,14 @@ El punto naranja indica “En producción”. Al terminar todo, cambia a verde:
 “Listo para entrega” para clientes o “Listo para anaquel” para stock.
 Los lotes antiguos conservan su producción registrada para no duplicar
 descuentos de materia prima.
+
+CORRECCIÓN DEL DICTADO
+Inicia el micrófono una vez. Las filas aparecen mientras hablas.
+Las listas por mención y por categoría se ven en la misma página.
+Revisa o edita los registros y pulsa “Confirmar todo y actualizar inventario”.
+Ese único clic guarda todo, sin otra ventana de confirmación.
+Los ejemplos y la escritura manual están en un desplegable.
+
+Los lotes se muestran naranjas hasta que registres los perfumes hechos.
+Los antiguos sin avance manual también requieren revisión, sin duplicar
+los insumos que la versión anterior ya había descontado.
