@@ -1,4 +1,4 @@
-import {initialState,applyMovement,produceBatch,readyBatch,setBottleStocks,readyMovement,validateBackup} from './inventory.js?v=3';
+import {initialState,applyMovement,recipeFor,produceBatch,readyBatch,setBottleStocks,readyMovement,validateBackup} from './inventory.js?v=4';
 const catalog=await fetch('./catalog.json').then(r=>{if(!r.ok)throw Error('No se pudo cargar el catálogo');return r.json()});
 const key='alma-mia-inventory-v1';let state=initialState(catalog),view='overview',search='',category='Todas',kind='Todos',materialGroup='Todas',storageError=false;
 try{const saved=localStorage.getItem(key);if(saved)state=validateBackup(JSON.parse(saved),catalog);}catch{storageError=true;}
@@ -32,7 +32,7 @@ const field=(label,input)=>`<label class="field">${label}${input}</label>`,selec
 let submit;
 function open(type,id,size){
  if(storageError){toast('Importa un respaldo válido antes de registrar cambios.');return;}
- $('#form-error').textContent='';$('#modal').classList.remove('batch-modal');$('#fields').oninput=null;$('#fields').onchange=null;$('#form > .primary').textContent='Guardar movimiento';
+ $('#form-error').textContent='';$('#modal').classList.remove('batch-modal');$('#fields').oninput=null;$('#fields').onchange=null;$('#fields').onclick=null;$('#form > .primary').textContent='Guardar movimiento';
  if(type==='stock-update'){openStockUpdate(id);return;}
  if(type==='produce'||type==='ready-entry'){openBatch(type);return;}
  const m=state.materials.find(m=>m.id===id)||state.materials[0];
@@ -60,20 +60,38 @@ $('#import').onchange=async e=>{const file=e.target.files[0];if(!file)return;try
 render();
 
 function openBatch(mode='produce'){
- const preparing=mode==='produce';
- const selected=new Map();
- $('#modal-title').textContent=preparing?'Prepara un lote':'Ingresar perfumes existentes';
- $('#modal').classList.add('batch-modal');
+ const preparing=mode==='produce',selected=new Map(),genders=['Dama','Caballero','Unisex'];
+ $('#modal-title').textContent=preparing?'Prepara un lote':'Ingresar perfumes existentes';$('#modal').classList.add('batch-modal');
  $('#form > .primary').textContent=preparing?'Preparar perfumes seleccionados':'Ingresar perfumes seleccionados';
- $('#fields').innerHTML=`<p>Busca por el nombre Alma Mía o por el perfume en el que está inspirado. Marca varios y elige cuántos frascos preparar de cada uno.</p>${[100,50].map(size=>`<details class="batch-section" data-size="${size}" ${size===100?'open':''}><summary>Perfumes de ${size} ml <span id="count-${size}">0 seleccionados</span></summary><div class="batch-inner"><label class="field">Buscar perfume<input type="search" data-batch-search="${size}" placeholder="Ej. Sauvage, Acqua di Giò, Ambroxan Sky…"></label><div class="batch-list" id="list-${size}"></div></div></details>`).join('')}${preparing?`<div class="notice">La fórmula se aplica a todos los perfumes seleccionados. Introduce tus porcentajes reales; el alcohol completa el 100%.</div><div class="form-pair">${field('Esencia (%)',input('essence','',0))}${field('Galaxolide (%)',input('fixative','',0))}</div>`:'<div class="notice">Solo se agregarán perfumes ya preparados; no se descontarán materias primas.</div>'}<p id="batch-total" aria-live="polite"></p>`;
- const update=()=>{for(const size of [100,50]){const entries=[...selected.values()].filter(x=>x.size===size);$('#count-'+size).textContent=entries.length+' seleccionados';}const items=[...selected.values()],frascos=items.reduce((n,x)=>n+x.qty,0),ml=items.reduce((n,x)=>n+x.qty*x.size,0);$('#batch-total').textContent=`${items.length} presentaciones seleccionadas · ${num(frascos)} frascos · ${num(ml)} ml en total.`;};
+ const recipe50=recipeFor(50),recipe100=recipeFor(100);
+ $('#fields').innerHTML=`<p>Busca por nombre o inspiración, marca tus perfumes y revisa tus selecciones en la tabla de abajo.</p>${[100,50].map(size=>`<details class="batch-section" data-size="${size}" ${size===100?'open':''}><summary>Perfumes de ${size} ml <span id="count-${size}">0 seleccionados</span></summary><div class="batch-inner"><label class="field">Buscar perfume<input type="search" data-batch-search="${size}" placeholder="Ej. Sauvage, Acqua di Giò, Ambroxan Sky…"></label><div class="batch-list" id="list-${size}"></div></div></details>`).join('')}${preparing?`<div class="notice"><strong>Fórmula fija por envase</strong><br>30 ml de esencia + 2 ml de galaxolide.<br>Alcohol: ${recipe50.alcohol} ml para 50 ml · ${recipe100.alcohol} ml para 100 ml.</div>`:'<div class="notice">Solo se agregarán perfumes ya preparados; no se descontarán materias primas.</div>'}<section class="selection-section" aria-labelledby="selection-title"><h3 id="selection-title">Tus selecciones</h3><p>Puedes cambiar el número de envases o eliminar perfumes desde esta tabla.</p><div id="selected-perfumes"></div></section><p id="batch-total" aria-live="polite"></p>`;
+ const fields=$('#fields');
+ function renderSelections(){
+  const items=[...selected.entries()];$('#selected-perfumes').innerHTML=items.length?`<div class="table-wrap selection-table"><table><thead><tr><th>Perfume</th><th>Tamaño</th><th>Envases</th><th></th></tr></thead><tbody>${genders.map(gender=>{const rows=items.filter(([,item])=>product(item.id).category===gender);return rows.length?`<tr class="group-heading"><th colspan="4">${gender}</th></tr>`+rows.map(([key,item])=>{const p=product(item.id);return `<tr data-selected-row="${key}"><td>${esc(p.name)}<small>Inspirado en ${esc(p.reference)} · ${p.line}</small></td><td>${item.size} ml</td><td><input type="number" min="1" step="1" required value="${item.qty}" data-selected-qty="${key}" aria-label="Envases seleccionados de ${esc(p.name)} de ${item.size} ml"></td><td><button type="button" class="text-button remove-selection" data-selection-remove="${key}" aria-label="Eliminar ${esc(p.name)} de ${item.size} ml">Eliminar</button></td></tr>`}).join(''):'';}).join('')}</tbody></table></div>`:'<div class="empty">Todavía no has seleccionado perfumes.</div>';
+ }
+ function update(redraw=true){
+  for(const size of [100,50])$('#count-'+size).textContent=[...selected.values()].filter(x=>x.size===size).length+' seleccionados';
+  const items=[...selected.values()],frascos=items.reduce((n,x)=>n+x.qty,0),ml=items.reduce((n,x)=>n+x.qty*x.size,0),alcohol=items.reduce((n,x)=>n+x.qty*recipeFor(x.size).alcohol,0);
+  $('#batch-total').textContent=`${items.length} presentaciones seleccionadas · ${num(frascos)} envases · ${num(ml)} ml en total.${preparing?` Consumo: ${num(frascos*30)} ml de esencia · ${num(frascos*2)} ml de galaxolide · ${num(alcohol)} ml de alcohol.`:''}`;
+  if(redraw)renderSelections();
+ }
  function list(size,query=''){
- const items=catalog.filter(p=>matches(p,query)).sort((a,b)=>perfumeGroups.indexOf(perfumeGroup(a))-perfumeGroups.indexOf(perfumeGroup(b)));let previousGroup='';$('#list-'+size).innerHTML=items.map(p=>{const k=p.id+'-'+size,item=selected.get(k),group=perfumeGroup(p),heading=group!==previousGroup?`<div class="batch-group">${group}</div>`:'';previousGroup=group;return `${heading}<div class="batch-row"><label class="batch-choice"><input type="checkbox" data-batch-check="${k}" ${item?'checked':''}><span><strong>${esc(p.name)}</strong><small>Inspirado en ${esc(p.reference)}</small></span></label><label class="batch-quantity">Frascos<input type="number" min="1" step="1" value="${item?.qty||1}" data-batch-qty="${k}" aria-label="Frascos de ${esc(p.name)} de ${size} ml" ${item?'required':'disabled'}></label></div>`}).join('')||'<div class="empty">No se encontraron perfumes.</div>';
+  const items=catalog.filter(p=>matches(p,query)).sort((a,b)=>perfumeGroups.indexOf(perfumeGroup(a))-perfumeGroups.indexOf(perfumeGroup(b)));let previousGroup='';
+  $('#list-'+size).innerHTML=items.map(p=>{const k=p.id+'-'+size,item=selected.get(k),group=perfumeGroup(p),heading=group!==previousGroup?`<div class="batch-group">${group}</div>`:'';previousGroup=group;return `${heading}<div class="batch-row"><label class="batch-choice"><input type="checkbox" data-batch-check="${k}" ${item?'checked':''}><span><strong>${esc(p.name)}</strong><small>Inspirado en ${esc(p.reference)}</small></span></label><label class="batch-quantity">Envases<input type="number" min="1" step="1" value="${item?.qty??1}" data-batch-qty="${k}" aria-label="Frascos de ${esc(p.name)} de ${size} ml" ${item?'required':'disabled'}></label></div>`}).join('')||'<div class="empty">No se encontraron perfumes.</div>';
  }
  for(const size of [100,50])list(size);
- const fields=$('#fields');fields.oninput=e=>{if(e.target.dataset.batchSearch)list(+e.target.dataset.batchSearch,e.target.value);if(e.target.dataset.batchQty){const item=selected.get(e.target.dataset.batchQty);if(item){item.qty=Number(e.target.value);update();}}};
- fields.onchange=e=>{const key=e.target.dataset.batchCheck;if(!key)return;const[id,size]=key.split('-'),qty=fields.querySelector(`[data-batch-qty="${key}"]`);if(e.target.checked){selected.set(key,{id,size:+size,qty:Number(qty.value)});qty.disabled=false;qty.required=true;}else{selected.delete(key);qty.disabled=true;qty.required=false;}update();};
- update();submit=d=>preparing?produceBatch(state,[...selected.values()],{essence:Number(d.essence),fixative:Number(d.fixative)},catalog):readyBatch(state,[...selected.values()],catalog);$('#modal').showModal();
+ fields.oninput=e=>{
+  if(e.target.dataset.batchSearch)list(+e.target.dataset.batchSearch,e.target.value);
+  const key=e.target.dataset.batchQty||e.target.dataset.selectedQty;if(!key||!selected.has(key))return;
+  selected.get(key).qty=Number(e.target.value);const counterpart=fields.querySelector(e.target.dataset.selectedQty?`[data-batch-qty="${key}"]`:`[data-selected-qty="${key}"]`);if(counterpart)counterpart.value=e.target.value;
+  update(false);
+ };
+ fields.onchange=e=>{
+  const key=e.target.dataset.batchCheck;if(!key)return;const[id,size]=key.split('-'),qty=fields.querySelector(`[data-batch-qty="${key}"]`);
+  if(e.target.checked){selected.set(key,{id,size:+size,qty:Number(qty.value)});qty.disabled=false;qty.required=true;}else{selected.delete(key);qty.disabled=true;qty.required=false;}update();
+ };
+ fields.onclick=e=>{const button=e.target.closest('[data-selection-remove]');if(!button)return;const key=button.dataset.selectionRemove;selected.delete(key);const checkbox=fields.querySelector(`[data-batch-check="${key}"]`),qty=fields.querySelector(`[data-batch-qty="${key}"]`);if(checkbox)checkbox.checked=false;if(qty){qty.disabled=true;qty.required=false;qty.value=1;}update();};
+ update();submit=()=>preparing?produceBatch(state,[...selected.values()],catalog):readyBatch(state,[...selected.values()],catalog);$('#modal').showModal();
 }
 
 function openStockUpdate(id){
