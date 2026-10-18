@@ -135,3 +135,9 @@ El reconocimiento compara escritura y aproximaciones fonéticas de los nombres p
 Cuando existen coincidencias, preselecciona automáticamente la primera sugerencia y conserva las demás en orden para corregirla. Las selecciones sugeridas se identifican en la lista de revisión. Vicente y otras palabras sin coincidencia no se convierten en perfumes. Una elección manual de materia prima se conserva durante la actualización de la frase en curso.
 
 Las pruebas de navegador simulan transcripciones parciales y finales; la calidad de la transcripción del micrófono depende del navegador y su servicio de voz. Se mantiene la revisión de la lista completa antes de actualizar inventario.
+
+### Pasar al siguiente registro sin detener el micrófono
+
+Activa Iniciar dictado una vez. Di **Siguiente perfume** o **Siguiente materia prima** al terminar el nombre y las existencias del registro actual. Ambos comandos cierran ese registro y permiten continuar con otro manteniendo el micrófono activo, incluso si el navegador transcribe las palabras del comando por separado. También se admite el separador anterior Siguiente.
+
+Ejemplo: “Sauvage, tres cuartos. Siguiente perfume. Candy Scent, dos cuartos. Siguiente materia prima. Alcohol, un galón”. Los comandos no crean filas vacías. Si falta una cantidad, el registro se conserva pendiente para corregirlo. Al terminar, revisa y confirma toda la lista una sola vez.
