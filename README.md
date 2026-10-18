@@ -167,3 +167,19 @@ Los diálogos y formularios muestran sus acciones al final del contenido para ev
 Cada origen admite una única nota de venta vigente, tanto pendiente de pago como pagada. Después de guardarla, Generar nota de venta cambia a Ver nota de venta en el listado, detalle y editor de producción. Ese origen deja de aparecer en el selector de nuevas notas.
 
 Cancelar la nota libera el origen para generar una nueva, conservando la cancelada en su historial. La regla se verifica al preparar el formulario y al guardar; la revisión compartida evita que dos sesiones guarden simultáneamente una nota nueva para el mismo lote. Las notas duplicadas que ya existían se conservan para revisión y cancelación. Mientras quede alguna vigente, no se permite crear otra.
+
+### Cancelaciones y resumen de cobros
+
+Lotes, pedidos y notas de venta ofrecen cinco motivos de cancelación: prueba, cambios del cliente, garantía por productos incorrectos, garantía por productos dañados y Otro. Solo Otro solicita un texto de 5 a 240 caracteres. El motivo, fecha y usuario quedan en el historial de canceladas. Se conservan movimientos y producción ya registrados.
+
+Resumen muestra Cuentas por cobrar (saldo de notas de crédito vigentes) y Total cobrado (notas de contado y abonos de crédito vigentes). Las notas canceladas se excluyen. Las notas antiguas sin tipo de pago se señalan para revisión y no se consideran cobradas.
+
+### Abonos con comprobantes
+
+Transferencia exige imagen JPG, PNG, WebP o PDF de hasta 8 MB; Efectivo permite un recordatorio opcional sin archivo. Los archivos se guardan en Supabase Storage privado y se consultan desde Ver comprobante. Requiere ejecutar `supabase/03-comprobantes.sql`; consulta `supabase/LEEME.md`. El inventario compartido conserva únicamente metadatos del archivo, sin insertar imágenes en el JSON.
+
+### Guía olfativa oficial
+
+El catálogo incorpora familia, descripción y notas de las 112 fragancias de `Alma_Mia_2026_Guia_Olfativa.pdf`, manteniendo IDs, nombres, precios y categorías. Las nueve referencias cuyas notas se presentan juntas en la guía conservan ese formato, sin inventar etapas. La referencia completa de la guía se muestra aparte del nombre comercial del catálogo.
+
+Los botones Todos, Mujer, Mujer nicho, Hombre, Hombre nicho y Unisex filtran sin duplicar fragancias. Búsqueda avanzada agrupa por familia olfativa, permite filtrar por aroma y buscar también descripciones y notas. La vista normal busca por número, nombre e inspiración.

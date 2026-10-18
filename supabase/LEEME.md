@@ -18,3 +18,11 @@ Sin conexión se bloquea el guardado hasta recuperar acceso. No hay una cola de 
 El nombre de cada movimiento lo determina la cuenta autorizada, Luis o Ximena. Usa contraseñas distintas. Los correos y contraseñas se introducen únicamente en el formulario de inicio de sesión de la app; no se guardan en el repositorio.
 
 La conexión real requiere completar estos pasos y comprobar un cambio desde ambos dispositivos. El plan Free tiene límites y condiciones de Supabase; no hace falta contratar un plan de pago para esta configuración.
+
+## Comprobantes de abonos
+
+Ejecuta `03-comprobantes.sql` en SQL Editor del mismo proyecto y pulsa Run. `Success. No rows returned` indica que terminó. Puede repetirse sin borrar comprobantes. Crea el depósito privado `payment-evidence`: imágenes JPG, PNG, WebP o PDF de hasta 8 MB. Solo los miembros autorizados pueden consultar archivos; cada usuario sube dentro de su propia carpeta.
+
+Al agregar un abono, elige Efectivo o Transferencia. Efectivo permite un recordatorio opcional. Transferencia exige adjuntar un comprobante antes de guardar. El historial muestra Ver comprobante; se genera un enlace temporal de consulta. No compartas ese enlace con personas ajenas.
+
+El respaldo JSON conserva las referencias a los archivos, no sus contenidos. Conserva también el depósito de Storage: mover el respaldo a otro proyecto no copia los comprobantes. Las notas y abonos anteriores permanecen; no se inventan medios de pago ni comprobantes retroactivos.

@@ -1,4 +1,5 @@
-import {validateSalesNotes} from './sales.js?v=30';
+import {resolveCancellationReason} from './cancellation.js?v=31';
+import {validateSalesNotes} from './sales.js?v=31';
 export function extraBottles(material){return [...(material.secondBottle?[{number:2,...material.secondBottle}]:[]),...(material.additionalBottles??[])].sort((a,b)=>a.number-b.number);}
 export function bottleStock(material,number=1){return number===1?Math.round((material.stock-extraBottles(material).reduce((n,b)=>n+b.stock,0))*1000)/1000:extraBottles(material).find(b=>b.number===number)?.stock??0;}
 export function bottleInfo(material,number){return extraBottles(material).find(b=>b.number===number);}
@@ -117,11 +118,11 @@ export function attributeSessionChanges(previous,next,actor){
  return result;
 }
 
-export function cancelBatch(state,{batchId,reason,actor,expectedBatch,at=new Date().toISOString()}){
+export function cancelBatch(state,{batchId,reason,reasonCode='other',actor,expectedBatch,at=new Date().toISOString()}){
  if(!['Luis','Ximena'].includes(actor))throw Error('Selecciona el usuario antes de cancelar.');
  const batch=(state.batches??[]).find(b=>b.id===batchId);if(!batch)throw Error('No se encontró el lote o pedido.');if(batch.status==='cancelled')throw Error('El lote o pedido ya está cancelado.');
  if(expectedBatch&&JSON.stringify(batch)!==JSON.stringify(expectedBatch))throw Error('La producción cambió en otra sesión. Revisa su avance antes de cancelar.');
- if(typeof reason!=='string'||reason.trim().length<3||reason.trim().length>240)throw Error('Escribe un motivo de cancelación de entre 3 y 240 caracteres.');
- const next=structuredClone(state),saved=next.batches.find(b=>b.id===batchId);saved.status='cancelled';saved.cancelledAt=at;saved.cancelledBy=actor;saved.cancellationReason=reason.trim();
+ reason=resolveCancellationReason(reasonCode,reason);
+ const next=structuredClone(state),saved=next.batches.find(b=>b.id===batchId);saved.status='cancelled';saved.cancelledAt=at;saved.cancelledBy=actor;saved.cancellationReason=reason.trim();saved.cancellationCode=reasonCode;
  next.movements.unshift({date:at,label:'AM-'+String(batch.number).padStart(4,'0'),detail:`Cancelación de ${batch.purpose.type==='customer'?'pedido':'lote'} · ${saved.cancellationReason} · Avances e inventario conservados`,delta:0,unit:'frascos',batchId,performedBy:actor});return next;
 }
