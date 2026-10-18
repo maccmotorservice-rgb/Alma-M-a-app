@@ -1,5 +1,5 @@
-import {buildSalesNote,salesCategories,salesCategory,salesTotals,salesMoney,salesGroups,salesDate,salesCapacity,salesNoteStatus,editSalesNote,cancelSalesNote,salesPaymentSummary,addSalesPayment,validateSalesPayments} from './sales.js?v=24';
-import {downloadSalesPdf} from './sales-pdf.js?v=24';
+import {buildSalesNote,salesCategories,salesCategory,salesTotals,salesMoney,salesGroups,salesDate,salesCapacity,salesNoteStatus,editSalesNote,cancelSalesNote,salesPaymentSummary,addSalesPayment,validateSalesPayments} from './sales.js?v=25';
+import {downloadSalesPdf} from './sales-pdf.js?v=25';
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const localDate=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
 export function createSalesPanel({catalog,getState,save,getActor,notify}){
