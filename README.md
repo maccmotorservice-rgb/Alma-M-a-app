@@ -147,3 +147,11 @@ Ejemplo: “Sauvage, tres cuartos. Siguiente perfume. Candy Scent, dos cuartos. 
 Se compararon las 112 referencias con `Catalogo_Alma_Mia_2026_Corregido.pdf`. El cambio identificado es el número 94: Raspberry Amber Luxe pasa a Saffron 750, inspirado en Dubai Amber. Se conserva su ID, categoría, presentaciones y precios.
 
 Al leer inventarios y respaldos, los nombres de materias primas y artículos de lotes se obtienen del catálogo vigente mediante sus IDs. La corrección conserva cantidades, consumos, avances e historial de movimientos. Las notas de venta emitidas mantienen su contenido histórico; las nuevas utilizan el catálogo corregido.
+
+### Generar una nota desde un lote o pedido
+
+En **Generar nueva nota**, selecciona un origen en **Generar desde un lote o pedido** y pulsa **Cargar perfumes del lote o pedido**. También puedes usar **Generar nota de venta** desde Lotes y pedidos, el detalle de una producción o su editor.
+
+Se cargan todas las cantidades planificadas y sus presentaciones, incluso si la producción aún está pendiente. Se utilizan nombres y precios vigentes del catálogo. Los pedidos completan el cliente automáticamente; las notas de lotes de stock permiten indicar el comprador. Revisa cantidades, precios, descuento y tipo de pago antes de guardar.
+
+La nota conserva el ID y número de su lote o pedido de origen, visibles en el historial, detalle y PDF. El vínculo se mantiene al editar. Crear la nota no cambia avances, stock ni consumos de producción. Los lotes y pedidos cancelados no se ofrecen como origen para notas nuevas.
