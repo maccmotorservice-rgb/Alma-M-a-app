@@ -1,7 +1,7 @@
-import {createSalesPanel} from './sales-panel.js?v=19';
-import {CloudInventory} from './cloud.js?v=19';
-import {createDictationPanel} from './dictation.js?v=19';
-import {initialState,applyMovement,recipeFor,registerCustomer,productionPreview,confirmProduction,completedQuantity,batchProgress,completeBatchItem,readyBatch,setBottleStocks,readyMovement,validateBackup,attributeSessionChanges,extraBottles,bottleStock} from './inventory.js?v=19';
+import {createSalesPanel} from './sales-panel.js?v=20';
+import {CloudInventory} from './cloud.js?v=20';
+import {createDictationPanel} from './dictation.js?v=20';
+import {initialState,applyMovement,recipeFor,registerCustomer,productionPreview,confirmProduction,completedQuantity,batchProgress,completeBatchItem,readyBatch,setBottleStocks,readyMovement,validateBackup,attributeSessionChanges,extraBottles,bottleStock} from './inventory.js?v=20';
 const catalog=await fetch('./catalog.json').then(r=>{if(!r.ok)throw Error('No se pudo cargar el catálogo');return r.json()});
 let cloud=null,cloudUiError='',remoteRenderPending=false;
 const key='alma-mia-inventory-v1';let state=initialState(catalog),view='overview',search='',category='Todas',kind='Todos',materialGroup='Todas',batchFilter='all',storageError=false;
