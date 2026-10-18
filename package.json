@@ -1,1 +1,20 @@
-{"name":"alma-mia-inventario","version":"1.0.0","private":true,"type":"module","scripts":{"start":"node server.mjs","test":"node --test"},"engines":{"node":">=20"}}
+{
+  "name": "alma-mia-inventario",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs",
+    "test": "node --test",
+    "build:cloud": "esbuild scripts/supabase-entry.js --bundle --format=esm --platform=browser --outfile=assets/supabase-client.js --minify --legal-comments=linked"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.118.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2"
+  }
+}
