@@ -216,3 +216,6 @@ input[type="file"] { width: 100%; min-width: 0; white-space: normal; }
 .report-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
 .report-actions > button { flex: 1 1 130px; }
 .report-missing { color: #a13b32; background: #faeae7; }
+
+.stock-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.stock-actions > button { flex: 1 1 120px; }
