@@ -97,3 +97,13 @@ La corrección actualiza los insumos y perfumes disponibles y queda
 registrada con tu nombre. Si falta trabajo, el estado vuelve a naranja.
 Si ya se entregaron los perfumes y no hay stock suficiente para retirarlos,
 revisa esas entregas antes de corregir la producción.
+
+FRASCOS AUTOMÁTICOS
+Repite el nombre del perfume para contar el siguiente frasco:
+“Sauvage, tres cuartos” = frasco 1.
+“Sauvage, dos cuartos” = frasco 2.
+“Sauvage, un cuarto” = frasco 3.
+No necesitas decir segundo o tercero; si lo dices, se respeta.
+Revisa el número y la capacidad en la lista. Los frascos nuevos de esencia
+usan inicialmente 250 ml; puedes cambiar esa capacidad en Editar registro.
+Confirma todo una vez para guardar cada frasco por separado.
