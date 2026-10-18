@@ -132,6 +132,6 @@ Cancelar detiene los pendientes y bloquea los cambios de avance. Conserva las un
 
 El reconocimiento compara escritura y aproximaciones fonéticas de los nombres propios y sus referencias de inspiración. Reconoce variantes como Candy Cent / candi sent para Candy Scent y conserva la distinción entre Rose e Intense. Busca el nombre dentro de frases con palabras adicionales, sin exigir que toda la frase sea idéntica al catálogo. Los números de las referencias deben coincidir.
 
-Solo selecciona automáticamente cuando hay una coincidencia clara. Si aparecen dos perfumes distintos en una misma frase o la coincidencia es incierta, muestra sugerencias para revisar. Vicente y otras palabras sin coincidencia no se convierten en perfumes. Una elección manual de materia prima se conserva durante la actualización de la frase en curso.
+Cuando existen coincidencias, preselecciona automáticamente la primera sugerencia y conserva las demás en orden para corregirla. Las selecciones sugeridas se identifican en la lista de revisión. Vicente y otras palabras sin coincidencia no se convierten en perfumes. Una elección manual de materia prima se conserva durante la actualización de la frase en curso.
 
 Las pruebas de navegador simulan transcripciones parciales y finales; la calidad de la transcripción del micrófono depende del navegador y su servicio de voz. Se mantiene la revisión de la lista completa antes de actualizar inventario.
