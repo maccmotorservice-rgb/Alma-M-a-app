@@ -84,3 +84,13 @@ export function registerCustomer(state,{name,phone=''}){
  if((state.customers??[]).some(c=>c.name.toLocaleLowerCase()===clean.toLocaleLowerCase()&&c.phone===contact))throw Error('Este cliente ya está registrado. Selecciónalo en la lista.');
  const next=structuredClone(state);next.customers??=[];next.customers.push({id:globalThis.crypto.randomUUID(),name:clean,phone:contact});return next;
 }
+
+export function attributeSessionChanges(previous,next,actor){
+ if(!['Luis','Ximena'].includes(actor))throw Error('Selecciona Luis o Ximena en “¿Quién está en esta sesión?” antes de guardar.');
+ const result=structuredClone(next),added=result.movements.length-previous.movements.length;
+ if(added<0)throw Error('No se puede atribuir una sustitución del historial como un movimiento nuevo.');
+ for(const movement of result.movements.slice(0,added))movement.performedBy=actor;
+ for(const batch of result.batches??[]){const old=(previous.batches??[]).find(b=>b.id===batch.id);if(!old){batch.createdBy=actor;continue;}const changed=batch.items.filter(item=>{const before=old.items.find(i=>i.id===item.id&&i.size===item.size);return before&&completedQuantity(before)!==completedQuantity(item);});if(changed.length){batch.updatedBy=actor;for(const item of changed)item.completedBy=actor;if(batchProgress(batch).ready)batch.completedBy=actor;}}
+ for(const customer of result.customers??[])if(!(previous.customers??[]).some(c=>c.id===customer.id))customer.createdBy=actor;
+ return result;
+}

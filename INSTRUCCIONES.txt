@@ -83,3 +83,9 @@ Los ejemplos y la escritura manual están en un desplegable.
 Los lotes se muestran naranjas hasta que registres los perfumes hechos.
 Los antiguos sin avance manual también requieren revisión, sin duplicar
 los insumos que la versión anterior ya había descontado.
+
+PERSONA DE LA SESIÓN
+Antes de registrar cambios, elige Luis o Ximena en el selector superior
+“¿Quién está en esta sesión?”. Cada movimiento nuevo mostrará su autor.
+Cambiar el nombre solo afecta a los movimientos siguientes.
+Los registros anteriores sin nombre aparecen como “Sin registrar”.
