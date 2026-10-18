@@ -1,4 +1,4 @@
-import {salesMoney,salesGroups,salesDate,salesCapacity,salesFilename,salesPaymentSummary} from './sales.js?v=27';
+import {salesMoney,salesGroups,salesDate,salesCapacity,salesFilename,salesPaymentSummary,salesSourceLabel} from './sales.js?v=28';
 export async function createSalesPdf(note,{logo=true}={}){
  const {jsPDF,autoTable}=await import('./assets/pdf-client.js');const doc=new jsPDF({unit:'mm',format:'a4'}),margin=16,width=178;
  doc.setProperties({title:`Nota de venta · ${note.customer}`,author:'Alma Mía Perfumes',subject:'Nota de venta'});
@@ -9,7 +9,7 @@ export async function createSalesPdf(note,{logo=true}={}){
  if(image)doc.addImage(image,'PNG',margin,25,42,10);else text('Alma Mía',margin,32,23,true);
  text('PERFUMES',margin,39,8,true);if(note.status==='cancelled')text('CANCELADA · '+note.cancelledBy+' · '+new Date(note.cancelledAt).toLocaleDateString('es-MX'),margin,45,9,true);text('NOTA DE VENTA',143,32,15,true);
  table([['CLIENTE','FECHA','CAPACIDAD']],[[note.customer,salesDate(note.date),salesCapacity(note)]],49,{columnStyles:{0:{cellWidth:76},1:{cellWidth:56},2:{cellWidth:46}}});
- let y=doc.lastAutoTable.finalY+10;text('Resumen del pedido',margin,y,12,true);
+ let y=doc.lastAutoTable.finalY+10;if(note.sourceBatch){text('Origen: '+salesSourceLabel(note),margin,y,9);y+=8;}text('Resumen del pedido',margin,y,12,true);
  const groups=salesGroups(note);table([['Categoría','Piezas','Subtotal']],[...groups.map(g=>[g.category,String(g.pieces),salesMoney(g.subtotalCents)]),['TOTAL',String(note.totals.pieces),salesMoney(note.totals.subtotalCents)]],y+4,{columnStyles:{0:{cellWidth:118},1:{cellWidth:24,halign:'right'},2:{cellWidth:36,halign:'right'}},didParseCell:d=>{if(d.section==='body'&&d.row.index===groups.length){d.cell.styles.fontStyle='bold';d.cell.styles.fillColor=[242,242,242]}}});
  y=doc.lastAutoTable.finalY+9;if(y+46>275){doc.addPage();y=22;}
  doc.setFillColor(248);doc.setDrawColor(190);doc.rect(margin,y,width,31,'FD');text('TOTAL DE PIEZAS',margin+3,y+10,9,true);text(note.totals.pieces,margin+3,y+23,16,true);
