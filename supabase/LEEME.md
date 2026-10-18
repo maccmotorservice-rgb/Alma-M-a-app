@@ -26,3 +26,5 @@ Ejecuta `03-comprobantes.sql` en SQL Editor del mismo proyecto y pulsa Run. `Suc
 Al agregar un abono, elige Efectivo o Transferencia. Efectivo permite un recordatorio opcional. Transferencia exige adjuntar un comprobante antes de guardar. El historial muestra Ver comprobante; se genera un enlace temporal de consulta. No compartas ese enlace con personas ajenas.
 
 El respaldo JSON conserva las referencias a los archivos, no sus contenidos. Conserva también el depósito de Storage: mover el respaldo a otro proyecto no copia los comprobantes. Las notas y abonos anteriores permanecen; no se inventan medios de pago ni comprobantes retroactivos.
+
+Los PDF originales de notas históricas utilizan el mismo almacenamiento privado configurado por `03-comprobantes.sql`; no hace falta ejecutar otra migración. La carga debe realizarse desde la cuenta autorizada de la app, mediante el enlace privado de importación. Al terminar, originales y notas quedan disponibles para los demás miembros conectados sin volver a usar ese enlace.

@@ -197,3 +197,19 @@ Las 112 referencias muestran el nombre original, la marca o casa de la guía ofi
 ### Eliminar stock
 
 Cada perfume y presentación disponible en Stock permite Eliminar stock. Se puede retirar una cantidad parcial o todas las unidades y se exige elegir Esto fue una prueba u Otro. Otro requiere una explicación de 5 a 240 caracteres. La operación no admite retirar más existencias de las disponibles y comprueba que el stock no cambió desde que se abrió el formulario. Conserva un movimiento negativo con motivo, fecha y usuario. No altera la producción ni devuelve materias primas.
+
+### Notas históricas y originales privados
+
+La importación de ventas de 2026 se abre con un enlace privado cuyo fragmento contiene la clave del paquete cifrado `assets/sales-history-2026.enc`. La clave no se guarda en el repositorio ni se envía al servidor estático; la app la conserva temporalmente en la sesión y la elimina al terminar. El paquete contiene las notas conciliadas y sus PDF originales. No publiques la clave ni versiones descifradas del paquete.
+
+Desde una sesión Supabase conectada, Cargar mis 33 notas pagadas sube los PDF al depósito privado existente y guarda las notas como pagadas. Se conserva la fecha, precio, descuento y nombre histórico del documento, además del ID del perfume vigente cuando se conoce. La referencia original determina el perfume; las discrepancias confirmadas por el propietario se resuelven en el paquete. Los productos históricos fuera del catálogo se muestran aparte en los rankings. Los probadores de 5 ml y material promocional son conceptos diferenciados.
+
+La carga conserva el inventario y los movimientos. Evita duplicados por hash del original o por cliente, fecha, total y composición de la nota. Puede vincular un original a una nota coincidente ya pagada; si encuentra una coincidente pendiente o cancelada solicita revisión. Reintentar después de una carga completa no duplica notas ni vuelve a subir PDF. Los originales se consultan mediante enlaces temporales de Supabase y se pueden descargar íntegros. Editar una nota conserva su original y permite descargar una versión actualizada por separado.
+
+Los PDF incluyen casos con regalos y garantías a precio cero. El total de artículos incluye los probadores sin cargo que algunos documentos cuentan aparte del total de perfumes. El PDF original permanece intacto. Los respaldos JSON conservan las referencias a los originales, por lo que también se debe conservar Storage.
+
+### Ventas anuales y desempeño
+
+Resumen muestra ingresos por ventas, ingresos cobrados, reposición estimada y ventas menos reposición del año. Ver más abre un selector de año, el desglose de los doce meses, productos más vendidos y productos del catálogo sin ventas registradas. Las notas canceladas se excluyen. Las ventas usan fecha de nota e importe después del descuento; los abonos usan su fecha de pago. Las notas históricas declaradas pagadas se atribuyen al mes de su nota porque los PDF no indican las fechas reales de cobro.
+
+La reposición se estima a $140 por unidad de perfume de 50 o 100 ml, incluso regalos y garantías. No se asigna un costo a probadores de 5 ml ni banners. El resultado mostrado no es utilidad neta: faltan otros gastos e impuestos. Los rankings cuentan como vendidas las unidades con importe positivo, separan entregas sin cargo y distribuyen descuentos por partida con redondeo que conserva el total de cada nota.

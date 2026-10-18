@@ -219,3 +219,8 @@ input[type="file"] { width: 100%; min-width: 0; white-space: normal; }
 
 .stock-actions { display: flex; flex-wrap: wrap; gap: 10px; }
 .stock-actions > button { flex: 1 1 120px; }
+
+.sales-year { max-width: 240px; margin-bottom: 24px; }
+.financial-overview .section-head { margin-bottom: 18px; }
+.sales-page-actions { display: flex; flex-wrap: wrap; gap: 10px; max-width: 560px; }
+.sales-page-actions > button { flex: 1 1 160px; }
