@@ -155,3 +155,9 @@ En **Generar nueva nota**, selecciona un origen en **Generar desde un lote o ped
 Se cargan todas las cantidades planificadas y sus presentaciones, incluso si la producción aún está pendiente. Se utilizan nombres y precios vigentes del catálogo. Los pedidos completan el cliente automáticamente; las notas de lotes de stock permiten indicar el comprador. Revisa cantidades, precios, descuento y tipo de pago antes de guardar.
 
 La nota conserva el ID y número de su lote o pedido de origen, visibles en el historial, detalle y PDF. El vínculo se mantiene al editar. Crear la nota no cambia avances, stock ni consumos de producción. Los lotes y pedidos cancelados no se ofrecen como origen para notas nuevas.
+
+### Distribución visual
+
+Los botones de cada registro se agrupan con separación uniforme: la generación de notas ocupa una acción principal, edición y consulta se muestran juntas y la cancelación usa un estilo diferenciado. En celular y tablet, inventarios e historiales se distribuyen en tarjetas con campos etiquetados. La selección de perfumes de una nota también se adapta a tarjetas para editar cantidades y precios sin desplazar una tabla lateralmente.
+
+Los diálogos y formularios muestran sus acciones al final del contenido para evitar que tapen información. El menú móvil muestra todas las secciones. La distribución se comprobó en 320, 390, 768, 1024 y 1440 px; las reglas compartidas están en `layout.css`.
