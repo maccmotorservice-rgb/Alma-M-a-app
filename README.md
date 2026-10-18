@@ -183,3 +183,7 @@ Transferencia exige imagen JPG, PNG, WebP o PDF de hasta 8 MB; Efectivo permite 
 El catálogo incorpora familia, descripción y notas de las 112 fragancias de `Alma_Mia_2026_Guia_Olfativa.pdf`, manteniendo IDs, nombres, precios y categorías. Las nueve referencias cuyas notas se presentan juntas en la guía conservan ese formato, sin inventar etapas. La referencia completa de la guía se muestra aparte del nombre comercial del catálogo.
 
 Los botones Todos, Mujer, Mujer nicho, Hombre, Hombre nicho y Unisex filtran sin duplicar fragancias. Búsqueda avanzada agrupa por familia olfativa, permite filtrar por aroma y buscar también descripciones y notas. La vista normal busca por número, nombre e inspiración.
+
+### Reporte de reposición de materias primas
+
+En Materias primas, Ver reporte abre una vista de todo el inventario, independiente de los filtros del listado. Insumos faltantes muestra existencias en cero; Insumos por terminar muestra cantidades positivas iguales o inferiores al mínimo configurado. El cálculo utiliza la existencia total de todos los frascos. Las tarjetas muestran existencias y mínimo en cuartos, galones o mililitros, además de su equivalencia en ml cuando corresponde. Desde cada tarjeta se puede actualizar información o modificar el mínimo. El reporte se recalcula con los cambios del inventario compartido.
