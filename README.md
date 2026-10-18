@@ -108,7 +108,7 @@ Para reconstruir la biblioteca de PDF: `npm ci` y `npm run build:pdf`. El archiv
 
 El historial tiene las pestañas **Vigentes** y **Canceladas**. Desde Vigentes puedes editar una nota, revisar su nuevo importe y guardar los cambios sin crear otra nota. Se conservan su identificador, fecha de creación y creador, y se registra la fecha y el usuario de la edición.
 
-**Cancelar nota** solicita confirmación y permite indicar un motivo opcional. La nota permanece en Canceladas con su detalle e importes, fecha y usuario de cancelación. Puede consultarse y descargarse; el PDF muestra CANCELADA en todas sus páginas. Las notas canceladas no se editan. La cancelación no modifica stock ni entregas.
+**Cancelar nota** solicita confirmación y exige un motivo de entre 3 y 240 caracteres, sin contar espacios externos. El motivo se muestra en Canceladas, en el detalle y en el PDF. La nota permanece en Canceladas con su detalle e importes, fecha y usuario de cancelación. El botón Cancelar nota está disponible en el historial y en el detalle de notas vigentes. Puede consultarse y descargarse; el PDF muestra CANCELADA en todas sus páginas. Las notas canceladas no se editan. La cancelación no modifica stock ni entregas.
 
 Descargar el PDF de una nota nueva también guarda la nota automáticamente. Si se descarga mientras se edita, primero se guardan los cambios. Si otra sesión ya modificó o canceló la nota, la edición pendiente se rechaza para conservar la versión reciente.
 

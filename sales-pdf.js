@@ -1,4 +1,4 @@
-import {salesMoney,salesGroups,salesDate,salesCapacity,salesFilename,salesPaymentSummary} from './sales.js?v=21';
+import {salesMoney,salesGroups,salesDate,salesCapacity,salesFilename,salesPaymentSummary} from './sales.js?v=22';
 export async function createSalesPdf(note,{logo=true}={}){
  const {jsPDF,autoTable}=await import('./assets/pdf-client.js');const doc=new jsPDF({unit:'mm',format:'a4'}),margin=16,width=178;
  doc.setProperties({title:`Nota de venta · ${note.customer}`,author:'Alma Mía Perfumes',subject:'Nota de venta'});
@@ -20,6 +20,7 @@ export async function createSalesPdf(note,{logo=true}={}){
  const payment=salesPaymentSummary(note),paymentType=note.paymentType==='credit'?'Crédito':note.paymentType==='cash'?'Contado':'Por definir';
  let paymentY=y+(note.discountPercent>0?47:39);if(paymentY+25>275){doc.addPage();paymentY=22;}
  table([['TIPO DE PAGO','IMPORTE PAGADO','SALDO PENDIENTE','ESTADO']],[[paymentType,payment.type?salesMoney(payment.paidCents):'—',payment.type?salesMoney(payment.balanceCents):'—',note.status==='cancelled'?'Cancelada':payment.label]],paymentY,{styles:{fontSize:8,cellPadding:3}});
+ if(note.status==='cancelled')table([['MOTIVO DE CANCELACIÓN']],[[note.cancellationReason||'Sin motivo registrado']],doc.lastAutoTable.finalY+5);
  doc.addPage();y=22;
  for(const group of groups){if(y+30>270){doc.addPage();y=22;}text(group.category,margin,y,11,true);
  table([['Perfume Alma Mía','Perfume real / inspirado en','Cap.','Cant.','P. unitario','Total']],[...group.items.map(i=>[i.name,i.reference||'—',i.size?i.size+' ml':'—',String(i.qty),salesMoney(i.unitCents),salesMoney(i.unitCents*i.qty)]),['Subtotal','','',String(group.pieces),'',salesMoney(group.subtotalCents)]],y+4,{rowPageBreak:'avoid',columnStyles:{0:{cellWidth:38},1:{cellWidth:58},2:{cellWidth:18},3:{cellWidth:14,halign:'right'},4:{cellWidth:25,halign:'right'},5:{cellWidth:25,halign:'right'}},styles:{font:'helvetica',fontSize:8,cellPadding:2.5,lineColor:190,lineWidth:.15,textColor:25},didParseCell:d=>{if(d.section==='body'&&d.row.index===group.items.length){d.cell.styles.fillColor=[245,245,245];d.cell.styles.fontStyle='bold';}}});y=doc.lastAutoTable.finalY+12;
