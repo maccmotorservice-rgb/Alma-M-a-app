@@ -89,3 +89,11 @@ Antes de registrar cambios, elige Luis o Ximena en el selector superior
 “¿Quién está en esta sesión?”. Cada movimiento nuevo mostrará su autor.
 Cambiar el nombre solo afecta a los movimientos siguientes.
 Los registros anteriores sin nombre aparecen como “Sin registrar”.
+
+CORREGIR CANTIDADES
+Los lotes listos también se pueden editar. Cambia los envases hechos
+o desmarca “Hecho” para regresar esa presentación a cero.
+La corrección actualiza los insumos y perfumes disponibles y queda
+registrada con tu nombre. Si falta trabajo, el estado vuelve a naranja.
+Si ya se entregaron los perfumes y no hay stock suficiente para retirarlos,
+revisa esas entregas antes de corregir la producción.
