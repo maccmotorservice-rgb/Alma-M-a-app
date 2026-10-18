@@ -51,7 +51,7 @@ Guarda la revisión antes de recargar: el borrador no se conserva al recargar.
 CONFIRMAR Y CONSULTAR LOTES
 “Preparar perfumes seleccionados” ahora abre una vista previa oficial.
 Revisa perfumes, cantidades, destino y materias primas. Puedes volver a
-editar sin perder tu selección. Solo “Confirmar” registra la producción.
+editar sin perder tu selección. “Confirmar” guarda la lista como “En producción”, sin descontar insumos.
 Consulta el folio, la fecha, el cliente y el detalle en “Lotes y pedidos”.
 Desde “Ver lista” puedes volver a abrir cada lista confirmada.
 Las producciones anteriores siguen disponibles en “Movimientos”.
@@ -63,3 +63,12 @@ Continúa dictando varias materias primas sin confirmar una por una.
 Los cambios y eliminaciones se comparten entre ambas vistas.
 Previsualiza toda la lista, vuelve a editar si es necesario y acepta
 una sola vez para actualizar oficialmente el inventario.
+
+SEGUIMIENTO DEL TRABAJO
+En “Lotes y pedidos”, entra a “Editar”. Indica el total de envases hechos
+de cada perfume o marca “Completar pendientes”. Solo se descuentan los
+insumos de los envases nuevos; el resto sigue pendiente.
+El punto naranja indica “En producción”. Al terminar todo, cambia a verde:
+“Listo para entrega” para clientes o “Listo para anaquel” para stock.
+Los lotes antiguos conservan su producción registrada para no duplicar
+descuentos de materia prima.
