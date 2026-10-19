@@ -7,15 +7,18 @@
     "start": "node server.mjs",
     "test": "node --test",
     "build:cloud": "esbuild scripts/supabase-entry.js --bundle --format=esm --platform=browser --outfile=assets/supabase-client.js --minify --legal-comments=linked",
-    "build:pdf": "esbuild scripts/pdf-entry.js --bundle --format=esm --platform=browser --outfile=assets/pdf-client.js --minify --legal-comments=linked"
+    "build:pdf": "esbuild scripts/pdf-entry.js --bundle --format=esm --platform=browser --outfile=assets/pdf-client.js --minify --legal-comments=linked",
+    "build:ocr": "node scripts/build-ocr.mjs"
   },
   "engines": {
     "node": ">=20"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.118.0",
+    "@tesseract.js-data/eng": "1.0.0",
     "jspdf": "^4.2.1",
-    "jspdf-autotable": "^5.0.9"
+    "jspdf-autotable": "^5.0.9",
+    "tesseract.js": "7.0.0"
   },
   "devDependencies": {
     "esbuild": "^0.28.2"
