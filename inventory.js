@@ -1,5 +1,5 @@
-import {resolveCancellationReason} from './cancellation.js?v=54';
-import {validateSalesNotes} from './sales.js?v=54';
+import {resolveCancellationReason} from './cancellation.js?v=55';
+import {validateSalesNotes} from './sales.js?v=55';
 export function extraBottles(material){return [...(material.secondBottle?[{number:2,...material.secondBottle}]:[]),...(material.additionalBottles??[])].sort((a,b)=>a.number-b.number);}
 export function bottleStock(material,number=1){return number===1?Math.round((material.stock-extraBottles(material).reduce((n,b)=>n+b.stock,0))*1000)/1000:extraBottles(material).find(b=>b.number===number)?.stock??0;}
 export function isMaterialLow(material){
@@ -130,11 +130,16 @@ export function attributeSessionChanges(previous,next,actor){
  return result;
 }
 
-export function cancelBatch(state,{batchId,reason,reasonCode='other',actor,expectedBatch,at=new Date().toISOString()}){
+export function cancelBatch(state,{batchId,reason,reasonCode='other',actor,expectedBatch,at=new Date().toISOString()},catalog=[]){
  if(!['Luis','Ximena'].includes(actor))throw Error('Selecciona el usuario antes de cancelar.');
  const batch=(state.batches??[]).find(b=>b.id===batchId);if(!batch)throw Error('No se encontró el lote o pedido.');if(batch.status==='cancelled')throw Error('El lote o pedido ya está cancelado.');
  if(expectedBatch&&JSON.stringify(batch)!==JSON.stringify(expectedBatch))throw Error('La producción cambió en otra sesión. Revisa su avance antes de cancelar.');
  reason=resolveCancellationReason(reasonCode,reason);
- const next=structuredClone(state),saved=next.batches.find(b=>b.id===batchId);saved.status='cancelled';saved.cancelledAt=at;saved.cancelledBy=actor;saved.cancellationReason=reason.trim();saved.cancellationCode=reasonCode;
- next.movements.unshift({date:at,label:'AM-'+String(batch.number).padStart(4,'0'),detail:`Cancelación de ${batch.purpose.type==='customer'?'pedido':'lote'} · ${saved.cancellationReason} · Avances e inventario conservados`,delta:0,unit:'frascos',batchId,performedBy:actor});return next;
+ let next=structuredClone(state),reversed=0;
+ if(reasonCode==='test'){
+  if(batch.items.some(item=>item.completed===undefined||(item.preaccounted??0)>0))throw Error('Este lote tiene producción de una versión anterior y no puede revertirse automáticamente. Revisa sus movimientos antes de cancelarlo como prueba.');
+  for(const item of batch.items){const qty=completedQuantity(item);if(!qty)continue;if((item.productionCharges??[]).reduce((n,c)=>n+c.qty,0)!==qty)throw Error('No se encontró el consumo completo de este lote para devolverlo con seguridad. Revisa sus movimientos.');next=completeBatchItem(next,{batchId,id:item.id,size:item.size,completed:0},catalog);reversed+=qty;}
+ }
+ const saved=next.batches.find(b=>b.id===batchId);if(reasonCode==='test')saved.cancellationReversedUnits=reversed;saved.status='cancelled';saved.cancelledAt=at;saved.cancelledBy=actor;saved.cancellationReason=reason.trim();saved.cancellationCode=reasonCode;
+ next.movements.unshift({date:at,label:'AM-'+String(batch.number).padStart(4,'0'),detail:`Cancelación de ${batch.purpose.type==='customer'?'pedido':'lote'} · ${saved.cancellationReason} · ${reasonCode==='test'?`Prueba revertida: ${reversed} envases retirados del stock; insumos restituidos`:'Avances e inventario conservados'}`,delta:0,unit:'frascos',batchId,performedBy:actor});return next;
 }
