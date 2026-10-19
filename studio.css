@@ -476,3 +476,10 @@ html[data-design=modern][data-version="3"] .studio-movement{display:flex;align-i
 #studio-welcome .welcome-sound{font-size:11px}
 #studio-welcome .welcome-enter{font-size:12px}
 @media(max-width:760px){html[data-design=modern][data-version="3"] .studio-overview-note{max-width:none;margin:15px 0 0}html[data-design=modern][data-version="3"] #content .studio-overview-note>p{font-size:11px;margin-bottom:5px}html[data-design=modern][data-version="3"] .studio-overview-note>p br{display:none}html[data-design=modern][data-version="3"] .studio-movement{font-size:11px}#studio-welcome .welcome-eyebrow{font-size:8px}#studio-welcome .welcome-enter{font-size:11px}}
+/* Printing is a tool group; the olfactory guide is its own destination. */
+html:not([data-version="3"]) #main-navigation .studio-print-note{display:none!important}
+html[data-design=modern][data-version="3"] .studio-macro button{padding-left:10px;padding-right:10px}
+@media(max-width:1250px){html[data-design=modern][data-version="3"] .studio-macro button{font-size:11px;padding-left:9px;padding-right:9px}}
+@media(max-width:1000px){html[data-design=modern][data-version="3"] .studio-macro button{font-size:10px;padding-left:7px;padding-right:7px}}
+.design-preferences{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.design-preferences>p{flex-basis:100%;margin-bottom:3px}
