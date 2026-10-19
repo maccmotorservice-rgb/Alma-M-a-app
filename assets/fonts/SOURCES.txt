@@ -1,0 +1,38 @@
+SELF-HOSTED FONT SOURCES
+Downloaded 2026-10-19 over verified HTTPS.
+
+All fonts use SIL Open Font License 1.1. Copyright notices and complete licenses
+are in Manrope-OFL.txt and InstrumentSerif-OFL.txt.
+
+Official Google Fonts repository sources:
+
+manrope-latin-wght-400-800.woff2
+https://raw.githubusercontent.com/google/fonts/main/ofl/manrope/Manrope%5Bwght%5D.ttf
+Original TTF SHA-256: 3ae11c49db0455a3cc33e37d380f20fdb8c7f8b41dc07625c177e3d87a9d6ae6
+WOFF2 SHA-256: f87ddcd084551f69bf930577ceb579400b0bf5430ed47e3e6c5e7e4e327c7d4e
+
+instrument-serif-latin-regular.woff2
+https://raw.githubusercontent.com/google/fonts/main/ofl/instrumentserif/InstrumentSerif-Regular.ttf
+Original TTF SHA-256: 498efd461f6ddfcb7a111bf9a565709d2085d48201d501ead960d93e84ffbb88
+WOFF2 SHA-256: 86fb14fe55fc7c0325c3308267100464a2e4fc43bff9bee5258000ed1127859d
+
+instrument-serif-latin-italic.woff2
+https://raw.githubusercontent.com/google/fonts/main/ofl/instrumentserif/InstrumentSerif-Italic.ttf
+Original TTF SHA-256: 08939b8bdf534afec24ae0ef5e03f948940cd9a8fe08e7fecbad040e62327385
+WOFF2 SHA-256: 18b046b271ac54041defb3cf37e850b95fd00a7b3f8e3de94f5efc15f54fca39
+
+License sources:
+https://raw.githubusercontent.com/google/fonts/main/ofl/manrope/OFL.txt
+https://raw.githubusercontent.com/google/fonts/main/ofl/instrumentserif/OFL.txt
+
+Build: FontTools 4.61.1 + Brotli 1.2.0. Latin subset includes Spanish accents,
+inverted question/exclamation marks, Latin-1, standard punctuation, euro sign,
+arrows and mathematical minus. Manrope retains a variable wght axis 400-800
+(default 400); Instrument Serif regular and italic are static weight 400.
+FontTools subsets precede Manrope axis instantiation. Names were updated from
+the upstream ExtraLight default to Regular using updateFontNames=True.
+
+Suggested CSS font-family names: "Manrope" and "Instrument Serif".
+Manrope: font-style normal; font-weight 400 800.
+Instrument Serif: separate normal and italic faces, font-weight 400.
+Use font-display: swap. No network requests to Google Fonts are needed.

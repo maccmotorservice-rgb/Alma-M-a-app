@@ -292,3 +292,11 @@ En el menú oscuro, el logotipo original transparente se representa en blanco me
 ### Cancelación de producción de prueba (v55)
 
 Cancelar un lote o pedido con **Esto fue una prueba** revierte las unidades registradas como hechas: retira esas unidades del stock y restituye los insumos mediante el registro de consumo por frasco. Se conserva el lote cancelado, motivo, fecha, usuario y cantidad revertida. No devuelve insumos por unidades pendientes. Los demás motivos conservan los avances e inventario. La operación se guarda completa o no se guarda: se bloquea si falta stock para retirar, hay cambios concurrentes o los registros antiguos no permiten reconstruir el consumo. Una nota de venta vinculada no se cancela automáticamente.
+
+### Tres experiencias visuales y Éter (v56)
+
+**Diseño · Versión…** abre un selector con tres experiencias: Versión 1 (Original), Versión 2 (Studio, diseño anterior) y Versión 3 (Éter). La elección se guarda por navegador en `alma-mia-design-version`. Las tres usan la misma información y funciones; cambiar de diseño no guarda movimientos ni reinicia los formularios. La versión nueva se presenta por defecto cuando no existe una elección de versión.
+
+Éter añade navegación superior por áreas, un menú completo con descripciones, accesos de pulgar en móvil, un resumen reorganizado y accesos rápidos a ventas, existencias, reportes y etiquetas. Sus estilos viven en `studio.css`, separados de las versiones anteriores, con tipografías libres alojadas en `assets/fonts` y sus licencias. Se conservan los nombres y controles existentes, la revisión previa de las operaciones y el formato oficial de los PDF. Las animaciones de navegación, menús y producción respetan el control de efectos y movimiento reducido del sistema.
+
+La bienvenida de Éter muestra el logotipo y un jingle original suave sintetizado en el dispositivo. Aparece en el primer acceso autenticado del día (horario de Guatemala) o al regresar después de dos horas sin actividad. El estado local se comparte entre pestañas del mismo navegador para no repetirla en recargas o accesos simultáneos. **Sonido de bienvenida** en el selector de diseño permite silenciarla; el sonido se inicia al tocar Entrar cuando el navegador bloquea la reproducción automática. No envía audio ni modifica inventario, usuarios o ventas.
