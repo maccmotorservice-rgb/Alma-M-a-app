@@ -1,8 +1,8 @@
-import {perfumeMatches} from './catalog-tools.js?v=55';
-import {cancellationFields,mountCancellationFields,readCancellationFields} from './cancellation.js?v=55';
-import {validateEvidenceFile} from './evidence.js?v=55';
-import {buildSalesNote,salesAccounts,salesCategories,salesCategory,salesTotals,salesMoney,salesGroups,salesDate,salesCapacity,salesNoteStatus,editSalesNote,cancelSalesNote,salesPaymentSummary,addSalesPayment,validateSalesPayments,salesDraftFromBatch,salesSourceLabel,activeSalesNoteForBatch,insertSalesNote} from './sales.js?v=55';
-import {downloadSalesPdf} from './sales-pdf.js?v=55';
+import {perfumeMatches} from './catalog-tools.js?v=56';
+import {cancellationFields,mountCancellationFields,readCancellationFields} from './cancellation.js?v=56';
+import {validateEvidenceFile} from './evidence.js?v=56';
+import {buildSalesNote,salesAccounts,salesCategories,salesCategory,salesTotals,salesMoney,salesGroups,salesDate,salesCapacity,salesNoteStatus,editSalesNote,cancelSalesNote,salesPaymentSummary,addSalesPayment,validateSalesPayments,salesDraftFromBatch,salesSourceLabel,activeSalesNoteForBatch,insertSalesNote} from './sales.js?v=56';
+import {downloadSalesPdf} from './sales-pdf.js?v=56';
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const localDate=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
 export function createSalesPanel({catalog,getState,save,getActor,notify,uploadEvidence,getEvidenceUrl}){
