@@ -278,3 +278,7 @@ Se añaden entradas escalonadas, apertura de desplegables, respuesta de color al
 ### Dirección visual Studio 2026 (v51)
 
 El diseño moderno combina navegación en tinta oscura, superficies claras con profundidad, acentos violeta, tipografía más marcada y un panel de producción con iluminación ambiental. Se conserva el logotipo oficial sobre fondo blanco y los estados semánticos de pagos/producción. La pantalla de acceso y las vistas de inventario, ventas, reportes y herramientas comparten esta capa visual. Los formularios, los datos y los PDFs conservan su comportamiento. Diseño anterior y movimiento reducido siguen disponibles.
+
+### Legibilidad y paleta coherente (v52)
+
+Se corrigen las colisiones entre colores heredados y la capa Studio: la tarjeta de stock conserva un fondo oscuro para sus textos blancos y el panel de producción mantiene el fondo oscuro también en hover. Texto principal y secundario, contadores, campos y ayudas usan tonos de contraste más alto. Violeta identifica acciones/selección; naranja, pendientes; verde, completados/disponibles; rojo, alertas o acciones destructivas. Se revisaron las vistas principales, reportes, editor de notas y producción mediante comprobaciones de contraste de texto y verificaciones de diseño en escritorio y móvil; los fondos degradados se contrastaron con sus colores de base.

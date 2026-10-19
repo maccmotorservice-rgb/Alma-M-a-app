@@ -544,3 +544,64 @@ html[data-design=modern] footer{color:#80849a;border-top-color:#e0e2ec}
 @media(max-width:760px){html[data-design=modern] aside{background:#191f33;border-bottom:1px solid #ffffff18;box-shadow:0 5px 20px #20263f14}html[data-design=modern] aside .brand{padding:7px 10px;border-radius:9px;margin:0;width:112px}html[data-design=modern] #navigation-toggle{background:#ffffff0b;border-color:#ffffff26;color:#e1dcf6}html[data-design=modern] aside[data-menu-open] nav,html[data-design=modern] aside[data-menu-open] .aside-bottom{background:#191f33}html[data-design=modern] .hero{padding:25px;min-height:210px;border-radius:21px}html[data-design=modern] h1{letter-spacing:-1.3px}html[data-design=modern] .stats .card{padding:19px}html[data-design=modern] .number{letter-spacing:-1.2px}html[data-design=modern] .brand img{width:100%;height:auto}}
 html[data-design=modern] #access-screen{background:radial-gradient(ellipse at 15% 5%,#b3a0ea44,transparent 55%),radial-gradient(ellipse at 90% 100%,#aedbd733,transparent 50%),#f3f4fa}
 html[data-design=modern] .access-card{background:#ffffffef;border-color:#e1ddef;box-shadow:0 24px 90px #4f387f14,0 2px 8px #45416d06;backdrop-filter:blur(16px)}
+
+/* v52: one contrast system. Violet = action, amber = pending, green = complete. */
+html[data-design=modern]{--ink:#22263a;--muted:#535c72;--quiet:#59627a;--accent:#5945bd;--line:#dce0ea;--success-ink:#236244;--warning-ink:#84500d;--danger-ink:#963f36}
+html[data-design=modern] #content :is(p,small,.hint,.unit-help,.stat-label,.stock-product-meta,.stock-minimum,.stock-presentation-head>span:last-child,.stock-presentation-count>span,.sales-filter-label,.sales-ranking-title>span,.sales-rank-values>span,.sales-rank-values>small,.sales-note-figures span,.sales-note-context,.stock-collection,.inventory-list-heading p,.inventory-summary-note,.sales-note-card-top,.sales-review-help,.sales-selected-subtotal>span,.sales-month-detail>div>span,.sales-selection-heading,.sales-selected-edit>summary,.sales-card-details>summary,.sales-report-period>span,.sales-month-button,.sales-month-table>summary,.sales-section-label p){color:var(--muted)}
+html[data-design=modern] #content .stock-collection{color:var(--muted)!important}
+html[data-design=modern] :is(label.field,.field,summary,.batch-quantity,.batch-choice small,.dictation-help,.sales-group-actions button,.sales-selected-card>p,.sales-note-context span,.row .movement-actor){color:#4e5870}
+html[data-design=modern] :is(input,textarea)::placeholder{color:#626c80;opacity:1}
+html[data-design=modern] :is(.group-tabs button,.secondary,.text-button){color:#4d5670}
+html[data-design=modern] .group-tabs button[aria-pressed=true]{color:#fff;background:#5945bd;border-color:#5945bd}
+html[data-design=modern] :is(th,.group-heading span,.stock-type,.stock-size-chip,.stock-product-meta>span:first-child,.sales-rank-tags>span,.sales-selected-group>h3){color:#505b70}
+html[data-design=modern] :is(.stock-presentation.is-empty .stock-presentation-count strong,.empty,.empty-symbol,.product .code,.prices small,.inventory-filter-line>span){color:#5b6579}
+html[data-design=modern] .inventory-metric>span,html[data-design=modern] .inventory-metric>small{color:#535c72}
+html[data-design=modern] .inventory-metric.metric-product-all{background:linear-gradient(135deg,#6650c2,#4e54a1);border-color:#6650c2}
+html[data-design=modern] .inventory-metric.metric-product-all>strong{color:#fff}
+html[data-design=modern] .inventory-metric.metric-product-all>span,html[data-design=modern] .inventory-metric.metric-product-all>small{color:#fff}
+html[data-design=modern] :is(.inventory-metric.metric-low>strong,.sales-amount-pending,.financial-pending){color:var(--warning-ink)}
+html[data-design=modern] :is(.inventory-metric.metric-empty>strong,tr[data-stock-status=empty] .stock-amount){color:var(--danger-ink)}
+html[data-design=modern] tr[data-stock-status=low] .stock-amount{color:var(--warning-ink)}
+html[data-design=modern] .badge{color:#80500f;background:#fff0d9}
+html[data-design=modern] .badge.green{color:#236244;background:#e6f4eb}
+html[data-design=modern] .badge.report-missing{color:#963f36;background:#fcebe7}
+html[data-design=modern] :is(.sales-cancel-button,.sales-selected-top .text-button){color:#963f36}
+html[data-design=modern] .sales-metric.metric-receivable>strong{color:#84500d}
+html[data-design=modern] .sales-metric.metric-collected>strong{color:#236244}
+html[data-design=modern] .primary{background:linear-gradient(115deg,#6550c4,#4e50a6);border-color:#5945bd;color:#fff}
+html[data-design=modern] .primary:hover:not(:disabled){background:#50409f;color:#fff}
+html[data-design=modern] .hero h2{color:#fff}
+html[data-design=modern] #content .hero p{color:#e0e4f3}
+html[data-design=modern] #content:has(>.hero)>.stats>.card:nth-child(2) :is(.number,.stat-label,.hint,.number small){color:#fff}
+html[data-design=modern] aside :is(.nav-group,.aside-bottom,.aside-bottom small,.quiet,.import){color:#b6bed4}
+html[data-design=modern] nav button{color:#ccd2e4}
+html[data-design=modern] nav button.active,html[data-design=modern] nav button:hover{color:#fff}
+html[data-design=modern] header,html[data-design=modern] #date,html[data-design=modern] .session-picker,html[data-design=modern] #design-toggle{color:#535c72}
+html[data-design=modern] .quick-open,html[data-design=modern] #workspace-help,html[data-design=modern] #workspace-help summary{color:#5d517d}
+html[data-design=modern] :is(.quick-keyboard,#quick-results small,.quick-enter,.quick-open kbd){color:#596178}
+html[data-design=modern] footer{color:#596178}
+html[data-design=modern] #content :is(.sales-note-card h3,.finished-stock-card h3,.product h3,.stock-item-name){color:#262c40}
+html[data-design=modern] .stock-category-tabs button[aria-pressed=true]>span{color:#fff}
+html[data-design=modern] #content .sales-month-title>span{color:#535c72}
+html[data-design=modern] #content .sales-rank-row:first-child .sales-rank-position{color:#fff}
+@media(hover:hover) and (pointer:fine){html[data-design=modern][data-effects=on] #content:has(>.hero)>.hero:hover{background:radial-gradient(ellipse at 96% 10%,#7965cf80,transparent 45%),radial-gradient(ellipse at 70% 110%,#3c8f8a55,transparent 55%),linear-gradient(115deg,#20243c,#282d4c);border-color:#77719b;box-shadow:0 16px 40px #2b2e5d20}html[data-design=modern][data-effects=on] #content:has(>.hero)>.stats>.card:nth-child(2):hover{background:linear-gradient(135deg,#6b5cdb,#4d55a9);border-color:#766be3}html[data-design=modern] .group-tabs button[aria-pressed=true]:hover{color:#fff;background:#50409f}}
+html[data-design=modern] .page-title :is(.eyeline,.eyebrow){color:#66539e}
+html[data-design=modern] .notice{color:#4e5b68;background:#f0f3f7;border-color:#dce1e9}
+html[data-design=modern] .production-status.is-progress,html[data-design=modern] .payment-badge.is-pending{color:#80500f;background:#fff0d9}
+html[data-design=modern] .production-status.is-ready,html[data-design=modern] .payment-badge.is-paid{color:#236244;background:#e6f4eb}
+html[data-design=modern] #content .hero.hero p{color:#e0e4f3}
+html[data-design=modern] #content .inventory-metric.metric-product-all>small{color:#fff}
+html[data-design=modern] #content .sales-metric>span{color:#535c72}
+html[data-design=modern] .stock-category-tabs button>span{color:#4f5c70}
+html[data-design=modern] .stock-category-tabs button[aria-pressed=true]>span{color:#fff}
+html[data-design=modern] :is(.stock-amount,.stock-presentation-count strong,.prices,.sales-selected-subtotal strong){color:#30384e}
+html[data-design=modern] :is(.stock-presentation,.sales-selected-card){background:#f7f8fc;border-color:#dfe3ed}
+html[data-design=modern] :is(.stock-type,.stock-product-meta>span:first-child,.stock-size-chip){background:#f0f2f8;border-color:#dfe3ed;color:#4f5c70}
+html[data-design=modern] :is(.label-option,.strip-card,.sales-result):has(input:checked){background:#f0ecfb;border-color:#b9acdd;box-shadow:inset 3px 0 #8070bd}
+html[data-design=modern] :is(.label-option,.sales-result):has(input:checked) strong{color:#443567}
+html[data-design=modern] tr[data-stock-status=empty] .stock-amount{color:#963f36}
+html[data-design=modern] tr[data-stock-status=low] .stock-amount{color:#84500d}
+html[data-design=modern] .sales-section-label>span{color:#5b4c7e;background:#efecf8;border-color:#dcd5ee}
+html[data-design=modern] #sales-selection-count.badge{color:#594678;background:#efecf8}
+html[data-design=modern] .sales-quantity-stepper>button{color:#55436f;background:#f4f1fa;border-color:#d8d0e8}
+html[data-design=modern] .batch-section summary span{color:#535c72}
