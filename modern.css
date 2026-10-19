@@ -284,3 +284,12 @@ html[data-design="modern"][data-effects="on"] button[aria-busy=true]::before{con
 }
 html[data-design="modern"][data-effects="off"] *{animation:none!important;transition:none!important}
 @media(prefers-reduced-motion:reduce){html[data-design="modern"] *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* Overview cards respond to the pointer without suggesting they are buttons. */
+@media(hover:hover) and (pointer:fine){
+ html[data-design="modern"][data-effects="on"] #content:has(>.hero) :is(.stats>.card,.columns>.card,.hero){transition:background-color .2s,border-color .2s,box-shadow .2s,transform .2s}
+ html[data-design="modern"][data-effects="on"] #content:has(>.hero) :is(.stats>.card,.columns>.card):hover{background:#eff7f1;border-color:#abd0b8;box-shadow:0 6px 22px #28533c14;transform:translateY(-3px)}
+ html[data-design="modern"][data-effects="on"] #content:has(>.hero)>.stats>.card:nth-child(2):hover{background:#1d4434;border-color:#427959;box-shadow:0 0 0 3px #8dc9a322,0 8px 22px #1f49352b;color:#fff}
+ html[data-design="modern"][data-effects="on"] #content:has(>.hero)>.hero:hover{background:#e0eee3;border-color:#a9cbb2;box-shadow:0 7px 24px #345c4014;transform:translateY(-2px)}
+}
+html[data-design="modern"] nav button[data-view=batches] span,html[data-design="modern"] nav button[data-view=catalog] span{line-height:1.45}

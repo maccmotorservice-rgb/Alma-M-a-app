@@ -239,10 +239,19 @@ El lector conserva por defecto la foto completa para no recortar los ml del bord
 Se solicita enfoque continuo cuando la cámara lo admite y se utiliza captura de foto de mayor resolución en navegadores con ImageCapture; los demás mantienen la captura desde video. Ver foto capturada permite revisar la imagen realmente procesada. Solo permanece en memoria y su URL se libera al sustituirla o descartar la lista. El ingreso continúa requiriendo revisión y confirmación, sin enviar imágenes a servicios externos.
 
 
-### Tiras en tabloide
+### Imprimir tiras
 
-La sección Tiras en tabloide importa ZIP directamente en el navegador, mediante lectura por fragmentos e inflación en Web Workers (fflate 0.8.2). No requiere subir el archivo a un servidor ni dividirlo al límite de adjuntos del chat. Acepta PNG, JPG y WebP; omite carpetas de metadatos de macOS. Las imágenes originales y miniaturas se guardan en IndexedDB de este navegador (no se sincronizan en Supabase). Reimportar la misma ruta de archivo reemplaza esa imagen sin duplicarla.
+La sección Imprimir tiras importa ZIP directamente en el navegador, mediante lectura por fragmentos e inflación en Web Workers (fflate 0.8.2). No requiere subir el archivo a un servidor ni dividirlo al límite de adjuntos del chat. Acepta PNG, JPG y WebP; omite carpetas de metadatos de macOS. Las imágenes originales y miniaturas se guardan en IndexedDB de este navegador (no se sincronizan en Supabase). Reimportar la misma ruta de archivo reemplaza esa imagen sin duplicarla.
 
 Los códigos independientes 01 y 02 en el nombre identifican 50 y 100 ml. La coincidencia con el catálogo usa el nombre propio completo, ignorando mayúsculas, acentos y separadores; si no coincide, muestra una advertencia sin renombrar la imagen. El PDF admite cantidades independientes de cada diseño y coloca hasta tres copias por tabloide vertical de 279.4 × 431.8 mm. Conserva las imágenes completas y usa las medidas oficiales confirmadas por capacidad: 50 ml = 71.9 × 390 mm; 100 ml = 80.1 × 431.8 mm. Estas medidas prevalecen sobre los píxeles, resolución de la imagen y ajustes anteriores; no es necesario reimportar el ZIP. Solo los archivos sin capacidad identificada conservan el ajuste manual y el cálculo por resolución. Las copias repetidas reutilizan una sola imagen dentro del PDF para reducir memoria y tamaño del archivo. Imprimir al 100 %, sin ajustar a página. No modifica stock ni producción.
 
 Para reconstruir el lector ZIP vendorizado: `npm run build:zip`. Conserva su licencia MIT en assets/zip-client.LICENSE.txt.
+
+
+### Dictado dentro de las secciones de stock
+
+El dictado ya no es una sección del menú. En Stock de materia prima, **Dictar materias primas** abre el registro de frascos, cuartos, alcohol y galaxolide. En Stock de producto, **Dictar producto terminado** abre un conteo separado por perfume, presentación de 50/100 ml y unidades.
+
+El conteo de producto presenta una lista editable en orden de mención y una previsualización agrupada por Hombre, Dama y Unisex. La primera sugerencia de nombre se selecciona para revisión. Admite voz continua con «Siguiente perfume» y texto manual separado por líneas o punto y coma. Las repeticiones del mismo perfume/presentación se suman dentro de la lista; al confirmar, ese total REEMPLAZA el stock anterior de esa presentación. El resto del stock se conserva. No consume materias primas ni completa órdenes de producción. Los cambios generan movimientos con el usuario autenticado. Si otra sesión cambia una de esas existencias mientras se prepara el conteo, se exige rehacer ese registro antes de confirmar.
+
+El menú y las cabeceras usan los nombres Imprimir etiquetas, Imprimir tiras, Catálogo y guía olfativa, Generar un lote o pedido, Stock de materia prima y Stock de producto. Las tarjetas del Resumen tienen respuestas de color y elevación cuando los efectos visuales están activados, y respetan movimiento reducido.
