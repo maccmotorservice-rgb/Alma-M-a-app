@@ -274,3 +274,7 @@ El reporte combina un resumen anual, una gráfica mensual con detalle al selecci
 El diseño moderno incorpora un buscador global de secciones/herramientas (botón o Ctrl/Cmd + K), coincidencias sin acentos por palabras y navegación con flechas, Enter y Escape. Incluye accesos directos a nueva nota, producción, reportes, dictado y escáner; abre los formularios existentes sin registrar movimientos. Cada pantalla tiene una guía desplegable. Los botones flotantes permiten ir a la selección en notas/etiquetas/tiras y volver arriba. Cambiar de sección vuelve al inicio de la página.
 
 Se añaden entradas escalonadas, apertura de desplegables, respuesta de color al pulsar y énfasis breve al seleccionar; se mantiene el interruptor de efectos, la preferencia del sistema de movimiento reducido y el diseño anterior. El buscador no se abre encima de otros formularios modales, y se cierra y limpia al finalizar la sesión. Estos cambios no alteran las fórmulas, cobros, inventario o sincronización.
+
+### Dirección visual Studio 2026 (v51)
+
+El diseño moderno combina navegación en tinta oscura, superficies claras con profundidad, acentos violeta, tipografía más marcada y un panel de producción con iluminación ambiental. Se conserva el logotipo oficial sobre fondo blanco y los estados semánticos de pagos/producción. La pantalla de acceso y las vistas de inventario, ventas, reportes y herramientas comparten esta capa visual. Los formularios, los datos y los PDFs conservan su comportamiento. Diseño anterior y movimiento reducido siguen disponibles.
