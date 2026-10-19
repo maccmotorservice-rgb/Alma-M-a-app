@@ -233,3 +233,23 @@ body.access-locked { display: block; }
 .access-card h1 { font-size: 28px; }
 .access-card form .primary { width: 100%; }
 .access-card [role=status] { overflow-wrap: anywhere; }
+
+#scan-video { width: 100%; max-height: 380px; background: #201a15; border-radius: 12px; object-fit: contain; margin: 16px 0; }
+#scan-video:not([src]):not([srcObject]) { min-height: 100px; }
+.scan-list-heading { margin: 28px 0 12px; }
+.scan-photo-label { display: flex; flex-direction: column; align-items: stretch; justify-content: center; gap: 8px; border: 1px solid #d9d1c7; border-radius: 8px; padding: 12px; cursor: pointer; }
+.scan-photo-label input { font-size: 12px; max-width: 100%; min-height: 30px; }
+.scan-read-text { white-space: pre-wrap; overflow-wrap: anywhere; }
+.scan-row summary { cursor: pointer; padding: 12px 0; }
+.scan-row .field { margin-top: 14px; }
+.scan-row .section-head h3 { margin: 0; }
+
+.scan-camera-frame { position: relative; aspect-ratio: 4 / 3; border-radius: 12px; overflow: hidden; margin: 16px 0; background: #201a15; }
+.scan-camera-frame #scan-video { display: block; width: 100%; height: 100%; max-height: none; margin: 0; object-fit: cover; }
+.scan-target { position: absolute; inset: 12.5% 9%; border: 2px solid white; border-radius: 10px; box-shadow: 0 0 0 100vmax #0006; pointer-events: none; }
+.scan-full-frame .scan-target { inset: 0; box-shadow: none; border-color: transparent; }
+
+.scan-camera-frame { width: min(100%, 330px); aspect-ratio: 3 / 4; margin: 16px auto; }
+
+.scan-photo-label[aria-disabled="true"] { opacity: .5; cursor: default; }
+.scan-photo-label:focus-visible { outline: 2px solid #745433; outline-offset: 3px; }
