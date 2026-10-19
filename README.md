@@ -288,3 +288,7 @@ Se corrigen las colisiones entre colores heredados y la capa Studio: la tarjeta 
 Se eliminan las reglas heredadas que daban un fondo de acento permanente a la segunda tarjeta del Resumen y forzaban letras blancas en el total de Stock de producto. Las tarjetas de datos conservan superficies claras con texto oscuro; los filtros seleccionados usan fondo violeta tenue y texto oscuro, incluso al pasar el mouse. La validación incluye seleccionar y recorrer con el puntero los filtros y métricas con efectos activados, además de la revisión de tamaños y navegación.
 
 En el menú oscuro, el logotipo original transparente se representa en blanco mediante un filtro visual; se elimina el recuadro de fondo en escritorio y móvil. El archivo original y su uso en acceso, diseño clásico y documentos se conservan.
+
+### Cancelación de producción de prueba (v55)
+
+Cancelar un lote o pedido con **Esto fue una prueba** revierte las unidades registradas como hechas: retira esas unidades del stock y restituye los insumos mediante el registro de consumo por frasco. Se conserva el lote cancelado, motivo, fecha, usuario y cantidad revertida. No devuelve insumos por unidades pendientes. Los demás motivos conservan los avances e inventario. La operación se guarda completa o no se guarda: se bloquea si falta stock para retirar, hay cambios concurrentes o los registros antiguos no permiten reconstruir el consumo. Una nota de venta vinculada no se cancela automáticamente.
