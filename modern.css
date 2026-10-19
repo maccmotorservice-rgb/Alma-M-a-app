@@ -64,8 +64,6 @@ html[data-design="modern"] #content:has(>.hero)>.stats{order:1}
 html[data-design="modern"] #content:has(>.hero)>.hero{order:2}
 html[data-design="modern"] #content:has(>.hero)>.financial-overview{order:3}
 html[data-design="modern"] #content:has(>.hero)>.columns{order:4;margin-top:10px}
-html[data-design="modern"] #content:has(>.hero)>.stats>.card:nth-child(2){background:var(--accent);border-color:var(--accent);color:#fff}
-html[data-design="modern"] #content:has(>.hero)>.stats>.card:nth-child(2) :is(.stat-label,.hint,.number small){color:#d7e6dc}
 html[data-design="modern"] .financial-overview{margin:5px 0 24px}
 html[data-design="modern"] .financial-overview>.section-head,html[data-design="modern"] .financial-overview>h2{margin:0 0 16px}
 html[data-design="modern"] .financial-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -289,7 +287,6 @@ html[data-design="modern"][data-effects="off"] *{animation:none!important;transi
 @media(hover:hover) and (pointer:fine){
  html[data-design="modern"][data-effects="on"] #content:has(>.hero) :is(.stats>.card,.columns>.card,.hero){transition:background-color .2s,border-color .2s,box-shadow .2s,transform .2s}
  html[data-design="modern"][data-effects="on"] #content:has(>.hero) :is(.stats>.card,.columns>.card):hover{background:#eff7f1;border-color:#abd0b8;box-shadow:0 6px 22px #28533c14;transform:translateY(-3px)}
- html[data-design="modern"][data-effects="on"] #content:has(>.hero)>.stats>.card:nth-child(2):hover{background:#1d4434;border-color:#427959;box-shadow:0 0 0 3px #8dc9a322,0 8px 22px #1f49352b;color:#fff}
  html[data-design="modern"][data-effects="on"] #content:has(>.hero)>.hero:hover{background:#e0eee3;border-color:#a9cbb2;box-shadow:0 7px 24px #345c4014;transform:translateY(-2px)}
 }
 html[data-design="modern"] nav button[data-view=batches] span,html[data-design="modern"] nav button[data-view=catalog] span{line-height:1.45}
@@ -307,9 +304,6 @@ html[data-design="modern"] .inventory-metric.metric-low[aria-pressed=true]{backg
 html[data-design="modern"] .inventory-metric.metric-empty[aria-pressed=true]{background:#fff2f0;border-color:#dda9a3;box-shadow:inset 0 0 0 1px #edc8c4}
 html[data-design="modern"] .inventory-metric.metric-low[aria-pressed=true]::after{background:#c18b37;box-shadow:0 0 0 4px #c18b3719}
 html[data-design="modern"] .inventory-metric.metric-empty[aria-pressed=true]::after{background:#b86b61;box-shadow:0 0 0 4px #b86b6119}
-html[data-design="modern"] .inventory-metric.metric-product-all{background:#294f42;color:white;border-color:#294f42}
-html[data-design="modern"] .inventory-metric.metric-product-all>strong{color:#fff}
-html[data-design="modern"] .inventory-metric.metric-product-all>span,html[data-design="modern"] .inventory-metric.metric-product-all>small{color:#d9e9df}
 html[data-design="modern"] .inventory-controls{border-color:#e0e9e3;background:linear-gradient(140deg,#fff,#fbfdfb)}
 html[data-design="modern"] .inventory-controls .field{margin:0}
 html[data-design="modern"] .inventory-filter-line>span{color:#6a7f70;font-size:10px;font-weight:600;letter-spacing:.4px}
@@ -498,9 +492,6 @@ html[data-design=modern] .stats .card{padding:25px;border-radius:21px}
 html[data-design=modern] .stat-label{font-size:11px;color:#646b83;letter-spacing:.1px}
 html[data-design=modern] .number{font-weight:650;letter-spacing:-1.8px;margin-top:24px;color:#24273e}
 html[data-design=modern] .hint{color:#737b92}
-html[data-design=modern] #content:has(>.hero)>.stats>.card:nth-child(2){background:linear-gradient(135deg,#6b5cdb,#4d55a9);border-color:#766be3;box-shadow:0 9px 25px #6257c322;color:#fff}
-html[data-design=modern] #content:has(>.hero)>.stats>.card:nth-child(2) :is(.number,.stat-label){color:#fff}
-html[data-design=modern] #content:has(>.hero)>.stats>.card:nth-child(2) :is(.hint,.number small){color:#e3e0ff}
 html[data-design=modern] .primary{background:linear-gradient(115deg,#6f5bdc,#535bc5);border:1px solid #695ed4;box-shadow:0 4px 11px #6453c21f,inset 0 1px #ffffff22;border-radius:12px;color:#fff}
 html[data-design=modern] .primary:hover:not(:disabled){background:linear-gradient(115deg,#7a67e7,#6066d1);border-color:#7a6ee3;box-shadow:0 7px 20px #6c5cd22b}
 html[data-design=modern] .secondary{background:#ffffffd9;border-color:#dfe2ee;color:#525b75;border-radius:12px}
@@ -556,9 +547,6 @@ html[data-design=modern] .group-tabs button[aria-pressed=true]{color:#fff;backgr
 html[data-design=modern] :is(th,.group-heading span,.stock-type,.stock-size-chip,.stock-product-meta>span:first-child,.sales-rank-tags>span,.sales-selected-group>h3){color:#505b70}
 html[data-design=modern] :is(.stock-presentation.is-empty .stock-presentation-count strong,.empty,.empty-symbol,.product .code,.prices small,.inventory-filter-line>span){color:#5b6579}
 html[data-design=modern] .inventory-metric>span,html[data-design=modern] .inventory-metric>small{color:#535c72}
-html[data-design=modern] .inventory-metric.metric-product-all{background:linear-gradient(135deg,#6650c2,#4e54a1);border-color:#6650c2}
-html[data-design=modern] .inventory-metric.metric-product-all>strong{color:#fff}
-html[data-design=modern] .inventory-metric.metric-product-all>span,html[data-design=modern] .inventory-metric.metric-product-all>small{color:#fff}
 html[data-design=modern] :is(.inventory-metric.metric-low>strong,.sales-amount-pending,.financial-pending){color:var(--warning-ink)}
 html[data-design=modern] :is(.inventory-metric.metric-empty>strong,tr[data-stock-status=empty] .stock-amount){color:var(--danger-ink)}
 html[data-design=modern] tr[data-stock-status=low] .stock-amount{color:var(--warning-ink)}
@@ -572,7 +560,6 @@ html[data-design=modern] .primary{background:linear-gradient(115deg,#6550c4,#4e5
 html[data-design=modern] .primary:hover:not(:disabled){background:#50409f;color:#fff}
 html[data-design=modern] .hero h2{color:#fff}
 html[data-design=modern] #content .hero p{color:#e0e4f3}
-html[data-design=modern] #content:has(>.hero)>.stats>.card:nth-child(2) :is(.number,.stat-label,.hint,.number small){color:#fff}
 html[data-design=modern] aside :is(.nav-group,.aside-bottom,.aside-bottom small,.quiet,.import){color:#b6bed4}
 html[data-design=modern] nav button{color:#ccd2e4}
 html[data-design=modern] nav button.active,html[data-design=modern] nav button:hover{color:#fff}
@@ -584,13 +571,12 @@ html[data-design=modern] #content :is(.sales-note-card h3,.finished-stock-card h
 html[data-design=modern] .stock-category-tabs button[aria-pressed=true]>span{color:#fff}
 html[data-design=modern] #content .sales-month-title>span{color:#535c72}
 html[data-design=modern] #content .sales-rank-row:first-child .sales-rank-position{color:#fff}
-@media(hover:hover) and (pointer:fine){html[data-design=modern][data-effects=on] #content:has(>.hero)>.hero:hover{background:radial-gradient(ellipse at 96% 10%,#7965cf80,transparent 45%),radial-gradient(ellipse at 70% 110%,#3c8f8a55,transparent 55%),linear-gradient(115deg,#20243c,#282d4c);border-color:#77719b;box-shadow:0 16px 40px #2b2e5d20}html[data-design=modern][data-effects=on] #content:has(>.hero)>.stats>.card:nth-child(2):hover{background:linear-gradient(135deg,#6b5cdb,#4d55a9);border-color:#766be3}html[data-design=modern] .group-tabs button[aria-pressed=true]:hover{color:#fff;background:#50409f}}
+@media(hover:hover) and (pointer:fine){html[data-design=modern][data-effects=on] #content:has(>.hero)>.hero:hover{background:radial-gradient(ellipse at 96% 10%,#7965cf80,transparent 45%),radial-gradient(ellipse at 70% 110%,#3c8f8a55,transparent 55%),linear-gradient(115deg,#20243c,#282d4c);border-color:#77719b;box-shadow:0 16px 40px #2b2e5d20}html[data-design=modern] .group-tabs button[aria-pressed=true]:hover{color:#fff;background:#50409f}}
 html[data-design=modern] .page-title :is(.eyeline,.eyebrow){color:#66539e}
 html[data-design=modern] .notice{color:#4e5b68;background:#f0f3f7;border-color:#dce1e9}
 html[data-design=modern] .production-status.is-progress,html[data-design=modern] .payment-badge.is-pending{color:#80500f;background:#fff0d9}
 html[data-design=modern] .production-status.is-ready,html[data-design=modern] .payment-badge.is-paid{color:#236244;background:#e6f4eb}
 html[data-design=modern] #content .hero.hero p{color:#e0e4f3}
-html[data-design=modern] #content .inventory-metric.metric-product-all>small{color:#fff}
 html[data-design=modern] #content .sales-metric>span{color:#535c72}
 html[data-design=modern] .stock-category-tabs button>span{color:#4f5c70}
 html[data-design=modern] .stock-category-tabs button[aria-pressed=true]>span{color:#fff}
@@ -605,3 +591,21 @@ html[data-design=modern] .sales-section-label>span{color:#5b4c7e;background:#efe
 html[data-design=modern] #sales-selection-count.badge{color:#594678;background:#efecf8}
 html[data-design=modern] .sales-quantity-stepper>button{color:#55436f;background:#f4f1fa;border-color:#d8d0e8}
 html[data-design=modern] .batch-section summary span{color:#535c72}
+
+/* v53: light data surfaces always use dark text, including hover/selection. */
+html[data-design=modern] #content .inventory-metric.metric-product-all{background:#fff;border-color:#dce0ea;box-shadow:0 5px 20px #3a3c6804}
+html[data-design=modern] #content .inventory-metric.metric-product-all:is(:hover,[aria-pressed=true]){background:#f1eef9;border-color:#a99bc9}
+html[data-design=modern] #content .inventory-metric.metric-product-all :is(strong,span,small){color:#30384e}
+html[data-design=modern] #content .group-tabs button[aria-pressed=true],html[data-design=modern] #content .group-tabs button[aria-pressed=true]:hover,html[data-design=modern] #content .stock-category-tabs button[aria-pressed=true]{color:#493267;background:#ece6f7;border-color:#a99bc9;box-shadow:inset 0 0 0 1px #b7a9d122}
+html[data-design=modern] #content .group-tabs button[aria-pressed=true] :is(span,strong,small){color:#493267;background:transparent}
+html[data-design=modern] #content .stats>.card{background:#fff;color:#22263a}
+html[data-design=modern] #content .stats>.card .number{color:#22263a}
+html[data-design=modern] #content .stats>.card :is(.stat-label,.hint,.number small){color:#535c72}
+html[data-design=modern] #content .inventory-metric[aria-pressed=true]::after{background:#7360a8;box-shadow:0 0 0 4px #7360a81a}
+@media(hover:hover) and (pointer:fine){html[data-design=modern][data-effects=on] #content:has(>.hero)>.stats>.card:hover{background:#f2eef9;border-color:#b5a4d3;box-shadow:0 8px 25px #6b559917}}
+@media(hover:hover) and (pointer:fine){html[data-design=modern][data-effects=on] #content:has(>.hero)>.hero:hover{background:radial-gradient(ellipse at 96% 10%,#7965cf80,transparent 45%),linear-gradient(115deg,#20243c,#282d4c);border-color:#77719b}}
+html[data-design=modern] #content .sales-ranking-panel .sales-rank-row .sales-rank-position{color:#4e4268;background:#eeebf6;border-color:#d7cfe6;box-shadow:none}
+/* The original PNG already has transparency; tint only the navigation rendering. */
+html[data-design=modern] aside .brand{background:transparent;box-shadow:none;border:0;border-radius:0;padding:6px 13px;margin:0 9px}
+html[data-design=modern] aside .brand img{filter:brightness(0) invert(1);width:170px;max-width:100%;height:auto}
+@media(max-width:760px){html[data-design=modern] aside .brand{background:transparent;padding:4px 0;margin:0;width:119px;border-radius:0}html[data-design=modern] aside .brand img{width:119px}}
