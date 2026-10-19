@@ -348,3 +348,98 @@ html[data-design="modern"] .stock-help{color:#6d8373}
 @media(max-width:760px){html[data-design="modern"] .inventory-metric{border-radius:14px;padding:18px}html[data-design="modern"] .inventory-metric>strong{font-size:31px}html[data-design="modern"] .inventory-metric[aria-pressed=true]::after{right:10px;top:10px;width:5px;height:5px}html[data-design="modern"] .inventory-controls{padding:18px}html[data-design="modern"] .inventory-control-grid{grid-template-columns:minmax(0,1fr);gap:15px}html[data-design="modern"] .inventory-filter-line>span{display:block;margin-bottom:10px}html[data-design="modern"] .inventory-controls .field{margin:0}html[data-design="modern"] .finished-stock-card h3{font-size:21px}html[data-design="modern"] .stock-presentation-count strong{font-size:30px}html[data-design="modern"] .stock-presentation{padding:13px}html[data-design="modern"] .inventory-support-actions>button{font-size:11px;padding:10px}html[data-design="modern"] .inventory-list-heading h2{font-size:16px}}
 
 html[data-design="modern"] .inventory-more-filters{border-color:#e2ece5;color:#56735e}html[data-design="modern"] .inventory-more-filters>summary{font-size:11px;font-weight:500}
+
+/* Sales: focused composing, compact history, readable rankings. */
+html[data-design=modern] .sales-metric{border-color:#dfe9e2;background:#fff;box-shadow:0 2px 8px #25513904;border-radius:17px}
+html[data-design=modern] .sales-metric>span,html[data-design=modern] .sales-metric>small{color:#6b8171}
+html[data-design=modern] .sales-metric>strong{color:#284c36}
+html[data-design=modern] .sales-metric.metric-receivable>strong{color:#a8792e}
+html[data-design=modern] .sales-metric.metric-collected>strong{color:#3d8157}
+html[data-design=modern] .sales-history-filter-grid .field{margin:0}
+html[data-design=modern] .sales-history-list-heading h2{font-size:17px}
+html[data-design=modern] .sales-history-list-heading p{font-size:11px;color:#7c8f80}
+html[data-design=modern] .sales-note-card{border-color:#dfe9e2;border-top:3px solid #77a486}
+html[data-design=modern] .sales-note-card[data-payment-status=pending]{border-top-color:#d4a15b}
+html[data-design=modern] .sales-note-card[data-payment-status=cancelled]{border-top-color:#b7bfb7}
+html[data-design=modern] .sales-note-card-top{color:#7a8c7e}
+html[data-design=modern] .sales-note-card h3{color:#273e2f;font-size:21px}
+html[data-design=modern] .sales-note-context{color:#6d8675}
+html[data-design=modern] .sales-note-context>span{background:#f5f9f5;border-color:#e4ece5}
+html[data-design=modern] .sales-note-figures{border-color:#e4ece5}
+html[data-design=modern] .sales-note-figures span{color:#7b8d7e}
+html[data-design=modern] .sales-amount-pending{color:#aa7527}
+html[data-design=modern] .sales-amount-paid{color:#408058}
+html[data-design=modern] .sales-card-details{border-color:#e3ece5}
+html[data-design=modern] .sales-card-details>summary{color:#6c8573}
+html[data-design=modern] .sales-card-details p{font-size:10px;color:#7c8f80}
+html[data-design=modern] .sales-card-primary-actions .primary{font-size:11px}
+html[data-design=modern] .sales-workspace-heading h2{font-size:23px}
+html[data-design=modern] .sales-workspace-heading p{font-size:12px}
+html[data-design=modern] .sales-flow-nav a{border-color:#dce8df;color:#52715b;background:#fff}
+html[data-design=modern] .sales-flow-nav a span{background:#eaf3ed;color:#52765e}
+html[data-design=modern] .sales-section-label>span{background:#eff6f1;border-color:#dceade;color:#678a70}
+html[data-design=modern] .sales-section-label h2{font-size:18px;margin:0 0 6px}
+html[data-design=modern] .sales-section-label p{font-size:11px;color:#7c8e7f;margin:0}
+html[data-design=modern] .sales-source-loader>summary{color:#53745d;font-size:12px}
+html[data-design=modern] .sales-compose-section .sales-source-loader{background:#f5f9f5;border-color:#e1ebe3}
+html[data-design=modern] .sales-compose-section #sales-results{background:#fff;border-color:#e0eae2}
+html[data-design=modern] .sales-compose-section .sales-product-checks label{border:1px solid #e1eae3;border-radius:8px;padding:7px 6px;background:#fafcf9;font-size:11px;gap:4px;line-height:1.5}
+html[data-design=modern] .sales-compose-section .sales-product-checks label:has(input:checked){background:#eaf5ee;border-color:#9cc6aa;color:#386348}
+html[data-design=modern] .sales-compose-section .sales-product-checks input{width:17px;height:17px;min-width:17px;min-height:17px}
+html[data-design=modern] .sales-compose-section .sales-product-checks label small{font-size:9px;color:#7b9582}
+html[data-design=modern] .sales-compose-section .sales-product-checks{gap:7px}
+html[data-design=modern] .sales-compose-section .sales-group-actions button{font-size:10px;min-height:36px;padding:7px 9px}
+html[data-design=modern] .sales-selection-heading .badge{background:#edf5ef;color:#5d8067}
+html[data-design=modern] .sales-selection-heading .text-button{font-size:10px}
+html[data-design=modern] .sales-selected-group>h3{color:#64816b;background:#edf4ef;font-size:10px;margin:0 0 10px}
+html[data-design=modern] .sales-selected-card{background:#fcfefb;border-color:#e1ebe2}
+html[data-design=modern] .sales-selected-card .field{font-size:10px;margin:0;gap:6px}
+html[data-design=modern] .sales-selected-card .sales-selected-edit>.field{margin:12px 0;font-size:11px}
+html[data-design=modern] .sales-selected-card input,html[data-design=modern] .sales-selected-card select{font-size:13px;padding:9px;min-height:39px}
+html[data-design=modern] .sales-selected-card .sales-quantity-stepper input{padding:8px 2px}
+html[data-design=modern] .sales-selected-top>strong{color:#2e4936;font-size:13px}
+html[data-design=modern] .sales-selected-top .text-button{color:#a76a5c}
+html[data-design=modern] .sales-selected-card>p{font-size:11px;color:#78917e;line-height:1.6}
+html[data-design=modern] .sales-selected-subtotal{border-color:#e3ece3;color:#78917d}
+html[data-design=modern] .sales-selected-subtotal strong{color:#3c684a}
+html[data-design=modern] .sales-selected-edit>summary{color:#7e9584;font-size:10px}
+html[data-design=modern] .sales-quantity-stepper>button{border-color:#d9e7dc;color:#5c7f66;background:#f4f9f4}
+html[data-design=modern] .sales-selection-empty>span{border-color:#bad6c1;color:#78a487;background:#eff7f1}
+html[data-design=modern] .sales-selection-empty h3{color:#456a50;font-size:15px}
+html[data-design=modern] .sales-discount-panel{border-color:#e1eae2}
+html[data-design=modern] .sales-discount-panel .sales-discount{font-size:12px}
+html[data-design=modern] .sales-compose-aside .sales-total{background:#edf5ef;border-color:#d8e7dc;padding:18px;font-size:11px}
+html[data-design=modern] .sales-compose-aside .sales-total>strong{font-size:24px;color:#2c573b}
+html[data-design=modern] .sales-review-help{font-size:10px;color:#7b8f80}
+html[data-design=modern] .sales-report-period .field{margin:0}
+html[data-design=modern] .sales-report-period>span{font-size:11px;color:#758b7c}
+html[data-design=modern] .sales-month-chart{border-color:#e2ebe4}
+html[data-design=modern] .sales-month-track{background:#eff5f0}
+html[data-design=modern] .sales-month-track>span{background:#a8c6b1}
+html[data-design=modern] .sales-month-button{color:#7c9684}
+html[data-design=modern] .sales-month-button[aria-pressed=true]{background:#e9f3ed;color:#386a49}
+html[data-design=modern] .sales-month-button[aria-pressed=true] .sales-month-track>span{background:linear-gradient(#6d9f7d,#376a49)}
+html[data-design=modern] .sales-month-detail{border-color:#dce9df;background:#f2f8f3}
+html[data-design=modern] .sales-month-title{border-color:#dce9df;color:#345d40}
+html[data-design=modern] .sales-month-title>span,html[data-design=modern] .sales-month-detail>div:not(.sales-month-title)>span{color:#7c9383}
+html[data-design=modern] .sales-month-detail>div:not(.sales-month-title)>strong{color:#31563d;font-size:21px}
+html[data-design=modern] .sales-month-table>summary{color:#6b8a73}
+html[data-design=modern] .sales-ranking-filters{background:#f8fcf8;border-color:#e0ebe2}
+html[data-design=modern] .sales-filter-label{color:#6c8775}
+html[data-design=modern] .sales-ranking-title>span{color:#819687}
+html[data-design=modern] .sales-ranking-title h3{color:#355d40}
+html[data-design=modern] .sales-ranking-caption{font-size:11px;color:#7b9081}
+html[data-design=modern] .sales-rank-row{border-color:#e6eee7}
+html[data-design=modern] .sales-rank-position{border-color:#deebe2;background:#eff7f1;color:#7aa087}
+html[data-design=modern] [data-ranking-mode=best] .sales-rank-row:first-child .sales-rank-position{background:#305e40;color:#fff;border-color:#3d7250;box-shadow:0 2px 9px #42664b17}
+html[data-design=modern] .sales-rank-product h4{color:#2d4936}
+html[data-design=modern] .sales-rank-product p{color:#789080}
+html[data-design=modern] .sales-rank-tags>span{background:#f0f6f1;color:#799482}
+html[data-design=modern] .sales-rank-bar{background:#edf4ef}
+html[data-design=modern] .sales-rank-bar>span{background:linear-gradient(90deg,#b2d2bc,#548a64)}
+html[data-design=modern] .sales-rank-values>strong{color:#365f42}
+html[data-design=modern] .sales-rank-values>span,html[data-design=modern] .sales-rank-values>small{color:#7b9483}
+html[data-design=modern] .sales-report-method>summary{color:#6f8c78}
+@media(hover:hover) and (pointer:fine){html[data-design=modern][data-effects=on] .sales-note-card{transition:border-color .2s,box-shadow .2s,transform .2s}html[data-design=modern][data-effects=on] .sales-note-card:hover{border-color:#a6c9b1;box-shadow:0 7px 24px #36614611;transform:translateY(-2px)}html[data-design=modern][data-effects=on] .sales-month-button:hover{background:#eef6f0}}
+@media(max-width:650px){html[data-design=modern] .sales-metric{padding:17px;border-radius:14px}html[data-design=modern] .sales-metric>strong{font-size:25px}html[data-design=modern] .sales-compose-section{padding:18px}html[data-design=modern] .sales-compose-section .sales-product-checks label{font-size:10px;padding:6px 4px}html[data-design=modern] .sales-compose-section .sales-product-checks{gap:5px}html[data-design=modern] .sales-selected-card input,html[data-design=modern] .sales-selected-card select{font-size:16px}html[data-design=modern] .sales-month-detail>div:not(.sales-month-title)>strong{font-size:19px}html[data-design=modern] .sales-report-period>span{font-size:10px}}
+@media(max-width:540px){html[data-design=modern] .financial-stats .number{font-size:clamp(15px,4.6vw,22px);white-space:nowrap;letter-spacing:-.035em}}
