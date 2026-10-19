@@ -1,5 +1,5 @@
-import {resolveCancellationReason} from './cancellation.js?v=43';
-import {validateSalesNotes} from './sales.js?v=43';
+import {resolveCancellationReason} from './cancellation.js?v=44';
+import {validateSalesNotes} from './sales.js?v=44';
 export function extraBottles(material){return [...(material.secondBottle?[{number:2,...material.secondBottle}]:[]),...(material.additionalBottles??[])].sort((a,b)=>a.number-b.number);}
 export function bottleStock(material,number=1){return number===1?Math.round((material.stock-extraBottles(material).reduce((n,b)=>n+b.stock,0))*1000)/1000:extraBottles(material).find(b=>b.number===number)?.stock??0;}
 export function isMaterialLow(material){
