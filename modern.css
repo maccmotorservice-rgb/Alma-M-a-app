@@ -471,3 +471,76 @@ html[data-design=modern] :is(.label-selection,.sales-live-selection,.selection-s
 @media(max-width:760px){html[data-design=modern] .interaction-toolbar{margin:16px 0 25px;gap:5px;flex-wrap:wrap}html[data-design=modern] .quick-open{width:100%;font-size:12px;justify-content:flex-start}.quick-open kbd{margin-left:auto}html[data-design=modern] #workspace-help{max-width:none;flex-basis:100%;text-align:left}#workspace-help>summary{font-size:11px;padding:12px 0;min-height:40px}html[data-design=modern] #workspace-hint{padding:16px}html[data-design=modern] .workspace-floating{right:14px;bottom:15px}.workspace-floating #back-top span{display:none}html[data-design=modern] #quick-navigation{padding:18px;border-radius:17px;max-height:85dvh}.quick-heading h2{font-size:20px}.quick-keyboard{display:none}.quick-open kbd{display:none}#quick-results small{font-size:11px}html[data-design=modern] footer{padding-bottom:75px}}
 @media(prefers-reduced-motion:reduce){html[data-design=modern] :is(input,select,textarea){transition:none}}
 .quick-result-icon svg{width:18px;height:18px}
+
+/* Studio 2026: luminous porcelain surfaces, ink navigation and spectral accents. */
+html[data-design=modern]{--ink:#202337;--muted:#60677e;--quiet:#737a91;--accent:#6155dc;--accent-soft:#eeebff;--surface:#ffffff;--canvas:#f4f5fa;--line:#e4e6f0;--radius:22px;}
+html[data-design=modern] body{background:radial-gradient(ellipse at 95% 0,#dfdafa88,transparent 42%),radial-gradient(ellipse at 20% 70%,#dff6f244,transparent 48%),var(--canvas);background-attachment:fixed}
+html[data-design=modern] aside{background:linear-gradient(165deg,#1d2035,#111626 80%);border-right:1px solid #ffffff10;box-shadow:12px 0 50px #17203908;padding-top:28px}
+html[data-design=modern] .brand{background:#fff;border-radius:13px;margin:0 9px;padding:13px 15px;box-shadow:0 5px 22px #0002}
+html[data-design=modern] aside>.eyebrow{color:#a7abc3;letter-spacing:2px;font-size:8px;margin-top:18px}
+html[data-design=modern] .nav-group{color:#818ba9;font-size:9px;letter-spacing:1.8px;padding-top:22px}
+html[data-design=modern] nav button{color:#bac2d9;border-radius:12px;min-height:45px;padding:11px 12px;position:relative}
+html[data-design=modern] nav button.active{color:#fff;background:linear-gradient(100deg,#7765e140,#5c75b51f);border-color:#a79aff40;box-shadow:inset 0 1px #ffffff08,0 5px 15px #0001}
+html[data-design=modern] nav button.active:before{background:#a99aff;box-shadow:0 0 15px #9a8aff;width:3px;border-radius:5px}
+html[data-design=modern] nav button:hover{background:#ffffff0c;color:#fff}
+html[data-design=modern] .nav-icon{color:#a5afd2;opacity:1}html[data-design=modern] nav button.active .nav-icon{color:#c7baff}
+html[data-design=modern] .aside-bottom{border-color:#ffffff12;color:#a1acc6}
+html[data-design=modern] .aside-bottom :is(small,.quiet,.import){color:#a1acc6}
+html[data-design=modern] #effects-toggle{background:#ffffff06;color:#bac5dd;border-color:#ffffff18}
+html[data-design=modern] header{border-bottom-color:#dfe2ee;font-size:9px;letter-spacing:1.7px}
+html[data-design=modern] #cloud-status{background:#e4f4ef;color:#25745f;border-color:#cce9df;box-shadow:0 0 0 4px #eaf7f350}
+html[data-design=modern] h1{font-size:clamp(30px,3.2vw,46px);font-weight:720;letter-spacing:-1.8px;color:#202337}
+html[data-design=modern] h2{font-weight:650;letter-spacing:-.65px}
+html[data-design=modern] .page-title{margin-top:30px;margin-bottom:30px}
+html[data-design=modern] .page-title :is(.eyeline,.eyebrow){color:#7666bc;letter-spacing:2px;font-size:9px}
+html[data-design=modern] :is(.card,.product,.sales-metric,.finished-stock-card){background:linear-gradient(145deg,#ffffff,#fdfdff);border-color:#e3e5ef;border-radius:22px;box-shadow:0 6px 24px #32386504,0 1px 2px #32386503}
+html[data-design=modern] .stats .card{padding:25px;border-radius:21px}
+html[data-design=modern] .stat-label{font-size:11px;color:#646b83;letter-spacing:.1px}
+html[data-design=modern] .number{font-weight:650;letter-spacing:-1.8px;margin-top:24px;color:#24273e}
+html[data-design=modern] .hint{color:#737b92}
+html[data-design=modern] #content:has(>.hero)>.stats>.card:nth-child(2){background:linear-gradient(135deg,#6b5cdb,#4d55a9);border-color:#766be3;box-shadow:0 9px 25px #6257c322;color:#fff}
+html[data-design=modern] #content:has(>.hero)>.stats>.card:nth-child(2) :is(.number,.stat-label){color:#fff}
+html[data-design=modern] #content:has(>.hero)>.stats>.card:nth-child(2) :is(.hint,.number small){color:#e3e0ff}
+html[data-design=modern] .primary{background:linear-gradient(115deg,#6f5bdc,#535bc5);border:1px solid #695ed4;box-shadow:0 4px 11px #6453c21f,inset 0 1px #ffffff22;border-radius:12px;color:#fff}
+html[data-design=modern] .primary:hover:not(:disabled){background:linear-gradient(115deg,#7a67e7,#6066d1);border-color:#7a6ee3;box-shadow:0 7px 20px #6c5cd22b}
+html[data-design=modern] .secondary{background:#ffffffd9;border-color:#dfe2ee;color:#525b75;border-radius:12px}
+html[data-design=modern] .secondary:hover:not(:disabled){background:#f4f2ff;border-color:#c9c2ec;color:#6253a9}
+html[data-design=modern] .hero{background:radial-gradient(ellipse at 96% 10%,#7965cf80,transparent 45%),radial-gradient(ellipse at 70% 110%,#3c8f8a55,transparent 55%),linear-gradient(115deg,#20243c,#282d4c);border:1px solid #454b72;border-radius:25px;padding:34px 38px;min-height:224px;box-shadow:0 16px 40px #2b2e5d12;overflow:hidden;position:relative}
+html[data-design=modern] .hero h2{color:#f5f3ff;font-size:clamp(23px,2.2vw,30px);font-weight:620;letter-spacing:-1px;max-width:630px}
+html[data-design=modern] .hero p{color:#bfc7de;font-size:13px}
+html[data-design=modern] .hero .secondary{background:#f4f1ff;color:#504489;border-color:#ffffff66;box-shadow:0 5px 20px #0a102622}
+html[data-design=modern] .bottle-art{opacity:1;filter:drop-shadow(0 12px 18px #100d3233)}
+html[data-design=modern] .bottle{border-color:#c8c0ff88;background:linear-gradient(120deg,#d4c5ff77,#9dbcc940 50%,#c8c3ff44);box-shadow:inset 3px 0 10px #ffffff33,8px 12px 22px #0b102a33}
+html[data-design=modern] .bottle:before{background:linear-gradient(100deg,#d1c5ff,#7875a3)}
+html[data-design=modern] .bottle:after{background:#f4f2ffcc;color:#514873}
+html[data-design=modern] :is(input,select,textarea){border-color:#dfe2ee;background:#fbfcff;border-radius:11px;color:#30364e}
+html[data-design=modern] :is(input,select,textarea):focus{border-color:#a294dc;box-shadow:0 0 0 4px #a492e515;background:#fff}
+html[data-design=modern] :is(button,a,input,select,textarea,summary):focus-visible{outline-color:#a092e0}
+html[data-design=modern] :is(.group-tabs button,.stock-category-tabs button)[aria-pressed=true]{background:#6357bc;color:#fff;border-color:#7367cb;box-shadow:0 3px 10px #6553bd15}
+html[data-design=modern] .inventory-metric{background:linear-gradient(135deg,#fff,#f9f9fe);border-color:#e1e4ef;border-radius:21px;box-shadow:0 5px 20px #3a3c6804}
+html[data-design=modern] .inventory-metric[aria-pressed=true]{border-color:#a69cd6;background:#f3f0fd;box-shadow:inset 0 0 0 1px #a69cd620}
+html[data-design=modern] .inventory-metric>strong{color:#37314f}
+html[data-design=modern] :is(.inventory-filter-line>span,.sales-filter-label){color:#73748c}
+html[data-design=modern] :is(.group-heading th,.sales-category-heading,.sales-selected-group>h3){background:#f0eef9;color:#62577d}
+html[data-design=modern] .quick-open{background:linear-gradient(110deg,#fff,#f2effb);border-color:#e0dbef;color:#6d618e;border-radius:13px;box-shadow:0 3px 12px #4c3e7405}
+html[data-design=modern] .quick-open kbd{color:#8a7da1;border-color:#e3ddef}
+html[data-design=modern] #workspace-help{color:#7e768e}
+html[data-design=modern] #workspace-hint{border-color:#e3ddef;background:#fdfcff}html[data-design=modern] #workspace-hint>strong{color:#65517f}
+html[data-design=modern] #quick-navigation{background:#faf9ff;border-color:#d8d2ef;box-shadow:0 35px 120px #2017434a}
+html[data-design=modern] #quick-navigation::backdrop{background:#191b365c;backdrop-filter:blur(9px)}
+html[data-design=modern] #quick-results>button[data-highlighted],html[data-design=modern] #quick-results>button:hover{background:#eeebfa;border-color:#c9bee8}
+html[data-design=modern] .quick-result-icon{background:#ece7f9;color:#8270aa}
+html[data-design=modern] #quick-results>button[data-highlighted] .quick-result-icon{background:#ded6f4}
+html[data-design=modern] .workspace-floating #jump-selection{background:linear-gradient(120deg,#6d5bc7,#4e59ac);border-color:#7a6dc9;box-shadow:0 7px 24px #5b4ca733}
+html[data-design=modern] .sales-note-card h3{color:#2a2a44}
+html[data-design=modern] .sales-compose-aside .sales-total{background:linear-gradient(120deg,#efecfa,#f1f4fc);border-color:#e0d8f3;color:#685982}
+html[data-design=modern] .sales-compose-aside .sales-total>strong{color:#54477d}
+html[data-design=modern] .sales-rank-row:first-child .sales-rank-position{background:linear-gradient(135deg,#7660d4,#6064b6);border-color:#8975dc;box-shadow:0 4px 12px #6955c222}
+html[data-design=modern] .sales-rank-bar>span{background:linear-gradient(90deg,#c0b1ed,#7c70bd)}
+html[data-design=modern] .sales-month-button[aria-pressed=true]{background:#f0ecfb;color:#6a548e}
+html[data-design=modern] .sales-month-button[aria-pressed=true] .sales-month-track>span{background:linear-gradient(#ad9adb,#7160ad)}
+html[data-design=modern] footer{color:#80849a;border-top-color:#e0e2ec}
+@media(hover:hover) and (pointer:fine){html[data-design=modern][data-effects=on] :is(.product,.finished-stock-card,.stats>.card):hover{transform:translateY(-3px);border-color:#c7bfdf;box-shadow:0 12px 30px #4f427c0c;transition:transform .22s,border-color .22s,box-shadow .22s}}
+@media(max-width:760px){html[data-design=modern] aside{background:#191f33;border-bottom:1px solid #ffffff18;box-shadow:0 5px 20px #20263f14}html[data-design=modern] aside .brand{padding:7px 10px;border-radius:9px;margin:0;width:112px}html[data-design=modern] #navigation-toggle{background:#ffffff0b;border-color:#ffffff26;color:#e1dcf6}html[data-design=modern] aside[data-menu-open] nav,html[data-design=modern] aside[data-menu-open] .aside-bottom{background:#191f33}html[data-design=modern] .hero{padding:25px;min-height:210px;border-radius:21px}html[data-design=modern] h1{letter-spacing:-1.3px}html[data-design=modern] .stats .card{padding:19px}html[data-design=modern] .number{letter-spacing:-1.2px}html[data-design=modern] .brand img{width:100%;height:auto}}
+html[data-design=modern] #access-screen{background:radial-gradient(ellipse at 15% 5%,#b3a0ea44,transparent 55%),radial-gradient(ellipse at 90% 100%,#aedbd733,transparent 50%),#f3f4fa}
+html[data-design=modern] .access-card{background:#ffffffef;border-color:#e1ddef;box-shadow:0 24px 90px #4f387f14,0 2px 8px #45416d06;backdrop-filter:blur(16px)}
