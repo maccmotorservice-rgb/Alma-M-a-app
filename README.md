@@ -282,3 +282,9 @@ El diseño moderno combina navegación en tinta oscura, superficies claras con p
 ### Legibilidad y paleta coherente (v52)
 
 Se corrigen las colisiones entre colores heredados y la capa Studio: la tarjeta de stock conserva un fondo oscuro para sus textos blancos y el panel de producción mantiene el fondo oscuro también en hover. Texto principal y secundario, contadores, campos y ayudas usan tonos de contraste más alto. Violeta identifica acciones/selección; naranja, pendientes; verde, completados/disponibles; rojo, alertas o acciones destructivas. Se revisaron las vistas principales, reportes, editor de notas y producción mediante comprobaciones de contraste de texto y verificaciones de diseño en escritorio y móvil; los fondos degradados se contrastaron con sus colores de base.
+
+### Corrección de estados interactivos (v53)
+
+Se eliminan las reglas heredadas que daban un fondo de acento permanente a la segunda tarjeta del Resumen y forzaban letras blancas en el total de Stock de producto. Las tarjetas de datos conservan superficies claras con texto oscuro; los filtros seleccionados usan fondo violeta tenue y texto oscuro, incluso al pasar el mouse. La validación incluye seleccionar y recorrer con el puntero los filtros y métricas con efectos activados, además de la revisión de tamaños y navegación.
+
+En el menú oscuro, el logotipo original transparente se representa en blanco mediante un filtro visual; se elimina el recuadro de fondo en escritorio y móvil. El archivo original y su uso en acceso, diseño clásico y documentos se conservan.
