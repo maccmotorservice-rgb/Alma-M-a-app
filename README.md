@@ -237,3 +237,12 @@ La cámara se solicita solo al pulsar Iniciar cámara y se detiene al salir, ocu
 El lector conserva por defecto la foto completa para no recortar los ml del borde inferior. Si la primera lectura no identifica perfume y capacidad, reintenta automáticamente con contraste local para texto claro sobre color y con una zona inferior ampliada. Combina el nombre y los ml de las lecturas sin elegir una capacidad si los resultados se contradicen. Los fragmentos de nombre con al menos dos palabras distintivas pueden proponer un único perfume como coincidencia aproximada; siguen sujetos a revisión.
 
 Se solicita enfoque continuo cuando la cámara lo admite y se utiliza captura de foto de mayor resolución en navegadores con ImageCapture; los demás mantienen la captura desde video. Ver foto capturada permite revisar la imagen realmente procesada. Solo permanece en memoria y su URL se libera al sustituirla o descartar la lista. El ingreso continúa requiriendo revisión y confirmación, sin enviar imágenes a servicios externos.
+
+
+### Tiras en tabloide
+
+La sección Tiras en tabloide importa ZIP directamente en el navegador, mediante lectura por fragmentos e inflación en Web Workers (fflate 0.8.2). No requiere subir el archivo a un servidor ni dividirlo al límite de adjuntos del chat. Acepta PNG, JPG y WebP; omite carpetas de metadatos de macOS. Las imágenes originales y miniaturas se guardan en IndexedDB de este navegador (no se sincronizan en Supabase). Reimportar la misma ruta de archivo reemplaza esa imagen sin duplicarla.
+
+Los códigos independientes 01 y 02 en el nombre identifican 50 y 100 ml. La coincidencia con el catálogo usa el nombre propio completo, ignorando mayúsculas, acentos y separadores; si no coincide, muestra una advertencia sin renombrar la imagen. El PDF conserva las imágenes completas, coloca tres por tabloide vertical de 279.4 × 431.8 mm y deja vacíos los espacios finales. Las imágenes se ajustan proporcionalmente a las columnas del ejemplo de Tiras 24 Jun; revisar a escala 100 % antes de la primera impresión. No modifica stock ni producción.
+
+Para reconstruir el lector ZIP vendorizado: `npm run build:zip`. Conserva su licencia MIT en assets/zip-client.LICENSE.txt.
