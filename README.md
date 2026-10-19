@@ -231,3 +231,9 @@ El encuadre central incluye el nombre completo y la capacidad, reduciendo la int
 Cada lectura añade un registro editable con perfume, capacidad y cantidad. El límite es de 20 unidades y 20 etiquetas por carga; las presentaciones repetidas se agrupan al guardar. Revisar lista completa no modifica existencias. Solo Confirmar e ingresar al stock aplica todos los registros de forma conjunta, con trazabilidad del usuario autorizado. El ingreso suma producto ya preparado y no consume insumos ni modifica avances de lotes. Los borradores de escaneo permanecen solo en memoria del dispositivo; cerrar la sesión los descarta.
 
 La cámara se solicita solo al pulsar Iniciar cámara y se detiene al salir, ocultar la app, revisar la lista, alcanzar el límite o perder la sesión. Si se deniega el permiso o el equipo no tiene cámara, se puede utilizar una foto. La app publicada usa HTTPS, requerido por los navegadores para acceso a cámara. No se incorpora un servicio de pago.
+
+### Corrección de lectura de etiquetas (versión 40)
+
+El lector conserva por defecto la foto completa para no recortar los ml del borde inferior. Si la primera lectura no identifica perfume y capacidad, reintenta automáticamente con contraste local para texto claro sobre color y con una zona inferior ampliada. Combina el nombre y los ml de las lecturas sin elegir una capacidad si los resultados se contradicen. Los fragmentos de nombre con al menos dos palabras distintivas pueden proponer un único perfume como coincidencia aproximada; siguen sujetos a revisión.
+
+Se solicita enfoque continuo cuando la cámara lo admite y se utiliza captura de foto de mayor resolución en navegadores con ImageCapture; los demás mantienen la captura desde video. Ver foto capturada permite revisar la imagen realmente procesada. Solo permanece en memoria y su URL se libera al sustituirla o descartar la lista. El ingreso continúa requiriendo revisión y confirmación, sin enviar imágenes a servicios externos.
