@@ -1,5 +1,5 @@
-import {createWelcomeAmbience} from './welcome-ambience.js?v=66';
-import {createWelcomeVoice} from './welcome-voice.js?v=66';
+import {createWelcomeAmbience} from './welcome-ambience.js?v=67';
+import {createWelcomeVoice} from './welcome-voice.js?v=67';
 
 /* Device-only welcome preferences. This module never reads or writes inventory. */
 export const WELCOME_IDLE_MS = 2 * 60 * 60 * 1000;
@@ -9,9 +9,12 @@ const SOUND_KEY = 'alma-mia-welcome-sound';
 const LEASE_KEY = 'alma-mia-welcome-lease-v1';
 const emptyState = () => ({lastWelcomeAt: 0, lastWelcomeDay: '', lastActivityAt: 0});
 const timestamp = value => Number.isFinite(value) && value > 0 ? value : 0;
+const dayFormatters = new Map();
 
 export function welcomeDay(now = Date.now(), timeZone = WELCOME_TIME_ZONE) {
- const parts = new Intl.DateTimeFormat('en', {timeZone, year: 'numeric', month: '2-digit', day: '2-digit'}).formatToParts(new Date(now));
+ let formatter = dayFormatters.get(timeZone);
+ if (!formatter) {formatter = new Intl.DateTimeFormat('en', {timeZone, year: 'numeric', month: '2-digit', day: '2-digit'});dayFormatters.set(timeZone, formatter);}
+ const parts = formatter.formatToParts(new Date(now));
  const part = type => parts.find(item => item.type === type)?.value;
  return `${part('year')}-${part('month')}-${part('day')}`;
 }
@@ -79,7 +82,7 @@ function installWelcome() {
  soundOn = storageGet(SOUND_KEY) !== 'off';
 
  function updateSoundControls() {
-  const preview = document.getElementById('welcome-preview-setting');if (preview) preview.hidden = root.dataset.version !== '3';
+  const preview = document.getElementById('welcome-preview-setting'), hidePreview = root.dataset.version !== '3';if (preview && preview.hidden !== hidePreview) preview.hidden = hidePreview;
   for (const id of ['welcome-sound', 'welcome-sound-setting', 'access-welcome-sound']) {
    const button = document.getElementById(id);if (!button) continue;
    const pressed = String(soundOn), label = id === 'welcome-sound-setting' ? `Sonido de bienvenida: ${soundOn ? 'activado' : 'desactivado'}` : `Sonido ${soundOn ? 'activado' : 'desactivado'}`;

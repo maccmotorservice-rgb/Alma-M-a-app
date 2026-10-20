@@ -1,4 +1,5 @@
-import {EVIDENCE_BUCKET,validateEvidenceFile,validateEvidenceMetadata} from './evidence.js?v=66';
+import {STRIP_LIBRARY_BUCKET,MAX_STRIP_ASSET_BYTES,STRIP_ASSET_PART_BYTES,validateStripAsset,validateStripLibrary,mergeStripLibrary} from './strip-library-data.js?v=67';
+import {EVIDENCE_BUCKET,validateEvidenceFile,validateEvidenceMetadata} from './evidence.js?v=67';
 export function validateCloudConfig(value){
  const url=new URL(String(value.url??'').trim());if(url.protocol!=='https:'||!url.hostname.endsWith('.supabase.co')||url.username||url.password||url.pathname!=='/')throw Error('Usa la Project URL de Supabase: https://tu-proyecto.supabase.co');
  const key=String(value.key??'').trim();if(key.startsWith('sb_secret_'))throw Error('Usa la clave publicable o anon. Nunca una clave secreta ni service_role.');
@@ -7,7 +8,7 @@ export function validateCloudConfig(value){
 }
 const timed=request=>globalThis.AbortSignal?.timeout&&request.abortSignal?request.abortSignal(AbortSignal.timeout(12000)):request;
 export class CloudInventory{
- constructor({storage,onData,onStatus,validate,clientFactory,idFactory=()=>crypto.randomUUID()}){this.storage=storage;this.onData=onData;this.onStatus=onStatus;this.validate=validate;this.factory=clientFactory;this.idFactory=idFactory;this.mode='local';this.config=null;this.client=null;this.member=null;this.user=null;this.authSubscription=null;this.revision=0;this.remote=null;this.connected=false;this.saving=false;this.message='Solo en este navegador';this.timer=null;this.channel=null;this.failedSave=null;try{const raw=storage.getItem('alma-mia-cloud-config');if(raw)this.config=validateCloudConfig(JSON.parse(raw));}catch{this.message='La configuración de nube no es válida. Revísala en Conexión.';}}
+ constructor({storage,onData,onStatus,validate,clientFactory,idFactory=()=>crypto.randomUUID()}){this.storage=storage;this.onData=onData;this.onStatus=onStatus;this.validate=validate;this.factory=clientFactory;this.idFactory=idFactory;this.mode='local';this.config=null;this.client=null;this.member=null;this.user=null;this.authSubscription=null;this.revision=0;this.remote=null;this.connected=false;this.saving=false;this.message='Solo en este navegador';this.timer=null;this.channel=null;this.failedSave=null;this.stripQueue=Promise.resolve();try{const raw=storage.getItem('alma-mia-cloud-config');if(raw)this.config=validateCloudConfig(JSON.parse(raw));}catch{this.message='La configuración de nube no es válida. Revísala en Conexión.';}}
  get enabled(){return Boolean(this.config);}
  status(message){if(message)this.message=message;this.onStatus?.();}
  async configure(value){const config=validateCloudConfig(value);this.stop();await this.client?.auth.signOut({scope:'local'});this.config={...config,activated:false};this.storage.setItem('alma-mia-cloud-config',JSON.stringify(this.config));return this.start();}
@@ -24,6 +25,91 @@ export class CloudInventory{
  async initialize(data){if(this.mode!=='empty')throw Error('El inventario compartido ya existe. Ábrelo; no subas una copia encima.');const row=await this.read();if(row.data){this.remote=row;this.mode='choice';this.status('Otro dispositivo ya subió el inventario. Abre la copia compartida.');throw Error(this.message);}this.revision=Number(row.revision);await this.write(data);this.config.activated=true;this.storage.setItem('alma-mia-cloud-config',JSON.stringify(this.config));this.mode='ready';this.subscribe();this.status('Sincronizado · '+this.member.display_name);}
  async uploadPaymentEvidence(file,paymentId){if(this.mode!=='ready'||!this.connected||!this.user)throw Error('Conecta Supabase e inicia sesión para compartir el comprobante.');const info=await validateEvidenceFile(file),path=`${this.user.id}/${paymentId}/${this.idFactory()}.${info.extension}`;const{error}=await this.client.storage.from(EVIDENCE_BUCKET).upload(path,file,{contentType:info.type,upsert:false});if(error)throw Error('No se pudo subir el comprobante. Comprueba la conexión y ejecuta la configuración 03-comprobantes.sql en Supabase.');return validateEvidenceMetadata({bucket:EVIDENCE_BUCKET,path,name:info.name,type:info.type,size:info.size});}
  async paymentEvidenceUrl(evidence){validateEvidenceMetadata(evidence);if(this.mode!=='ready'||!this.connected)throw Error('Inicia sesión y conecta la nube para consultar el comprobante.');const{data,error}=await this.client.storage.from(EVIDENCE_BUCKET).createSignedUrl(evidence.path,120);if(error||!data?.signedUrl)throw Error('No se pudo abrir el comprobante. Revisa la conexión y los permisos de almacenamiento.');return data.signedUrl;}
+ // Strip assets stay private and immutable. Metadata is saved separately so a
+ // partial upload can never publish an image that another device cannot read.
+ stripAccess(userId=this.user?.id,client=this.client,cancelled=()=>false){
+  if(cancelled())throw Error('Sincronización de tiras cancelada.');
+  if(this.mode!=='ready'||!this.connected||!this.user||this.user.id!==userId||this.client!==client||!['Luis','Ximena'].includes(this.member?.display_name))throw Error('Inicia sesión con Luis o Ximena para sincronizar las tiras.');
+ }
+ async uploadStripAsset(blob,id,{thumbnail=false,cancelled=()=>false}={}){
+  const userId=this.user?.id,client=this.client;this.stripAccess(userId,client,cancelled);
+  const limit=thumbnail?1024*1024:MAX_STRIP_ASSET_BYTES;
+  if(typeof id!=='string'||!id||id.length>1024||!blob||!['image/png','image/jpeg','image/webp'].includes(blob.type)||!Number.isSafeInteger(blob.size)||blob.size<1||blob.size>limit)throw Error(thumbnail?'La vista previa de la tira no es válida.':'La tira debe ser una imagen PNG, JPG o WebP de hasta 80 MB.');
+  const header=new Uint8Array(await blob.slice(0,12).arrayBuffer()),ascii=String.fromCharCode(...header);
+  const valid=blob.type==='image/png'?header[0]===137&&ascii.slice(1,4)==='PNG'&&header[4]===13&&header[5]===10&&header[6]===26&&header[7]===10:blob.type==='image/jpeg'?header[0]===255&&header[1]===216&&header[2]===255:ascii.startsWith('RIFF')&&ascii.slice(8,12)==='WEBP';
+  if(!valid)throw Error('La imagen de la tira no corresponde al formato indicado.');
+  const bytes=await blob.arrayBuffer(),digest=await crypto.subtle.digest('SHA-256',bytes);
+  const sha256=Array.from(new Uint8Array(digest),byte=>byte.toString(16).padStart(2,'0')).join('');
+  this.stripAccess(userId,client,cancelled);
+  const assetId=this.idFactory(),folder=`${userId}/${assetId}`,extension=blob.type==='image/jpeg'?'jpg':blob.type==='image/webp'?'webp':'png';
+  if(!/^[a-zA-Z0-9-]+$/.test(userId)||!/^[a-zA-Z0-9-]+$/.test(assetId))throw Error('No se pudo identificar el archivo de la tira.');
+  const multipart=blob.size>STRIP_ASSET_PART_BYTES,uploaded=[],parts=[];
+  try{
+   for(let offset=0,index=0;offset<blob.size;offset+=STRIP_ASSET_PART_BYTES,index++){
+    this.stripAccess(userId,client,cancelled);
+    const part=blob.slice(offset,Math.min(offset+STRIP_ASSET_PART_BYTES,blob.size)),path=`${folder}/${multipart?'part-'+String(index).padStart(3,'0')+'.bin':(thumbnail?'thumb':'image')+'.'+extension}`;
+    const {error}=await client.storage.from(STRIP_LIBRARY_BUCKET).upload(path,part,{contentType:multipart?'application/octet-stream':blob.type,upsert:false});
+    if(error){
+     const detail=String(error.message??'')+' '+String(error.statusCode??error.status??'');
+     const setup=/bucket.*(?:not found|does not exist)|(?:missing|not found|does not exist).*bucket|row.level.security|\brls\b|not authorized|unauthorized|permission|\b403\b/i.test(detail);
+     const quota=/quota|storage.*limit|exceed|too large|\b413\b/i.test(detail);
+     const failure=Error(setup?'Activa la biblioteca compartida ejecutando 04-biblioteca-tiras.sql en Supabase.':quota?'No se pudo compartir la tira porque el almacenamiento no tiene espacio disponible. Revisa el uso del proyecto en Supabase.':'No se pudo compartir la tira. Revisa la conexión y vuelve a sincronizar.');
+     if(setup)failure.code='STRIP_LIBRARY_SETUP';throw failure;
+    }
+    uploaded.push(path);parts.push({path,size:part.size});this.stripAccess(userId,client,cancelled);
+   }
+   return validateStripAsset({bucket:STRIP_LIBRARY_BUCKET,path:parts[0].path,type:blob.type,size:blob.size,sha256,...(multipart?{parts}:{})},{thumbnail});
+  }catch(error){
+   // Remove only the new objects from this attempt, never an existing image.
+   if(uploaded.length&&this.user?.id===userId&&this.client===client){try{await client.storage.from(STRIP_LIBRARY_BUCKET).remove(uploaded);}catch{}}
+   throw error;
+  }
+ }
+ async downloadStripAsset(input,{cancelled=()=>false}={}){
+  const ref=validateStripAsset(input),userId=this.user?.id,client=this.client;this.stripAccess(userId,client,cancelled);
+  const blobs=[];
+  for(const part of ref.parts??[{path:ref.path,size:ref.size}]){
+   this.stripAccess(userId,client,cancelled);
+   const {data,error}=await client.storage.from(STRIP_LIBRARY_BUCKET).download(part.path);this.stripAccess(userId,client,cancelled);
+   if(error||!data||data.size!==part.size)throw Error('No se pudo descargar una tira compartida. Revisa la conexión y la configuración de la biblioteca.');
+   blobs.push(data);
+  }
+  const blob=new Blob(blobs,{type:ref.type});
+  if(blob.size!==ref.size)throw Error('La tira descargada está incompleta. Vuelve a sincronizar la biblioteca.');
+  if(ref.sha256){const hash=await crypto.subtle.digest('SHA-256',await blob.arrayBuffer()),hex=Array.from(new Uint8Array(hash),byte=>byte.toString(16).padStart(2,'0')).join('');if(hex!==ref.sha256)throw Error('La tira descargada no coincide con el original. Vuelve a sincronizar la biblioteca.');}
+  this.stripAccess(userId,client,cancelled);return blob;
+ }
+ changeStripLibrary({upsert=[],remove=[],cancelled=()=>false}={}){
+  const userId=this.user?.id,client=this.client,patch=structuredClone({upsert,remove});
+  const work=this.stripQueue.catch(()=>{}).then(async()=>{
+   this.stripAccess(userId,client,cancelled);
+   const waitingUntil=Date.now()+15000;
+   while(this.saving){if(Date.now()>waitingUntil)throw Error('Espera a que termine el guardado antes de sincronizar las tiras.');await new Promise(resolve=>setTimeout(resolve,30));this.stripAccess(userId,client,cancelled);}
+   this.saving=true;
+   try{
+    for(let attempt=0;attempt<3;attempt++){
+     this.stripAccess(userId,client,cancelled);
+     const latest=await this.read();this.stripAccess(userId,client,cancelled);
+     if(!latest.data)throw Error('Primero abre el inventario compartido para sincronizar las tiras.');
+     const base=this.validate(latest.data),library=mergeStripLibrary(base.stripLibrary,patch,{actor:this.member.display_name}),data={...base,stripLibrary:library};
+     this.validate(data);
+     const mutation=this.idFactory(),request=()=>timed(client.rpc('save_shared_inventory',{expected_revision:Number(latest.revision),new_data:data,mutation_id:mutation}));
+     let result=await request();this.stripAccess(userId,client,cancelled);
+     if(result.error&&!String(result.error.message).includes('INVENTORY_')){result=await request();this.stripAccess(userId,client,cancelled);}
+     if(result.error){if(String(result.error.message).includes('INVENTORY_CONFLICT'))continue;throw Error('No se confirmó la biblioteca compartida. Revisa la conexión antes de volver a intentar.');}
+     const row=result.data?.[0];if(!row?.data)throw Error('La nube no confirmó la biblioteca de tiras.');
+     // A pull already in flight may have received a later revision while this
+     // RPC reply travelled back. Never replace that newer shared inventory.
+     const newer=this.remote?.data&&Number(this.remote.revision)>Number(row.revision);
+     const saved=this.validate(newer?this.remote.data:row.data),savedLibrary=validateStripLibrary(saved.stripLibrary);
+     if(!newer){this.remote=row;this.revision=Number(row.revision);this.onData(saved);}
+     this.connected=true;this.status('Sincronizado · '+this.member.display_name);return savedLibrary;
+    }
+    throw Error('Otra sesión está guardando cambios. La biblioteca local se conserva; vuelve a sincronizar en unos segundos.');
+   }finally{this.saving=false;}
+  });
+  this.stripQueue=work.catch(()=>{});return work;
+ }
  lockSession(){this.stop();this.member=null;this.user=null;this.remote=null;this.failedSave=null;this.connected=false;this.mode='auth';this.status('Inicia sesión para acceder a Alma Mía.');}
  async signOut(){await this.client?.auth.signOut({scope:'local'});this.lockSession();}
 }

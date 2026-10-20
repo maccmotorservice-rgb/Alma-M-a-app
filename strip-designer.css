@@ -98,3 +98,8 @@ html[data-design=modern][data-version="3"] .strips-library .strip-delete-button{
 html[data-design=modern][data-version="3"] .strips-library .strip-delete-button:hover:not(:disabled){background:#493039;border-color:#b0737c;color:#ffe0da}
 
 #strip-designer label[for=strip-design-text-position]{margin-top:18px}
+
+.strip-sync{padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.strip-sync>p{margin:0;flex:1;min-width:180px;line-height:1.6}
+.strip-sync .label-actions{margin:0;gap:10px}
+.strip-thumb-placeholder{min-height:180px;display:grid;place-items:center;font-size:12px;opacity:.75;text-align:center;border:1px solid currentColor;border-radius:12px;padding:16px}
