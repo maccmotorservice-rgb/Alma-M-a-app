@@ -15,11 +15,15 @@ export function validateStripDesign(input){
   const size=Number(input.size);
   if(!STRIP_DESIGN_SIZES[size])throw Error('Selecciona una presentación de 50 o 100 ml.');
   if(typeof input.color!=='string'||!/^#[0-9a-f]{6}$/i.test(input.color))throw Error('Selecciona un color válido para la tira.');
+  const textColor=input.textColor??'auto';
+  if(textColor!=='auto'&&(typeof textColor!=='string'||!/^#[0-9a-f]{6}$/i.test(textColor)))throw Error('Selecciona un color válido para el texto.');
+  const textScale=input.textScale===undefined?1:Number(input.textScale);
+  if(!Number.isFinite(textScale)||textScale<.5||textScale>1.6)throw Error('El tamaño del texto debe estar entre 50 % y 160 %.');
   const category=input.category??'Unisex';
   if(!CATEGORIES.includes(category))throw Error('Selecciona Dama, Caballero o Unisex.');
   const qty=input.qty===undefined?1:Number(input.qty);
   if(!Number.isInteger(qty)||qty<1||qty>999)throw Error('La cantidad debe ser un número entero entre 1 y 999.');
-  const design={name,color:input.color.toLowerCase(),size,category,qty};
+  const design={name,color:input.color.toLowerCase(),textColor:textColor.toLowerCase(),textScale,size,category,qty};
   for(const key of ['id','productId'])if(input[key]!==undefined&&input[key]!==null)design[key]=String(input[key]);
   return design;
 }
@@ -51,18 +55,28 @@ export function stripInkColor(color){
   return luminance>.179?'#211f1c':'#ffffff';
 }
 
-export function fitStripName(name,maxWidth,measure,{maxSize=12,minSize=.25,maxHeight=Infinity,lineHeight=1.18}={}){
+export function fitStripName(name,maxWidth,measure,{maxSize=12,minSize=.25,maxHeight=Infinity,lineHeight=1.18,lineMode='first-word',scale=1}={}){
   if(typeof name!=='string'||!name.trim()||!Number.isFinite(maxWidth)||maxWidth<=0||typeof measure!=='function')throw Error('No se puede ajustar el nombre a la tira.');
   if(!Number.isFinite(maxSize)||!Number.isFinite(minSize)||minSize<=0||maxSize<minSize||!Number.isFinite(lineHeight)||lineHeight<1||!(maxHeight>0))throw Error('Las medidas del texto no son válidas.');
-  const words=name.replace(/\s+/gu,' ').trim().split(' ');
-  // The print convention is fixed: first word above, every remaining word
-  // together below. Font size changes; the prescribed line break never does.
-  const lines=words.length===1?words:[words[0],words.slice(1).join(' ')];
+  if(!['first-word','single'].includes(lineMode)||!Number.isFinite(scale)||scale<.5||scale>1.6)throw Error('El ajuste del texto no es válido.');
+  const text=name.replace(/\s+/gu,' ').trim(),words=text.split(' ');
+  // Faces keep the first word above the rest; the central capsule is always
+  // one line. Adjusting size never changes the prescribed line break.
+  const lines=lineMode==='single'||words.length===1?[text]:[words[0],words.slice(1).join(' ')];
   const at=size=>({lines:[...lines],size,lineHeight:size*lineHeight});
   const fits=result=>result.lines.length*result.lineHeight<=maxHeight&&result.lines.every(line=>measure(line,result.size)<=maxWidth+.00001);
   let best=at(minSize);
   if(!fits(best))throw Error('El nombre es demasiado largo para la tira. Usa un nombre más breve.');
   let low=minSize,high=maxSize;
+  for(let step=0;step<18;step++){
+    const size=(low+high)/2,candidate=at(size);
+    if(fits(candidate)){best=candidate;low=size;}else high=size;
+  }
+  // Scale the size that actually fitted, so even a long name can get smaller.
+  // Enlargement stops at the available width/height rather than clipping.
+  const desired=best.size*scale;
+  if(fits(at(desired)))return at(desired);
+  low=best.size;high=desired;
   for(let step=0;step<18;step++){
     const size=(low+high)/2,candidate=at(size);
     if(fits(candidate)){best=candidate;low=size;}else high=size;
@@ -152,11 +166,11 @@ function drawFace(ctx,rect,design,cloth,logo,inverted){
   if(inverted){ctx.translate(x+w,y+h);ctx.rotate(Math.PI);}else ctx.translate(x,y);
   roundedPath(ctx,0,0,w,h,4.05*sx);ctx.clip();
   ctx.drawImage(cloth,0,0,w,h);
-  ctx.fillStyle=stripInkColor(design.color);
+  ctx.fillStyle=design.textColor==='auto'?stripInkColor(design.color):design.textColor;
   const logoW=30.1*sx,logoH=logoW*logo.height/logo.width;
   ctx.drawImage(logo,w-logoW-3.5*sx,7.0*sy,logoW,logoH);
   const singleWord=!design.name.includes(' '),nameH=46.1*sy;
-  drawName(ctx,design.name,{x:3.5*sx,y:singleWord?(h-nameH)/2:30.2*sy,w:w-7*sx,h:nameH},{maxSize:12.1*sx,minSize:.25*sx,lineHeight:1.19,align:singleWord?'center':'left'});
+  drawName(ctx,design.name,{x:3.5*sx,y:singleWord?(h-nameH)/2:30.2*sy,w:w-7*sx,h:nameH},{maxSize:12.1*sx,minSize:.25*sx,lineHeight:1.19,scale:design.textScale,align:singleWord?'center':'left'});
   ctx.font=`400 ${1.68*sx}px "${FONT}", sans-serif`;ctx.textAlign='left';ctx.textBaseline='alphabetic';
   ctx.fillText(`EDP | ${design.size} ml | ${design.size===50?'1.7':'3.4'} FL.OZ`,4* sx,85.25*sy);
   ctx.restore();
@@ -175,14 +189,15 @@ export async function renderStripDesign(input,{dpi=150}={}){
   for(const y of geometry.foldLines){ctx.moveTo(4.9*physical.w/80.1,y);ctx.lineTo(physical.w-4.9*physical.w/80.1,y);}
   ctx.stroke();
   const cloth=satinCanvas(design.color,Math.round(geometry.front.w*scaleX),Math.round(geometry.front.h*scaleY));
-  const mark=tintedLogo(logo,stripInkColor(design.color));
+  const ink=design.textColor==='auto'?stripInkColor(design.color):design.textColor;
+  const mark=tintedLogo(logo,ink);
   try{
     drawFace(ctx,geometry.back,design,cloth,mark,true);
     drawFace(ctx,geometry.front,design,cloth,mark,false);
     const pill=geometry.pill;
     ctx.save();roundedPath(ctx,pill.x,pill.y,pill.w,pill.h,pill.h*.34);ctx.clip();ctx.drawImage(cloth,pill.x,pill.y,pill.w,pill.h);
-    ctx.fillStyle=stripInkColor(design.color);
-    drawName(ctx,design.name,{x:pill.x+2.1,y:pill.y+1.1,w:pill.w-4.2,h:pill.h-2.2},{maxSize:4.55*physical.w/80.1,minSize:.25,lineHeight:1.1,align:'center'});
+    ctx.fillStyle=ink;
+    drawName(ctx,design.name,{x:pill.x+2.1,y:pill.y+1.1,w:pill.w-4.2,h:pill.h-2.2},{maxSize:4.55*physical.w/80.1,minSize:.25,lineHeight:1.1,lineMode:'single',scale:design.textScale,align:'center'});
     ctx.restore();
     ctx.fillStyle='#565954';ctx.font=`400 ${2.68*physical.w/80.1}px "${FONT}", sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';
     ctx.fillText(design.category==='Unisex'?'Perfume unisex':`Perfume de ${design.category.toLowerCase()}`,physical.w/2,geometry.genderY);
@@ -191,4 +206,51 @@ export async function renderStripDesign(input,{dpi=150}={}){
   }
   const f=geometry.front;
   return {canvas,width:canvas.width,height:canvas.height,physical,geometry,faceRect:{x:f.x*scaleX,y:f.y*scaleY,w:f.w*scaleX,h:f.h*scaleY}};
+}
+
+const PNG_SIGNATURE=new Uint8Array([137,80,78,71,13,10,26,10]);
+const PNG_CRC_TABLE=Uint32Array.from({length:256},(_,value)=>{
+  let crc=value;
+  for(let bit=0;bit<8;bit++)crc=crc&1?0xedb88320^(crc>>>1):crc>>>1;
+  return crc>>>0;
+});
+function pngCrc(bytes,start,end){
+  let crc=0xffffffff;
+  for(let index=start;index<end;index++)crc=PNG_CRC_TABLE[(crc^bytes[index])&255]^(crc>>>8);
+  return (crc^0xffffffff)>>>0;
+}
+
+// Browsers normally write 96 ppp into canvas PNGs. Replace only that metadata;
+// the compressed image data and every pixel remain unchanged.
+export async function encodeStripDesignPng(canvas,{dpi=300}={}){
+  if(!canvas||typeof canvas.toBlob!=='function'||!Number.isInteger(canvas.width)||!Number.isInteger(canvas.height)||canvas.width<1||canvas.height<1)throw Error('No se pudo preparar la imagen de la tira.');
+  if(!Number.isFinite(dpi)||dpi<72||dpi>1200)throw Error('La resolución del PNG debe estar entre 72 y 1200 ppp.');
+  const blob=await new Promise((resolve,reject)=>canvas.toBlob(value=>value?resolve(value):reject(Error('No se pudo crear la imagen PNG.')),'image/png'));
+  const bytes=new Uint8Array(await blob.arrayBuffer()),view=new DataView(bytes.buffer);
+  const invalid=()=>Error('El navegador no generó una imagen PNG válida.');
+  if(bytes.length<8||!PNG_SIGNATURE.every((value,index)=>bytes[index]===value))throw invalid();
+  const ppm=Math.round(dpi/.0254),physical=new Uint8Array(21),physicalView=new DataView(physical.buffer);
+  physicalView.setUint32(0,9);physical.set([112,72,89,115],4);
+  physicalView.setUint32(8,ppm);physicalView.setUint32(12,ppm);physical[16]=1;
+  physicalView.setUint32(17,pngCrc(physical,4,17));
+  const parts=[bytes.subarray(0,8)];let header=false,image=false,end=false;
+  for(let offset=8;offset<bytes.length;){
+    if(offset+12>bytes.length||end)throw invalid();
+    const length=view.getUint32(offset),next=offset+length+12;
+    if(length>0x7fffffff||next>bytes.length)throw invalid();
+    const type=String.fromCharCode(...bytes.subarray(offset+4,offset+8));
+    if(view.getUint32(offset+length+8)!==pngCrc(bytes,offset+4,offset+length+8))throw invalid();
+    if(!header){
+      if(type!=='IHDR'||length!==13||view.getUint32(offset+8)!==canvas.width||view.getUint32(offset+12)!==canvas.height)throw invalid();
+      header=true;parts.push(bytes.subarray(offset,next),physical);
+    }else{
+      if(type==='IHDR'||(type==='pHYs'&&length!==9))throw invalid();
+      if(type==='IDAT')image=true;
+      if(type==='IEND'){if(length!==0||!image||next!==bytes.length)throw invalid();end=true;}
+      if(type!=='pHYs')parts.push(bytes.subarray(offset,next));
+    }
+    offset=next;
+  }
+  if(!header||!image||!end)throw invalid();
+  return new Blob(parts,{type:'image/png'});
 }

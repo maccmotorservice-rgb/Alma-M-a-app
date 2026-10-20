@@ -343,3 +343,12 @@ En **Imprimir tiras → Crear tiras** se puede elegir un perfume del catálogo o
 **Guardar tira en biblioteca** crea una imagen individual de alta resolución y la incorpora a la misma biblioteca que las imágenes del ZIP. El generador no crea el tabloide directamente: en la biblioteca se seleccionan las tiras originales o nuevas, se indican cantidades y se previsualiza o descarga el PDF habitual, con hasta tres tiras por página. Las medidas de impresión permanecen en 7.19 × 39 cm para 50 ml y 8.01 × 43.18 cm para 100 ml. El PNG original queda disponible para descargar; el PDF usa una copia JPEG de alta calidad para reducir el peso de los diseños generados sin cambiar su resolución o sus medidas.
 
 La generación funciona en el dispositivo, sin servicios de IA de pago ni cambios en catálogo, existencias, ventas o producción. La biblioteca de imágenes continúa guardándose en IndexedDB de cada navegador y no se sincroniza con Supabase.
+
+
+### Ajustes de texto y descarga de tiras (v63)
+
+El generador incorpora color automático o manual para el texto, con selector y código hexadecimal, y un control de tamaño del nombre entre 50 % y 160 % con restablecimiento a 100 %. La vista previa refleja los ajustes. En ambas caras se conserva la primera palabra arriba y el resto debajo; los nombres de una sola palabra quedan centrados. En la etiqueta central el nombre completo se imprime siempre en una sola línea. El tamaño se limita al espacio disponible para evitar recortes.
+
+**Descargar imagen** genera un PNG del diseño actual a 300 ppp, con resolución física incorporada al archivo, sin añadirlo a la biblioteca. **Añadir a la biblioteca** conserva el diseño para seleccionarlo junto con las demás tiras al imprimir. Los colores y tamaños de texto distintos se guardan como variantes separadas; repetir el mismo diseño no lo duplica. Los diseños anteriores mantienen su identidad al conservar los ajustes predeterminados.
+
+La biblioteca permite **Eliminar** las tiras creadas por el generador. Pide confirmar el nombre y la presentación; al eliminarlas también las retira de la selección de impresión e invalida su PDF previo. Las imágenes importadas desde ZIP conservan su funcionamiento. Estas operaciones son locales al navegador y no modifican inventario, ventas ni otros datos de Supabase.

@@ -42,6 +42,20 @@
 #strip-designer .strip-design-saved-message strong{font-size:14px}
 #strip-designer .strip-design-saved-message p{font-size:12px;margin:6px 0 0;overflow-wrap:anywhere}
 #strip-designer .strip-design-storage-hint{font-size:11px;margin:18px 0 0}
+#strip-designer .strip-text-settings{margin:25px 0 0;padding:22px 0 0;border:0;border-top:1px solid var(--strip-line);min-width:0}
+#strip-designer .strip-text-settings legend{padding:0;color:var(--strip-ink);font-size:13px;font-weight:650}
+#strip-designer .strip-text-settings h3{font-size:14px;margin:0 0 17px}
+#strip-designer .strip-text-auto-toggle{display:flex;align-items:center;gap:10px;margin:0 0 13px;min-height:38px;color:var(--strip-ink);font-size:12px;line-height:1.5;cursor:pointer}
+#strip-designer #strip-design-text-auto{width:18px;height:18px;min-height:18px;padding:0;margin:0;accent-color:var(--strip-accent);flex-shrink:0}
+#strip-designer #strip-design-text-hex{font-variant-numeric:tabular-nums;text-transform:uppercase}
+#strip-designer .strip-text-size-controls{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:12px;align-items:center;min-width:0;margin:7px 0 0}
+#strip-designer #strip-design-text-scale{width:100%;min-width:0;min-height:44px;margin:0;padding:0;accent-color:var(--strip-accent);cursor:pointer;background:transparent;box-shadow:none;border:0}
+#strip-designer #strip-design-text-scale-value{font-size:12px;min-width:43px;text-align:right;color:var(--strip-ink);font-variant-numeric:tabular-nums}
+#strip-designer #strip-design-text-scale-reset{min-height:40px;padding:8px 10px;font-size:11px;white-space:nowrap}
+#strip-designer .strip-design-type-hint{font-size:11px;margin:7px 0 0}
+#strip-designer #strip-design-download-status{font-size:12px;line-height:1.6;overflow-wrap:anywhere}
+#strip-designer #strip-design-download-status a{color:var(--strip-ink);text-underline-offset:3px}
+#strip-designer .strip-design-saved .label-actions{margin-bottom:0}
 html[data-design=modern][data-version="2"] #strip-designer{--strip-surface:#fff;--strip-raised:#f2eff8;--strip-line:#ddd7ed;--strip-ink:#30293f;--strip-muted:#6b617d;--strip-accent:#7760aa}
 html[data-design=modern][data-version="2"] .strip-designer-tabs{background:#f0edf7;border-color:#ddd6ec}
 html[data-design=modern][data-version="2"] .strip-designer-tabs button{color:#625276}
@@ -75,3 +89,10 @@ html[data-design=modern][data-version="3"] #strip-designer .strip-preview-tools 
 }
 @media(max-width:370px){#strip-designer :is(.strip-designer-form,.strip-design-preview){padding:15px}#strip-designer .form-pair{grid-template-columns:1fr;gap:0}#strip-designer .strip-preview-stage{padding:14px 8px}}
 @media(prefers-reduced-motion:reduce){.strip-designer-tabs *,#strip-designer *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+/* Generated library cards keep selection separate from removal. */
+.strips-library .strip-card{cursor:default}
+.strips-library .strip-card-select{display:flex;flex-direction:column;gap:7px;min-width:0;flex:1;cursor:pointer}
+.strips-library .strip-delete-button{align-self:stretch;min-height:40px;margin-top:7px;padding:9px 11px;border:1px solid #d9b7b0;border-radius:8px;background:#fff5f2;color:#8c3427;font-size:11px;text-align:center}
+.strips-library .strip-delete-button:focus-visible{outline:3px solid #67aeb8;outline-offset:3px}
+html[data-design=modern][data-version="3"] .strips-library .strip-delete-button{background:#35252a;border-color:#80505a;color:#ffd0c7}
+html[data-design=modern][data-version="3"] .strips-library .strip-delete-button:hover:not(:disabled){background:#493039;border-color:#b0737c;color:#ffe0da}
