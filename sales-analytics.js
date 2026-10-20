@@ -1,4 +1,4 @@
-import {salesNoteStatus,salesPaymentSummary} from './sales.js?v=69';
+import {salesNoteStatus,salesPaymentSummary} from './sales.js?v=70';
 const norm=s=>String(s??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');
 export function resolveSalesProduct(item,catalog){if(item.productId)return catalog.find(p=>p.id===item.productId);const reference=norm(item.reference),exact=catalog.find(p=>[p.reference,p.displayReference,p.guideReference].some(r=>norm(r)===reference));if(exact)return exact;const prefix=catalog.filter(p=>norm(p.reference).length>=4&&reference.startsWith(norm(p.reference))).sort((a,b)=>norm(b.reference).length-norm(a.reference).length)[0];return prefix??catalog.find(p=>norm(p.name)===norm(item.name));}
 export function salesAnalytics(notes,catalog,year){

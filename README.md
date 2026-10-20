@@ -404,3 +404,10 @@ Si una imagen no tiene un formato compatible o contiene información inválida, 
 **Imprimir tiras** abre directamente la biblioteca compartida y la selección para los tabloides. **Crear tiras** es una sección independiente del menú **Imprimir**, con un atajo desde la biblioteca y un botón de regreso. Cambiar entre ambas conserva el borrador del diseño y las cantidades seleccionadas; cerrar sesión los limpia. Guardar un diseño mantiene los controles de descarga de imagen y el acceso a la biblioteca para imprimirlo.
 
 **Sincronizar ahora** consulta la biblioteca en Supabase aunque el navegador no haya recibido una notificación en tiempo real. El botón muestra progreso, confirma cuántas tiras hay disponibles y muestra los errores cuando no se pudo actualizar. Las respuestas atrasadas no reemplazan una revisión más reciente ni muestran datos después de cerrar sesión. No requiere reimportar imágenes ni ejecutar otro archivo SQL.
+
+
+### Reparación de la biblioteca local de tiras (v70)
+
+Al abrir o sincronizar, la app comprueba que exista el almacén local de imágenes. Si una creación anterior quedó incompleta, añade únicamente el almacén faltante a la base existente. Conserva los demás datos y admite versiones locales superiores a la inicial, sin borrar la biblioteca ni los originales pendientes de subir.
+
+Las conexiones cerradas se vuelven a abrir; solo se reintenta crear una transacción antes de ejecutar su operación, para evitar repetir escrituras. Si otra pestaña impide reparar el almacén, se explica en español cómo desbloquearlo. La biblioteca compartida, la descarga de originales y la impresión siguen usando los mismos permisos y archivos.

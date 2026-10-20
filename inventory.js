@@ -1,6 +1,6 @@
-import {emptyStripLibrary,validateStripLibrary} from './strip-library-data.js?v=69';
-import {resolveCancellationReason} from './cancellation.js?v=69';
-import {validateSalesNotes} from './sales.js?v=69';
+import {emptyStripLibrary,validateStripLibrary} from './strip-library-data.js?v=70';
+import {resolveCancellationReason} from './cancellation.js?v=70';
+import {validateSalesNotes} from './sales.js?v=70';
 export function extraBottles(material){return [...(material.secondBottle?[{number:2,...material.secondBottle}]:[]),...(material.additionalBottles??[])].sort((a,b)=>a.number-b.number);}
 export function bottleStock(material,number=1){return number===1?Math.round((material.stock-extraBottles(material).reduce((n,b)=>n+b.stock,0))*1000)/1000:extraBottles(material).find(b=>b.number===number)?.stock??0;}
 export function isMaterialLow(material){
