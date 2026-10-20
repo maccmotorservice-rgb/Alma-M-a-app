@@ -1,7 +1,7 @@
-import {isMaterialLow,extraBottles,bottleStock} from './inventory.js?v=63';
-export async function downloadMaterialsPdf(state,catalog){
+import {isMaterialLow,extraBottles,bottleStock} from './inventory.js?v=64';
+export async function createMaterialsPdf(state,catalog,{now=new Date()}={}){
  const {jsPDF,autoTable}=await import('./assets/pdf-client.js');
- const doc=new jsPDF({unit:'mm',format:'a4'}),margin=16,now=new Date(),zone='America/Guatemala';
+ const doc=new jsPDF({unit:'mm',format:'a4'}),margin=16,zone='America/Guatemala';
  const number=n=>new Intl.NumberFormat('es-MX',{maximumFractionDigits:2}).format(n);
  const date=new Intl.DateTimeFormat('es-MX',{timeZone:zone,dateStyle:'long',timeStyle:'short'}).format(now);
  doc.setProperties({title:'Reporte de reposición · Alma Mía',author:'Alma Mía Perfumes'});
@@ -21,5 +21,11 @@ export async function downloadMaterialsPdf(state,catalog){
  }
  const count=doc.getNumberOfPages();for(let page=1;page<=count;page++){doc.setPage(page);doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(100);doc.text('Alma Mía · Reporte de reposición',margin,287);doc.text(`${page} / ${count}`,194,287,{align:'right'});}
  const filenameDate=new Intl.DateTimeFormat('en-CA',{timeZone:zone,year:'numeric',month:'2-digit',day:'2-digit'}).format(now);
- doc.save(`Alma-Mia-Reporte-Materias-Primas-${filenameDate}.pdf`);
+ return {blob:doc.output('blob'),filename:`Alma-Mia-Reporte-Materias-Primas-${filenameDate}.pdf`};
+}
+
+export async function downloadMaterialsPdf(state,catalog){
+ const {blob,filename}=await createMaterialsPdf(state,catalog),url=URL.createObjectURL(blob),anchor=document.createElement('a');
+ anchor.href=url;anchor.download=filename;anchor.hidden=true;document.body.append(anchor);
+ try{anchor.click();}finally{anchor.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);}
 }

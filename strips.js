@@ -1,5 +1,5 @@
-import {createStripDesignerPanel} from './strip-designer-panel.js?v=63';
-import {validateStripDesign,encodeStripDesignPng} from './strip-designer.js?v=63';
+import {createStripDesignerPanel} from './strip-designer-panel.js?v=64';
+import {validateStripDesign,encodeStripDesignPng} from './strip-designer.js?v=64';
 import {Unzip,AsyncUnzipInflate} from './assets/zip-client.js';
 const normalize=s=>String(s).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
 export function stripIdentity(filename,catalog){const base=filename.split(/[\\/]/).pop().replace(/\.[^.]+$/,'');const codes=[...base.matchAll(/(?:^|[\s_.()\-])(01|02)(?=$|[\s_.()\-])/g)].map(m=>m[1]);const unique=[...new Set(codes)];const size=unique.length===1?(unique[0]==='01'?50:100):null;const name=base.replace(/(?:^|[\s_.()\-])(01|02)(?=$|[\s_.()\-])/g,' ').replace(/\(\s*\)|\[\s*\]/g,' ').replace(/[_]+/g,' ').replace(/\s+/g,' ').trim();const matches=catalog.filter(p=>normalize(p.name)===normalize(name));return {name:name||base,size,productId:matches.length===1?matches[0].id:null,warning:matches.length===1?'':'No coincide con nombre en el catálogo'};}
@@ -31,6 +31,7 @@ export async function saveDesignedStrip(input,artwork,{catalog=[],cancelled=()=>
  const identityFields=[design.name,design.size,design.category,design.color];
  // Preserve existing design IDs when the new text controls remain at their defaults.
  if(design.textColor!=='auto'||design.textScale!==1)identityFields.push(design.textColor,design.textScale);
+ if(design.textPosition!==50)identityFields.push('height',design.textPosition);
  const identity=JSON.stringify(identityFields);
  const hash=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(identity));
  const id='created-'+Array.from(new Uint8Array(hash),byte=>byte.toString(16).padStart(2,'0')).join('');

@@ -1,0 +1,91 @@
+/* A quiet, continuous atmosphere behind the portal welcome. */
+html[data-design=modern][data-version="3"] #studio-welcome{
+ --welcome-glow-cool:#729bfa45;
+ --welcome-glow-mint:#70e5c33d;
+ --welcome-orbit-ink:#9edbc944;
+}
+html[data-design=modern][data-version="3"] #studio-welcome .welcome-scene{contain:paint;pointer-events:none}
+html[data-design=modern][data-version="3"] #studio-welcome .welcome-scene::before,
+html[data-design=modern][data-version="3"] #studio-welcome .welcome-scene::after{
+ content:"";position:absolute;pointer-events:none;border-radius:50%;animation:none;
+}
+html[data-design=modern][data-version="3"] #studio-welcome .welcome-scene::before{
+ width:100vmax;height:86vmax;left:-35vmax;top:-43vmax;
+ background:radial-gradient(ellipse at 50% 53%,var(--welcome-glow-cool),transparent 58%);
+ transform:translate3d(-5%,1%,0) rotate(-12deg);opacity:.8;
+}
+html[data-design=modern][data-version="3"] #studio-welcome .welcome-scene::after{
+ width:100vmax;height:78vmax;right:-38vmax;bottom:-43vmax;
+ background:radial-gradient(ellipse at 48% 48%,var(--welcome-glow-mint),transparent 60%);
+ transform:translate3d(3%,6%,0) rotate(12deg);opacity:.85;
+}
+html[data-design=modern][data-version="3"] #studio-welcome .welcome-orbit{
+ animation:none;border-color:var(--welcome-orbit-ink);background:radial-gradient(ellipse,#94d4de06,transparent 66%);
+ transform:translate3d(-50%,-50%,0) rotate(-18deg);opacity:.8;
+}
+html[data-design=modern][data-version="3"] #studio-welcome .welcome-orbit-two{
+ transform:translate3d(-50%,-50%,0) rotate(18deg);opacity:.6;
+}
+html[data-design=modern][data-version="3"] #studio-welcome .welcome-orbit-three{
+ transform:translate3d(-50%,-50%,0) rotate(-18deg);opacity:.4;
+}
+html[data-design=modern][data-version="3"] #studio-welcome .welcome-orbit-one::after,
+html[data-design=modern][data-version="3"] #studio-welcome .welcome-orbit-two::after{
+ content:"";position:absolute;left:18%;top:10%;width:4px;height:4px;border-radius:50%;
+ background:#b8eee0;box-shadow:0 0 16px 3px #9be5cb33;opacity:.8;pointer-events:none;
+}
+html[data-design=modern][data-version="3"] #studio-welcome .welcome-orbit-two::after{
+ left:auto;right:18%;top:87%;width:3px;height:3px;background:#b6ccff;box-shadow:0 0 14px 3px #92b0ed2e;
+}
+html[data-design=modern][data-version="3"][data-effects=on] #studio-welcome:not([hidden]) .welcome-scene::before{
+ animation:welcome-aurora-cool 24s ease-in-out infinite alternate;animation-delay:-7s;
+}
+html[data-design=modern][data-version="3"][data-effects=on] #studio-welcome:not([hidden]) .welcome-scene::after{
+ animation:welcome-aurora-mint 29s ease-in-out infinite alternate;animation-delay:-11s;
+}
+html[data-design=modern][data-version="3"][data-effects=on] #studio-welcome:not([hidden]) .welcome-orbit-one{
+ animation:welcome-orbit-drift-one 27s ease-in-out infinite alternate;animation-delay:-9s;
+}
+html[data-design=modern][data-version="3"][data-effects=on] #studio-welcome:not([hidden]) .welcome-orbit-two{
+ animation:welcome-orbit-drift-two 35s ease-in-out infinite alternate;animation-delay:-15s;
+}
+html[data-design=modern][data-version="3"][data-effects=on] #studio-welcome:not([hidden]) .welcome-orbit-three{
+ animation:welcome-orbit-drift-three 43s ease-in-out infinite alternate;animation-delay:-20s;
+}
+html[data-design=modern][data-version="3"][data-effects=on] #studio-welcome.welcome-paused:not([hidden]) .welcome-scene::before,
+html[data-design=modern][data-version="3"][data-effects=on] #studio-welcome.welcome-paused:not([hidden]) .welcome-scene::after,
+html[data-design=modern][data-version="3"][data-effects=on] #studio-welcome.welcome-paused:not([hidden]) .welcome-orbit{animation-play-state:paused}
+html[data-design=modern][data-version="3"][data-color-theme=light] #studio-welcome{
+ --welcome-glow-cool:#78a5ed35;--welcome-glow-mint:#55bda539;--welcome-orbit-ink:#4d8a9b36;
+}
+html[data-design=modern][data-version="3"][data-color-theme=light] #studio-welcome .welcome-orbit-one::after{background:#267767;box-shadow:0 0 14px 2px #2d8d7730}
+html[data-design=modern][data-version="3"][data-color-theme=light] #studio-welcome .welcome-orbit-two::after{background:#4c70a6;box-shadow:0 0 14px 2px #527ab32b}
+@keyframes welcome-aurora-cool{
+ from{transform:translate3d(-5%,1%,0) rotate(-12deg) scale(1);opacity:.7}
+ to{transform:translate3d(14%,12%,0) rotate(14deg) scale(1.12);opacity:1}
+}
+@keyframes welcome-aurora-mint{
+ from{transform:translate3d(3%,6%,0) rotate(12deg) scale(1);opacity:.7}
+ to{transform:translate3d(-15%,-12%,0) rotate(-13deg) scale(1.12);opacity:1}
+}
+@keyframes welcome-orbit-drift-one{
+ from{transform:translate3d(-53%,-46%,0) rotate(-20deg) scale(1)}
+ to{transform:translate3d(-47%,-57%,0) rotate(-6deg) scale(1.045)}
+}
+@keyframes welcome-orbit-drift-two{
+ from{transform:translate3d(-48%,-55%,0) rotate(21deg) scale(1.03)}
+ to{transform:translate3d(-54%,-44%,0) rotate(7deg) scale(.98)}
+}
+@keyframes welcome-orbit-drift-three{
+ from{transform:translate3d(-53%,-43%,0) rotate(-24deg) scale(1.035)}
+ to{transform:translate3d(-46%,-57%,0) rotate(-9deg) scale(.98)}
+}
+@media(max-width:760px){
+ html[data-design=modern][data-version="3"] #studio-welcome .welcome-scene::before{width:130vmax;height:110vmax;left:-70vmax;top:-57vmax}
+ html[data-design=modern][data-version="3"] #studio-welcome .welcome-scene::after{width:130vmax;height:104vmax;right:-74vmax;bottom:-57vmax}
+}
+@media(prefers-reduced-motion:reduce){
+ html[data-design=modern][data-version="3"] #studio-welcome .welcome-scene::before,
+ html[data-design=modern][data-version="3"] #studio-welcome .welcome-scene::after,
+ html[data-design=modern][data-version="3"] #studio-welcome .welcome-orbit{animation:none!important}
+}

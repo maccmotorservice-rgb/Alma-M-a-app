@@ -38,3 +38,6 @@ El menú tiene un halo que sigue el cursor, un pequeño desplazamiento y respues
 La preferencia del sistema `prefers-reduced-motion: reduce` tiene prioridad: desactiva animaciones y transiciones, cancela las que estén en curso y marca el control como movimiento reducido. La actualización de esa preferencia se escucha en tiempo real. Los estados naranja y verde de pagos y producción conservan su significado. El indicador de carga gira solo durante un proceso activo.
 
 Se verificaron el brillo al pasar el mouse, el cambio de secciones, la ausencia de animación al buscar, la persistencia del interruptor, cambios en vivo de movimiento reducido, el diseño anterior, confirmación tras guardar un movimiento en un backend simulado, el menú móvil y el indicador de carga.
+
+
+Tema del portal (v64): la versión 3 dispone de claro y oscuro en Diseño. El selector cambia `data-color-theme`, sin volver a renderizar los formularios, y guarda `alma-mia-color-theme` por navegador. `portal-light.css` es una capa final exclusiva para V3/claro; oscuro sigue siendo el valor inicial. Las versiones 1 y 2 conservan sus estilos. `welcome-motion.css` añade el fondo ambiental continuo y respeta movimiento reducido, efectos desactivados y visibilidad de la pestaña.

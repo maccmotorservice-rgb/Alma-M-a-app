@@ -352,3 +352,14 @@ El generador incorpora color automático o manual para el texto, con selector y 
 **Descargar imagen** genera un PNG del diseño actual a 300 ppp, con resolución física incorporada al archivo, sin añadirlo a la biblioteca. **Añadir a la biblioteca** conserva el diseño para seleccionarlo junto con las demás tiras al imprimir. Los colores y tamaños de texto distintos se guardan como variantes separadas; repetir el mismo diseño no lo duplica. Los diseños anteriores mantienen su identidad al conservar los ajustes predeterminados.
 
 La biblioteca permite **Eliminar** las tiras creadas por el generador. Pide confirmar el nombre y la presentación; al eliminarlas también las retira de la selección de impresión e invalida su PDF previo. Las imágenes importadas desde ZIP conservan su funcionamiento. Estas operaciones son locales al navegador y no modifican inventario, ventas ni otros datos de Supabase.
+
+
+### PDF, WhatsApp y apariencia del portal (v64)
+
+**Ver lista** en lotes y pedidos incluye **Descargar PDF** y **Enviar por WhatsApp**. La revisión previa a confirmar producción también exporta un PDF identificado como borrador. Los documentos conservan número de orden, fecha y hora de Guatemala, destino o cliente, autor, categoría, presentación y cantidades planificadas, terminadas y pendientes. Descargar o compartir no confirma producción ni modifica existencias. Las notas de venta actuales y originales, los comprobantes PDF, el reporte de reposición, las etiquetas y los tabloides usan los mismos controles de descarga y envío.
+
+En dispositivos compatibles se prepara el archivo antes del clic y se abre el menú nativo para elegir WhatsApp y un destinatario. Si el navegador no admite compartir archivos, se descarga el PDF y se explica cómo adjuntarlo manualmente, con un enlace para abrir WhatsApp. No se suben documentos a servicios públicos ni se envían mensajes automáticamente. Cerrar las vistas o terminar sesión revoca sus PDF temporales y limpia los archivos preparados para compartir.
+
+En **Diseño → Tema del portal**, **Claro** y **Oscuro** cambian la apariencia de la versión 3 sin cambiar el diseño, los datos ni los borradores. La preferencia se guarda por navegador en `alma-mia-color-theme`; el valor predeterminado sigue siendo oscuro. La bienvenida incorpora luces y órbitas de movimiento continuo. El fondo se pausa al ocultar la pestaña y se mantiene estático al desactivar efectos o reducir movimiento; la música, el saludo y la frecuencia de bienvenida se conservan.
+
+En **Crear tiras**, el nombre de una o varias palabras se alinea siempre a la izquierda en ambas caras. **Altura del nombre** permite moverlo entre el logotipo y la información de capacidad, con restablecimiento a 50 %. Cambiar el tamaño mantiene su posición dentro de ese espacio, sin superponerlo a otros datos. El texto central continúa en una sola línea. La altura se conserva en la imagen, el PDF y las variantes de la biblioteca.

@@ -5,7 +5,7 @@ import {validateStripDesign,stripDesignPrintSize,stripDesignGeometry,stripInkCol
 const design={name:'Mi nuevo perfume',color:'#286b60',size:100,category:'Unisex',qty:1};
 
 test('a new perfume can be designed without belonging to the catalog',()=>{
-  assert.deepEqual(validateStripDesign({...design,name:'  Azahar   del Mar  ',color:'#ABCDEF',size:'50',qty:'3'}),{name:'Azahar del Mar',color:'#abcdef',textColor:'auto',textScale:1,size:50,category:'Unisex',qty:3});
+  assert.deepEqual(validateStripDesign({...design,name:'  Azahar   del Mar  ',color:'#ABCDEF',size:'50',qty:'3'}),{name:'Azahar del Mar',color:'#abcdef',textColor:'auto',textScale:1,textPosition:50,size:50,category:'Unisex',qty:3});
   assert.equal(validateStripDesign({...design,name:'Ámbar & <Edición especial>'}).name,'Ámbar & <Edición especial>');
   assert.equal(validateStripDesign({...design,name:'A'.repeat(80)}).name.length,80);
   assert.equal(validateStripDesign({...design,productId:12}).productId,'12');
@@ -86,4 +86,10 @@ test('ink remains readable for dark and pale colour choices',()=>{
   assert.equal(stripInkColor('#ffffff'),'#211f1c');
   assert.equal(stripInkColor('#ffffcc'),'#211f1c');
   assert.throws(()=>stripInkColor('transparent'));
+});
+
+test('vertical placement accepts the full safe interval and defaults old designs to its midpoint',()=>{
+ assert.equal(validateStripDesign(design).textPosition,50);
+ for(const value of [0,30,50,100])assert.equal(validateStripDesign({...design,textPosition:value}).textPosition,value);
+ for(const value of [-1,101,NaN,Infinity])assert.throws(()=>validateStripDesign({...design,textPosition:value}),/altura/);
 });

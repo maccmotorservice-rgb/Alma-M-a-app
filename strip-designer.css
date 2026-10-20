@@ -49,9 +49,9 @@
 #strip-designer #strip-design-text-auto{width:18px;height:18px;min-height:18px;padding:0;margin:0;accent-color:var(--strip-accent);flex-shrink:0}
 #strip-designer #strip-design-text-hex{font-variant-numeric:tabular-nums;text-transform:uppercase}
 #strip-designer .strip-text-size-controls{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:12px;align-items:center;min-width:0;margin:7px 0 0}
-#strip-designer #strip-design-text-scale{width:100%;min-width:0;min-height:44px;margin:0;padding:0;accent-color:var(--strip-accent);cursor:pointer;background:transparent;box-shadow:none;border:0}
-#strip-designer #strip-design-text-scale-value{font-size:12px;min-width:43px;text-align:right;color:var(--strip-ink);font-variant-numeric:tabular-nums}
-#strip-designer #strip-design-text-scale-reset{min-height:40px;padding:8px 10px;font-size:11px;white-space:nowrap}
+#strip-designer :is(#strip-design-text-scale,#strip-design-text-position){width:100%;min-width:0;min-height:44px;margin:0;padding:0;accent-color:var(--strip-accent);cursor:pointer;background:transparent;box-shadow:none;border:0}
+#strip-designer :is(#strip-design-text-scale-value,#strip-design-text-position-value){font-size:12px;min-width:43px;text-align:right;color:var(--strip-ink);font-variant-numeric:tabular-nums}
+#strip-designer :is(#strip-design-text-scale-reset,#strip-design-text-position-reset){min-height:40px;padding:8px 10px;font-size:11px;white-space:nowrap}
 #strip-designer .strip-design-type-hint{font-size:11px;margin:7px 0 0}
 #strip-designer #strip-design-download-status{font-size:12px;line-height:1.6;overflow-wrap:anywhere}
 #strip-designer #strip-design-download-status a{color:var(--strip-ink);text-underline-offset:3px}
@@ -96,3 +96,5 @@ html[data-design=modern][data-version="3"] #strip-designer .strip-preview-tools 
 .strips-library .strip-delete-button:focus-visible{outline:3px solid #67aeb8;outline-offset:3px}
 html[data-design=modern][data-version="3"] .strips-library .strip-delete-button{background:#35252a;border-color:#80505a;color:#ffd0c7}
 html[data-design=modern][data-version="3"] .strips-library .strip-delete-button:hover:not(:disabled){background:#493039;border-color:#b0737c;color:#ffe0da}
+
+#strip-designer label[for=strip-design-text-position]{margin-top:18px}
