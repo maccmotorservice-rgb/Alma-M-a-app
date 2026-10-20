@@ -1,5 +1,5 @@
-import {salesAnalytics,salesRanking} from './sales-analytics.js?v=58';
-import {salesMoney} from './sales.js?v=58';
+import {salesAnalytics,salesRanking} from './sales-analytics.js?v=59';
+import {salesMoney} from './sales.js?v=59';
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export function annualSalesCards(state,catalog,year,showMore=true){const r=salesAnalytics(state.salesNotes,catalog,year);return `<section class="financial-overview"><div class="section-head"><h2>Ventas ${year}</h2>${showMore?'<button type="button" class="secondary" data-view="sales-report">Ver más</button>':''}</div><div class="stats financial-stats">${[['Ingresos por ventas',r.totals.salesCents,`${r.totals.notes} notas vigentes · Importe después de descuentos`],['Ingresos cobrados',r.totals.collectedCents,'Contado y abonos recibidos durante el año'],['Reposición estimada',r.totals.replacementCents,`${r.totals.perfumes} perfumes de 50 o 100 ml × $140`],['Ventas menos reposición',r.totals.resultCents,'Resultado estimado antes de otros gastos']].map(([label,value,hint])=>`<div class="card"><div class="stat-label">${label}</div><div class="number">${salesMoney(value)}</div><div class="hint">${hint}</div></div>`).join('')}</div></section>`;}
 export function salesReportHtml(state,catalog,year,options={}){
