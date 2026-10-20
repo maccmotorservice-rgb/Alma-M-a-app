@@ -103,3 +103,8 @@ html[data-design=modern][data-version="3"] .strips-library .strip-delete-button:
 .strip-sync>p{margin:0;flex:1;min-width:180px;line-height:1.6}
 .strip-sync .label-actions{margin:0;gap:10px}
 .strip-thumb-placeholder{min-height:180px;display:grid;place-items:center;font-size:12px;opacity:.75;text-align:center;border:1px solid currentColor;border-radius:12px;padding:16px}
+
+#strips-sync-issues{flex:1 0 100%;font-size:12px;line-height:1.6}
+#strips-sync-issues summary{cursor:pointer;font-weight:600}
+#strips-sync-issues li{margin:10px 0;overflow-wrap:anywhere}
+#strips-sync-issues li strong,#strips-sync-issues li span{display:block}
