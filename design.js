@@ -64,7 +64,7 @@ const workspaceHints={
  'sales-report':['Encuentra lo que mejor se vende','Elige el año y toca un mes para ver sus cifras. Combina categoría, tipo de ranking y Top 5, 10 o 20 para comparar perfumes.'],
  catalog:['Encuentra el perfume adecuado','Busca por nombre, inspiración o marca. Usa las categorías o abre Búsqueda avanzada para explorar aromas y descripciones.'],
  labels:['Generar pliego de etiquetas','Marca varios perfumes y revisa Tu selección antes de generar el PDF. Puedes quitar perfumes sin empezar de nuevo.'],
- strips:['Prepara tus tabloides','Importa tus imágenes o ZIP, elige las tiras y ajusta las cantidades. Se acomodan hasta tres por tabloide según su tamaño.'],
+ strips:['Crea e imprime tus tiras','Diseña una tira con nombre, color y presentación y guárdala en la biblioteca. Después selecciona tus imágenes y cantidades para imprimir hasta tres tiras por tabloide.'],
  customers:['Ten a tus clientes a la mano','Registra sus datos para seleccionarlos al preparar pedidos. Los cambios se comparten con la otra sesión.'],
  cloud:['Comprueba la sincronización','Aquí puedes revisar la conexión y la cuenta autenticada. Los cambios confirmados se comparten entre los dispositivos conectados.'],
  history:['Consulta quién hizo cada movimiento','Revisa las fechas, los usuarios y los motivos de los movimientos de inventario.'],
