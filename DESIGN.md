@@ -1,5 +1,17 @@
 # Diseño reversible
 
+## Centro de control Éter (v59)
+
+La versión 3 usa una interfaz de grafito y azul profundo con acentos menta y cian. La tipografía Manrope, los números tabulares y las superficies de contraste alto sustituyen la composición editorial anterior. El menú lateral permanece visible en escritorio, agrupado por operación, ventas, impresión, consultas y sistema. En móvil se convierte en un menú desplegable con accesos inferiores.
+
+El Resumen muestra primero las existencias y las alertas; después, las cuentas de venta, producción y accesos rápidos, el detalle anual y la actividad. Las cuatro métricas de inventario abren su detalle mediante clic, Enter o Espacio. Nueva nota, Imprimir y los demás accesos utilizan los formularios y rutas existentes. No crean movimientos al navegar.
+
+Las versiones 1 y 2 siguen disponibles en **Diseño**, sin migrar ni restaurar datos. La capa nueva está limitada a `html[data-design="modern"][data-version="3"]` en `studio.css`; la composición vive en `studio.js`. Se conservan las preferencias de efectos y movimiento reducido. Los PDF, la sincronización, las fórmulas de producción y los sonidos de bienvenida y acceso mantienen su comportamiento.
+
+El aspecto anterior de la versión 3 queda conservado en el commit `df782deeae092b3bf184c85d640e19a58254803d` (v58). La restauración visual no requiere importar respaldos de inventario.
+
+## Diseño anterior (v45–v58)
+
 El rediseño visual v45 se aplica mediante `modern.css`, con reglas limitadas a `html[data-design="modern"]`. `style.css` y `layout.css` conservan el diseño anterior. Los PDF se generan con los módulos originales y no usan esta hoja de estilos.
 
 En la cabecera, **Diseño anterior** vuelve inmediatamente al aspecto anterior. **Probar diseño nuevo** reactiva el nuevo. La elección se guarda en `localStorage` como `alma-mia-design`, por navegador. No modifica el inventario, el usuario autenticado, las notas de venta ni Supabase. La lectura previa a la carga de CSS evita mostrar brevemente el diseño incorrecto. Si falla el almacenamiento de preferencias, el cambio sigue funcionando durante esa sesión.

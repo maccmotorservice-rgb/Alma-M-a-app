@@ -314,3 +314,9 @@ En V3, **Imprimir** contiene Generar nota de venta, Imprimir etiquetas e Imprimi
 Mientras la bienvenida está abierta, suena una composición original de piano zen con un fondo ambiental suave. El ciclo estéreo de 32 segundos se repite sin pausas. Se incluye preparado en `assets/audio/welcome-piano-zen-v58.wav` para evitar esperas de síntesis en equipos lentos; se reutiliza un único búfer durante la reproducción. No requiere servicios externos. El generador local de `welcome-ambience.js` queda como respaldo si no se puede cargar la grabación.
 
 **Acceder a mi portal** desvanece el fondo y conserva exactamente el jingle de acceso de la versión anterior. Cerrar o silenciar la bienvenida detiene la música; cambiar de pestaña la pausa y volver la reanuda si la bienvenida sigue abierta. Se conservan la frecuencia diaria o tras dos horas sin actividad, la preferencia de sonido y **Diseño → Probar bienvenida**. La reproducción automática sigue sujeta a las restricciones de audio del navegador.
+
+### Centro de control visual (v59)
+
+Se reorganiza la versión 3 con menú lateral directo en escritorio, accesos inferiores y menú desplegable en móvil, y un Resumen que presenta existencias y alertas antes del bloque de producción. Nueva nota abre el editor original; las cuatro métricas de inventario permiten consultar su detalle con clic o teclado. Stock, notas de venta, reportes, catálogo, formularios y herramientas comparten superficies oscuras, tipografía sans serif y estados de selección consistentes. Los acentos menta y cian identifican acciones; naranja, verde y rojo conservan su significado operativo.
+
+Las versiones 1 y 2 permanecen disponibles en Diseño. Cambiar de versión conserva los borradores, selecciones, datos y conexión; no guarda movimientos. Se mantienen los efectos opcionales, movimiento reducido, los documentos PDF y los dos sonidos de bienvenida y acceso. La reversibilidad y la organización visual se describen en `DESIGN.md`.
