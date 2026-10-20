@@ -1,19 +1,19 @@
-import {mountPdfActions} from './pdf-share.js?v=64';
-import {filterMaterialStock,materialStockCounts,materialStatus,productStockView} from './stock-views.js?v=64';
-import {createStockDictation} from './stock-dictation.js?v=64';
-import {createStripsPanel} from './strips.js?v=64';
-import {createLabelsPanel} from './labels.js?v=64';
-import {createStockScanner} from './stock-scanner.js?v=64';
-import {hasAppAccess,defaultCloudConfig,clearBusinessCache} from './access.js?v=64';
-import {annualSalesCards,salesReportHtml} from './sales-reports.js?v=64';
-import {cancellationFields,mountCancellationFields,readCancellationFields} from './cancellation.js?v=64';
-import {catalogCategories,catalogCategoryMatches,filterCatalog,perfumeMatches} from './catalog-tools.js?v=64';
-import {activeSalesNoteForBatch,salesAccounts,salesMoney} from './sales.js?v=64';
-import {createSalesPanel} from './sales-panel.js?v=64';
-import {CloudInventory} from './cloud.js?v=64';
-import {createDictationPanel} from './dictation.js?v=64';
-import {initialState,applyMovement,recipeFor,registerCustomer,productionPreview,confirmProduction,completedQuantity,batchProgress,completeBatchItem,cancelBatch,readyBatch,setBottleStocks,readyMovement,validateBackup,attributeSessionChanges,extraBottles,bottleStock,isMaterialLow,removeReadyStock} from './inventory.js?v=64';
-const catalog=await fetch('./catalog.json?v=64').then(r=>{if(!r.ok)throw Error('No se pudo cargar el catálogo');return r.json()});
+import {mountPdfActions} from './pdf-share.js?v=65';
+import {filterMaterialStock,materialStockCounts,materialStatus,productStockView} from './stock-views.js?v=65';
+import {createStockDictation} from './stock-dictation.js?v=65';
+import {createStripsPanel} from './strips.js?v=65';
+import {createLabelsPanel} from './labels.js?v=65';
+import {createStockScanner} from './stock-scanner.js?v=65';
+import {hasAppAccess,defaultCloudConfig,clearBusinessCache} from './access.js?v=65';
+import {annualSalesCards,salesReportHtml} from './sales-reports.js?v=65';
+import {cancellationFields,mountCancellationFields,readCancellationFields} from './cancellation.js?v=65';
+import {catalogCategories,catalogCategoryMatches,filterCatalog,perfumeMatches} from './catalog-tools.js?v=65';
+import {activeSalesNoteForBatch,salesAccounts,salesMoney} from './sales.js?v=65';
+import {createSalesPanel} from './sales-panel.js?v=65';
+import {CloudInventory} from './cloud.js?v=65';
+import {createDictationPanel} from './dictation.js?v=65';
+import {initialState,applyMovement,recipeFor,registerCustomer,productionPreview,confirmProduction,completedQuantity,batchProgress,completeBatchItem,cancelBatch,readyBatch,setBottleStocks,readyMovement,validateBackup,attributeSessionChanges,extraBottles,bottleStock,isMaterialLow,removeReadyStock} from './inventory.js?v=65';
+const catalog=await fetch('./catalog.json?v=65').then(r=>{if(!r.ok)throw Error('No se pudo cargar el catálogo');return r.json()});
 let cloud=null,cloudUiError='',remoteRenderPending=false;
 let productionPdfEpoch=0,productionPdfHandle=null,productionPdfListening=false,materialsPdfEpoch=0,materialsPdfHandle=null;
 let salesReportYear=Number(new Intl.DateTimeFormat('en',{timeZone:'America/Guatemala',year:'numeric'}).format(new Date()));sessionStorage.removeItem('alma-sales-import-key');if(location.hash.startsWith('#cargar-ventas='))history.replaceState(null,'',location.pathname+location.search);
@@ -36,15 +36,30 @@ async function persist(next,{attribute=true}={}){
  if(!hasAppAccess(cloud))throw Error('Inicia sesión con una cuenta autorizada antes de guardar.');
  const actor=cloud?.enabled?cloud.member?.display_name:sessionUser,saved=attribute?attributeSessionChanges(state,next,actor):next;
  if(cloud?.enabled){state=await cloud.save(saved);cacheCloudState(state);}else{localStorage.setItem(key,JSON.stringify(saved));state=saved;}
+ syncProductionAttention();
 }
+function syncProductionAttention(){
+ const pending=hasAppAccess(cloud)?(state.batches??[]).map(batchProgress).filter(progress=>!progress.cancelled&&progress.pending>0):[];
+ const units=pending.reduce((total,progress)=>total+progress.pending,0),message=pending.length?`${pending.length} ${pending.length===1?'lote o pedido en producción':'lotes o pedidos en producción'} · ${units} ${units===1?'perfume pendiente':'perfumes pendientes'}`:'';
+ for(const button of document.querySelectorAll('#main-navigation [data-view="batches"],.studio-dock [data-view="batches"]')){
+  let dot=button.querySelector('.production-attention-dot');
+  if(!dot){dot=document.createElement('i');dot.className='production-attention-dot';dot.setAttribute('aria-hidden','true');button.append(dot);}
+  if(!button.dataset.productionLabel)button.dataset.productionLabel=button.querySelector('span:not(.classic-symbol)')?.textContent.trim()||'Producción';
+  dot.hidden=!pending.length;button.toggleAttribute('data-production-pending',Boolean(pending.length));
+  if(message){button.title=message;button.setAttribute('aria-label',`${button.dataset.productionLabel}. ${message}`);}
+  else{button.removeAttribute('title');button.removeAttribute('aria-label');}
+ }
+}
+document.addEventListener('alma:design-change',syncProductionAttention);
 function updateAccessScreen(){
  const allowed=hasAppAccess(cloud),screen=$('#access-screen');document.body.classList.toggle('access-locked',!allowed);screen.hidden=allowed;
+ syncProductionAttention();
  if(allowed)return true;
  clearProductionPdf();clearMaterialsPdf();
  stockVoice?.clear();strips?.clear();labels?.clear();dictation?.stop();if(!cloud?.user||!cloud?.member)scanner?.clear();else scanner?.stop();document.querySelectorAll('dialog').forEach(d=>{if(d.open)d.close();if(!['modal','quick-navigation','design-picker'].includes(d.id))d.replaceChildren();});$('#content').replaceChildren();$('#fields').replaceChildren();$('#modal-title').textContent='';$('#form-error').textContent='';
  const mode=cloud?.mode,verified=cloud?.user&&cloud?.member,loading=!cloud||mode==='loading',passwordFocused=document.activeElement?.closest('#access-login');if(passwordFocused&&mode==='auth'&&!cloudUiError)return false;
  screen.innerHTML=`<div class="access-card"><img src="./assets/logo.png" alt="Alma Mía"><h1>Acceso privado</h1><p>Inicia sesión con tu cuenta autorizada.</p><p role="status">${esc(cloudUiError||cloud?.message||'Comprobando sesión…')}</p>${loading?'<p>Conectando…</p>':verified&&mode==='choice'?'<button type="button" class="primary" id="access-open">Abrir inventario compartido</button>':verified&&mode==='empty'?'<p>El inventario compartido aún está vacío. Entra desde el equipo que conserva los datos originales.</p><button type="button" class="secondary" id="access-initialize">Subir inventario de este equipo</button>':mode==='ready'&&!cloud.connected?'<button type="button" class="primary" id="access-retry">Volver a conectar</button>':`<form id="access-login"><label class="field">Correo<input name="email" type="email" required autocomplete="username"></label><label class="field">Contraseña<input name="password" type="password" required autocomplete="current-password"></label><button class="primary" type="submit">Iniciar sesión</button></form>`}${verified?'<button type="button" class="text-button" id="access-signout">Cerrar sesión</button>':''}</div>`;
- const login=$('#access-login');if(login)login.onsubmit=async e=>{e.preventDefault();const values=new FormData(login);login.querySelector('button').disabled=true;try{cloudUiError='';await cloud.signIn(values.get('email'),values.get('password'));}catch(error){cloudUiError=error.message;}finally{values.delete('password');login.reset();render();}};
+ const login=$('#access-login');if(login)login.onsubmit=async e=>{e.preventDefault();document.dispatchEvent(new CustomEvent('alma:login-start'));const values=new FormData(login);login.querySelector('button').disabled=true;try{cloudUiError='';await cloud.signIn(values.get('email'),values.get('password'));}catch(error){cloudUiError=error.message;}finally{values.delete('password');login.reset();render();document.dispatchEvent(new CustomEvent('alma:login-settled',{detail:{allowed:hasAppAccess(cloud)}}));}};
  if($('#access-open'))$('#access-open').onclick=async()=>{try{cloudUiError='';await cloud.acceptRemote();render();}catch(e){cloudUiError=e.message;updateAccessScreen();}};
  if($('#access-initialize'))$('#access-initialize').onclick=async()=>{if(!confirm('Se subirá el inventario de este equipo a la nube vacía. ¿Es tu copia completa?'))return;try{await cloud.initialize(state);render();}catch(e){cloudUiError=e.message;updateAccessScreen();}};
  if($('#access-retry'))$('#access-retry').onclick=()=>cloud.pull();
@@ -128,7 +143,7 @@ const scanner=createStockScanner({catalog,getState:()=>state,save:async next=>pe
 window.addEventListener('pagehide',()=>{dictation.stop();stockVoice.stop();scanner.stop();});
 document.addEventListener('visibilitychange',()=>{if(document.hidden){dictation.stop();stockVoice.stop();scanner.stop();}});
 if(!localStorage.getItem('alma-mia-cloud-config'))localStorage.setItem('alma-mia-cloud-config',JSON.stringify(defaultCloudConfig));
-cloud=new CloudInventory({storage:localStorage,validate:data=>validateBackup(data,catalog),onData:data=>{state=data;cacheCloudState(data);if(canRefreshCloudView()){remoteRenderPending=false;render();}else remoteRenderPending=true;},onStatus:updateCloudStatus});
+cloud=new CloudInventory({storage:localStorage,validate:data=>validateBackup(data,catalog),onData:data=>{state=data;cacheCloudState(data);syncProductionAttention();if(canRefreshCloudView()){remoteRenderPending=false;render();}else remoteRenderPending=true;},onStatus:updateCloudStatus});
 updateCloudStatus();
 window.addEventListener('online',()=>cloud.pull());
 document.addEventListener('focusout',()=>setTimeout(refreshCloudView,0));
@@ -209,7 +224,7 @@ async function prepareMaterialsPdf(button){
  button.disabled=true;button.textContent='Preparando PDF…';if(output)output.textContent='Preparando reporte de materias primas…';
  try{
   if(storageError)throw Error('Recupera el respaldo antes de generar el reporte.');
-  const {createMaterialsPdf}=await import('./materials-pdf.js?v=64'),result=await createMaterialsPdf(snapshot,catalog);
+  const {createMaterialsPdf}=await import('./materials-pdf.js?v=65'),result=await createMaterialsPdf(snapshot,catalog);
   if(!active())return;
   output.replaceChildren();materialsPdfHandle=mountPdfActions(output,{blob:result.blob,filename:result.filename,title:'Reporte de materias primas'});
   button.hidden=true;materialsPdfHandle.anchor.click();
@@ -226,7 +241,7 @@ async function prepareProductionPdf(batch,{draft=false}={}){
  const active=()=>token===productionPdfEpoch&&hasAppAccess(cloud)&&dialog.open&&output.isConnected&&dialog.contains(output);
  output.innerHTML='<button type="button" class="secondary" disabled>Preparando PDF…</button>';
  try{
-  const {createProductionPdf}=await import('./production-pdf.js?v=64'),result=await createProductionPdf(snapshot,{draft});
+  const {createProductionPdf}=await import('./production-pdf.js?v=65'),result=await createProductionPdf(snapshot,{draft});
   if(!active())return;
   output.replaceChildren();productionPdfHandle=mountPdfActions(output,{blob:result.blob,filename:result.filename,title:draft?'Lista de producción · Borrador':'Lista de producción '+batchNumber(snapshot)});
  }catch(error){if(active()){output.innerHTML=`<p role="alert">No se pudo preparar el PDF: ${esc(error.message)}</p><button type="button" class="secondary" id="production-pdf-retry">Reintentar PDF</button>`;$('#production-pdf-retry').onclick=()=>prepareProductionPdf(snapshot,{draft});}}

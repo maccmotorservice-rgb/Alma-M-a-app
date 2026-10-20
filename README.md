@@ -363,3 +363,12 @@ En dispositivos compatibles se prepara el archivo antes del clic y se abre el me
 En **Diseño → Tema del portal**, **Claro** y **Oscuro** cambian la apariencia de la versión 3 sin cambiar el diseño, los datos ni los borradores. La preferencia se guarda por navegador en `alma-mia-color-theme`; el valor predeterminado sigue siendo oscuro. La bienvenida incorpora luces y órbitas de movimiento continuo. El fondo se pausa al ocultar la pestaña y se mantiene estático al desactivar efectos o reducir movimiento; la música, el saludo y la frecuencia de bienvenida se conservan.
 
 En **Crear tiras**, el nombre de una o varias palabras se alinea siempre a la izquierda en ambas caras. **Altura del nombre** permite moverlo entre el logotipo y la información de capacidad, con restablecimiento a 50 %. Cambiar el tamaño mantiene su posición dentro de ese espacio, sin superponerlo a otros datos. El texto central continúa en una sola línea. La altura se conserva en la imagen, el PDF y las variantes de la biblioteca.
+
+
+### Música desde el acceso e indicador de producción (v65)
+
+Cuando corresponde mostrar la bienvenida, enviar **Iniciar sesión** comienza la música durante la verificación del acceso; un navegador nuevo se identifica por su historial local de bienvenida, sin identificar ni rastrear el dispositivo. Se usa el mismo audio al mostrar la bienvenida. Los intentos fallidos o sin acceso autorizado detienen la música y no registran una bienvenida. Se respetan el sonido desactivado, las versiones 1/2 y la frecuencia diaria o tras dos horas sin actividad.
+
+Cambiar de pestaña o ventana mantiene el bucle de bienvenida en reproducción: no se detiene ni se reinicia al regresar. Si el sistema suspende el audio, se intenta reanudar el mismo contexto y posición al volver. Al restaurar una página desde BFCache se conserva la fuente suspendida; si se destruyó el contexto, se recupera el punto del ciclo. La reproducción en segundo plano sigue sujeta a las restricciones del dispositivo. Acceder al portal conserva el jingle y el saludo, y cerrar o silenciar la bienvenida detiene su fondo.
+
+Un punto naranja junto al icono de **Generar un lote o pedido** indica que existen perfumes pendientes en lotes activos. También aparece en el acceso móvil de la versión 3. Se actualiza al guardar o recibir datos de la nube, incluso con el editor abierto; desaparece al completar o cancelar todos los pendientes y vuelve al corregir avances. El texto accesible indica el número de lotes y unidades pendientes. No cambia los saldos ni el estado de producción.

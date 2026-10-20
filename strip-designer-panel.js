@@ -1,4 +1,4 @@
-import {validateStripDesign, renderStripDesign, encodeStripDesignPng, stripInkColor} from './strip-designer.js?v=64';
+import {validateStripDesign, renderStripDesign, encodeStripDesignPng, stripInkColor} from './strip-designer.js?v=65';
 
 const esc = value => String(value ?? '').replace(/[&<>"']/g, character => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[character]));
 const key = value => String(value).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('es').replace(/\s+/g, ' ').trim();
