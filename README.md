@@ -428,3 +428,13 @@ En producción se puede elegir **Obsequio**, con destinatario opcional. Los avan
 Los pedidos y obsequios pueden confirmarse sin cliente mediante una confirmación explícita. Las notas también piden confirmación al revisar sin nombre. El PDF generado omite por completo el encabezado, valor y espacio reservado del cliente cuando está vacío. Los PDF originales de notas históricas se conservan intactos.
 
 Después de actualizar, recarga la página en cada equipo para utilizar la misma versión. No borres los datos del sitio ni las imágenes locales pendientes de sincronizar.
+
+### Entrega opcional desde una nota de venta (v73)
+
+En **Notas de venta**, debajo de la selección y antes del total, aparece **Registrar entrega y descontar del stock**, desactivado por defecto. Actívalo si ya entregaste los perfumes y aún no registraste su salida. Funciona con notas de contado, crédito y obsequio, con o sin lote de origen. Revisar la nota no cambia existencias; al guardarla se registran juntos la nota, las salidas y su comprobante interno de entrega.
+
+Se descuentan las cantidades completas de los perfumes seleccionados desde el catálogo de 50 y 100 ml. No descuenta esencias, alcohol, galaxolide ni conceptos de otras presentaciones. Los perfumes personalizados de 50/100 ml requieren identificarlos desde el catálogo para no descontar otro producto. Si falta stock para cualquiera de las filas, no se guarda la nota ni se aplica ninguna salida; puedes corregir cantidades o desactivar la entrega para guardar una nota pendiente.
+
+La nota muestra **Entrega registrada**, con fecha, usuario, perfumes y cantidades, y cada salida queda ligada a esa nota en Movimientos. No registres de nuevo esas unidades manualmente. Reabrir, descargar PDF, abonar o editar datos y precios no repite el descuento. Los perfumes y cantidades de una entrega registrada se conservan al editar; una devolución física se registra por separado en Stock de producto. Cancelar la nota conserva la entrega y no devuelve unidades automáticamente.
+
+Las notas anteriores conservan su comportamiento sin modificar existencias; puedes activar la entrega al editarlas si todavía no registraste la salida. Los respaldos conservan el registro de entrega. No requiere SQL ni borrar datos. Recarga la app en todos los equipos antes de usar la nueva opción.

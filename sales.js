@@ -1,6 +1,6 @@
-import {cloneData,randomId} from './clone-data.js?v=72';
-import {resolveCancellationReason} from './cancellation.js?v=72';
-import {validateEvidenceMetadata} from './evidence.js?v=72';
+import {cloneData,randomId} from './clone-data.js?v=73';
+import {resolveCancellationReason} from './cancellation.js?v=73';
+import {validateEvidenceMetadata} from './evidence.js?v=73';
 export const salesCategories=['Perfumes unisex - Nicho','Perfumes de dama - Nicho','Perfumes de caballero - Nicho','Perfumes de dama - Diseñador','Perfumes de caballero - Diseñador','Perfumes unisex - Diseñador','Material promocional','Testers / probadores'];
 export const salesCategory=p=>`Perfumes ${p.category==='Dama'?'de dama':p.category==='Caballero'?'de caballero':'unisex'} - ${p.line}`;
 export const salesMoney=cents=>new Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',minimumFractionDigits:2,maximumFractionDigits:2}).format(cents/100);
@@ -20,11 +20,11 @@ export function buildSalesNote(draft,{id=randomId(),createdAt=new Date().toISOSt
  if((draft.items??[]).some(i=>String(i.price).trim()===''||!Number.isFinite(Number(i.price))||Number(i.price)<0||String(i.qty).trim()===''))throw Error('Indica un precio y una cantidad válidos. El precio puede ser cero.');
  const discountPercent=draft.paymentType==='gift'?0:draft.discountEnabled?Number(draft.discountPercent):0,totals=salesTotals(items,discountPercent);
  if(!['Luis','Ximena'].includes(createdBy))throw Error('Inicia sesión o selecciona el usuario antes de guardar la nota.');
- const paymentType=draft.paymentType??'cash';if(!['cash','credit','gift'].includes(paymentType))throw Error('Selecciona Crédito, Contado u Obsequio.');return {id,customer,date,items,discountPercent,totals,createdAt,createdBy,paymentType,payments:[],...(draft.sourceBatch?{sourceBatch:cloneData(draft.sourceBatch)}:{})};
+ const paymentType=draft.paymentType??'cash';if(!['cash','credit','gift'].includes(paymentType))throw Error('Selecciona Crédito, Contado u Obsequio.');return {id,customer,date,items,discountPercent,totals,createdAt,createdBy,paymentType,payments:[],...(draft.deliverFromStock===true?{deliverFromStock:true}:{}),...(draft.sourceBatch?{sourceBatch:cloneData(draft.sourceBatch)}:{})};
 }
 export function validateSalesNotes(notes){
  if(!Array.isArray(notes)||new Set(notes.map(n=>n?.id)).size!==notes.length)throw Error('Notas de venta inválidas en el respaldo.');
- for(const n of notes){if(!n||typeof n.id!=='string'||!n.id||!Number.isFinite(Date.parse(n.createdAt))||!Array.isArray(n.items))throw Error('Nota de venta inválida.');const checked=buildSalesNote({...n,discountEnabled:n.discountPercent!==0,items:n.items.map(i=>({...i,price:i.unitCents/100}))},n);if(!n.totals||Object.keys(checked.totals).some(key=>checked.totals[key]!==n.totals[key]))throw Error('Los importes de la nota de venta no coinciden.');if(!['active','cancelled'].includes(n.status??'active')||(n.revision!==undefined&&(!Number.isSafeInteger(n.revision)||n.revision<0)))throw Error('Estado de nota inválido.');for(const prefix of ['updated','cancelled'])if(n[prefix+'At']!==undefined&&(!Number.isFinite(Date.parse(n[prefix+'At']))||!['Luis','Ximena'].includes(n[prefix+'By'])))throw Error('Datos de seguimiento de nota inválidos.');if(n.status==='cancelled'&&(!n.cancelledAt||!n.cancelledBy))throw Error('Falta información de la cancelación.');if(n.cancellationReason!==undefined&&(typeof n.cancellationReason!=='string'||n.cancellationReason.length>240))throw Error('Motivo de cancelación inválido.');if(n.events!==undefined&&(!Array.isArray(n.events)||n.events.some(e=>!e||!['edited','cancelled','payment'].includes(e.type)||!Number.isFinite(Date.parse(e.at))||!['Luis','Ximena'].includes(e.by))))throw Error('Historial de nota inválido.');if(n.sourcePdf){validateEvidenceMetadata(n.sourcePdf);if(n.sourcePdf.type!=='application/pdf')throw Error('El original debe ser PDF.');}if(n.importSource&&(!/^[a-f0-9]{64}$/.test(n.importSource.sha256)||typeof n.importSource.filename!=='string'||n.importSource.filename.length>160))throw Error('Origen de importación inválido.');validateSalesPayments(n);if(n.sourceBatch&&(!n.sourceBatch.id||typeof n.sourceBatch.id!=='string'||!Number.isSafeInteger(n.sourceBatch.number)||n.sourceBatch.number<1||!['stock','customer','gift'].includes(n.sourceBatch.type)))throw Error('Origen de la nota inválido.');}
+ for(const n of notes){if(!n||typeof n.id!=='string'||!n.id||!Number.isFinite(Date.parse(n.createdAt))||!Array.isArray(n.items))throw Error('Nota de venta inválida.');const checked=buildSalesNote({...n,discountEnabled:n.discountPercent!==0,items:n.items.map(i=>({...i,price:i.unitCents/100}))},n);if(!n.totals||Object.keys(checked.totals).some(key=>checked.totals[key]!==n.totals[key]))throw Error('Los importes de la nota de venta no coinciden.');if(!['active','cancelled'].includes(n.status??'active')||(n.revision!==undefined&&(!Number.isSafeInteger(n.revision)||n.revision<0)))throw Error('Estado de nota inválido.');for(const prefix of ['updated','cancelled'])if(n[prefix+'At']!==undefined&&(!Number.isFinite(Date.parse(n[prefix+'At']))||!['Luis','Ximena'].includes(n[prefix+'By'])))throw Error('Datos de seguimiento de nota inválidos.');if(n.status==='cancelled'&&(!n.cancelledAt||!n.cancelledBy))throw Error('Falta información de la cancelación.');if(n.cancellationReason!==undefined&&(typeof n.cancellationReason!=='string'||n.cancellationReason.length>240))throw Error('Motivo de cancelación inválido.');if(n.events!==undefined&&(!Array.isArray(n.events)||n.events.some(e=>!e||!['edited','cancelled','payment'].includes(e.type)||!Number.isFinite(Date.parse(e.at))||!['Luis','Ximena'].includes(e.by))))throw Error('Historial de nota inválido.');if(n.sourcePdf){validateEvidenceMetadata(n.sourcePdf);if(n.sourcePdf.type!=='application/pdf')throw Error('El original debe ser PDF.');}if(n.importSource&&(!/^[a-f0-9]{64}$/.test(n.importSource.sha256)||typeof n.importSource.filename!=='string'||n.importSource.filename.length>160))throw Error('Origen de importación inválido.');validateSalesPayments(n);validateSalesDelivery(n);if(n.sourceBatch&&(!n.sourceBatch.id||typeof n.sourceBatch.id!=='string'||!Number.isSafeInteger(n.sourceBatch.number)||n.sourceBatch.number<1||!['stock','customer','gift'].includes(n.sourceBatch.type)))throw Error('Origen de la nota inválido.');}
  return cloneData(notes);
 }
 export function salesGroups(note){return salesCategories.map(category=>({category,items:note.items.filter(i=>i.category===category)})).filter(g=>g.items.length).map(g=>({...g,pieces:g.items.reduce((s,i)=>s+i.qty,0),subtotalCents:g.items.reduce((s,i)=>s+i.qty*i.unitCents,0)}));}
@@ -34,8 +34,8 @@ export function salesFilename(note){return `${note.status==='cancelled'?'CANCELA
 export const salesNoteStatus=note=>note.status??'active';
 function salesActor(actor){if(!['Luis','Ximena'].includes(actor))throw Error('Inicia sesión o selecciona el usuario antes de modificar la nota.');}
 function existingSalesNote(state,id,expectedRevision){const note=(state.salesNotes??[]).find(n=>n.id===id);if(!note)throw Error('No se encontró la nota de venta.');if(salesNoteStatus(note)==='cancelled')throw Error('La nota está cancelada y no puede modificarse.');if((note.revision??0)!==expectedRevision)throw Error('La nota cambió en otra sesión. Ábrela de nuevo antes de editar o cancelar.');return note;}
-export function editSalesNote(state,candidate,{actor,expectedRevision,at=new Date().toISOString()}){
- salesActor(actor);const original=existingSalesNote(state,candidate.id,expectedRevision);validateSalesNotes([candidate]);if(candidate.sourceBatch&&activeSalesNoteForBatch(state,candidate.sourceBatch.id,candidate.id))throw Error('Este lote o pedido ya tiene otra nota vigente. Cancela las notas duplicadas antes de editar.');if((original.payments??[]).length&&candidate.paymentType!=='credit')throw Error('Una nota con abonos debe conservar el tipo Crédito.');const note={...candidate,...(original.sourcePdf?{sourcePdf:cloneData(original.sourcePdf)}:{}),...(original.importSource?{importSource:cloneData(original.importSource)}:{}),payments:cloneData(original.payments??[]),id:original.id,createdAt:original.createdAt,createdBy:original.createdBy,status:'active',revision:(original.revision??0)+1,updatedAt:at,updatedBy:actor,events:[...(original.events??[]),{type:'edited',at,by:actor}]};validateSalesPayments(note);return {...state,salesNotes:state.salesNotes.map(n=>n.id===note.id?note:n)};
+export function editSalesNote(state,candidate,{actor,expectedRevision,catalog=[],at=new Date().toISOString()}){
+ salesActor(actor);const original=existingSalesNote(state,candidate.id,expectedRevision);validateSalesNotes([candidate]);if(candidate.sourceBatch&&activeSalesNoteForBatch(state,candidate.sourceBatch.id,candidate.id))throw Error('Este lote o pedido ya tiene otra nota vigente. Cancela las notas duplicadas antes de editar.');if((original.payments??[]).length&&candidate.paymentType!=='credit')throw Error('Una nota con abonos debe conservar el tipo Crédito.');const note={...candidate,...(original.sourcePdf?{sourcePdf:cloneData(original.sourcePdf)}:{}),...(original.importSource?{importSource:cloneData(original.importSource)}:{}),payments:cloneData(original.payments??[]),id:original.id,createdAt:original.createdAt,createdBy:original.createdBy,status:'active',revision:(original.revision??0)+1,updatedAt:at,updatedBy:actor,events:[...(original.events??[]),{type:'edited',at,by:actor}]};validateSalesPayments(note);const delivery=applySalesDelivery(state,note,{actor,catalog,at,original});return {...delivery.state,salesNotes:state.salesNotes.map(n=>n.id===note.id?delivery.note:n)};
 }
 export function cancelSalesNote(state,id,{actor,expectedRevision,reason='',reasonCode='other',at=new Date().toISOString()}){
  salesActor(actor);const original=existingSalesNote(state,id,expectedRevision);reason=resolveCancellationReason(reasonCode,reason);const note={...original,status:'cancelled',revision:(original.revision??0)+1,cancelledAt:at,cancelledBy:actor,cancellationReason:reason.trim(),cancellationCode:reasonCode,events:[...(original.events??[]),{type:'cancelled',at,by:actor}]};return {...state,salesNotes:state.salesNotes.map(n=>n.id===id?note:n)};
@@ -63,10 +63,51 @@ export function salesDraftFromBatch(batch,catalog,{date,customer=''}={}){
 }
 export function salesSourceLabel(note){const source=note.sourceBatch;return source?`${source.type==='gift'?'Obsequio':source.type==='customer'?'Pedido':'Lote de stock'} AM-${String(source.number).padStart(4,'0')}`:'';}
 export function activeSalesNoteForBatch(state,batchId,excludeNoteId){return (state.salesNotes??[]).find(n=>n.id!==excludeNoteId&&n.sourceBatch?.id===batchId&&salesNoteStatus(n)==='active');}
-export function insertSalesNote(state,note){
+export function insertSalesNote(state,note,{catalog=[],actor=note.createdBy,at=new Date().toISOString()}={}){
  validateSalesNotes([note]);if((state.salesNotes??[]).some(n=>n.id===note.id))throw Error('Esta nota ya está guardada.');
  if(note.sourceBatch){if(activeSalesNoteForBatch(state,note.sourceBatch.id))throw Error('Este lote o pedido ya tiene una nota de venta vigente. Cancela esa nota antes de generar otra.');if(!(state.batches??[]).some(b=>b.id===note.sourceBatch.id&&b.status!=='cancelled'))throw Error('El lote o pedido de origen ya no está vigente.');}
- return {...state,salesNotes:[note,...(state.salesNotes??[])]};
+ const delivery=applySalesDelivery(state,note,{catalog,actor,at});return {...delivery.state,salesNotes:[delivery.note,...(state.salesNotes??[])]};
 }
 
 export function salesAccounts(notes){return (notes??[]).filter(n=>salesNoteStatus(n)==='active').reduce((sum,n)=>{const p=salesPaymentSummary(n);if(p.type==='gift')return sum;if(!p.type){sum.unclassified++;return sum;}sum.receivableCents+=p.balanceCents;sum.receivedCents+=p.paidCents;if(p.status==='paid')sum.paidNotes++;return sum;},{receivableCents:0,receivedCents:0,paidNotes:0,unclassified:0});}
+
+function validateSalesDelivery(note){
+ if(note.deliverFromStock!==undefined&&typeof note.deliverFromStock!=='boolean')throw Error('Opción de entrega inválida.');
+ const delivery=note.stockDelivery;if(delivery===undefined)return;
+ if(!delivery||!Number.isFinite(Date.parse(delivery.at))||!['Luis','Ximena'].includes(delivery.by)||!Array.isArray(delivery.items)||!delivery.items.length)throw Error('Registro de entrega inválido.');
+ const seen=new Set();for(const item of delivery.items){const key=item?.productId+'-'+item?.size;if(!item||typeof item.productId!=='string'||!/^\d{2,3}$/.test(item.productId)||![50,100].includes(item.size)||!Number.isSafeInteger(item.qty)||item.qty<1||seen.has(key))throw Error('Detalle de entrega inválido.');seen.add(key);}
+}
+function deliveryQuantities(note){
+ const quantities=new Map();
+ for(const item of note.items){
+  if(![50,100].includes(item.size))continue;
+  if(!item.productId)throw Error('Para descontar del stock, selecciona los perfumes de 50 o 100 ml desde el catálogo. Los conceptos personalizados no identifican existencias.');
+  const key=item.productId+'-'+item.size,qty=(quantities.get(key)?.qty??0)+item.qty;
+  if(!Number.isSafeInteger(qty))throw Error('La cantidad de la entrega excede el límite permitido.');
+  quantities.set(key,{productId:item.productId,size:item.size,qty});
+ }
+ return [...quantities.values()];
+}
+function applySalesDelivery(state,candidate,{actor,catalog,at,original}){
+ // Requests are temporary. Only an actual atomic stock update creates the receipt.
+ const {deliverFromStock,stockDelivery,...note}=candidate;
+ if(original?.stockDelivery){
+  const items=deliveryQuantities(note),signature=rows=>JSON.stringify(rows.map(i=>[i.productId,i.size,i.qty]).sort((a,b)=>(a[0]+'-'+a[1]).localeCompare(b[0]+'-'+b[1])));
+  if(signature(items)!==signature(original.stockDelivery.items))throw Error('Esta nota ya tiene entrega registrada. Puedes editar precios y datos, pero los perfumes y cantidades entregados deben conservarse. Registra devoluciones físicas en Stock de producto.');
+  return {state,note:{...note,stockDelivery:cloneData(original.stockDelivery)}};
+ }
+ if(!deliverFromStock)return {state,note};
+ salesActor(actor);if(!Number.isFinite(Date.parse(at)))throw Error('Fecha de entrega inválida.');
+ const items=deliveryQuantities(note);if(!items.length)throw Error('Agrega al menos un perfume del catálogo de 50 o 100 ml para registrar la entrega.');
+ for(const item of items){
+  const product=catalog.find(p=>p.id===item.productId),available=state.ready?.[item.productId+'-'+item.size]??0;
+  if(!product)throw Error('No se encontró un perfume de la entrega en el catálogo.');
+  if(!Number.isSafeInteger(available)||available<item.qty)throw Error(`Stock insuficiente: ${product.name} de ${item.size} ml. Disponibles: ${available}; entrega: ${item.qty}. No se guardó la nota ni se descontaron unidades.`);
+ }
+ const ready={...state.ready},movements=[];
+ for(const item of items){
+  ready[item.productId+'-'+item.size]-=item.qty;
+  movements.push({date:at,label:catalog.find(p=>p.id===item.productId).name,detail:`Entrega de nota de venta · ${item.size} ml${note.customer?' · '+note.customer:''}`,delta:-item.qty,unit:'frascos',salesNoteId:note.id,performedBy:actor});
+ }
+ return {state:{...state,ready,movements:[...movements,...(state.movements??[])]},note:{...note,stockDelivery:{at,by:actor,items}}};
+}
