@@ -1,3 +1,5 @@
+import {createWelcomeAmbience} from './welcome-ambience.js?v=58';
+
 /* Device-only welcome preferences. This module never reads or writes inventory. */
 export const WELCOME_IDLE_MS = 2 * 60 * 60 * 1000;
 export const WELCOME_TIME_ZONE = 'America/Guatemala';
@@ -40,7 +42,7 @@ function installWelcome() {
  let state = emptyState(), lastPersisted = 0, checkPromise = null, overlay = null, pendingWelcome = null;
  let returnFocus = null, inertRegions = [], focusTimer = 0, welcomeEpoch = 0;
  let soundOn = true, audioContext = null, playing = [], audioNodes = [], activeMaster = null, audioTimer = 0, audioGeneration = 0;
- let introPending = false, introStarted = false, introAttempting = false;
+ let introPending = false, introStarted = false, introAttempting = false, introAttemptId = 0;
  const tabId = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(36).slice(2)}`;
  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
  const unlocked = () => !document.body.classList.contains('access-locked');
@@ -87,11 +89,11 @@ function installWelcome() {
   const soften = fade && !closeContext && audioContext?.state === 'running' && master;
   if (soften) {
    // A brief release prevents a click when the intro gives way to the entry phrase.
-   const now = audioContext.currentTime;
+   const now = audioContext.currentTime, release = typeof fade === 'number' ? fade : .03;
    master.gain.cancelScheduledValues?.(now);master.gain.setValueAtTime(master.gain.value, now);
-   master.gain.linearRampToValueAtTime(0, now + .03);
-   for (const source of sources) {try {source.stop(now + .035);} catch {}}
-   setTimeout(disconnect, 60);
+   master.gain.linearRampToValueAtTime(0, now + release);
+   for (const source of sources) {try {source.stop(now + release + .005);} catch {}}
+   setTimeout(disconnect, release * 1000 + 30);
   } else {
    for (const source of sources) {try {source.stop();} catch {}}
    disconnect();
@@ -112,7 +114,11 @@ function installWelcome() {
  function warmAudio() {
   if (!soundOn || root.dataset.version !== '3' || document.visibilityState === 'hidden') return;
   try {
-   const context = getAudioContext();if (!context || context.state === 'running') return;
+   const context = getAudioContext();if (!context) return;
+   // Start rendering in the background while authentication or the picker closes.
+   // The cached result can only be played by an active welcome below.
+   void createWelcomeAmbience(context).catch(() => {});
+   if (context.state === 'running') return;
    void resumeAudio(context);
    // A silent frame in the original gesture also unlocks older iOS Web Audio.
    const source = context.createBufferSource(), gain = context.createGain();
@@ -126,8 +132,21 @@ function installWelcome() {
   stopAudio(false, kind === 'entry');const generation = audioGeneration;
   try {
    const context = getAudioContext();if (!context) return false;
+   const ambience = kind === 'intro' ? createWelcomeAmbience(context) : null;
    if (context.state !== 'running') await Promise.race([resumeAudio(context), new Promise(resolve => setTimeout(resolve, 240))]);
    if (context.state !== 'running' || generation !== audioGeneration || !eligibleScreen() || overlay.hidden || !soundOn) return false;
+   if (kind === 'intro') {
+    const buffer = await ambience;
+    // Offline rendering may finish after a dismissal, mute or another greeting.
+    if (generation !== audioGeneration || context !== audioContext || context.state !== 'running' || !eligibleScreen() || !overlay || overlay.hidden || !soundOn) return false;
+    const start = context.currentTime + .025, master = context.createGain(), source = context.createBufferSource();
+    master.gain.setValueAtTime(0, start);master.gain.linearRampToValueAtTime(.22, start + 1.15);
+    master.connect(context.destination);source.buffer = buffer;source.loop = true;source.loopStart = 0;source.loopEnd = buffer.duration;
+    source.connect(master);playing.push(source);audioNodes.push(source, master);activeMaster = master;
+    source.onended = () => {try {source.disconnect();} catch {}};
+    source.start(start);
+    return true;
+   }
    const start = context.currentTime + .025, master = context.createGain();
    master.gain.value = kind === 'entry' ? .105 : .075;master.connect(context.destination);audioNodes.push(master);activeMaster = master;
    function tone(frequency, offset, duration, level, {attack = .035, glide = 0} = {}) {
@@ -142,15 +161,7 @@ function installWelcome() {
     playing.push(oscillator);audioNodes.push(oscillator, envelope);
     oscillator.onended = () => {oscillator.disconnect();envelope.disconnect();};
    }
-   if (kind === 'intro') {
-    // An airy, unhurried welcome: open fifths, a soft rise, and a quiet glass overtone.
-    tone(220, 0, 2.7, .23, {attack: .38});
-    tone(329.628, .06, 2.5, .17, {attack: .45});
-    tone(440, .18, 2.1, .28, {attack: .24, glide: 1.1});
-    tone(659.255, .72, 1.7, .33, {attack: .1});
-    tone(880, 1.25, 1.55, .19, {attack: .09});
-    tone(1318.51, 1.75, .95, .075, {attack: .08});
-   } else {
+   {
     // The original phrase, redesigned as rounded glass notes with a final zen sparkle.
     for (const [frequency, offset] of [[554.365, 0], [659.255, .27], [830.609, .55], [739.989, .94]]) {
      tone(frequency, offset, .9, .55, {attack: .045});
@@ -170,16 +181,16 @@ function installWelcome() {
  }
  function tryWelcomeIntro() {
   if (!introPending || introStarted || introAttempting || !soundOn || !overlay || overlay.hidden) return;
-  const epoch = welcomeEpoch;introAttempting = true;
+  const epoch = welcomeEpoch, attempt = ++introAttemptId;introAttempting = true;
   void playPortalSound('intro').then(played => {
-   if (epoch !== welcomeEpoch) return;
+   if (epoch !== welcomeEpoch || attempt !== introAttemptId) return;
    introAttempting = false;
    if (played) {introStarted = true;introPending = false;}
   });
  }
  function toggleSound(event) {
   event?.preventDefault();soundOn = !soundOn;storageSet(SOUND_KEY, soundOn ? 'on' : 'off');updateSoundControls();
-  if (!soundOn) stopAudio();
+  if (!soundOn) {introAttemptId++;introAttempting = false;introStarted = false;introPending = false;stopAudio(false, .14);}
   else if (overlay && !overlay.hidden) {warmAudio();introStarted = false;introPending = true;tryWelcomeIntro();}
  }
  function previewWelcome(event) {
@@ -211,8 +222,8 @@ function installWelcome() {
   inertRegions = [];
  }
  function closeWelcome({locked = false, preserveAudio = false} = {}) {
-  clearTimeout(focusTimer);welcomeEpoch++;introPending = false;introAttempting = false;
-  if (!preserveAudio) stopAudio(locked);
+  clearTimeout(focusTimer);welcomeEpoch++;introAttemptId++;introPending = false;introAttempting = false;
+  if (!preserveAudio) stopAudio(locked, .18);
   if (!overlay) return;
   overlay.hidden = true;if (document.body.classList.contains('welcome-open')) document.body.classList.remove('welcome-open');restoreRegions();
   if (!locked && returnFocus?.isConnected && !returnFocus.closest('[inert]')) returnFocus.focus({preventScroll: true});
@@ -230,7 +241,7 @@ function installWelcome() {
    document.getElementById('welcome-enter').onclick = async () => {
     const button = document.getElementById('welcome-enter');button.disabled = true;
     // Start sound in this gesture, before dismissing. Failure to unlock audio never blocks entry.
-    introPending = false;introAttempting = false;warmAudio();
+    introAttemptId++;introPending = false;introAttempting = false;warmAudio();
     const attempt = playPortalSound('entry');
     await Promise.race([attempt, new Promise(resolve => setTimeout(resolve, 350))]);
     if (!overlay.hidden) closeWelcome({preserveAudio: true});button.disabled = false;
@@ -304,14 +315,26 @@ function installWelcome() {
  let lastPointerActivity = 0;
  document.addEventListener('pointermove', event => {if (event.isTrusted && Date.now() - lastPointerActivity > 30000) {lastPointerActivity = Date.now();checkThenActivity();}}, {passive: true});
  window.addEventListener('focus', checkThenActivity);
- window.addEventListener('pageshow', checkThenActivity);
+ window.addEventListener('pageshow', () => {checkThenActivity();if (overlay && !overlay.hidden) tryWelcomeIntro();});
  // Dialog close does not bubble. Capture it so a due welcome waits for forms or the design picker.
  document.addEventListener('close', event => {if (event.target instanceof HTMLDialogElement) void maybeWelcome();}, true);
- document.addEventListener('visibilitychange', () => {if (document.visibilityState === 'hidden') {if (unlocked()) persistState();stopAudio();} else checkThenActivity();});
- window.addEventListener('pagehide', () => {if (unlocked()) persistState();stopAudio(true);});
+ document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden') {
+   if (unlocked()) persistState();
+   introAttemptId++;introAttempting = false;introStarted = false;introPending = Boolean(overlay && !overlay.hidden && soundOn);stopAudio();
+  } else {checkThenActivity();if (overlay && !overlay.hidden) tryWelcomeIntro();}
+ });
+ window.addEventListener('pagehide', () => {
+  if (unlocked()) persistState();
+  introAttemptId++;introAttempting = false;introStarted = false;introPending = Boolean(overlay && !overlay.hidden && soundOn);stopAudio(true);
+ });
  window.addEventListener('storage', event => {
   if (event.key === WELCOME_STATE_KEY) readState();
-  if (event.key === SOUND_KEY) {soundOn = event.newValue !== 'off';updateSoundControls();if (!soundOn) stopAudio();}
+  if (event.key === SOUND_KEY) {
+   soundOn = event.newValue !== 'off';updateSoundControls();
+   introAttemptId++;introAttempting = false;introStarted = false;introPending = Boolean(soundOn && overlay && !overlay.hidden);
+   if (!soundOn) stopAudio(false, .14);else tryWelcomeIntro();
+  }
  });
  let wasUnlocked = unlocked();
  new MutationObserver(() => {
