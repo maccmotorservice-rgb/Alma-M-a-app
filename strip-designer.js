@@ -1,10 +1,11 @@
+import {inspectStripImageBlob} from './strip-image-format.js?v=74';
 // Print geometry is in millimetres; previews and PDFs share this renderer.
 // This module only creates artwork. It never changes stock or business records.
 export const STRIP_DESIGN_SIZES=Object.freeze({
   50:Object.freeze({w:71.9,h:390}),
   100:Object.freeze({w:80.1,h:431.8})
 });
-const CATEGORIES=['Dama','Caballero','Unisex'];
+const CATEGORIES=['Dama','Caballero','Unisex','Personalizada'];
 const CREAM='#e0e0d4',FONT='AlmaStrip';
 
 export function validateStripDesign(input){
@@ -22,12 +23,99 @@ export function validateStripDesign(input){
   const textPosition=input.textPosition===undefined?50:Number(input.textPosition);
   if(!Number.isFinite(textPosition)||textPosition<0||textPosition>100)throw Error('La altura del texto debe estar entre 0 % y 100 %.');
   const category=input.category??'Unisex';
-  if(!CATEGORIES.includes(category))throw Error('Selecciona Dama, Caballero o Unisex.');
+  if(!CATEGORIES.includes(category))throw Error('Selecciona Dama, Caballero, Unisex o Personalizada.');
   const qty=input.qty===undefined?1:Number(input.qty);
   if(!Number.isInteger(qty)||qty<1||qty>999)throw Error('La cantidad debe ser un número entero entre 1 y 999.');
   const design={name,color:input.color.toLowerCase(),textColor:textColor.toLowerCase(),textScale,textPosition,size,category,qty};
+  if(category==='Personalizada')design.custom=validateStripCustomization(input.custom);
   for(const key of ['id','productId'])if(input[key]!==undefined&&input[key]!==null)design[key]=String(input[key]);
   return design;
+}
+
+export const MAX_STRIP_DESIGN_IMAGE_BYTES=20*1024*1024;
+export const defaultStripCustomization=()=>({logo:{x:100,y:0},capacity:{x:0,y:100},message:'',imageFit:'cover'});
+function validateStripCustomization(input={}){
+ if(!input||typeof input!=='object'||Array.isArray(input))throw Error('Las opciones de la tira personalizada no son válidas.');
+ const custom=defaultStripCustomization();
+ for(const part of ['logo','capacity']){
+  const point=input[part]??custom[part];
+  if(!point||typeof point!=='object'||['x','y'].some(axis=>point[axis]===''||!Number.isFinite(Number(point[axis]))||Number(point[axis])<0||Number(point[axis])>100))throw Error('La posición del logotipo y la capacidad debe estar entre 0 % y 100 %.');
+  custom[part]={x:Number(point.x),y:Number(point.y)};
+ }
+ if(input.message!==undefined&&typeof input.message!=='string')throw Error('Escribe un mensaje válido.');
+ custom.message=(input.message??'').normalize('NFC').replace(/\r\n?/g,'\n').replace(/\t/g,' ').trim();
+ if(Array.from(custom.message).length>240||custom.message.split('\n').length>8||/[\u0000-\u0009\u000b-\u001f\u007f]/u.test(custom.message))throw Error('El mensaje admite hasta 240 caracteres y 8 líneas.');
+ custom.imageFit=input.imageFit??'cover';if(!['cover','contain'].includes(custom.imageFit))throw Error('Selecciona cómo ajustar la imagen al recuadro.');
+ if(input.image!==undefined){
+  const image=input.image;
+  if(!image||typeof image.name!=='string'||!image.name.trim()||image.name.length>120||/[\u0000-\u001f\u007f]/u.test(image.name)||!['image/png','image/jpeg','image/webp'].includes(image.type)||!Number.isSafeInteger(image.size)||image.size<1||image.size>MAX_STRIP_DESIGN_IMAGE_BYTES||!Number.isSafeInteger(image.width)||!Number.isSafeInteger(image.height)||image.width<1||image.height<1||image.width*image.height>40000000||typeof image.sha256!=='string'||!/^[a-f0-9]{64}$/.test(image.sha256)||typeof image.averageColor!=='string'||!/^#[0-9a-f]{6}$/i.test(image.averageColor))throw Error('La imagen personalizada no es válida. Importa un PNG, JPG o WebP de hasta 20 MB y 40 megapíxeles.');
+  custom.image={name:image.name,type:image.type,size:image.size,width:image.width,height:image.height,sha256:image.sha256,averageColor:image.averageColor.toLowerCase()};
+ }
+ return custom;
+}
+
+// Positions are percentages of the safe travel interval, so elements never
+// leave the printable rectangle when presentation or image changes.
+export function stripCustomPlacement(w,h,logoW,logoH,custom=defaultStripCustomization(),capacityWidth=30){
+ const sx=w/73.32,sy=h/90,place=(point,min,max)=>min+(max-min)*point/100;
+ return {
+  logo:{x:place(custom.logo.x,3.5*sx,w-logoW-3.5*sx),y:place(custom.logo.y,7*sy,h-logoH-4.75*sy)},
+  capacity:{x:place(custom.capacity.x,4*sx,Math.max(4*sx,w-capacityWidth-4*sx)),y:place(custom.capacity.y,7*sy+1.68*sx,85.25*sy)}
+ };
+}
+export function stripImagePlacement(imageWidth,imageHeight,w,h,fit='cover'){
+ if(![imageWidth,imageHeight,w,h].every(v=>Number.isFinite(v)&&v>0)||!['cover','contain'].includes(fit))throw Error('No se puede ajustar la imagen al recuadro.');
+ const scale=(fit==='cover'?Math.max:Math.min)(w/imageWidth,h/imageHeight),width=imageWidth*scale,height=imageHeight*scale;
+ return {x:(w-width)/2,y:(h-height)/2,w:width,h:height};
+}
+export function fitStripMessage(message,maxWidth,measure,{maxSize=3.4,minSize=.6,maxHeight=16}={}){
+ if(typeof message!=='string'||!message.trim()||!Number.isFinite(maxWidth)||maxWidth<=0||typeof measure!=='function'||!Number.isFinite(maxHeight)||maxHeight<=0)throw Error('No se puede ajustar el mensaje a la tira.');
+ if(!Number.isFinite(maxSize)||!Number.isFinite(minSize)||minSize<=0||maxSize<minSize)throw Error('El tamaño del mensaje no es válido.');
+ const at=size=>{
+  const lines=[];
+  for(const paragraph of message.split('\n')){
+   let line='';
+   for(const word of paragraph.trim().split(/\s+/u)){
+    if(!word)continue;
+    if(line&&measure(line+' '+word,size)<=maxWidth){line+=' '+word;continue;}
+    if(line){lines.push(line);line='';}
+    for(const char of Array.from(word)){if(line&&measure(line+char,size)>maxWidth){lines.push(line);line='';}line+=char;}
+   }
+   lines.push(line);
+  }
+  return {lines,size,lineHeight:size*1.25};
+ };
+ const fits=value=>value.lines.length*value.lineHeight<=maxHeight&&value.lines.every(line=>measure(line,value.size)<=maxWidth+.00001);
+ let best=at(minSize);if(!fits(best))throw Error('Acorta el mensaje para que se pueda imprimir completo.');
+ let low=minSize,high=maxSize;for(let i=0;i<18;i++){const middle=(low+high)/2,result=at(middle);if(fits(result)){best=result;low=middle;}else high=middle;}
+ return best;
+}
+
+const customImageCache=new WeakMap();
+async function readStripDesignImage(blob){
+ if(!blob||typeof blob.arrayBuffer!=='function'||blob.size<1||blob.size>MAX_STRIP_DESIGN_IMAGE_BYTES)throw Error('Importa una imagen PNG, JPG o WebP de hasta 20 MB para este diseño.');
+ if(customImageCache.has(blob))return customImageCache.get(blob);
+ const pending=(async()=>{
+  const checked=await inspectStripImageBlob(blob),url=URL.createObjectURL(checked);let image;
+  try{image=await new Promise((resolve,reject)=>{const element=new Image();element.onload=()=>resolve(element);element.onerror=()=>reject(Error('No se pudo leer la imagen. Prueba otro archivo PNG, JPG o WebP.'));element.src=url;});}finally{URL.revokeObjectURL(url);}
+  const width=image.naturalWidth,height=image.naturalHeight;if(!width||!height||width*height>40000000)throw Error('La imagen no debe superar 40 megapíxeles.');
+  const sample=document.createElement('canvas');sample.width=sample.height=1;const ctx=sample.getContext('2d');ctx.fillStyle='#ffffff';ctx.fillRect(0,0,1,1);ctx.drawImage(image,0,0,1,1);const pixel=ctx.getImageData(0,0,1,1).data;
+  const averageColor='#'+Array.from(pixel.subarray(0,3),v=>v.toString(16).padStart(2,'0')).join('');
+  const digest=await crypto.subtle.digest('SHA-256',await checked.arrayBuffer()),sha256=Array.from(new Uint8Array(digest),v=>v.toString(16).padStart(2,'0')).join('');
+  return {image,width,height,sha256,averageColor,type:checked.type,size:checked.size};
+ })().catch(error=>{customImageCache.delete(blob);throw error;});customImageCache.set(blob,pending);return pending;
+}
+export async function prepareStripDesignImage(file){
+ const data=await readStripDesignImage(file),name=String(file.name??'Imagen personalizada').normalize('NFC').replace(/[\u0000-\u001f\u007f]/gu,'').trim().slice(0,120)||'Imagen personalizada';
+ return {blob:file,metadata:{name,type:data.type,size:data.size,width:data.width,height:data.height,sha256:data.sha256,averageColor:data.averageColor}};
+}
+
+export function stripDesignIdentity(input){
+ const design=validateStripDesign(input),fields=[design.name,design.size,design.category,design.color];
+ if(design.textColor!=='auto'||design.textScale!==1)fields.push(design.textColor,design.textScale);
+ if(design.textPosition!==50)fields.push('height',design.textPosition);
+ if(design.category==='Personalizada')fields.push('custom',design.custom);
+ return JSON.stringify(fields);
 }
 
 export function stripDesignPrintSize(input){
@@ -164,27 +252,41 @@ function drawName(ctx,name,area,options){
   for(let i=0;i<fit.lines.length;i++)ctx.fillText(fit.lines[i],area.x+(options.align==='center'?area.w/2:0),y+i*fit.lineHeight);
 }
 
-function drawFace(ctx,rect,design,cloth,logo,inverted){
+function drawFace(ctx,rect,design,cloth,logo,inverted,background){
   const {x,y,w,h}=rect,sx=w/73.32,sy=h/90;
   ctx.save();
   if(inverted){ctx.translate(x+w,y+h);ctx.rotate(Math.PI);}else ctx.translate(x,y);
   roundedPath(ctx,0,0,w,h,4.05*sx);ctx.clip();
   ctx.drawImage(cloth,0,0,w,h);
-  ctx.fillStyle=design.textColor==='auto'?stripInkColor(design.color):design.textColor;
+  if(background){const crop=stripImagePlacement(background.naturalWidth,background.naturalHeight,w,h,design.custom.imageFit);ctx.drawImage(background,crop.x,crop.y,crop.w,crop.h);}
+  ctx.fillStyle=design.textColor==='auto'?stripInkColor(design.custom?.image?.averageColor??design.color):design.textColor;
   const logoW=30.1*sx,logoH=logoW*logo.height/logo.width;
-  ctx.drawImage(logo,w-logoW-3.5*sx,7.0*sy,logoW,logoH);
+  const layout=stripCustomPlacement(w,h,logoW,logoH,design.custom);
+  ctx.drawImage(logo,layout.logo.x,layout.logo.y,logoW,logoH);
   // Keep every name on the left, vertically adjustable inside the gap between
   // the brand and the capacity. Resizing keeps the same requested centre.
-  const nameTop=7*sy+logoH+6*sy,nameBottom=79.5*sy;
+  const nameTop=7*sy+logoH+6*sy,nameBottom=design.custom?.message?58*sy:79.5*sy;
   drawName(ctx,design.name,{x:3.5*sx,y:nameTop,w:w-7*sx,h:nameBottom-nameTop},{maxSize:12.1*sx,minSize:.25*sx,lineHeight:1.19,scale:design.textScale,position:design.textPosition/100,align:'left'});
   ctx.font=`400 ${1.68*sx}px "${FONT}", sans-serif`;ctx.textAlign='left';ctx.textBaseline='alphabetic';
-  ctx.fillText(`EDP | ${design.size} ml | ${design.size===50?'1.7':'3.4'} FL.OZ`,4* sx,85.25*sy);
+  const capacity=`EDP | ${design.size} ml | ${design.size===50?'1.7':'3.4'} FL.OZ`,capacityWidth=ctx.measureText(capacity).width;
+  const info=stripCustomPlacement(w,h,logoW,logoH,design.custom,capacityWidth).capacity;
+  ctx.fillText(capacity,info.x,info.y);
+  if(design.custom?.message){
+    const area={x:4*sx,y:62*sy,w:w-8*sx,h:16*sy};
+    const measure=(text,size)=>{ctx.font=`400 ${size}px "${FONT}", sans-serif`;return ctx.measureText(text).width;};
+    const fit=fitStripMessage(design.custom.message,area.w,measure,{maxSize:3.4*sx,maxHeight:area.h});
+    ctx.font=`400 ${fit.size}px "${FONT}", sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';
+    const top=area.y+(area.h-fit.lines.length*fit.lineHeight)/2;
+    fit.lines.forEach((line,index)=>ctx.fillText(line,w/2,top+(index+.5)*fit.lineHeight));
+  }
   ctx.restore();
 }
 
-export async function renderStripDesign(input,{dpi=150}={}){
+export async function renderStripDesign(input,{dpi=150,backgroundImage}={}){
   const design=validateStripDesign(input);
   if(!Number.isFinite(dpi)||dpi<72||dpi>300)throw Error('La resolución debe estar entre 72 y 300 ppp.');
+  const image=design.custom?.image?await readStripDesignImage(backgroundImage):null;
+  if(image&&(image.sha256!==design.custom.image.sha256||image.width!==design.custom.image.width||image.height!==design.custom.image.height))throw Error('La imagen seleccionada no corresponde al diseño. Vuelve a importarla.');
   const {logo}=await loadAssets(),geometry=stripDesignGeometry(design.size),{physical}=geometry;
   const canvas=document.createElement('canvas');canvas.width=Math.round(physical.w/25.4*dpi);canvas.height=Math.round(physical.h/25.4*dpi);
   const ctx=canvas.getContext('2d');
@@ -195,18 +297,18 @@ export async function renderStripDesign(input,{dpi=150}={}){
   for(const y of geometry.foldLines){ctx.moveTo(4.9*physical.w/80.1,y);ctx.lineTo(physical.w-4.9*physical.w/80.1,y);}
   ctx.stroke();
   const cloth=satinCanvas(design.color,Math.round(geometry.front.w*scaleX),Math.round(geometry.front.h*scaleY));
-  const ink=design.textColor==='auto'?stripInkColor(design.color):design.textColor;
+  const ink=design.textColor==='auto'?stripInkColor(design.custom?.image?.averageColor??design.color):design.textColor;
   const mark=tintedLogo(logo,ink);
   try{
-    drawFace(ctx,geometry.back,design,cloth,mark,true);
-    drawFace(ctx,geometry.front,design,cloth,mark,false);
+    drawFace(ctx,geometry.back,design,cloth,mark,true,image?.image);
+    drawFace(ctx,geometry.front,design,cloth,mark,false,image?.image);
     const pill=geometry.pill;
     ctx.save();roundedPath(ctx,pill.x,pill.y,pill.w,pill.h,pill.h*.34);ctx.clip();ctx.drawImage(cloth,pill.x,pill.y,pill.w,pill.h);
-    ctx.fillStyle=ink;
+    ctx.fillStyle=design.textColor==='auto'?stripInkColor(design.color):design.textColor;
     drawName(ctx,design.name,{x:pill.x+2.1,y:pill.y+1.1,w:pill.w-4.2,h:pill.h-2.2},{maxSize:4.55*physical.w/80.1,minSize:.25,lineHeight:1.1,lineMode:'single',scale:design.textScale,align:'center'});
     ctx.restore();
     ctx.fillStyle='#565954';ctx.font=`400 ${2.68*physical.w/80.1}px "${FONT}", sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.fillText(design.category==='Unisex'?'Perfume unisex':`Perfume de ${design.category.toLowerCase()}`,physical.w/2,geometry.genderY);
+    ctx.fillText(design.category==='Personalizada'?'Personalizada':design.category==='Unisex'?'Perfume unisex':`Perfume de ${design.category.toLowerCase()}`,physical.w/2,geometry.genderY);
   }finally{
     cloth.width=cloth.height=1;mark.width=mark.height=1;
   }

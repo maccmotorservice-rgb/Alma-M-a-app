@@ -108,3 +108,15 @@ html[data-design=modern][data-version="3"] .strips-library .strip-delete-button:
 #strips-sync-issues summary{cursor:pointer;font-weight:600}
 #strips-sync-issues li{margin:10px 0;overflow-wrap:anywhere}
 #strips-sync-issues li strong,#strips-sync-issues li span{display:block}
+
+#strip-designer .strip-custom-options{padding:18px;margin:0 0 22px;border:1px solid var(--strip-line);border-radius:12px;background:var(--strip-raised);min-width:0}
+#strip-designer .strip-custom-options[hidden]{display:none!important}
+#strip-designer .strip-custom-options h3{margin:0 0 16px;font-size:15px}
+#strip-designer .strip-custom-options p{font-size:11px;overflow-wrap:anywhere}
+#strip-designer .strip-custom-options fieldset{min-width:0;margin:18px 0;padding:12px;border:1px solid var(--strip-line);border-radius:9px}
+#strip-designer .strip-custom-options legend{font-size:12px;color:var(--strip-ink);padding:0 6px}
+#strip-designer .strip-custom-options textarea{display:block;width:100%;max-width:100%;padding:12px;border:1px solid var(--strip-line);border-radius:8px;background:var(--strip-surface);color:var(--strip-ink);font:inherit;resize:vertical}
+#strip-designer .strip-custom-options :is(input,select,textarea,button):focus-visible{outline:3px solid #67aeb8;outline-offset:3px}
+#strip-designer .strip-custom-range{display:grid;grid-template-columns:minmax(0,1fr) 46px;gap:10px;align-items:center}
+#strip-designer .strip-custom-range input{width:100%;min-width:0;min-height:44px;padding:0;accent-color:var(--strip-accent);background:transparent;border:0}
+#strip-designer .strip-custom-range output{font-variant-numeric:tabular-nums;text-align:right;color:var(--strip-ink)}
