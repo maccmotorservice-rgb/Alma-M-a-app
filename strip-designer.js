@@ -1,11 +1,11 @@
-import {inspectStripImageBlob} from './strip-image-format.js?v=74';
+import {inspectStripImageBlob} from './strip-image-format.js?v=75';
 // Print geometry is in millimetres; previews and PDFs share this renderer.
 // This module only creates artwork. It never changes stock or business records.
 export const STRIP_DESIGN_SIZES=Object.freeze({
   50:Object.freeze({w:71.9,h:390}),
   100:Object.freeze({w:80.1,h:431.8})
 });
-const CATEGORIES=['Dama','Caballero','Unisex','Personalizada'];
+const CATEGORIES=['Dama','Caballero','Unisex'];
 const CREAM='#e0e0d4',FONT='AlmaStrip';
 
 export function validateStripDesign(input){
@@ -22,12 +22,15 @@ export function validateStripDesign(input){
   if(!Number.isFinite(textScale)||textScale<.5||textScale>1.6)throw Error('El tamaño del texto debe estar entre 50 % y 160 %.');
   const textPosition=input.textPosition===undefined?50:Number(input.textPosition);
   if(!Number.isFinite(textPosition)||textPosition<0||textPosition>100)throw Error('La altura del texto debe estar entre 0 % y 100 %.');
-  const category=input.category??'Unisex';
-  if(!CATEGORIES.includes(category))throw Error('Selecciona Dama, Caballero, Unisex o Personalizada.');
+  // v74 stored personalization as a category. Read those designs without losing artwork.
+  const legacyPersonalized=input.category==='Personalizada';
+  const category=legacyPersonalized?'Unisex':input.category??'Unisex';
+  if(!CATEGORIES.includes(category))throw Error('Selecciona Dama, Caballero o Unisex.');
+  if(input.personalized!==undefined&&typeof input.personalized!=='boolean')throw Error('La opción Personalizada debe estar activada o desactivada.');
   const qty=input.qty===undefined?1:Number(input.qty);
   if(!Number.isInteger(qty)||qty<1||qty>999)throw Error('La cantidad debe ser un número entero entre 1 y 999.');
   const design={name,color:input.color.toLowerCase(),textColor:textColor.toLowerCase(),textScale,textPosition,size,category,qty};
-  if(category==='Personalizada')design.custom=validateStripCustomization(input.custom);
+  if(input.personalized===true||legacyPersonalized){design.personalized=true;design.custom=validateStripCustomization(input.custom);}
   for(const key of ['id','productId'])if(input[key]!==undefined&&input[key]!==null)design[key]=String(input[key]);
   return design;
 }
@@ -114,7 +117,7 @@ export function stripDesignIdentity(input){
  const design=validateStripDesign(input),fields=[design.name,design.size,design.category,design.color];
  if(design.textColor!=='auto'||design.textScale!==1)fields.push(design.textColor,design.textScale);
  if(design.textPosition!==50)fields.push('height',design.textPosition);
- if(design.category==='Personalizada')fields.push('custom',design.custom);
+ if(design.personalized)fields.push('custom',design.custom);
  return JSON.stringify(fields);
 }
 
@@ -308,7 +311,7 @@ export async function renderStripDesign(input,{dpi=150,backgroundImage}={}){
     drawName(ctx,design.name,{x:pill.x+2.1,y:pill.y+1.1,w:pill.w-4.2,h:pill.h-2.2},{maxSize:4.55*physical.w/80.1,minSize:.25,lineHeight:1.1,lineMode:'single',scale:design.textScale,align:'center'});
     ctx.restore();
     ctx.fillStyle='#565954';ctx.font=`400 ${2.68*physical.w/80.1}px "${FONT}", sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.fillText(design.category==='Personalizada'?'Personalizada':design.category==='Unisex'?'Perfume unisex':`Perfume de ${design.category.toLowerCase()}`,physical.w/2,geometry.genderY);
+    ctx.fillText(design.category==='Unisex'?'Perfume unisex':`Perfume de ${design.category.toLowerCase()}`,physical.w/2,geometry.genderY);
   }finally{
     cloth.width=cloth.height=1;mark.width=mark.height=1;
   }

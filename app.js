@@ -1,22 +1,22 @@
-import {productionPurposeLabel} from './inventory.js?v=74';
-import {cloneData} from './clone-data.js?v=74';
-import {createStripLibrarySync} from './strip-library-sync.js?v=74';
-import {mountPdfActions} from './pdf-share.js?v=74';
-import {filterMaterialStock,materialStockCounts,materialStatus,productStockView} from './stock-views.js?v=74';
-import {createStockDictation} from './stock-dictation.js?v=74';
-import {createStripsPanel} from './strips.js?v=74';
-import {createLabelsPanel} from './labels.js?v=74';
-import {createStockScanner} from './stock-scanner.js?v=74';
-import {hasAppAccess,defaultCloudConfig,clearBusinessCache} from './access.js?v=74';
-import {annualSalesCards,salesReportHtml} from './sales-reports.js?v=74';
-import {cancellationFields,mountCancellationFields,readCancellationFields} from './cancellation.js?v=74';
-import {catalogCategories,catalogCategoryMatches,filterCatalog,perfumeMatches} from './catalog-tools.js?v=74';
-import {activeSalesNoteForBatch,salesAccounts,salesMoney} from './sales.js?v=74';
-import {createSalesPanel} from './sales-panel.js?v=74';
-import {CloudInventory} from './cloud.js?v=74';
-import {createDictationPanel} from './dictation.js?v=74';
-import {initialState,applyMovement,recipeFor,registerCustomer,productionPreview,confirmProduction,completedQuantity,batchProgress,completeBatchItem,cancelBatch,readyBatch,setBottleStocks,readyMovement,validateBackup,attributeSessionChanges,extraBottles,bottleStock,isMaterialLow,removeReadyStock} from './inventory.js?v=74';
-import {localStore,sessionStore} from './browser-storage.js?v=74';
+import {productionPurposeLabel} from './inventory.js?v=75';
+import {cloneData} from './clone-data.js?v=75';
+import {createStripLibrarySync} from './strip-library-sync.js?v=75';
+import {mountPdfActions} from './pdf-share.js?v=75';
+import {filterMaterialStock,materialStockCounts,materialStatus,productStockView} from './stock-views.js?v=75';
+import {createStockDictation} from './stock-dictation.js?v=75';
+import {createStripsPanel} from './strips.js?v=75';
+import {createLabelsPanel} from './labels.js?v=75';
+import {createStockScanner} from './stock-scanner.js?v=75';
+import {hasAppAccess,defaultCloudConfig,clearBusinessCache} from './access.js?v=75';
+import {annualSalesCards,salesReportHtml} from './sales-reports.js?v=75';
+import {cancellationFields,mountCancellationFields,readCancellationFields} from './cancellation.js?v=75';
+import {catalogCategories,catalogCategoryMatches,filterCatalog,perfumeMatches} from './catalog-tools.js?v=75';
+import {activeSalesNoteForBatch,salesAccounts,salesMoney} from './sales.js?v=75';
+import {createSalesPanel} from './sales-panel.js?v=75';
+import {CloudInventory} from './cloud.js?v=75';
+import {createDictationPanel} from './dictation.js?v=75';
+import {initialState,applyMovement,recipeFor,registerCustomer,productionPreview,confirmProduction,completedQuantity,batchProgress,completeBatchItem,cancelBatch,readyBatch,setBottleStocks,readyMovement,validateBackup,attributeSessionChanges,extraBottles,bottleStock,isMaterialLow,removeReadyStock} from './inventory.js?v=75';
+import {localStore,sessionStore} from './browser-storage.js?v=75';
 
 // Export startup so the small loader can report load failures without leaving
 // the access screen waiting forever. Keep top-level await out of this entry.
@@ -24,7 +24,7 @@ export const portalReady=(async()=>{
 async function loadCatalog(){
  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),12000);
  try{
-  const response=await fetch('./catalog.json?v=74',{signal:controller.signal});
+  const response=await fetch('./catalog.json?v=75',{signal:controller.signal});
   if(!response.ok)throw Error('Catálogo no disponible.');
   const data=await response.json();if(!Array.isArray(data)||!data.length)throw Error('Catálogo no válido.');
   return data;
@@ -244,7 +244,7 @@ async function prepareMaterialsPdf(button){
  button.disabled=true;button.textContent='Preparando PDF…';if(output)output.textContent='Preparando reporte de materias primas…';
  try{
   if(storageError)throw Error('Recupera el respaldo antes de generar el reporte.');
-  const {createMaterialsPdf}=await import('./materials-pdf.js?v=74'),result=await createMaterialsPdf(snapshot,catalog);
+  const {createMaterialsPdf}=await import('./materials-pdf.js?v=75'),result=await createMaterialsPdf(snapshot,catalog);
   if(!active())return;
   output.replaceChildren();materialsPdfHandle=mountPdfActions(output,{blob:result.blob,filename:result.filename,title:'Reporte de materias primas'});
   button.hidden=true;materialsPdfHandle.anchor.click();
@@ -261,7 +261,7 @@ async function prepareProductionPdf(batch,{draft=false}={}){
  const active=()=>token===productionPdfEpoch&&hasAppAccess(cloud)&&dialog.open&&output.isConnected&&dialog.contains(output);
  output.innerHTML='<button type="button" class="secondary" disabled>Preparando PDF…</button>';
  try{
-  const {createProductionPdf}=await import('./production-pdf.js?v=74'),result=await createProductionPdf(snapshot,{draft});
+  const {createProductionPdf}=await import('./production-pdf.js?v=75'),result=await createProductionPdf(snapshot,{draft});
   if(!active())return;
   output.replaceChildren();productionPdfHandle=mountPdfActions(output,{blob:result.blob,filename:result.filename,title:draft?'Lista de producción · Borrador':'Lista de producción '+batchNumber(snapshot)});
  }catch(error){if(active()){output.innerHTML=`<p role="alert">No se pudo preparar el PDF: ${esc(error.message)}</p><button type="button" class="secondary" id="production-pdf-retry">Reintentar PDF</button>`;$('#production-pdf-retry').onclick=()=>prepareProductionPdf(snapshot,{draft});}}

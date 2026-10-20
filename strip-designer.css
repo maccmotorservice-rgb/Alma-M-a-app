@@ -120,3 +120,9 @@ html[data-design=modern][data-version="3"] .strips-library .strip-delete-button:
 #strip-designer .strip-custom-range{display:grid;grid-template-columns:minmax(0,1fr) 46px;gap:10px;align-items:center}
 #strip-designer .strip-custom-range input{width:100%;min-width:0;min-height:44px;padding:0;accent-color:var(--strip-accent);background:transparent;border:0}
 #strip-designer .strip-custom-range output{font-variant-numeric:tabular-nums;text-align:right;color:var(--strip-ink)}
+
+#strip-designer .strip-personalized-toggle{font-weight:650;margin-bottom:5px}
+#strip-designer .strip-personalized-toggle input{width:18px;height:18px;min-height:18px;padding:0;flex-shrink:0;accent-color:var(--strip-accent)}
+#strip-designer .strip-personalized-help{font-size:11px;margin:0 0 18px}
+#strip-designer .strip-custom-size-buttons{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+#strip-designer .strip-custom-size-buttons button{flex:1;min-height:44px;white-space:normal}
