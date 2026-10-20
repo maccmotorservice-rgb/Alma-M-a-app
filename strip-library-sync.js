@@ -1,5 +1,6 @@
-import {emptyStripLibrary,validateStripLibrary,validateStripRecord} from './strip-library-data.js?v=71';
-import {listStripMetadata,readStripRecord,writeStripRecord,removeStripRecord,updateStripRecord} from './strip-library-store.js?v=71';
+import {randomId} from './clone-data.js?v=72';
+import {emptyStripLibrary,validateStripLibrary,validateStripRecord} from './strip-library-data.js?v=72';
+import {listStripMetadata,readStripRecord,writeStripRecord,removeStripRecord,updateStripRecord} from './strip-library-store.js?v=72';
 
 const editKey=record=>record?._sync?.editId;
 const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
@@ -66,7 +67,7 @@ export function createStripLibrarySync({getCloud,getLibrary,canAccess,onChange=(
   for(const item of candidates) {
    assertActive(token);if(blocked()){await flush();rerun=true;return;}
    let record;try{
-   record=await updateStripRecord(item.id,current=>{assertActive(token);if(!current?.blob||!inWorkspace(current)||current._sync?.editId)return;return {...current,_sync:{...current._sync,workspace,editId:crypto.randomUUID(),dirty:true,migration:!current._sync?.dirty,changedAt:current._sync?.changedAt??current.updatedAt??current.createdAt??new Date().toISOString()}};});if(!record?.blob||!inWorkspace(record))continue;
+   record=await updateStripRecord(item.id,current=>{assertActive(token);if(!current?.blob||!inWorkspace(current)||current._sync?.editId)return;return {...current,_sync:{...current._sync,workspace,editId:randomId(),dirty:true,migration:!current._sync?.dirty,changedAt:current._sync?.changedAt??current.updatedAt??current.createdAt??new Date().toISOString()}};});if(!record?.blob||!inWorkspace(record))continue;
    const tombstone=deleted.get(record.id);
    if(tombstone&&(record._sync?.migration||!record._sync?.dirty||Date.parse(record._sync.changedAt)<=Date.parse(tombstone.deletedAt))){await updateStripRecord(record.id,current=>editKey(current)===editKey(record)?null:undefined);continue;}
    const existing=entries.get(record.id);
@@ -78,7 +79,7 @@ export function createStripLibrarySync({getCloud,getLibrary,canAccess,onChange=(
     // Preserve a different old image with the same filename as a separate version.
     const id=record.id.slice(0,990)+'~'+digest.slice(0,16);
     if(entries.has(id)){await guardedWrite({...record,...existing,blob:undefined,thumb:undefined,_sync:{...record._sync,dirty:false,migration:false,workspace}},token);continue;}
-    record={...record,id,asset:undefined,thumbnail:undefined,_sync:{dirty:true,changedAt:new Date().toISOString(),workspace,editId:crypto.randomUUID()}};
+    record={...record,id,asset:undefined,thumbnail:undefined,_sync:{dirty:true,changedAt:new Date().toISOString(),workspace,editId:randomId()}};
     await writeStripRecord(record);
    }
    record={...record,source:record.source==='generated'?'generated':'imported',updatedAt:record._sync?.changedAt??new Date().toISOString()};

@@ -1,5 +1,5 @@
-import {createWelcomeAmbience} from './welcome-ambience.js?v=71';
-import {createWelcomeVoice} from './welcome-voice.js?v=71';
+import {createWelcomeAmbience} from './welcome-ambience.js?v=72';
+import {createWelcomeVoice} from './welcome-voice.js?v=72';
 
 /* Device-only welcome preferences. This module never reads or writes inventory. */
 export const WELCOME_IDLE_MS = 2 * 60 * 60 * 1000;
@@ -319,7 +319,7 @@ function installWelcome() {
     const attempt = playPortalSound('entry');
     void attempt.then(played => {
      if (!played) return;
-     const generation = audioGeneration, finalNote = playing.at(-1);
+     const generation = audioGeneration, finalNote = playing.slice(-1)[0];
      const valid = () => generation === audioGeneration && soundOn && eligibleScreen() && document.getElementById('session-user')?.value === user;
      // The greeting follows the real final note, including its release. It never
      // races the jingle or delays opening the workspace.
@@ -332,7 +332,7 @@ function installWelcome() {
     if (event.key === 'Escape') {event.preventDefault();event.stopPropagation();closeWelcome();return;}
     if (event.key !== 'Tab') return;
     const controls = [...overlay.querySelectorAll('button:not([disabled]),a[href],input,select,textarea,[tabindex]')].filter(element => element.tabIndex >= 0 && !element.hidden);
-    const first = controls[0], last = controls.at(-1);
+    const first = controls[0], last = controls.slice(-1)[0];
     if (event.shiftKey && document.activeElement === first) {event.preventDefault();last?.focus();}
     else if (!event.shiftKey && document.activeElement === last) {event.preventDefault();first?.focus();}
    });

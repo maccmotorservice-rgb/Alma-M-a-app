@@ -1,14 +1,15 @@
-import {salesMoney,salesGroups,salesDate,salesCapacity,salesFilename,salesPaymentSummary,salesSourceLabel} from './sales.js?v=71';
+import {salesMoney,salesGroups,salesDate,salesCapacity,salesFilename,salesPaymentSummary,salesSourceLabel} from './sales.js?v=72';
 export async function createSalesPdf(note,{logo=true}={}){
  const {jsPDF,autoTable}=await import('./assets/pdf-client.js');const doc=new jsPDF({unit:'mm',format:'a4'}),margin=16,width=178;
- doc.setProperties({title:`Nota de venta · ${note.customer}`,author:'Alma Mía Perfumes',subject:'Nota de venta'});
+ doc.setProperties({title:['Nota de venta',note.customer].filter(Boolean).join(' · '),author:'Alma Mía Perfumes',subject:'Nota de venta'});
  let image=null;if(logo){const response=await fetch('./assets/logo.png');if(!response.ok)throw Error('No se pudo cargar el logotipo para el PDF.');image=new Uint8Array(await response.arrayBuffer());}
  const text=(s,x,y,size=10,bold=false)=>{doc.setFont('helvetica',bold?'bold':'normal');doc.setFontSize(size);doc.setTextColor(25);doc.text(String(s),x,y);};
  const table=(head,body,startY,extra={})=>autoTable(doc,{startY,head,body,theme:'grid',margin:{left:margin,right:margin,top:18,bottom:20},styles:{font:'helvetica',fontSize:9,cellPadding:3,lineColor:190,lineWidth:.15,textColor:25,overflow:'linebreak'},headStyles:{fillColor:[230,230,230],textColor:25,fontStyle:'bold'},...extra});
  doc.setDrawColor(180);doc.line(margin,15,194,15);
  if(image)doc.addImage(image,'PNG',margin,25,42,10);else text('Alma Mía',margin,32,23,true);
  text('PERFUMES',margin,39,8,true);if(note.status==='cancelled')text('CANCELADA · '+note.cancelledBy+' · '+new Date(note.cancelledAt).toLocaleDateString('es-MX'),margin,45,9,true);text('NOTA DE VENTA',143,32,15,true);
- table([['CLIENTE','FECHA','CAPACIDAD']],[[note.customer,salesDate(note.date),salesCapacity(note)]],49,{columnStyles:{0:{cellWidth:76},1:{cellWidth:56},2:{cellWidth:46}}});
+ if(note.customer?.trim())table([['CLIENTE','FECHA','CAPACIDAD']],[[note.customer,salesDate(note.date),salesCapacity(note)]],49,{columnStyles:{0:{cellWidth:76},1:{cellWidth:56},2:{cellWidth:46}}});
+ else table([['FECHA','CAPACIDAD']],[[salesDate(note.date),salesCapacity(note)]],49,{columnStyles:{0:{cellWidth:100},1:{cellWidth:78}}});
  let y=doc.lastAutoTable.finalY+10;if(note.sourceBatch){text('Origen: '+salesSourceLabel(note),margin,y,9);y+=8;}text('Resumen del pedido',margin,y,12,true);
  const groups=salesGroups(note);table([['Categoría','Piezas','Subtotal']],[...groups.map(g=>[g.category,String(g.pieces),salesMoney(g.subtotalCents)]),['TOTAL',String(note.totals.pieces),salesMoney(note.totals.subtotalCents)]],y+4,{columnStyles:{0:{cellWidth:118},1:{cellWidth:24,halign:'right'},2:{cellWidth:36,halign:'right'}},didParseCell:d=>{if(d.section==='body'&&d.row.index===groups.length){d.cell.styles.fontStyle='bold';d.cell.styles.fillColor=[242,242,242]}}});
  y=doc.lastAutoTable.finalY+9;if(y+46>275){doc.addPage();y=22;}
@@ -17,7 +18,7 @@ export async function createSalesPdf(note,{logo=true}={}){
  if(note.discountPercent>0){doc.setFont('helvetica','normal');doc.setFontSize(9);doc.text(`Incluye ${note.discountPercent}% de descuento.`,190,y+16,{align:'right'});}
  doc.setFont('helvetica','bold');doc.setFontSize(16);doc.text(salesMoney(note.totals.totalCents)+' MXN',190,y+25,{align:'right'});
  if(note.discountPercent>0){text(`Subtotal: ${salesMoney(note.totals.subtotalCents)}. Descuento: ${salesMoney(note.totals.discountCents)}. Total: ${salesMoney(note.totals.totalCents)}.`,margin,y+39,9);}
- const payment=salesPaymentSummary(note),paymentType=note.paymentType==='credit'?'Crédito':note.paymentType==='cash'?'Contado':'Por definir';
+ const payment=salesPaymentSummary(note),paymentType=note.paymentType==='gift'?'Obsequio':note.paymentType==='credit'?'Crédito':note.paymentType==='cash'?'Contado':'Por definir';
  let paymentY=y+(note.discountPercent>0?47:39);if(paymentY+25>275){doc.addPage();paymentY=22;}
  table([['TIPO DE PAGO','IMPORTE PAGADO','SALDO PENDIENTE','ESTADO']],[[paymentType,payment.type?salesMoney(payment.paidCents):'—',payment.type?salesMoney(payment.balanceCents):'—',note.status==='cancelled'?'Cancelada':payment.label]],paymentY,{styles:{fontSize:8,cellPadding:3}});
  if(note.status==='cancelled')table([['MOTIVO DE CANCELACIÓN']],[[note.cancellationReason||'Sin motivo registrado']],doc.lastAutoTable.finalY+5);

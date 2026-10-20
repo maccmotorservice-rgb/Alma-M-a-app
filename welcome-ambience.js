@@ -105,7 +105,7 @@ function balance(buffer) {
  for (let channel = 0; channel < 2; channel++) {
   const data = buffer.getChannelData(channel);let mean = 0;
   // Match the boundary with a short, smooth correction, never a fade to silence.
-  const seam = (data[0] - data.at(-1)) / 2, edge = Math.min(Math.round(buffer.sampleRate * .01), Math.floor(data.length / 4));
+  const seam = (data[0] - data.slice(-1)[0]) / 2, edge = Math.min(Math.round(buffer.sampleRate * .01), Math.floor(data.length / 4));
   for (let i = 0; i < edge; i++) {const correction = seam * (.5 + .5 * Math.cos(Math.PI * i / edge));data[i] -= correction;data[data.length - 1 - i] += correction;}
   for (const sample of data) mean += sample;mean /= data.length;
   for (let i = 0; i < data.length; i++) {data[i] -= mean;peak = Math.max(peak, Math.abs(data[i]));energy += data[i] ** 2;}
