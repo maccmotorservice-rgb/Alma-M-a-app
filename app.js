@@ -1,19 +1,19 @@
-import {mountPdfActions} from './pdf-share.js?v=65';
-import {filterMaterialStock,materialStockCounts,materialStatus,productStockView} from './stock-views.js?v=65';
-import {createStockDictation} from './stock-dictation.js?v=65';
-import {createStripsPanel} from './strips.js?v=65';
-import {createLabelsPanel} from './labels.js?v=65';
-import {createStockScanner} from './stock-scanner.js?v=65';
-import {hasAppAccess,defaultCloudConfig,clearBusinessCache} from './access.js?v=65';
-import {annualSalesCards,salesReportHtml} from './sales-reports.js?v=65';
-import {cancellationFields,mountCancellationFields,readCancellationFields} from './cancellation.js?v=65';
-import {catalogCategories,catalogCategoryMatches,filterCatalog,perfumeMatches} from './catalog-tools.js?v=65';
-import {activeSalesNoteForBatch,salesAccounts,salesMoney} from './sales.js?v=65';
-import {createSalesPanel} from './sales-panel.js?v=65';
-import {CloudInventory} from './cloud.js?v=65';
-import {createDictationPanel} from './dictation.js?v=65';
-import {initialState,applyMovement,recipeFor,registerCustomer,productionPreview,confirmProduction,completedQuantity,batchProgress,completeBatchItem,cancelBatch,readyBatch,setBottleStocks,readyMovement,validateBackup,attributeSessionChanges,extraBottles,bottleStock,isMaterialLow,removeReadyStock} from './inventory.js?v=65';
-const catalog=await fetch('./catalog.json?v=65').then(r=>{if(!r.ok)throw Error('No se pudo cargar el catálogo');return r.json()});
+import {mountPdfActions} from './pdf-share.js?v=66';
+import {filterMaterialStock,materialStockCounts,materialStatus,productStockView} from './stock-views.js?v=66';
+import {createStockDictation} from './stock-dictation.js?v=66';
+import {createStripsPanel} from './strips.js?v=66';
+import {createLabelsPanel} from './labels.js?v=66';
+import {createStockScanner} from './stock-scanner.js?v=66';
+import {hasAppAccess,defaultCloudConfig,clearBusinessCache} from './access.js?v=66';
+import {annualSalesCards,salesReportHtml} from './sales-reports.js?v=66';
+import {cancellationFields,mountCancellationFields,readCancellationFields} from './cancellation.js?v=66';
+import {catalogCategories,catalogCategoryMatches,filterCatalog,perfumeMatches} from './catalog-tools.js?v=66';
+import {activeSalesNoteForBatch,salesAccounts,salesMoney} from './sales.js?v=66';
+import {createSalesPanel} from './sales-panel.js?v=66';
+import {CloudInventory} from './cloud.js?v=66';
+import {createDictationPanel} from './dictation.js?v=66';
+import {initialState,applyMovement,recipeFor,registerCustomer,productionPreview,confirmProduction,completedQuantity,batchProgress,completeBatchItem,cancelBatch,readyBatch,setBottleStocks,readyMovement,validateBackup,attributeSessionChanges,extraBottles,bottleStock,isMaterialLow,removeReadyStock} from './inventory.js?v=66';
+const catalog=await fetch('./catalog.json?v=66').then(r=>{if(!r.ok)throw Error('No se pudo cargar el catálogo');return r.json()});
 let cloud=null,cloudUiError='',remoteRenderPending=false;
 let productionPdfEpoch=0,productionPdfHandle=null,productionPdfListening=false,materialsPdfEpoch=0,materialsPdfHandle=null;
 let salesReportYear=Number(new Intl.DateTimeFormat('en',{timeZone:'America/Guatemala',year:'numeric'}).format(new Date()));sessionStorage.removeItem('alma-sales-import-key');if(location.hash.startsWith('#cargar-ventas='))history.replaceState(null,'',location.pathname+location.search);
@@ -224,7 +224,7 @@ async function prepareMaterialsPdf(button){
  button.disabled=true;button.textContent='Preparando PDF…';if(output)output.textContent='Preparando reporte de materias primas…';
  try{
   if(storageError)throw Error('Recupera el respaldo antes de generar el reporte.');
-  const {createMaterialsPdf}=await import('./materials-pdf.js?v=65'),result=await createMaterialsPdf(snapshot,catalog);
+  const {createMaterialsPdf}=await import('./materials-pdf.js?v=66'),result=await createMaterialsPdf(snapshot,catalog);
   if(!active())return;
   output.replaceChildren();materialsPdfHandle=mountPdfActions(output,{blob:result.blob,filename:result.filename,title:'Reporte de materias primas'});
   button.hidden=true;materialsPdfHandle.anchor.click();
@@ -241,7 +241,7 @@ async function prepareProductionPdf(batch,{draft=false}={}){
  const active=()=>token===productionPdfEpoch&&hasAppAccess(cloud)&&dialog.open&&output.isConnected&&dialog.contains(output);
  output.innerHTML='<button type="button" class="secondary" disabled>Preparando PDF…</button>';
  try{
-  const {createProductionPdf}=await import('./production-pdf.js?v=65'),result=await createProductionPdf(snapshot,{draft});
+  const {createProductionPdf}=await import('./production-pdf.js?v=66'),result=await createProductionPdf(snapshot,{draft});
   if(!active())return;
   output.replaceChildren();productionPdfHandle=mountPdfActions(output,{blob:result.blob,filename:result.filename,title:draft?'Lista de producción · Borrador':'Lista de producción '+batchNumber(snapshot)});
  }catch(error){if(active()){output.innerHTML=`<p role="alert">No se pudo preparar el PDF: ${esc(error.message)}</p><button type="button" class="secondary" id="production-pdf-retry">Reintentar PDF</button>`;$('#production-pdf-retry').onclick=()=>prepareProductionPdf(snapshot,{draft});}}

@@ -372,3 +372,10 @@ Cuando corresponde mostrar la bienvenida, enviar **Iniciar sesión** comienza la
 Cambiar de pestaña o ventana mantiene el bucle de bienvenida en reproducción: no se detiene ni se reinicia al regresar. Si el sistema suspende el audio, se intenta reanudar el mismo contexto y posición al volver. Al restaurar una página desde BFCache se conserva la fuente suspendida; si se destruyó el contexto, se recupera el punto del ciclo. La reproducción en segundo plano sigue sujeta a las restricciones del dispositivo. Acceder al portal conserva el jingle y el saludo, y cerrar o silenciar la bienvenida detiene su fondo.
 
 Un punto naranja junto al icono de **Generar un lote o pedido** indica que existen perfumes pendientes en lotes activos. También aparece en el acceso móvil de la versión 3. Se actualiza al guardar o recibir datos de la nube, incluso con el editor abierto; desaparece al completar o cancelar todos los pendientes y vuelve al corregir avances. El texto accesible indica el número de lotes y unidades pendientes. No cambia los saldos ni el estado de producción.
+
+
+### Música al mostrar Acceso privado (v66)
+
+La música intenta comenzar en cuanto aparece **Acceso privado**, antes de completar campos o enviar **Iniciar sesión**, cuando corresponde una nueva bienvenida. Si el navegador bloquea la reproducción automática, el primer toque, clic o tecla en esa pantalla permite iniciarla sin enviar el formulario. Un control de sonido en el recuadro permite silenciarla y conserva la preferencia.
+
+Se mantiene una sola reproducción durante el acceso, los reintentos y la bienvenida autenticada; no se reinicia al cambiar de ventana. Un intento fallido conserva el fondo mientras permanece Acceso privado, sin registrar todavía la bienvenida. El audio se detiene al acceder al portal o cerrar la bienvenida, con el jingle de acceso habitual. Se respetan las versiones anteriores, el sonido desactivado y la frecuencia diaria o tras dos horas sin actividad.

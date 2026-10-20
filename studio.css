@@ -680,3 +680,6 @@ html[data-design=modern][data-version="3"] .sales-document .payment-badge>span{c
 html[data-design=modern][data-version="3"] .sales-month-track{background:transparent;border-bottom:2px solid #3b4d66;border-radius:0}
 html[data-design=modern][data-version="3"] .sales-month-track>span{border-radius:5px 5px 0 0}
 html[data-design=modern][data-version="3"] #sales-cancel-error{color:#ffb8aa}
+
+/* Ambient audio can be silenced before signing in. */
+#access-welcome-sound{margin:14px auto 0}

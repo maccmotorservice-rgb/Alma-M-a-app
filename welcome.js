@@ -1,5 +1,5 @@
-import {createWelcomeAmbience} from './welcome-ambience.js?v=65';
-import {createWelcomeVoice} from './welcome-voice.js?v=65';
+import {createWelcomeAmbience} from './welcome-ambience.js?v=66';
+import {createWelcomeVoice} from './welcome-voice.js?v=66';
 
 /* Device-only welcome preferences. This module never reads or writes inventory. */
 export const WELCOME_IDLE_MS = 2 * 60 * 60 * 1000;
@@ -44,13 +44,13 @@ function installWelcome() {
  let returnFocus = null, inertRegions = [], focusTimer = 0, welcomeEpoch = 0;
  let soundOn = true, audioContext = null, playing = [], audioNodes = [], activeMaster = null, audioTimer = 0, audioGeneration = 0;
  let introPending = false, introStarted = false, introAttempting = false, introAttemptId = 0;
- let loginIntroActive = false, introPlayback = null, introRequest = null, introOffset = 0;
+ let accessIntroActive = false, introPlayback = null, introRequest = null, introOffset = 0;
  const tabId = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(36).slice(2)}`;
  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
  const unlocked = () => !document.body.classList.contains('access-locked');
  const eligibleScreen = () => unlocked() && root.dataset.version === '3' && document.visibilityState !== 'hidden';
  // Audio remains eligible while the tab is hidden; screen presentation does not.
- const introAllowed = () => soundOn && root.dataset.version === '3' && (loginIntroActive || (unlocked() && overlay && !overlay.hidden));
+ const introAllowed = () => soundOn && root.dataset.version === '3' && (accessIntroActive || (unlocked() && overlay && !overlay.hidden));
  const voice = createWelcomeVoice({allowed: () => soundOn && eligibleScreen()});
  function storageGet(key) {try {return localStorage.getItem(key);} catch {try {return sessionStorage.getItem(key);} catch {return null;}}}
  function storageSet(key, value) {try {localStorage.setItem(key, value);return true;} catch {try {sessionStorage.setItem(key, value);return true;} catch {return false;}}}
@@ -80,10 +80,11 @@ function installWelcome() {
 
  function updateSoundControls() {
   const preview = document.getElementById('welcome-preview-setting');if (preview) preview.hidden = root.dataset.version !== '3';
-  for (const id of ['welcome-sound', 'welcome-sound-setting']) {
+  for (const id of ['welcome-sound', 'welcome-sound-setting', 'access-welcome-sound']) {
    const button = document.getElementById(id);if (!button) continue;
-   button.setAttribute('aria-pressed', String(soundOn));
-   button.textContent = id === 'welcome-sound-setting' ? `Sonido de bienvenida: ${soundOn ? 'activado' : 'desactivado'}` : `Sonido ${soundOn ? 'activado' : 'desactivado'}`;
+   const pressed = String(soundOn), label = id === 'welcome-sound-setting' ? `Sonido de bienvenida: ${soundOn ? 'activado' : 'desactivado'}` : `Sonido ${soundOn ? 'activado' : 'desactivado'}`;
+   if (button.getAttribute('aria-pressed') !== pressed) button.setAttribute('aria-pressed', pressed);
+   if (button.textContent !== label) button.textContent = label;
   }
  }
  function stopAudio(closeContext = false, fade = false) {
@@ -173,24 +174,39 @@ function installWelcome() {
  }
  function recoverWelcomeAudio() {
   if (!introAllowed()) return;
-  if (introPlayback || loginIntroActive) void playWelcomeIntro();
+  if (introPlayback || accessIntroActive) void playWelcomeIntro();
   else {introStarted = false;introPending = true;tryWelcomeIntro();}
  }
- function finishLoginIntro() {
-  if (!loginIntroActive) return;
-  loginIntroActive = false;
+ function finishAccessIntro() {
+  if (!accessIntroActive) return;
+  accessIntroActive = false;
   if (!overlay || overlay.hidden) stopAudio(false, .14);
  }
- // These signals carry no credentials. Submit occurs after native form validation
- // and still has the user's activation, including signing in with the Enter key.
- document.addEventListener('alma:login-start', () => {
-  if (unlocked() || root.dataset.version !== '3' || !soundOn || !currentEligibility().due) return;
-  loginIntroActive = true;warmAudio();void playWelcomeIntro();
- });
- document.addEventListener('alma:login-settled', event => {
-  if (!event.detail?.allowed) finishLoginIntro();
-  else void maybeWelcome();
- });
+ function syncPrivateAccessIntro() {
+  const screen = document.getElementById('access-screen');
+  const visible = !unlocked() && screen && !screen.hidden;
+  const wanted = visible && root.dataset.version === '3' && currentEligibility().due;
+  let control = document.getElementById('access-welcome-sound');
+  if (wanted && !control) {
+   const card = screen.querySelector('.access-card');
+   if (card) {
+    control = document.createElement('button');control.type = 'button';control.id = 'access-welcome-sound';control.className = 'welcome-sound';control.onclick = toggleSound;
+    card.append(control);
+   }
+  }
+  if (control && control.hidden === Boolean(wanted)) control.hidden = !wanted;
+  updateSoundControls();
+  if (wanted && soundOn) {
+   // Try as soon as private access is shown, before any fields or submit gesture.
+   // A browser that blocks autoplay is unlocked by any later trusted interaction.
+   if (!accessIntroActive && document.visibilityState === 'hidden') return;
+   accessIntroActive = true;void playWelcomeIntro();
+  } else if (!unlocked()) finishAccessIntro();
+ }
+ // Authentication signals contain no credentials. They keep the existing source
+ // through login, including retries while the private access card remains visible.
+ document.addEventListener('alma:login-start', () => {syncPrivateAccessIntro();warmAudio();recoverWelcomeAudio();});
+ document.addEventListener('alma:login-settled', () => {syncPrivateAccessIntro();void maybeWelcome();});
  async function playPortalSound(kind) {
   if (kind === 'intro') return playWelcomeIntro();
   if (!soundOn || !eligibleScreen() || !overlay || overlay.hidden) return false;
@@ -244,6 +260,7 @@ function installWelcome() {
   event?.preventDefault();soundOn = !soundOn;storageSet(SOUND_KEY, soundOn ? 'on' : 'off');updateSoundControls();
   if (!soundOn) {introAttemptId++;introAttempting = false;introStarted = false;introPending = false;stopAudio(false, .14);}
   else if (overlay && !overlay.hidden) {warmAudio();introStarted = false;introPending = true;tryWelcomeIntro();}
+  else {warmAudio();syncPrivateAccessIntro();}
  }
  function previewWelcome(event) {
   event?.preventDefault();if (!eligibleScreen()) return;
@@ -274,7 +291,7 @@ function installWelcome() {
   inertRegions = [];
  }
  function closeWelcome({locked = false, preserveAudio = false} = {}) {
-  loginIntroActive = false;clearTimeout(focusTimer);welcomeEpoch++;introAttemptId++;introPending = false;introAttempting = false;
+  accessIntroActive = false;clearTimeout(focusTimer);welcomeEpoch++;introAttemptId++;introPending = false;introAttempting = false;
   if (!preserveAudio) stopAudio(locked, .18);
   if (!overlay) return;
   overlay.hidden = true;if (document.body.classList.contains('welcome-open')) document.body.classList.remove('welcome-open');restoreRegions();
@@ -322,7 +339,7 @@ function installWelcome() {
   returnFocus = document.activeElement;
   inertRegions = [...document.body.children].filter(element => element !== overlay && !/^(SCRIPT|LINK|STYLE)$/.test(element.tagName)).map(element => [element, element.inert]);
   for (const [element] of inertRegions) element.inert = true;
-  welcomeEpoch++;introPending = true;introStarted = false;introAttempting = false;overlay.classList.remove('welcome-paused');overlay.hidden = false;loginIntroActive = false;document.body.classList.add('welcome-open');updateSoundControls();
+  welcomeEpoch++;introPending = true;introStarted = false;introAttempting = false;overlay.classList.remove('welcome-paused');overlay.hidden = false;accessIntroActive = false;document.body.classList.add('welcome-open');updateSoundControls();
   // Move focus once; keyboard users can choose sound or continue immediately.
   focusTimer = setTimeout(() => {if (!overlay.hidden) document.getElementById('welcome-enter').focus({preventScroll: true});}, 30);
   if (!reducedMotion.matches && root.dataset.effects !== 'off') overlay.querySelector('.welcome-card').animate?.([{opacity: 0, transform: 'translateY(18px) scale(.975)'}, {opacity: 1, transform: 'translateY(0) scale(1)'}], {duration: 700, easing: 'cubic-bezier(.16,1,.3,1)'});
@@ -344,14 +361,14 @@ function installWelcome() {
   if (checkPromise) return checkPromise;
   if (!eligibleScreen() || (overlay && !overlay.hidden)) return Promise.resolve();
   const decision = currentEligibility();
-  if (!decision.due) {finishLoginIntro();return Promise.resolve();}
-  if (document.querySelector('dialog[open]')) {deferWelcome(decision);finishLoginIntro();return Promise.resolve();}
+  if (!decision.due) {finishAccessIntro();return Promise.resolve();}
+  if (document.querySelector('dialog[open]')) {deferWelcome(decision);finishAccessIntro();return Promise.resolve();}
   checkPromise = withDeviceLock(() => {
    const now = Date.now(), decision = currentEligibility(now);
    if (!eligibleScreen() || !decision.due) return;
    if (document.querySelector('dialog[open]')) {deferWelcome(decision);return;}
    pendingWelcome = null;state = claimWelcome(state, now);persistState();showWelcome();
-  }).catch(() => {}).finally(() => {checkPromise = null;if (eligibleScreen() && (!overlay || overlay.hidden)) finishLoginIntro();});
+  }).catch(() => {}).finally(() => {checkPromise = null;if (eligibleScreen() && (!overlay || overlay.hidden)) finishAccessIntro();});
   return checkPromise;
  }
  function checkThenActivity() {
@@ -362,22 +379,22 @@ function installWelcome() {
  }
  function handleActivity(event) {
   if (!event.isTrusted) return;
-  if (['pointerdown', 'touchstart', 'keydown'].includes(event.type)) {
+  if (['pointerdown', 'click', 'touchstart', 'touchend', 'keydown'].includes(event.type)) {
    // Cancel a still-pending autoplay before resuming in the entry/dismiss gesture.
    // Otherwise a resumed intro could slip in between pointerdown and click.
-   const control = event.target instanceof Element ? event.target.closest('#welcome-enter,#welcome-close,#welcome-sound') : null;
+   const control = event.target instanceof Element ? event.target.closest('#welcome-enter,#welcome-close,#welcome-sound,#access-welcome-sound') : null;
    const dismissal = event.type === 'keydown' && event.key === 'Escape';
-   if (overlay && !overlay.hidden && (control || dismissal)) {introPending = false;stopAudio(false, control?.id === 'welcome-enter');}
+   if ((overlay && !overlay.hidden && (control || dismissal)) || control?.id === 'access-welcome-sound') {introPending = false;stopAudio(false, control?.id === 'welcome-enter');}
    warmAudio();
-   if (!control && !dismissal) tryWelcomeIntro();
+   if (!control && !dismissal) {syncPrivateAccessIntro();tryWelcomeIntro();}
   }
   checkThenActivity();
  }
- for (const type of ['pointerdown', 'keydown', 'wheel', 'touchstart']) document.addEventListener(type, handleActivity, {passive: true, capture: true});
+ for (const type of ['pointerdown', 'click', 'keydown', 'wheel', 'touchstart', 'touchend']) document.addEventListener(type, handleActivity, {passive: true, capture: true});
  let lastPointerActivity = 0;
  document.addEventListener('pointermove', event => {if (event.isTrusted && Date.now() - lastPointerActivity > 30000) {lastPointerActivity = Date.now();checkThenActivity();}}, {passive: true});
- window.addEventListener('focus', () => {checkThenActivity();recoverWelcomeAudio();});
- window.addEventListener('pageshow', () => {overlay?.classList.toggle('welcome-paused', document.visibilityState === 'hidden');checkThenActivity();recoverWelcomeAudio();});
+ window.addEventListener('focus', () => {checkThenActivity();syncPrivateAccessIntro();recoverWelcomeAudio();});
+ window.addEventListener('pageshow', () => {overlay?.classList.toggle('welcome-paused', document.visibilityState === 'hidden');checkThenActivity();syncPrivateAccessIntro();recoverWelcomeAudio();});
  // Dialog close does not bubble. Capture it so a due welcome waits for forms or the design picker.
  document.addEventListener('close', event => {if (event.target instanceof HTMLDialogElement) void maybeWelcome();}, true);
  document.addEventListener('visibilitychange', () => {
@@ -385,7 +402,7 @@ function installWelcome() {
   if (document.visibilityState === 'hidden') {
    if (unlocked()) persistState();
    // Background tabs keep the same source playing. Only visual effects pause.
-  } else {checkThenActivity();recoverWelcomeAudio();}
+  } else {checkThenActivity();syncPrivateAccessIntro();recoverWelcomeAudio();}
  });
  window.addEventListener('pagehide', event => {
   overlay?.classList.add('welcome-paused');
@@ -394,14 +411,14 @@ function installWelcome() {
    // BFCache freezes the page, unlike a tab switch. Suspend without stopping or
    // closing the source, then pageshow resumes this same playback position.
    if (audioContext?.state === 'running') void audioContext.suspend().catch(() => {});
-  } else {loginIntroActive = false;introAttemptId++;introAttempting = false;introPending = false;stopAudio(true);}
+  } else {accessIntroActive = false;introAttemptId++;introAttempting = false;introPending = false;stopAudio(true);}
  });
  window.addEventListener('storage', event => {
-  if (event.key === WELCOME_STATE_KEY) {readState();if (loginIntroActive && !currentEligibility().due) finishLoginIntro();}
+  if (event.key === WELCOME_STATE_KEY) {readState();if (accessIntroActive && !currentEligibility().due) finishAccessIntro();syncPrivateAccessIntro();}
   if (event.key === SOUND_KEY) {
    soundOn = event.newValue !== 'off';updateSoundControls();
    introAttemptId++;introAttempting = false;introStarted = false;introPending = Boolean(soundOn && overlay && !overlay.hidden);
-   if (!soundOn) stopAudio(false, .14);else tryWelcomeIntro();
+   if (!soundOn) stopAudio(false, .14);else {syncPrivateAccessIntro();tryWelcomeIntro();}
   }
  });
  let wasUnlocked = unlocked();
@@ -409,14 +426,16 @@ function installWelcome() {
   const active = unlocked();
   if (!active && wasUnlocked) {pendingWelcome = null;closeWelcome({locked: true});state = mergeWelcomeState(state);}
   else if (active && !wasUnlocked) void maybeWelcome().finally(() => recordActivity());
-  wasUnlocked = active;
+  wasUnlocked = active;syncPrivateAccessIntro();
  }).observe(document.body, {attributes: true, attributeFilter: ['class']});
- new MutationObserver(() => {updateSoundControls();if (root.dataset.version !== '3') {pendingWelcome = null;closeWelcome();} else void maybeWelcome();}).observe(root, {attributes: true, attributeFilter: ['data-version']});
- document.addEventListener('alma:design-change', () => {addSoundSetting();if (root.dataset.version !== '3') {pendingWelcome = null;closeWelcome();} else void maybeWelcome();});
+ new MutationObserver(() => {updateSoundControls();if (root.dataset.version !== '3') {pendingWelcome = null;closeWelcome();syncPrivateAccessIntro();} else {syncPrivateAccessIntro();void maybeWelcome();}}).observe(root, {attributes: true, attributeFilter: ['data-version']});
+ document.addEventListener('alma:design-change', () => {addSoundSetting();if (root.dataset.version !== '3') {pendingWelcome = null;closeWelcome();syncPrivateAccessIntro();} else {syncPrivateAccessIntro();void maybeWelcome();}});
  // The design picker may be supplied by a deferred script after this module.
  const pickerObserver = new MutationObserver(() => {addSoundSetting();if (document.getElementById('welcome-sound-setting')) pickerObserver.disconnect();});
  pickerObserver.observe(document.body, {childList: true, subtree: true});
- addSoundSetting();readState();void maybeWelcome().finally(() => {if (unlocked()) recordActivity();});
+ const accessScreen = document.getElementById('access-screen');
+ if (accessScreen) new MutationObserver(syncPrivateAccessIntro).observe(accessScreen, {childList: true, subtree: true, attributes: true, attributeFilter: ['hidden']});
+ addSoundSetting();readState();syncPrivateAccessIntro();void maybeWelcome().finally(() => {if (unlocked()) recordActivity();});
 }
 
 if (typeof document !== 'undefined') {
