@@ -19,11 +19,13 @@ export function validateStripDesign(input){
   if(textColor!=='auto'&&(typeof textColor!=='string'||!/^#[0-9a-f]{6}$/i.test(textColor)))throw Error('Selecciona un color válido para el texto.');
   const textScale=input.textScale===undefined?1:Number(input.textScale);
   if(!Number.isFinite(textScale)||textScale<.5||textScale>1.6)throw Error('El tamaño del texto debe estar entre 50 % y 160 %.');
+  const textPosition=input.textPosition===undefined?50:Number(input.textPosition);
+  if(!Number.isFinite(textPosition)||textPosition<0||textPosition>100)throw Error('La altura del texto debe estar entre 0 % y 100 %.');
   const category=input.category??'Unisex';
   if(!CATEGORIES.includes(category))throw Error('Selecciona Dama, Caballero o Unisex.');
   const qty=input.qty===undefined?1:Number(input.qty);
   if(!Number.isInteger(qty)||qty<1||qty>999)throw Error('La cantidad debe ser un número entero entre 1 y 999.');
-  const design={name,color:input.color.toLowerCase(),textColor:textColor.toLowerCase(),textScale,size,category,qty};
+  const design={name,color:input.color.toLowerCase(),textColor:textColor.toLowerCase(),textScale,textPosition,size,category,qty};
   for(const key of ['id','productId'])if(input[key]!==undefined&&input[key]!==null)design[key]=String(input[key]);
   return design;
 }
@@ -156,7 +158,9 @@ function drawName(ctx,name,area,options){
   const fit=fitStripName(name,area.w,measure,{maxHeight:area.h,...options});
   ctx.font=`400 ${fit.size}px "${FONT}", sans-serif`;
   ctx.textBaseline='middle';ctx.textAlign=options.align??'left';
-  const y=area.y+(area.h-fit.lines.length*fit.lineHeight)/2+fit.lineHeight/2;
+  const blockHeight=fit.lines.length*fit.lineHeight,position=options.position??.5;
+  const top=Math.max(area.y,Math.min(area.y+area.h-blockHeight,area.y+area.h*position-blockHeight/2));
+  const y=top+fit.lineHeight/2;
   for(let i=0;i<fit.lines.length;i++)ctx.fillText(fit.lines[i],area.x+(options.align==='center'?area.w/2:0),y+i*fit.lineHeight);
 }
 
@@ -169,8 +173,10 @@ function drawFace(ctx,rect,design,cloth,logo,inverted){
   ctx.fillStyle=design.textColor==='auto'?stripInkColor(design.color):design.textColor;
   const logoW=30.1*sx,logoH=logoW*logo.height/logo.width;
   ctx.drawImage(logo,w-logoW-3.5*sx,7.0*sy,logoW,logoH);
-  const singleWord=!design.name.includes(' '),nameH=46.1*sy;
-  drawName(ctx,design.name,{x:3.5*sx,y:singleWord?(h-nameH)/2:30.2*sy,w:w-7*sx,h:nameH},{maxSize:12.1*sx,minSize:.25*sx,lineHeight:1.19,scale:design.textScale,align:singleWord?'center':'left'});
+  // Keep every name on the left, vertically adjustable inside the gap between
+  // the brand and the capacity. Resizing keeps the same requested centre.
+  const nameTop=7*sy+logoH+6*sy,nameBottom=79.5*sy;
+  drawName(ctx,design.name,{x:3.5*sx,y:nameTop,w:w-7*sx,h:nameBottom-nameTop},{maxSize:12.1*sx,minSize:.25*sx,lineHeight:1.19,scale:design.textScale,position:design.textPosition/100,align:'left'});
   ctx.font=`400 ${1.68*sx}px "${FONT}", sans-serif`;ctx.textAlign='left';ctx.textBaseline='alphabetic';
   ctx.fillText(`EDP | ${design.size} ml | ${design.size===50?'1.7':'3.4'} FL.OZ`,4* sx,85.25*sy);
   ctx.restore();

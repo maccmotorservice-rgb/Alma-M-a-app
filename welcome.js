@@ -1,5 +1,5 @@
-import {createWelcomeAmbience} from './welcome-ambience.js?v=63';
-import {createWelcomeVoice} from './welcome-voice.js?v=63';
+import {createWelcomeAmbience} from './welcome-ambience.js?v=64';
+import {createWelcomeVoice} from './welcome-voice.js?v=64';
 
 /* Device-only welcome preferences. This module never reads or writes inventory. */
 export const WELCOME_IDLE_MS = 2 * 60 * 60 * 1000;
@@ -272,7 +272,7 @@ function installWelcome() {
   returnFocus = document.activeElement;
   inertRegions = [...document.body.children].filter(element => element !== overlay && !/^(SCRIPT|LINK|STYLE)$/.test(element.tagName)).map(element => [element, element.inert]);
   for (const [element] of inertRegions) element.inert = true;
-  welcomeEpoch++;introPending = true;introStarted = false;introAttempting = false;overlay.hidden = false;document.body.classList.add('welcome-open');updateSoundControls();
+  welcomeEpoch++;introPending = true;introStarted = false;introAttempting = false;overlay.classList.remove('welcome-paused');overlay.hidden = false;document.body.classList.add('welcome-open');updateSoundControls();
   // Move focus once; keyboard users can choose sound or continue immediately.
   focusTimer = setTimeout(() => {if (!overlay.hidden) document.getElementById('welcome-enter').focus({preventScroll: true});}, 30);
   if (!reducedMotion.matches && root.dataset.effects !== 'off') overlay.querySelector('.welcome-card').animate?.([{opacity: 0, transform: 'translateY(18px) scale(.975)'}, {opacity: 1, transform: 'translateY(0) scale(1)'}], {duration: 700, easing: 'cubic-bezier(.16,1,.3,1)'});
@@ -327,16 +327,18 @@ function installWelcome() {
  let lastPointerActivity = 0;
  document.addEventListener('pointermove', event => {if (event.isTrusted && Date.now() - lastPointerActivity > 30000) {lastPointerActivity = Date.now();checkThenActivity();}}, {passive: true});
  window.addEventListener('focus', checkThenActivity);
- window.addEventListener('pageshow', () => {checkThenActivity();if (overlay && !overlay.hidden) tryWelcomeIntro();});
+ window.addEventListener('pageshow', () => {overlay?.classList.toggle('welcome-paused', document.visibilityState === 'hidden');checkThenActivity();if (overlay && !overlay.hidden) tryWelcomeIntro();});
  // Dialog close does not bubble. Capture it so a due welcome waits for forms or the design picker.
  document.addEventListener('close', event => {if (event.target instanceof HTMLDialogElement) void maybeWelcome();}, true);
  document.addEventListener('visibilitychange', () => {
+  overlay?.classList.toggle('welcome-paused', document.visibilityState === 'hidden');
   if (document.visibilityState === 'hidden') {
    if (unlocked()) persistState();
    introAttemptId++;introAttempting = false;introStarted = false;introPending = Boolean(overlay && !overlay.hidden && soundOn);stopAudio();
   } else {checkThenActivity();if (overlay && !overlay.hidden) tryWelcomeIntro();}
  });
  window.addEventListener('pagehide', () => {
+  overlay?.classList.add('welcome-paused');
   if (unlocked()) persistState();
   introAttemptId++;introAttempting = false;introStarted = false;introPending = Boolean(overlay && !overlay.hidden && soundOn);stopAudio(true);
  });

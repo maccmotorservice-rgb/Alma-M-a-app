@@ -1,0 +1,14 @@
+/* File sharing actions stay beside the original PDF download. */
+.pdf-share-actions{display:inline-flex;align-items:center;gap:10px;flex-wrap:wrap;max-width:100%;margin:4px 0;vertical-align:middle}
+.pdf-share-actions>a,.pdf-share-actions>button{display:inline-flex!important;align-items:center;justify-content:center;min-height:43px;max-width:100%;white-space:normal;text-align:center;text-decoration:none;line-height:1.5}
+.pdf-share-actions>.pdf-whatsapp-button{padding:11px 15px;border:1px solid #9cbcab;border-radius:10px;background:#eef8f1;color:#24533b;font-size:12px}
+.pdf-share-actions>.pdf-whatsapp-button:disabled{cursor:wait}
+.pdf-share-status{display:block;max-width:660px;font-size:12px;line-height:1.7;margin:8px 0 14px;color:#566453;overflow-wrap:anywhere}
+.pdf-share-status[hidden]{display:none!important}
+.pdf-share-status>.pdf-whatsapp-open{display:inline-block;font-weight:650;color:#22583a;text-decoration:underline;text-underline-offset:3px;margin-left:3px}
+.pdf-share-actions :is(button,a):focus-visible,.pdf-share-status a:focus-visible{outline:3px solid #67aeb8;outline-offset:3px}
+html[data-design=modern][data-version="3"] .pdf-share-actions>.pdf-whatsapp-button{background:#15332b;border-color:#3d7761;color:#c7f7db}
+html[data-design=modern][data-version="3"] .pdf-share-status{color:#b8cadd}
+html[data-design=modern][data-version="3"] .pdf-share-status>.pdf-whatsapp-open{color:#b5f5cc}
+@media(max-width:600px){.pdf-share-actions{display:flex;width:100%;align-items:stretch}.pdf-share-actions>a,.pdf-share-actions>button{flex:1 1 180px;min-height:44px}.pdf-share-status{font-size:11px}}
+@media(prefers-reduced-motion:reduce){.pdf-share-actions *{transition:none!important;animation:none!important}}
