@@ -439,12 +439,20 @@ La nota muestra **Entrega registrada**, con fecha, usuario, perfumes y cantidade
 
 Las notas anteriores conservan su comportamiento sin modificar existencias; puedes activar la entrega al editarlas si todavía no registraste la salida. Los respaldos conservan el registro de entrega. No requiere SQL ni borrar datos. Recarga la app en todos los equipos antes de usar la nueva opción.
 
-### Tiras personalizadas para regalo (v74)
+### Tiras personalizadas para regalo (v74–v75)
 
-En **Crear tiras → Categoría**, selecciona **Personalizada**. Puedes importar una imagen PNG, JPG o WebP de hasta 20 MB y 40 megapíxeles para los recuadros de ambas caras. **Llenar el recuadro** conserva las proporciones y recorta los bordes; **Mostrar la imagen completa** conserva la imagen entera sobre el color elegido. La etiqueta central mantiene ese color. Puedes quitar o reemplazar la imagen sin perder el mensaje ni las posiciones.
+En **Crear tiras**, activa la opción **Personalizada**. Elige por separado la categoría **Dama**, **Caballero** o **Unisex**. Puedes importar una imagen PNG, JPG o WebP de hasta 20 MB y 40 megapíxeles para los recuadros de ambas caras. **Llenar el recuadro** conserva las proporciones y recorta los bordes; **Mostrar la imagen completa** conserva la imagen entera sobre el color elegido. La etiqueta central mantiene ese color. Puedes quitar o reemplazar la imagen sin perder el mensaje ni las posiciones.
 
 Los controles horizontales y verticales permiten colocar el logotipo y la información de capacidad dentro del recuadro, respetando los márgenes de impresión. **Reacomodar** restablece solamente esas dos posiciones; conserva la imagen, el nombre, el color y el mensaje. El mensaje para regalo es opcional, admite hasta 240 caracteres y ocho líneas, y se ajusta para imprimirse completo debajo del nombre en ambas caras. El texto automático toma como referencia el color medio de la imagen; también puedes elegir su color manualmente.
 
 La vista previa, el PNG de 300 ppp y el PDF de impresión usan el mismo diseño. Las medidas oficiales de 50 y 100 ml no cambian. Al añadir a la biblioteca se guarda y comparte la tira terminada, con su imagen, mensaje y posiciones; cambiar la foto, el mensaje o la distribución crea otra variante sin sobrescribir las anteriores. El borrador, incluida la imagen seleccionada, se conserva al cambiar de sección durante la sesión y se limpia al cerrar sesión o limpiar campos. Para conservarlo tras recargar, añade la tira a la biblioteca o descarga su PNG.
 
 La imagen original se procesa en el navegador; no se envía por separado. La biblioteca comparte el PNG terminado y metadatos pequeños, sin insertar imágenes en base64 en el inventario ni modificar existencias, ventas o notas. No requiere SQL ni borrar datos. Recarga la app en todos tus equipos para utilizar la nueva categoría.
+
+### Personalizada independiente y tamaño del nombre (v75)
+
+**Personalizada** es una opción independiente de la categoría. Puedes crear una tira personalizada de Dama, Caballero o Unisex; esa categoría se imprime en la tira y se conserva en la biblioteca. Escribir un nombre del catálogo con la opción activada no cambia la categoría que elegiste.
+
+Al principio de las opciones personalizadas aparece **Tamaño del nombre del perfume**, con un control de 50 % a 160 % y los botones **Más pequeño** y **Más grande**. Se sincroniza con el control general de tamaño y actualiza la vista previa, ambas caras, la etiqueta central y el PNG/PDF guardados. El aumento se limita al espacio disponible para evitar recortes. Reacomodar conserva el tamaño elegido.
+
+Las tiras creadas con la opción anterior siguen disponibles con sus imágenes y archivos de impresión intactos. La lectura admite el formato anterior sin eliminar diseños ni cambiar inventarios. Recarga la app en tus equipos para ver los controles nuevos.
