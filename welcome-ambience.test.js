@@ -4,7 +4,7 @@ import {readFile} from 'node:fs/promises';
 import {WELCOME_AMBIENCE_DURATION, createWelcomeAmbience} from './welcome-ambience.js';
 
 test('prepared welcome recording contains the complete seamless stereo choir cycle', async () => {
- const wav = await readFile(new URL('./assets/audio/welcome-choir-zen-v60.wav', import.meta.url));
+ const wav = await readFile(new URL('./assets/audio/welcome-angelic-zen-v61.wav', import.meta.url));
  assert.equal(wav.toString('ascii', 0, 4), 'RIFF');
  assert.equal(wav.toString('ascii', 8, 12), 'WAVE');
  assert.equal(wav.readUInt16LE(20), 1, 'uncompressed PCM decodes across browsers');
