@@ -1,5 +1,5 @@
-import {createWelcomeAmbience} from './welcome-ambience.js?v=64';
-import {createWelcomeVoice} from './welcome-voice.js?v=64';
+import {createWelcomeAmbience} from './welcome-ambience.js?v=65';
+import {createWelcomeVoice} from './welcome-voice.js?v=65';
 
 /* Device-only welcome preferences. This module never reads or writes inventory. */
 export const WELCOME_IDLE_MS = 2 * 60 * 60 * 1000;
@@ -44,10 +44,13 @@ function installWelcome() {
  let returnFocus = null, inertRegions = [], focusTimer = 0, welcomeEpoch = 0;
  let soundOn = true, audioContext = null, playing = [], audioNodes = [], activeMaster = null, audioTimer = 0, audioGeneration = 0;
  let introPending = false, introStarted = false, introAttempting = false, introAttemptId = 0;
+ let loginIntroActive = false, introPlayback = null, introRequest = null, introOffset = 0;
  const tabId = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(36).slice(2)}`;
  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
  const unlocked = () => !document.body.classList.contains('access-locked');
  const eligibleScreen = () => unlocked() && root.dataset.version === '3' && document.visibilityState !== 'hidden';
+ // Audio remains eligible while the tab is hidden; screen presentation does not.
+ const introAllowed = () => soundOn && root.dataset.version === '3' && (loginIntroActive || (unlocked() && overlay && !overlay.hidden));
  const voice = createWelcomeVoice({allowed: () => soundOn && eligibleScreen()});
  function storageGet(key) {try {return localStorage.getItem(key);} catch {try {return sessionStorage.getItem(key);} catch {return null;}}}
  function storageSet(key, value) {try {localStorage.setItem(key, value);return true;} catch {try {sessionStorage.setItem(key, value);return true;} catch {return false;}}}
@@ -84,7 +87,7 @@ function installWelcome() {
   }
  }
  function stopAudio(closeContext = false, fade = false) {
-  audioGeneration++;clearTimeout(audioTimer);voice.cancel();
+  audioGeneration++;clearTimeout(audioTimer);voice.cancel();introPlayback = null;introRequest = null;introOffset = 0;
   const sources = playing, nodes = audioNodes, master = activeMaster;
   playing = [];audioNodes = [];activeMaster = null;
   const disconnect = () => {for (const node of nodes) {try {node.disconnect();} catch {}}};
@@ -118,7 +121,7 @@ function installWelcome() {
   try {
    const context = getAudioContext();if (!context) return;
    // Start rendering in the background while authentication or the picker closes.
-   // The cached result can only be played by an active welcome below.
+   // Playback is limited to a due login or the open welcome below.
    void createWelcomeAmbience(context).catch(() => {});
    if (context.state === 'running') return;
    void resumeAudio(context);
@@ -129,26 +132,73 @@ function installWelcome() {
    source.onended = () => {source.disconnect();gain.disconnect();};
   } catch {}
  }
- async function playPortalSound(kind) {
-  if (!soundOn || !eligibleScreen() || !overlay || overlay.hidden) return false;
-  stopAudio(false, kind === 'entry');const generation = audioGeneration;
-  try {
-   const context = getAudioContext();if (!context) return false;
-   const ambience = kind === 'intro' ? createWelcomeAmbience(context) : null;
-   if (context.state !== 'running') await Promise.race([resumeAudio(context), new Promise(resolve => setTimeout(resolve, 240))]);
-   if (context.state !== 'running' || generation !== audioGeneration || !eligibleScreen() || overlay.hidden || !soundOn) return false;
-   if (kind === 'intro') {
+ function playWelcomeIntro() {
+  if (!introAllowed()) return Promise.resolve(false);
+  if (introPlayback && introPlayback.context.state !== 'closed') {
+   // Keep this source and its audio clock: suspend/resume retains the exact phrase.
+   const {context} = introPlayback;
+   if (context.state === 'running') return Promise.resolve(true);
+   return Promise.race([resumeAudio(context), new Promise(resolve => setTimeout(resolve, 240))]).then(() => introAllowed() && introPlayback?.context === context && context.state === 'running');
+  }
+  if (introRequest) return introRequest;
+  if (introPlayback) {
+   // A destroyed context is unusual, but its last audio time still gives an offset.
+   const {context, start, offset, buffer} = introPlayback;
+   const position = (offset + Math.max(0, context.currentTime - start)) % buffer.duration;
+   stopAudio();introOffset = position;
+  }
+  const generation = audioGeneration;
+  const task = (async () => {
+   try {
+    const context = getAudioContext();if (!context) return false;
+    const ambience = createWelcomeAmbience(context);
+    if (context.state !== 'running') await Promise.race([resumeAudio(context), new Promise(resolve => setTimeout(resolve, 240))]);
     const buffer = await ambience;
-    // Offline rendering may finish after a dismissal, mute or another greeting.
-    if (generation !== audioGeneration || context !== audioContext || context.state !== 'running' || !eligibleScreen() || !overlay || overlay.hidden || !soundOn) return false;
-    const start = context.currentTime + .025, master = context.createGain(), source = context.createBufferSource();
+    // A slow download cannot start music after mute, failed login, dismissal or entry.
+    if (generation !== audioGeneration || context !== audioContext || context.state !== 'running' || !introAllowed()) return false;
+    const start = context.currentTime + .025, offset = introOffset % buffer.duration;
+    const master = context.createGain(), source = context.createBufferSource();
     master.gain.setValueAtTime(0, start);master.gain.linearRampToValueAtTime(.22, start + 1.15);
     master.connect(context.destination);source.buffer = buffer;source.loop = true;source.loopStart = 0;source.loopEnd = buffer.duration;
     source.connect(master);playing.push(source);audioNodes.push(source, master);activeMaster = master;
+    introPlayback = {context, source, start, offset, buffer};
     source.onended = () => {try {source.disconnect();} catch {}};
-    source.start(start);
+    source.start(start, offset);
     return true;
-   }
+   } catch {return false;}
+  })();
+  introRequest = task;
+  void task.finally(() => {if (introRequest === task) introRequest = null;});
+  return task;
+ }
+ function recoverWelcomeAudio() {
+  if (!introAllowed()) return;
+  if (introPlayback || loginIntroActive) void playWelcomeIntro();
+  else {introStarted = false;introPending = true;tryWelcomeIntro();}
+ }
+ function finishLoginIntro() {
+  if (!loginIntroActive) return;
+  loginIntroActive = false;
+  if (!overlay || overlay.hidden) stopAudio(false, .14);
+ }
+ // These signals carry no credentials. Submit occurs after native form validation
+ // and still has the user's activation, including signing in with the Enter key.
+ document.addEventListener('alma:login-start', () => {
+  if (unlocked() || root.dataset.version !== '3' || !soundOn || !currentEligibility().due) return;
+  loginIntroActive = true;warmAudio();void playWelcomeIntro();
+ });
+ document.addEventListener('alma:login-settled', event => {
+  if (!event.detail?.allowed) finishLoginIntro();
+  else void maybeWelcome();
+ });
+ async function playPortalSound(kind) {
+  if (kind === 'intro') return playWelcomeIntro();
+  if (!soundOn || !eligibleScreen() || !overlay || overlay.hidden) return false;
+  stopAudio(false, true);const generation = audioGeneration;
+  try {
+   const context = getAudioContext();if (!context) return false;
+   if (context.state !== 'running') await Promise.race([resumeAudio(context), new Promise(resolve => setTimeout(resolve, 240))]);
+   if (context.state !== 'running' || generation !== audioGeneration || !eligibleScreen() || overlay.hidden || !soundOn) return false;
    const start = context.currentTime + .025, master = context.createGain();
    master.gain.value = kind === 'entry' ? .105 : .075;master.connect(context.destination);audioNodes.push(master);activeMaster = master;
    function tone(frequency, offset, duration, level, {attack = .035, glide = 0} = {}) {
@@ -224,7 +274,7 @@ function installWelcome() {
   inertRegions = [];
  }
  function closeWelcome({locked = false, preserveAudio = false} = {}) {
-  clearTimeout(focusTimer);welcomeEpoch++;introAttemptId++;introPending = false;introAttempting = false;
+  loginIntroActive = false;clearTimeout(focusTimer);welcomeEpoch++;introAttemptId++;introPending = false;introAttempting = false;
   if (!preserveAudio) stopAudio(locked, .18);
   if (!overlay) return;
   overlay.hidden = true;if (document.body.classList.contains('welcome-open')) document.body.classList.remove('welcome-open');restoreRegions();
@@ -272,7 +322,7 @@ function installWelcome() {
   returnFocus = document.activeElement;
   inertRegions = [...document.body.children].filter(element => element !== overlay && !/^(SCRIPT|LINK|STYLE)$/.test(element.tagName)).map(element => [element, element.inert]);
   for (const [element] of inertRegions) element.inert = true;
-  welcomeEpoch++;introPending = true;introStarted = false;introAttempting = false;overlay.classList.remove('welcome-paused');overlay.hidden = false;document.body.classList.add('welcome-open');updateSoundControls();
+  welcomeEpoch++;introPending = true;introStarted = false;introAttempting = false;overlay.classList.remove('welcome-paused');overlay.hidden = false;loginIntroActive = false;document.body.classList.add('welcome-open');updateSoundControls();
   // Move focus once; keyboard users can choose sound or continue immediately.
   focusTimer = setTimeout(() => {if (!overlay.hidden) document.getElementById('welcome-enter').focus({preventScroll: true});}, 30);
   if (!reducedMotion.matches && root.dataset.effects !== 'off') overlay.querySelector('.welcome-card').animate?.([{opacity: 0, transform: 'translateY(18px) scale(.975)'}, {opacity: 1, transform: 'translateY(0) scale(1)'}], {duration: 700, easing: 'cubic-bezier(.16,1,.3,1)'});
@@ -294,14 +344,14 @@ function installWelcome() {
   if (checkPromise) return checkPromise;
   if (!eligibleScreen() || (overlay && !overlay.hidden)) return Promise.resolve();
   const decision = currentEligibility();
-  if (!decision.due) return Promise.resolve();
-  if (document.querySelector('dialog[open]')) {deferWelcome(decision);return Promise.resolve();}
+  if (!decision.due) {finishLoginIntro();return Promise.resolve();}
+  if (document.querySelector('dialog[open]')) {deferWelcome(decision);finishLoginIntro();return Promise.resolve();}
   checkPromise = withDeviceLock(() => {
    const now = Date.now(), decision = currentEligibility(now);
    if (!eligibleScreen() || !decision.due) return;
    if (document.querySelector('dialog[open]')) {deferWelcome(decision);return;}
    pendingWelcome = null;state = claimWelcome(state, now);persistState();showWelcome();
-  }).catch(() => {}).finally(() => {checkPromise = null;});
+  }).catch(() => {}).finally(() => {checkPromise = null;if (eligibleScreen() && (!overlay || overlay.hidden)) finishLoginIntro();});
   return checkPromise;
  }
  function checkThenActivity() {
@@ -326,24 +376,28 @@ function installWelcome() {
  for (const type of ['pointerdown', 'keydown', 'wheel', 'touchstart']) document.addEventListener(type, handleActivity, {passive: true, capture: true});
  let lastPointerActivity = 0;
  document.addEventListener('pointermove', event => {if (event.isTrusted && Date.now() - lastPointerActivity > 30000) {lastPointerActivity = Date.now();checkThenActivity();}}, {passive: true});
- window.addEventListener('focus', checkThenActivity);
- window.addEventListener('pageshow', () => {overlay?.classList.toggle('welcome-paused', document.visibilityState === 'hidden');checkThenActivity();if (overlay && !overlay.hidden) tryWelcomeIntro();});
+ window.addEventListener('focus', () => {checkThenActivity();recoverWelcomeAudio();});
+ window.addEventListener('pageshow', () => {overlay?.classList.toggle('welcome-paused', document.visibilityState === 'hidden');checkThenActivity();recoverWelcomeAudio();});
  // Dialog close does not bubble. Capture it so a due welcome waits for forms or the design picker.
  document.addEventListener('close', event => {if (event.target instanceof HTMLDialogElement) void maybeWelcome();}, true);
  document.addEventListener('visibilitychange', () => {
   overlay?.classList.toggle('welcome-paused', document.visibilityState === 'hidden');
   if (document.visibilityState === 'hidden') {
    if (unlocked()) persistState();
-   introAttemptId++;introAttempting = false;introStarted = false;introPending = Boolean(overlay && !overlay.hidden && soundOn);stopAudio();
-  } else {checkThenActivity();if (overlay && !overlay.hidden) tryWelcomeIntro();}
+   // Background tabs keep the same source playing. Only visual effects pause.
+  } else {checkThenActivity();recoverWelcomeAudio();}
  });
- window.addEventListener('pagehide', () => {
+ window.addEventListener('pagehide', event => {
   overlay?.classList.add('welcome-paused');
   if (unlocked()) persistState();
-  introAttemptId++;introAttempting = false;introStarted = false;introPending = Boolean(overlay && !overlay.hidden && soundOn);stopAudio(true);
+  if (event.persisted) {
+   // BFCache freezes the page, unlike a tab switch. Suspend without stopping or
+   // closing the source, then pageshow resumes this same playback position.
+   if (audioContext?.state === 'running') void audioContext.suspend().catch(() => {});
+  } else {loginIntroActive = false;introAttemptId++;introAttempting = false;introPending = false;stopAudio(true);}
  });
  window.addEventListener('storage', event => {
-  if (event.key === WELCOME_STATE_KEY) readState();
+  if (event.key === WELCOME_STATE_KEY) {readState();if (loginIntroActive && !currentEligibility().due) finishLoginIntro();}
   if (event.key === SOUND_KEY) {
    soundOn = event.newValue !== 'off';updateSoundControls();
    introAttemptId++;introAttempting = false;introStarted = false;introPending = Boolean(soundOn && overlay && !overlay.hidden);

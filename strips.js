@@ -1,5 +1,5 @@
-import {createStripDesignerPanel} from './strip-designer-panel.js?v=64';
-import {validateStripDesign,encodeStripDesignPng} from './strip-designer.js?v=64';
+import {createStripDesignerPanel} from './strip-designer-panel.js?v=65';
+import {validateStripDesign,encodeStripDesignPng} from './strip-designer.js?v=65';
 import {Unzip,AsyncUnzipInflate} from './assets/zip-client.js';
 const normalize=s=>String(s).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
 export function stripIdentity(filename,catalog){const base=filename.split(/[\\/]/).pop().replace(/\.[^.]+$/,'');const codes=[...base.matchAll(/(?:^|[\s_.()\-])(01|02)(?=$|[\s_.()\-])/g)].map(m=>m[1]);const unique=[...new Set(codes)];const size=unique.length===1?(unique[0]==='01'?50:100):null;const name=base.replace(/(?:^|[\s_.()\-])(01|02)(?=$|[\s_.()\-])/g,' ').replace(/\(\s*\)|\[\s*\]/g,' ').replace(/[_]+/g,' ').replace(/\s+/g,' ').trim();const matches=catalog.filter(p=>normalize(p.name)===normalize(name));return {name:name||base,size,productId:matches.length===1?matches[0].id:null,warning:matches.length===1?'':'No coincide con nombre en el catálogo'};}
