@@ -308,3 +308,9 @@ La bienvenida y el panel usan lenguaje de control interno. Se elimina el texto e
 **Probar bienvenida**, dentro del selector de diseño, permite revisar la presentación y ambos sonidos sin esperar al siguiente día. La prueba no altera los datos comerciales ni fuerza una nueva bienvenida automática si ya se había mostrado ese día.
 
 En V3, **Imprimir** contiene Generar nota de venta, Imprimir etiquetas e Imprimir tiras. Generar nota abre el editor existente; el historial de notas sigue en Ventas. **Guía olfativa** tiene un botón independiente y se conserva la búsqueda del catálogo.
+
+### Música continua de bienvenida (v58)
+
+Mientras la bienvenida está abierta, suena una composición original de piano zen con un fondo ambiental suave. El ciclo estéreo de 32 segundos se repite sin pausas. Se incluye preparado en `assets/audio/welcome-piano-zen-v58.wav` para evitar esperas de síntesis en equipos lentos; se reutiliza un único búfer durante la reproducción. No requiere servicios externos. El generador local de `welcome-ambience.js` queda como respaldo si no se puede cargar la grabación.
+
+**Acceder a mi portal** desvanece el fondo y conserva exactamente el jingle de acceso de la versión anterior. Cerrar o silenciar la bienvenida detiene la música; cambiar de pestaña la pausa y volver la reanuda si la bienvenida sigue abierta. Se conservan la frecuencia diaria o tras dos horas sin actividad, la preferencia de sonido y **Diseño → Probar bienvenida**. La reproducción automática sigue sujeta a las restricciones de audio del navegador.
