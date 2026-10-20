@@ -48,6 +48,33 @@ test('download verifies the original digest and rejects corrupt bytes',async t=>
  const f=fixture(),a=f.make();t.after(()=>a.cloud.stop());await a.cloud.start();const ref=await a.cloud.uploadStripAsset(png(),'one');const bad=new Uint8Array(await png().arrayBuffer());bad[20]^=1;f.db.objects.set(ref.path,new Blob([bad]));await assert.rejects(a.cloud.downloadStripAsset(ref),/no coincide/);
 });
 
+test('strip uploads repair mislabeled PNG, JPEG and WebP without changing image bytes',async t=>{
+ const f=fixture(),a=f.make();t.after(()=>a.cloud.stop());await a.cloud.start();
+ const writes=[],from=a.client.storage.from;
+ a.client.storage.from=bucket=>{const store=from(bucket);return {...store,async upload(path,blob,options){writes.push({path,contentType:options.contentType});return store.upload(path,blob,options);}};};
+ const cases=[
+  {bytes:new Uint8Array([137,80,78,71,13,10,26,10,9,8,7,6]),type:'image/png',label:'image/jpeg',extension:'png'},
+  {bytes:new Uint8Array([255,216,255,224,0,16,74,70,73,70,0,1]),type:'image/jpeg',label:'image/png',extension:'jpg'},
+  {bytes:new Uint8Array([82,73,70,70,4,0,0,0,87,69,66,80]),type:'image/webp',label:'image/png',extension:'webp'}
+ ];
+ for(const [index,item] of cases.entries()){
+  const ref=await a.cloud.uploadStripAsset(new Blob([item.bytes],{type:item.label}),'mislabeled-'+index);
+  assert.equal(ref.type,item.type);assert.ok(ref.path.endsWith('/image.'+item.extension));assert.equal(writes.at(-1).contentType,item.type);
+  const copy=await a.cloud.downloadStripAsset(ref);assert.equal(copy.type,item.type);assert.deepEqual(new Uint8Array(await copy.arrayBuffer()),item.bytes);
+ }
+ const before=f.db.uploads;
+ await assert.rejects(a.cloud.uploadStripAsset(new Blob(['broken image'],{type:'image/png'}),'bad'),error=>error.code==='STRIP_IMAGE_FORMAT');
+ assert.equal(f.db.uploads,before);assert.equal(f.db.rpcCalls,0);
+});
+
+test('multipart strip upload uses the real image type while preserving chunked bytes',async t=>{
+ const f=fixture(),a=f.make();t.after(()=>a.cloud.stop());await a.cloud.start();
+ const bytes=new Uint8Array(STRIP_ASSET_PART_BYTES+4);bytes.set([255,216,255,224]);bytes[bytes.length-1]=17;
+ const ref=await a.cloud.uploadStripAsset(new Blob([bytes],{type:'image/png'}),'mislabeled-large');
+ assert.equal(ref.type,'image/jpeg');assert.equal(ref.parts.length,2);
+ assert.deepEqual(new Uint8Array(await (await a.cloud.downloadStripAsset(ref)).arrayBuffer()),bytes);
+});
+
 test('a delayed library reply never replaces a newer revision received by an in-flight pull',async t=>{
  const f=fixture(),a=f.make();t.after(()=>a.cloud.stop());await a.cloud.start();
  let holdNext=true,release;const from=a.client.from;

@@ -390,3 +390,10 @@ Después de activarlo, abre la app actualizada en cada navegador que ya tenga ti
 Las altas nuevas y las eliminaciones de diseños se comparten. Los registros de eliminación impiden que otro navegador vuelva a cargar por accidente una tira borrada. Una carga interrumpida conserva el archivo local y permite reintentar. Las imágenes permanecen privadas para los miembros; los respaldos JSON guardan sus referencias, no los archivos. Restaurar un respaldo antiguo que no incluya biblioteca conserva la colección compartida actual.
 
 La bienvenida reutiliza el formateador de fechas y reduce el tamaño de las capas de luz en movimiento. En la comprobación de escritorio, la superficie de composición disminuyó aproximadamente un 12 %, manteniendo las cinco animaciones, los dos temas y los sonidos.
+
+
+### Reanudar tiras con extensiones incorrectas (v68)
+
+La biblioteca detecta PNG, JPEG y WebP por la firma real del archivo, tanto al importar ZIP como al compartir imágenes existentes. Una foto JPEG con nombre `.png` se identifica como JPEG sin volver a codificarla ni cambiar sus bytes, calidad o medidas. La caché de impresión utiliza ese mismo tipo real.
+
+Si una imagen no tiene un formato compatible o contiene información inválida, se conserva en el equipo, aparece su nombre en **Archivos pendientes de sincronizar** y continúa la subida de las demás. Los lotes parciales correctos también se guardan. **Sincronizar ahora** reintenta solo los pendientes y reutiliza los archivos ya subidos. No requiere volver a ejecutar SQL ni reimportar el ZIP.

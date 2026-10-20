@@ -1,5 +1,6 @@
-import {STRIP_LIBRARY_BUCKET,MAX_STRIP_ASSET_BYTES,STRIP_ASSET_PART_BYTES,validateStripAsset,validateStripLibrary,mergeStripLibrary} from './strip-library-data.js?v=67';
-import {EVIDENCE_BUCKET,validateEvidenceFile,validateEvidenceMetadata} from './evidence.js?v=67';
+import {STRIP_LIBRARY_BUCKET,MAX_STRIP_ASSET_BYTES,STRIP_ASSET_PART_BYTES,validateStripAsset,validateStripLibrary,mergeStripLibrary} from './strip-library-data.js?v=68';
+import {EVIDENCE_BUCKET,validateEvidenceFile,validateEvidenceMetadata} from './evidence.js?v=68';
+import {inspectStripImageBlob} from './strip-image-format.js?v=68';
 export function validateCloudConfig(value){
  const url=new URL(String(value.url??'').trim());if(url.protocol!=='https:'||!url.hostname.endsWith('.supabase.co')||url.username||url.password||url.pathname!=='/')throw Error('Usa la Project URL de Supabase: https://tu-proyecto.supabase.co');
  const key=String(value.key??'').trim();if(key.startsWith('sb_secret_'))throw Error('Usa la clave publicable o anon. Nunca una clave secreta ni service_role.');
@@ -34,10 +35,8 @@ export class CloudInventory{
  async uploadStripAsset(blob,id,{thumbnail=false,cancelled=()=>false}={}){
   const userId=this.user?.id,client=this.client;this.stripAccess(userId,client,cancelled);
   const limit=thumbnail?1024*1024:MAX_STRIP_ASSET_BYTES;
-  if(typeof id!=='string'||!id||id.length>1024||!blob||!['image/png','image/jpeg','image/webp'].includes(blob.type)||!Number.isSafeInteger(blob.size)||blob.size<1||blob.size>limit)throw Error(thumbnail?'La vista previa de la tira no es válida.':'La tira debe ser una imagen PNG, JPG o WebP de hasta 80 MB.');
-  const header=new Uint8Array(await blob.slice(0,12).arrayBuffer()),ascii=String.fromCharCode(...header);
-  const valid=blob.type==='image/png'?header[0]===137&&ascii.slice(1,4)==='PNG'&&header[4]===13&&header[5]===10&&header[6]===26&&header[7]===10:blob.type==='image/jpeg'?header[0]===255&&header[1]===216&&header[2]===255:ascii.startsWith('RIFF')&&ascii.slice(8,12)==='WEBP';
-  if(!valid)throw Error('La imagen de la tira no corresponde al formato indicado.');
+  if(typeof id!=='string'||!id||id.length>1024||!blob||!Number.isSafeInteger(blob.size)||blob.size<1||blob.size>limit)throw Error(thumbnail?'La vista previa de la tira no es válida.':'La tira debe ser una imagen PNG, JPG o WebP de hasta 80 MB.');
+  blob=await inspectStripImageBlob(blob);this.stripAccess(userId,client,cancelled);
   const bytes=await blob.arrayBuffer(),digest=await crypto.subtle.digest('SHA-256',bytes);
   const sha256=Array.from(new Uint8Array(digest),byte=>byte.toString(16).padStart(2,'0')).join('');
   this.stripAccess(userId,client,cancelled);

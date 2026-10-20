@@ -1,5 +1,5 @@
-import {emptyStripLibrary,validateStripLibrary} from './strip-library-data.js?v=67';
-import {listStripMetadata,readStripRecord,writeStripRecord,removeStripRecord,updateStripRecord} from './strip-library-store.js?v=67';
+import {emptyStripLibrary,validateStripLibrary,validateStripRecord} from './strip-library-data.js?v=68';
+import {listStripMetadata,readStripRecord,writeStripRecord,removeStripRecord,updateStripRecord} from './strip-library-store.js?v=68';
 
 const editKey=record=>record?._sync?.editId;
 const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
@@ -21,10 +21,10 @@ const metadataFor=record=>{
 // Old browser records are uploaded once. Originals are downloaded only for printing.
 export function createStripLibrarySync({getCloud,getLibrary,canAccess,onChange=()=>{}}) {
  let identity='',workspace='',epoch=0,manifest=emptyStripLibrary(),signature='',flight=null,rerun=false,timer=0,retryTimer=0;
- let status={phase:'idle',message:'Comprobando biblioteca compartida…',pending:0};
+ let status={phase:'idle',message:'Comprobando biblioteca compartida…',pending:0,issues:[]};
  const listeners=new Set();
  const emit=()=>{for(const listener of listeners)listener(status);};
- const setStatus=(phase,message,pending=status.pending)=>{status={phase,message,pending};emit();};
+ const setStatus=(phase,message,pending=status.pending,issues=status.issues)=>{status={phase,message,pending,issues};emit();};
  const blocked=()=>document.body.classList.contains('welcome-open')||document.visibilityState==='hidden';
  const cancelled=token=>token!==epoch||!canAccess();
  const assertActive=token=>{if(cancelled(token))throw Error('Sincronización cancelada.');};
@@ -36,7 +36,7 @@ export function createStripLibrarySync({getCloud,getLibrary,canAccess,onChange=(
  }
  function connect() {
   const cloud=getCloud(),next=canAccess()?`${cloud.config.url}|${cloud.user.id}`:'';
-  if(next!==identity){epoch++;identity=next;workspace=cloud?.config?.url??'';signature='';clearTimeout(timer);clearTimeout(retryTimer);flight=null;rerun=false;if(!next){manifest=emptyStripLibrary();setStatus('idle','Inicia sesión para consultar la biblioteca compartida.',0);return;}}
+  if(next!==identity){epoch++;identity=next;workspace=cloud?.config?.url??'';signature='';clearTimeout(timer);clearTimeout(retryTimer);flight=null;rerun=false;if(!next){manifest=emptyStripLibrary();setStatus('idle','Inicia sesión para consultar la biblioteca compartida.',0,[]);return;}}
   if(!next)return;
   const latest=validateStripLibrary(getLibrary()??emptyStripLibrary()),encoded=JSON.stringify(latest);
   if(encoded!==signature){manifest=latest;signature=encoded;schedule();}
@@ -47,14 +47,14 @@ export function createStripLibrarySync({getCloud,getLibrary,canAccess,onChange=(
   assertActive(token);if(!accepted){rerun=true;return null;}return stored;
  }
  async function storePublished(record,token) {
-  return guardedWrite({...record,_sync:{...record._sync,dirty:false,migration:false,workspace}},token);
+  return guardedWrite({...record,_sync:{...record._sync,dirty:false,migration:false,error:undefined,workspace}},token);
  }
  async function process(token) {
   const cloud=getCloud();let local=(await listStripMetadata()).filter(inWorkspace);assertActive(token);
   const entries=new Map(manifest.entries.map(record=>[record.id,record]));
   const deleted=new Map(manifest.deleted.map(record=>[record.id,record]));
   const candidates=local.filter(record=>record._sync?.dirty||(!record.asset&&!record._sync?.workspace));
-  let batch=[],uploaded=0;setStatus('syncing',candidates.length?'Compartiendo las tiras de este equipo…':'Actualizando biblioteca compartida…',candidates.length);
+  let batch=[],uploaded=0;const issues=[];setStatus('syncing',candidates.length?'Compartiendo las tiras de este equipo…':'Actualizando biblioteca compartida…',candidates.length,[]);
   const flush=async()=>{
    if(!batch.length)return;assertActive(token);
    const records=batch;batch=[];
@@ -65,14 +65,15 @@ export function createStripLibrarySync({getCloud,getLibrary,canAccess,onChange=(
   };
   for(const item of candidates) {
    assertActive(token);if(blocked()){await flush();rerun=true;return;}
-   let record=await updateStripRecord(item.id,current=>{assertActive(token);if(!current?.blob||!inWorkspace(current)||current._sync?.editId)return;return {...current,_sync:{...current._sync,workspace,editId:crypto.randomUUID(),dirty:true,migration:!current._sync?.dirty,changedAt:current._sync?.changedAt??current.updatedAt??current.createdAt??new Date().toISOString()}};});if(!record?.blob||!inWorkspace(record))continue;
+   let record;try{
+   record=await updateStripRecord(item.id,current=>{assertActive(token);if(!current?.blob||!inWorkspace(current)||current._sync?.editId)return;return {...current,_sync:{...current._sync,workspace,editId:crypto.randomUUID(),dirty:true,migration:!current._sync?.dirty,changedAt:current._sync?.changedAt??current.updatedAt??current.createdAt??new Date().toISOString()}};});if(!record?.blob||!inWorkspace(record))continue;
    const tombstone=deleted.get(record.id);
    if(tombstone&&(record._sync?.migration||!record._sync?.dirty||Date.parse(record._sync.changedAt)<=Date.parse(tombstone.deletedAt))){await updateStripRecord(record.id,current=>editKey(current)===editKey(record)?null:undefined);continue;}
    const existing=entries.get(record.id);
    if(existing&&(!record._sync?.dirty||record._sync?.migration)){
     const digest=await hashBlob(record.blob);assertActive(token);
     if(digest===(existing.contentHash??existing.asset.sha256)){
-     await guardedWrite({...record,...existing,_sync:{...record._sync,dirty:false,migration:false,workspace}},token);continue;
+     await guardedWrite({...record,...existing,blob:record.blob?.slice(0,record.blob.size,existing.asset.type),_sync:{...record._sync,dirty:false,migration:false,workspace}},token);continue;
     }
     // Preserve a different old image with the same filename as a separate version.
     const id=record.id.slice(0,990)+'~'+digest.slice(0,16);
@@ -84,11 +85,25 @@ export function createStripLibrarySync({getCloud,getLibrary,canAccess,onChange=(
    if(!record.asset||record._sync?.workspace&&record._sync.workspace!==workspace){
     record.asset=await cloud.uploadStripAsset(record.blob,record.id,{cancelled:()=>cancelled(token)});assertActive(token);
     record.contentHash=record.asset.sha256;
+    // A mislabeled extension must not carry the old MIME into PDF printing.
+    if(record.blob.type!==record.asset.type)record.blob=record.blob.slice(0,record.blob.size,record.asset.type);
     record._sync={...record._sync,dirty:true,workspace};if(!await guardedWrite(record,token))continue;
    }
    if(!record.thumbnail){const blob=await thumbnailBlob(record.thumb);assertActive(token);if(blob){record.thumbnail=await cloud.uploadStripAsset(blob,record.id,{thumbnail:true,cancelled:()=>cancelled(token)});assertActive(token);if(!await guardedWrite(record,token))continue;}}
+   try{validateStripRecord(metadataFor(record));}catch(error){error.code='STRIP_RECORD_INVALID';throw error;}
    batch.push(record);uploaded++;setStatus('syncing',`Compartiendo tiras: ${uploaded} de ${candidates.length}…`,Math.max(0,candidates.length-uploaded));
    if(batch.length>=5)await flush();await sleep(0);
+   }catch(error){
+    if(cancelled(token))throw error;
+    if(['STRIP_IMAGE_FORMAT','STRIP_RECORD_INVALID'].includes(error.code)||/no corresponde al formato indicado|vista previa de la tira no es válida|debe ser una imagen|hasta 80 MB/.test(error.message)){
+     const issue={id:item.id,filename:item.filename??item.name??item.id,message:error.message};issues.push(issue);
+     if(record)await guardedWrite({...record,_sync:{...record._sync,dirty:true,error:error.message}},token);
+     setStatus('syncing',`Continuando la sincronización · ${issues.length} ${issues.length===1?'archivo pendiente':'archivos pendientes'}.`,Math.max(0,candidates.length-uploaded),[...issues]);
+     onChange();continue;
+    }
+    // Keep a short successful batch even if a later upload lost its connection.
+    await flush();throw error;
+   }
   }
   await flush();assertActive(token);
   // Metadata first: every shared design appears even on a device with no images.
@@ -117,7 +132,8 @@ export function createStripLibrarySync({getCloud,getLibrary,canAccess,onChange=(
   }
   assertActive(token);onChange();
   if(failed){clearTimeout(retryTimer);retryTimer=setTimeout(()=>schedule(),20000);}
-  setStatus(failed?'error':'ready',failed?'Algunas vistas previas están pendientes. Reintenta la sincronización.':`Biblioteca compartida · ${manifest.entries.length} ${manifest.entries.length===1?'tira':'tiras'}.`,0);
+  const message=`Biblioteca compartida · ${manifest.entries.length} ${manifest.entries.length===1?'tira':'tiras'}.`;
+  setStatus(issues.length?'partial':failed?'error':'ready',issues.length?`${message} Hay ${issues.length} ${issues.length===1?'archivo pendiente':'archivos pendientes'}; revisa la lista.`:failed?'Algunas vistas previas están pendientes. Reintenta la sincronización.':message,issues.length,[...issues]);
  }
  async function synchronize() {
   if(!canAccess()||!identity)return;
@@ -153,7 +169,7 @@ export function createStripLibrarySync({getCloud,getLibrary,canAccess,onChange=(
   const deleted=manifest.deleted.find(item=>item.id===id);
   if(deleted&&(!record._sync?.dirty||Date.parse(record._sync.changedAt)<=Date.parse(deleted.deletedAt))||record.asset&&!record._sync?.dirty&&!manifest.entries.some(item=>item.id===id))throw Error('La tira fue retirada de la biblioteca compartida.');
   if(record.asset&&!record._sync?.dirty&&!sameAsset(manifest.entries.find(item=>item.id===id)?.asset,record.asset))throw Error('La tira cambió. Espera a que termine la sincronización.');
-  if(record.blob)return record;
+  if(record.blob)return record.asset&&record.blob.type!==record.asset.type?{...record,blob:record.blob.slice(0,record.blob.size,record.asset.type)}:record;
   if(!record.asset)throw Error('La imagen está pendiente de sincronización en el equipo original.');
   const blob=await getCloud().downloadStripAsset(record.asset);assertActive(token);
   let accepted=false;const cached=await updateStripRecord(id,current=>{assertActive(token);if(current&&inWorkspace(current)&&!current._sync?.dirty&&sameAsset(current.asset,record.asset)){accepted=true;return {...current,blob};}});assertActive(token);if(!accepted||manifest.deleted.some(item=>item.id===id)||!sameAsset(manifest.entries.find(item=>item.id===id)?.asset,record.asset))throw Error('La tira cambió mientras se descargaba. Vuelve a seleccionarla.');return cached;
@@ -161,5 +177,5 @@ export function createStripLibrarySync({getCloud,getLibrary,canAccess,onChange=(
  const wake=()=>{if(canAccess()&&!blocked()&&(rerun||['error','setup'].includes(status.phase)))schedule();};
  new MutationObserver(wake).observe(document.body,{attributes:true,attributeFilter:['class']});
  document.addEventListener('visibilitychange',wake);window.addEventListener('focus',wake);window.addEventListener('online',()=>{if(canAccess())schedule();});
- return {connect,synchronize,publish,remove,getRecord,visibleMetadata,getWorkspace:()=>workspace,getStatus:()=>status,subscribe(listener){listeners.add(listener);return()=>listeners.delete(listener);},stop(){epoch++;identity='';signature='';clearTimeout(timer);clearTimeout(retryTimer);flight=null;rerun=false;manifest=emptyStripLibrary();setStatus('idle','Inicia sesión para consultar la biblioteca compartida.',0);}};
+ return {connect,synchronize,publish,remove,getRecord,visibleMetadata,getWorkspace:()=>workspace,getStatus:()=>status,subscribe(listener){listeners.add(listener);return()=>listeners.delete(listener);},stop(){epoch++;identity='';signature='';clearTimeout(timer);clearTimeout(retryTimer);flight=null;rerun=false;manifest=emptyStripLibrary();setStatus('idle','Inicia sesión para consultar la biblioteca compartida.',0,[]);}};
 }
