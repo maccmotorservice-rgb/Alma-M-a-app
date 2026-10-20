@@ -1,5 +1,5 @@
-import {emptyStripLibrary,validateStripLibrary,validateStripRecord} from './strip-library-data.js?v=68';
-import {listStripMetadata,readStripRecord,writeStripRecord,removeStripRecord,updateStripRecord} from './strip-library-store.js?v=68';
+import {emptyStripLibrary,validateStripLibrary,validateStripRecord} from './strip-library-data.js?v=69';
+import {listStripMetadata,readStripRecord,writeStripRecord,removeStripRecord,updateStripRecord} from './strip-library-store.js?v=69';
 
 const editKey=record=>record?._sync?.editId;
 const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
@@ -150,6 +150,32 @@ export function createStripLibrarySync({getCloud,getLibrary,canAccess,onChange=(
   }).finally(()=>{if(token!==epoch)return;if(flight===task)flight=null;if(rerun&&!blocked())schedule(250);});
   flight=task;return task;
  }
+ async function refresh() {
+  if(!canAccess()){
+   const failure=Error('No se pudo sincronizar. Comprueba la conexión e inicia sesión de nuevo si se solicita.');
+   setStatus('error',failure.message,0,[]);throw failure;
+  }
+  connect();const token=epoch;
+  if(blocked()){
+   rerun=true;setStatus('paused','La sincronización continuará al volver a esta pantalla y cerrar la bienvenida.');return status;
+  }
+  setStatus('syncing','Consultando la biblioteca compartida…',0,[]);
+  try{
+   // A manual refresh must request the server, even when the local revision or
+   // this browser's image cache has not changed since the last background poll.
+   if(flight)await flight.catch(()=>{});
+   assertActive(token);
+   const latest=await getCloud().refreshStripLibrary({cancelled:()=>cancelled(token)});assertActive(token);
+   if(flight)await flight.catch(()=>{});assertActive(token);
+   manifest=validateStripLibrary(getCloud().remote?.data?.stripLibrary??getLibrary()??latest);signature=JSON.stringify(manifest);clearTimeout(timer);timer=0;
+   await synchronize();assertActive(token);
+   return status;
+  }catch(error){
+   if(cancelled(token))return;
+   if(status.phase!=='setup')setStatus('error',`No se pudo actualizar la biblioteca: ${error.message}`);
+   throw error;
+  }
+ }
  async function publish(record) {
   if(!canAccess())throw Error('La tira se guardó en este equipo. Inicia sesión para compartirla.');
   connect();let stored;
@@ -177,5 +203,5 @@ export function createStripLibrarySync({getCloud,getLibrary,canAccess,onChange=(
  const wake=()=>{if(canAccess()&&!blocked()&&(rerun||['error','setup'].includes(status.phase)))schedule();};
  new MutationObserver(wake).observe(document.body,{attributes:true,attributeFilter:['class']});
  document.addEventListener('visibilitychange',wake);window.addEventListener('focus',wake);window.addEventListener('online',()=>{if(canAccess())schedule();});
- return {connect,synchronize,publish,remove,getRecord,visibleMetadata,getWorkspace:()=>workspace,getStatus:()=>status,subscribe(listener){listeners.add(listener);return()=>listeners.delete(listener);},stop(){epoch++;identity='';signature='';clearTimeout(timer);clearTimeout(retryTimer);flight=null;rerun=false;manifest=emptyStripLibrary();setStatus('idle','Inicia sesión para consultar la biblioteca compartida.',0,[]);}};
+ return {connect,synchronize,refresh,publish,remove,getRecord,visibleMetadata,getWorkspace:()=>workspace,getStatus:()=>status,subscribe(listener){listeners.add(listener);return()=>listeners.delete(listener);},stop(){epoch++;identity='';signature='';clearTimeout(timer);clearTimeout(retryTimer);flight=null;rerun=false;manifest=emptyStripLibrary();setStatus('idle','Inicia sesión para consultar la biblioteca compartida.',0,[]);}};
 }

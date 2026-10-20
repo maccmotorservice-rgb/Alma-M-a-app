@@ -1,6 +1,6 @@
-import {STRIP_LIBRARY_BUCKET,MAX_STRIP_ASSET_BYTES,STRIP_ASSET_PART_BYTES,validateStripAsset,validateStripLibrary,mergeStripLibrary} from './strip-library-data.js?v=68';
-import {EVIDENCE_BUCKET,validateEvidenceFile,validateEvidenceMetadata} from './evidence.js?v=68';
-import {inspectStripImageBlob} from './strip-image-format.js?v=68';
+import {STRIP_LIBRARY_BUCKET,MAX_STRIP_ASSET_BYTES,STRIP_ASSET_PART_BYTES,validateStripAsset,validateStripLibrary,mergeStripLibrary} from './strip-library-data.js?v=69';
+import {EVIDENCE_BUCKET,validateEvidenceFile,validateEvidenceMetadata} from './evidence.js?v=69';
+import {inspectStripImageBlob} from './strip-image-format.js?v=69';
 export function validateCloudConfig(value){
  const url=new URL(String(value.url??'').trim());if(url.protocol!=='https:'||!url.hostname.endsWith('.supabase.co')||url.username||url.password||url.pathname!=='/')throw Error('Usa la Project URL de Supabase: https://tu-proyecto.supabase.co');
  const key=String(value.key??'').trim();if(key.startsWith('sb_secret_'))throw Error('Usa la clave publicable o anon. Nunca una clave secreta ni service_role.');
@@ -77,6 +77,17 @@ export class CloudInventory{
   if(blob.size!==ref.size)throw Error('La tira descargada está incompleta. Vuelve a sincronizar la biblioteca.');
   if(ref.sha256){const hash=await crypto.subtle.digest('SHA-256',await blob.arrayBuffer()),hex=Array.from(new Uint8Array(hash),byte=>byte.toString(16).padStart(2,'0')).join('');if(hex!==ref.sha256)throw Error('La tira descargada no coincide con el original. Vuelve a sincronizar la biblioteca.');}
   this.stripAccess(userId,client,cancelled);return blob;
+ }
+ async refreshStripLibrary({cancelled=()=>false}={}){
+  const userId=this.user?.id,client=this.client;this.stripAccess(userId,client,cancelled);
+  const row=await this.read();this.stripAccess(userId,client,cancelled);
+  if(!row.data)throw Error('Primero abre el inventario compartido para consultar las tiras.');
+  // This read may finish after another read or save. Keep the latest complete
+  // inventory and return its library, without writing to the database or Storage.
+  const latest=this.remote?.data&&Number(this.remote.revision)>Number(row.revision)?this.remote:row;
+  const saved=this.validate(latest.data),library=validateStripLibrary(saved.stripLibrary);
+  if(Number(latest.revision)>this.revision){this.remote=latest;this.revision=Number(latest.revision);this.onData(saved);}
+  return library;
  }
  changeStripLibrary({upsert=[],remove=[],cancelled=()=>false}={}){
   const userId=this.user?.id,client=this.client,patch=structuredClone({upsert,remove});
