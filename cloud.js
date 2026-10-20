@@ -1,23 +1,70 @@
-import {STRIP_LIBRARY_BUCKET,MAX_STRIP_ASSET_BYTES,STRIP_ASSET_PART_BYTES,validateStripAsset,validateStripLibrary,mergeStripLibrary} from './strip-library-data.js?v=70';
-import {EVIDENCE_BUCKET,validateEvidenceFile,validateEvidenceMetadata} from './evidence.js?v=70';
-import {inspectStripImageBlob} from './strip-image-format.js?v=70';
+import {STRIP_LIBRARY_BUCKET,MAX_STRIP_ASSET_BYTES,STRIP_ASSET_PART_BYTES,validateStripAsset,validateStripLibrary,mergeStripLibrary} from './strip-library-data.js?v=71';
+import {EVIDENCE_BUCKET,validateEvidenceFile,validateEvidenceMetadata} from './evidence.js?v=71';
+import {inspectStripImageBlob} from './strip-image-format.js?v=71';
 export function validateCloudConfig(value){
  const url=new URL(String(value.url??'').trim());if(url.protocol!=='https:'||!url.hostname.endsWith('.supabase.co')||url.username||url.password||url.pathname!=='/')throw Error('Usa la Project URL de Supabase: https://tu-proyecto.supabase.co');
  const key=String(value.key??'').trim();if(key.startsWith('sb_secret_'))throw Error('Usa la clave publicable o anon. Nunca una clave secreta ni service_role.');
  let valid=key.startsWith('sb_publishable_');if(!valid){try{const payload=JSON.parse(atob(key.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')));valid=payload.role==='anon';}catch{}}
  if(!valid)throw Error('La clave debe ser publicable (sb_publishable_) o la antigua clave anon. No pegues contraseñas.');return {url:url.origin,key,activated:Boolean(value.activated)};
 }
+const waitForAccess=(request,message)=>{let timer;return Promise.race([Promise.resolve(request),new Promise((_,reject)=>{timer=setTimeout(()=>reject(Error(message)),12000);})]).finally(()=>clearTimeout(timer));};
 const timed=request=>globalThis.AbortSignal?.timeout&&request.abortSignal?request.abortSignal(AbortSignal.timeout(12000)):request;
 export class CloudInventory{
- constructor({storage,onData,onStatus,validate,clientFactory,idFactory=()=>crypto.randomUUID()}){this.storage=storage;this.onData=onData;this.onStatus=onStatus;this.validate=validate;this.factory=clientFactory;this.idFactory=idFactory;this.mode='local';this.config=null;this.client=null;this.member=null;this.user=null;this.authSubscription=null;this.revision=0;this.remote=null;this.connected=false;this.saving=false;this.message='Solo en este navegador';this.timer=null;this.channel=null;this.failedSave=null;this.stripQueue=Promise.resolve();try{const raw=storage.getItem('alma-mia-cloud-config');if(raw)this.config=validateCloudConfig(JSON.parse(raw));}catch{this.message='La configuración de nube no es válida. Revísala en Conexión.';}}
+ constructor({storage,onData,onStatus,validate,clientFactory,idFactory=()=>crypto.randomUUID()}){this.storage=storage;this.onData=onData;this.onStatus=onStatus;this.validate=validate;this.factory=clientFactory;this.idFactory=idFactory;this.mode='local';this.config=null;this.client=null;this.member=null;this.user=null;this.authSubscription=null;this.revision=0;this.remote=null;this.connected=false;this.saving=false;this.message='Solo en este navegador';this.timer=null;this.channel=null;this.failedSave=null;this.stripQueue=Promise.resolve();this.accessEpoch=0;try{const raw=storage.getItem('alma-mia-cloud-config');if(raw)this.config=validateCloudConfig(JSON.parse(raw));}catch{this.message='La configuración de nube no es válida. Revísala en Conexión.';}}
  get enabled(){return Boolean(this.config);}
  status(message){if(message)this.message=message;this.onStatus?.();}
- async configure(value){const config=validateCloudConfig(value);this.stop();await this.client?.auth.signOut({scope:'local'});this.config={...config,activated:false};this.storage.setItem('alma-mia-cloud-config',JSON.stringify(this.config));return this.start();}
- async start(){if(!this.config)return;this.mode='loading';this.status('Conectando…');try{if(!this.factory){const{createClient}=await import('./assets/supabase-client.js');this.factory=createClient;}this.client=this.factory(this.config.url,this.config.key,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});this.authSubscription?.unsubscribe();this.authSubscription=this.client.auth.onAuthStateChange?.((event)=>{if(event==='SIGNED_OUT')this.lockSession();})?.data?.subscription;const{data,error}=await this.client.auth.getSession();if(error)throw error;if(!data.session){this.lockSession();return;}await this.loadSession(data.session);}catch(e){this.mode='error';this.connected=false;this.status('No se pudo conectar: '+e.message);}}
- async signIn(email,password){if(!this.client)await this.start();const{data,error}=await this.client.auth.signInWithPassword({email,password});if(error)throw Error('No se pudo iniciar sesión. Revisa el correo, la contraseña y que la cuenta exista en Supabase.');await this.loadSession(data.session);}
- async loadSession(session){this.member=null;this.connected=false;this.mode='loading';this.status('Verificando acceso…');this.user=session.user;const{data,error}=await this.client.from('inventory_members').select('display_name').eq('user_id',session.user.id).maybeSingle();if(error||!data||!['Luis','Ximena'].includes(data.display_name)){this.mode='auth';this.connected=false;this.status('Esta cuenta no tiene acceso. Completa el archivo de miembros en Supabase.');return;}this.member=data;this.remote=await this.read();this.revision=Number(this.remote.revision);this.connected=true;if(!this.remote.data){this.mode='empty';this.status('Conectado; falta subir el inventario inicial');}else if(this.config.activated){await this.acceptRemote();}else{this.mode='choice';this.status('Inventario compartido disponible');}}
+ async configure(value){const config=validateCloudConfig(value);this.accessEpoch++;this.stop();await this.client?.auth.signOut({scope:'local'});this.config={...config,activated:false};this.storage.setItem('alma-mia-cloud-config',JSON.stringify(this.config));return this.start();}
+ accessGuard(){const epoch=this.accessEpoch,config=this.config,client=this.client;return()=>epoch===this.accessEpoch&&config===this.config&&client===this.client;}
+ async start(){
+  if(!this.config)return;
+  const epoch=++this.accessEpoch,config=this.config,current=()=>epoch===this.accessEpoch&&config===this.config;
+  this.stop();this.authSubscription?.unsubscribe();this.authSubscription=null;this.user=null;this.member=null;this.remote=null;this.connected=false;this.mode='loading';this.status('Conectando…');
+  try{
+   const factory=this.factory??(await waitForAccess(import('./assets/supabase-client.js'),'La carga del acceso tardó demasiado. Vuelve a conectar.')).createClient;
+   if(!current())return;
+   this.factory=factory;const client=this.factory(config.url,config.key,{auth:{storage:this.storage,persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});this.client=client;
+   const active=()=>current()&&client===this.client;
+   this.authSubscription=client.auth.onAuthStateChange?.(event=>{if(client===this.client&&config===this.config&&event==='SIGNED_OUT')this.lockSession();})?.data?.subscription;
+   const{data,error}=await waitForAccess(client.auth.getSession(),'La comprobación de la sesión tardó demasiado. Vuelve a conectar.');
+   if(!active())return;
+   if(error)throw error;
+   if(!data?.session){this.lockSession();return;}
+   await this.loadSession(data.session,{active});
+  }catch(error){if(!current())return;this.accessEpoch++;this.user=null;this.member=null;this.remote=null;this.mode='error';this.connected=false;this.status('No se pudo conectar: '+error.message);}
+ }
+ async signIn(email,password){
+  if(!this.client)await this.start();
+  if(!this.client)throw Error('No se pudo cargar el acceso. Vuelve a conectar.');
+  this.accessEpoch++;const active=this.accessGuard(),client=this.client;
+  try{
+   const{data,error}=await client.auth.signInWithPassword({email,password});
+   if(!active())return;
+   if(error)throw Error('No se pudo iniciar sesión. Revisa el correo, la contraseña y que la cuenta exista en Supabase.');
+   await this.loadSession(data.session,{active});
+  }catch(error){if(!active())return;this.accessEpoch++;this.user=null;this.member=null;this.remote=null;this.mode='error';this.connected=false;this.status(error.message);throw error;}
+ }
+ async loadSession(session,{active=this.accessGuard()}={}){
+  if(!active())return;
+  if(!session?.user?.id)throw Error('No se pudo comprobar la sesión. Vuelve a iniciar sesión.');
+  this.member=null;this.connected=false;this.mode='loading';this.status('Verificando acceso…');this.user=session.user;
+  const current=()=>active()&&this.user?.id===session.user.id;
+  const{data,error}=await waitForAccess(this.client.from('inventory_members').select('display_name').eq('user_id',session.user.id).maybeSingle(),'La verificación de acceso tardó demasiado. Vuelve a conectar.');
+  if(!current())return;
+  if(error||!data||!['Luis','Ximena'].includes(data.display_name)){this.mode='auth';this.connected=false;this.status('Esta cuenta no tiene acceso. Completa el archivo de miembros en Supabase.');return;}
+  this.member=data;const remote=await waitForAccess(this.read(),'La lectura del inventario tardó demasiado. Vuelve a conectar.');
+  if(!current())return;
+  this.remote=remote;this.revision=Number(remote.revision);this.connected=true;
+  if(!remote.data){this.mode='empty';this.status('Conectado; falta subir el inventario inicial');}
+  else if(this.config.activated)await this.acceptRemote({active:current});
+  else{this.mode='choice';this.status('Inventario compartido disponible');}
+ }
  async read(){const{data,error}=await timed(this.client.from('shared_inventory').select('*').eq('id',true).single());if(error)throw Error('No se pudo leer la nube. Comprueba la conexión y los permisos SQL.');if(!data)throw Error('Falta ejecutar la configuración SQL.');if(data.data)this.validate(data.data);return data;}
- async acceptRemote(){this.remote=await this.read();if(!this.remote.data)throw Error('Todavía no hay inventario en la nube. Súbelo primero desde tu computadora.');this.revision=Number(this.remote.revision);this.config.activated=true;this.storage.setItem('alma-mia-cloud-config',JSON.stringify(this.config));this.mode='ready';this.connected=true;this.onData(this.validate(this.remote.data));this.status('Sincronizado · '+this.member.display_name);this.subscribe();}
+ async acceptRemote({active=this.accessGuard()}={}){
+  const userId=this.user?.id,remote=await waitForAccess(this.read(),'La lectura del inventario tardó demasiado. Vuelve a conectar.');
+  if(!active()||this.user?.id!==userId)return;
+  if(!remote.data)throw Error('Todavía no hay inventario en la nube. Súbelo primero desde tu computadora.');
+  this.remote=remote;this.revision=Number(remote.revision);this.config.activated=true;this.storage.setItem('alma-mia-cloud-config',JSON.stringify(this.config));this.mode='ready';this.connected=true;this.onData(this.validate(remote.data));this.status('Sincronizado · '+this.member.display_name);this.subscribe();
+ }
  subscribe(){this.stop();this.channel=this.client.channel('alma-mia-inventory').on('postgres_changes',{event:'UPDATE',schema:'public',table:'shared_inventory'},()=>{if(!this.saving)this.pull();}).subscribe();this.timer=setInterval(()=>{if(!globalThis.document?.hidden)this.pull();},4000);}
  stop(){clearInterval(this.timer);this.timer=null;if(this.channel&&this.client)this.client.removeChannel(this.channel);this.channel=null;}
  async pull(){if(this.mode!=='ready'||this.saving)return;try{const row=await this.read();this.connected=true;if(Number(row.revision)>this.revision){this.remote=row;this.revision=Number(row.revision);this.onData(this.validate(row.data));}this.status('Sincronizado · '+this.member.display_name);}catch{this.connected=false;this.status('Sin conexión. No se guardarán cambios hasta reconectar.');}}
@@ -120,6 +167,6 @@ export class CloudInventory{
   });
   this.stripQueue=work.catch(()=>{});return work;
  }
- lockSession(){this.stop();this.member=null;this.user=null;this.remote=null;this.failedSave=null;this.connected=false;this.mode='auth';this.status('Inicia sesión para acceder a Alma Mía.');}
- async signOut(){await this.client?.auth.signOut({scope:'local'});this.lockSession();}
+ lockSession(){this.accessEpoch++;this.stop();this.member=null;this.user=null;this.remote=null;this.failedSave=null;this.connected=false;this.mode='auth';this.status('Inicia sesión para acceder a Alma Mía.');}
+ async signOut(){const client=this.client;this.lockSession();await client?.auth.signOut({scope:'local'});}
 }

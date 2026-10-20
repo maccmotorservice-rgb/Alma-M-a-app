@@ -1,25 +1,40 @@
-import {createStripLibrarySync} from './strip-library-sync.js?v=70';
-import {mountPdfActions} from './pdf-share.js?v=70';
-import {filterMaterialStock,materialStockCounts,materialStatus,productStockView} from './stock-views.js?v=70';
-import {createStockDictation} from './stock-dictation.js?v=70';
-import {createStripsPanel} from './strips.js?v=70';
-import {createLabelsPanel} from './labels.js?v=70';
-import {createStockScanner} from './stock-scanner.js?v=70';
-import {hasAppAccess,defaultCloudConfig,clearBusinessCache} from './access.js?v=70';
-import {annualSalesCards,salesReportHtml} from './sales-reports.js?v=70';
-import {cancellationFields,mountCancellationFields,readCancellationFields} from './cancellation.js?v=70';
-import {catalogCategories,catalogCategoryMatches,filterCatalog,perfumeMatches} from './catalog-tools.js?v=70';
-import {activeSalesNoteForBatch,salesAccounts,salesMoney} from './sales.js?v=70';
-import {createSalesPanel} from './sales-panel.js?v=70';
-import {CloudInventory} from './cloud.js?v=70';
-import {createDictationPanel} from './dictation.js?v=70';
-import {initialState,applyMovement,recipeFor,registerCustomer,productionPreview,confirmProduction,completedQuantity,batchProgress,completeBatchItem,cancelBatch,readyBatch,setBottleStocks,readyMovement,validateBackup,attributeSessionChanges,extraBottles,bottleStock,isMaterialLow,removeReadyStock} from './inventory.js?v=70';
-const catalog=await fetch('./catalog.json?v=70').then(r=>{if(!r.ok)throw Error('No se pudo cargar el catálogo');return r.json()});
+import {createStripLibrarySync} from './strip-library-sync.js?v=71';
+import {mountPdfActions} from './pdf-share.js?v=71';
+import {filterMaterialStock,materialStockCounts,materialStatus,productStockView} from './stock-views.js?v=71';
+import {createStockDictation} from './stock-dictation.js?v=71';
+import {createStripsPanel} from './strips.js?v=71';
+import {createLabelsPanel} from './labels.js?v=71';
+import {createStockScanner} from './stock-scanner.js?v=71';
+import {hasAppAccess,defaultCloudConfig,clearBusinessCache} from './access.js?v=71';
+import {annualSalesCards,salesReportHtml} from './sales-reports.js?v=71';
+import {cancellationFields,mountCancellationFields,readCancellationFields} from './cancellation.js?v=71';
+import {catalogCategories,catalogCategoryMatches,filterCatalog,perfumeMatches} from './catalog-tools.js?v=71';
+import {activeSalesNoteForBatch,salesAccounts,salesMoney} from './sales.js?v=71';
+import {createSalesPanel} from './sales-panel.js?v=71';
+import {CloudInventory} from './cloud.js?v=71';
+import {createDictationPanel} from './dictation.js?v=71';
+import {initialState,applyMovement,recipeFor,registerCustomer,productionPreview,confirmProduction,completedQuantity,batchProgress,completeBatchItem,cancelBatch,readyBatch,setBottleStocks,readyMovement,validateBackup,attributeSessionChanges,extraBottles,bottleStock,isMaterialLow,removeReadyStock} from './inventory.js?v=71';
+import {localStore,sessionStore} from './browser-storage.js?v=71';
+
+// Export startup so the small loader can report load failures without leaving
+// the access screen waiting forever. Keep top-level await out of this entry.
+export const portalReady=(async()=>{
+async function loadCatalog(){
+ const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),12000);
+ try{
+  const response=await fetch('./catalog.json?v=71',{signal:controller.signal});
+  if(!response.ok)throw Error('Catálogo no disponible.');
+  const data=await response.json();if(!Array.isArray(data)||!data.length)throw Error('Catálogo no válido.');
+  return data;
+ }catch{throw Error('No se pudo cargar el catálogo. Comprueba tu conexión y vuelve a cargar el portal.');}
+ finally{clearTimeout(timer);}
+}
+const catalog=await loadCatalog();
 let cloud=null,cloudUiError='',remoteRenderPending=false;
 let productionPdfEpoch=0,productionPdfHandle=null,productionPdfListening=false,materialsPdfEpoch=0,materialsPdfHandle=null;
-let salesReportYear=Number(new Intl.DateTimeFormat('en',{timeZone:'America/Guatemala',year:'numeric'}).format(new Date()));sessionStorage.removeItem('alma-sales-import-key');if(location.hash.startsWith('#cargar-ventas='))history.replaceState(null,'',location.pathname+location.search);
+let salesReportYear=Number(new Intl.DateTimeFormat('en',{timeZone:'America/Guatemala',year:'numeric'}).format(new Date()));sessionStore.removeItem('alma-sales-import-key');if(location.hash.startsWith('#cargar-ventas='))history.replaceState(null,'',location.pathname+location.search);
 const key='alma-mia-inventory-v1';let state=initialState(catalog),view='overview',search='',category='all',advancedCatalog=false,aromaFamily='all',kind='Todos',materialGroup='Todas',materialAvailability='all',materialSort='quantity-desc',readyGender='all',readySize='all',readySort='name',batchFilter='all',batchArchive='active',storageError=false;
-try{const saved=localStorage.getItem(key);if(saved)state=validateBackup(JSON.parse(saved),catalog);}catch{storageError=true;}
+try{const saved=localStore.getItem(key);if(saved)state=validateBackup(JSON.parse(saved),catalog);}catch{storageError=true;}
 const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])),num=n=>new Intl.NumberFormat('es-MX',{maximumFractionDigits:2}).format(n),money=n=>new Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',maximumFractionDigits:0}).format(n),product=id=>catalog.find(p=>p.id===id);
 const normalize=s=>String(s).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
 const matches=perfumeMatches;
@@ -31,12 +46,12 @@ function perfumeGroup(p){const gender={Dama:'Mujer',Caballero:'Hombre',Unisex:'U
 function materialGroupName(m){return m.kind==='Esencia'?perfumeGroup(product(m.id.slice(4))):'Bases y fijadores';}
 function bottleDescription(m){const bottles=extraBottles(m);if(!bottles.length)return '';return `<small>Frasco 1: ${num(bottleStock(m,1))} ml</small>`+bottles.map(b=>`<small>Frasco ${b.number}: ${num(b.stock)} de ${num(b.capacity)} ml</small>`).join('');}
 function materialName(m){const p=m.kind==='Esencia'?product(m.id.slice(4)):null;return p?`${m.name} · Inspirado en ${p.displayReference??p.reference}`:m.name;}
-let sessionUser='';try{const saved=sessionStorage.getItem('alma-mia-session-user');if(['Luis','Ximena'].includes(saved))sessionUser=saved;}catch{}
-$('#session-user').value=sessionUser;$('#session-user').onchange=e=>{sessionUser=e.target.value;try{sessionStorage.setItem('alma-mia-session-user',sessionUser);}catch{}};
+let sessionUser='';try{const saved=sessionStore.getItem('alma-mia-session-user');if(['Luis','Ximena'].includes(saved))sessionUser=saved;}catch{}
+$('#session-user').value=sessionUser;$('#session-user').onchange=e=>{sessionUser=e.target.value;try{sessionStore.setItem('alma-mia-session-user',sessionUser);}catch{}};
 async function persist(next,{attribute=true}={}){
  if(!hasAppAccess(cloud))throw Error('Inicia sesión con una cuenta autorizada antes de guardar.');
  const actor=cloud?.enabled?cloud.member?.display_name:sessionUser,saved=attribute?attributeSessionChanges(state,next,actor):next;
- if(cloud?.enabled){state=await cloud.save(saved);cacheCloudState(state);}else{localStorage.setItem(key,JSON.stringify(saved));state=saved;}
+ if(cloud?.enabled){state=await cloud.save(saved);cacheCloudState(state);}else{localStore.setItem(key,JSON.stringify(saved));state=saved;}
  syncProductionAttention();
 }
 function syncProductionAttention(){
@@ -59,11 +74,12 @@ function updateAccessScreen(){
  clearProductionPdf();clearMaterialsPdf();
  stockVoice?.clear();strips?.clear();labels?.clear();dictation?.stop();if(!cloud?.user||!cloud?.member)scanner?.clear();else scanner?.stop();document.querySelectorAll('dialog').forEach(d=>{if(d.open)d.close();if(!['modal','quick-navigation','design-picker'].includes(d.id))d.replaceChildren();});$('#content').replaceChildren();$('#fields').replaceChildren();$('#modal-title').textContent='';$('#form-error').textContent='';
  const mode=cloud?.mode,verified=cloud?.user&&cloud?.member,loading=!cloud||mode==='loading',passwordFocused=document.activeElement?.closest('#access-login');if(passwordFocused&&mode==='auth'&&!cloudUiError)return false;
- screen.innerHTML=`<div class="access-card"><img src="./assets/logo.png" alt="Alma Mía"><h1>Acceso privado</h1><p>Inicia sesión con tu cuenta autorizada.</p><p role="status">${esc(cloudUiError||cloud?.message||'Comprobando sesión…')}</p>${loading?'<p>Conectando…</p>':verified&&mode==='choice'?'<button type="button" class="primary" id="access-open">Abrir inventario compartido</button>':verified&&mode==='empty'?'<p>El inventario compartido aún está vacío. Entra desde el equipo que conserva los datos originales.</p><button type="button" class="secondary" id="access-initialize">Subir inventario de este equipo</button>':mode==='ready'&&!cloud.connected?'<button type="button" class="primary" id="access-retry">Volver a conectar</button>':`<form id="access-login"><label class="field">Correo<input name="email" type="email" required autocomplete="username"></label><label class="field">Contraseña<input name="password" type="password" required autocomplete="current-password"></label><button class="primary" type="submit">Iniciar sesión</button></form>`}${verified?'<button type="button" class="text-button" id="access-signout">Cerrar sesión</button>':''}</div>`;
+ screen.innerHTML=`<div class="access-card"><img src="./assets/logo.png" alt="Alma Mía"><h1>Acceso privado</h1><p>Inicia sesión con tu cuenta autorizada.</p><p role="status">${esc(cloudUiError||cloud?.message||'Comprobando sesión…')}</p>${loading?'<p>Conectando…</p>':verified&&mode==='choice'?'<button type="button" class="primary" id="access-open">Abrir inventario compartido</button>':verified&&mode==='empty'?'<p>El inventario compartido aún está vacío. Entra desde el equipo que conserva los datos originales.</p><button type="button" class="secondary" id="access-initialize">Subir inventario de este equipo</button>':mode==='ready'&&!cloud.connected?'<button type="button" class="primary" id="access-retry">Volver a conectar</button>':`<form id="access-login"><label class="field">Correo<input name="email" type="email" required autocomplete="username"></label><label class="field">Contraseña<input name="password" type="password" required autocomplete="current-password"></label><button class="primary" type="submit">Iniciar sesión</button></form>`}${mode==='error'?'<button type="button" class="secondary" id="access-reconnect">Volver a conectar</button>':''}${verified?'<button type="button" class="text-button" id="access-signout">Cerrar sesión</button>':''}</div>`;
  const login=$('#access-login');if(login)login.onsubmit=async e=>{e.preventDefault();document.dispatchEvent(new CustomEvent('alma:login-start'));const values=new FormData(login);login.querySelector('button').disabled=true;try{cloudUiError='';await cloud.signIn(values.get('email'),values.get('password'));}catch(error){cloudUiError=error.message;}finally{values.delete('password');login.reset();render();document.dispatchEvent(new CustomEvent('alma:login-settled',{detail:{allowed:hasAppAccess(cloud)}}));}};
  if($('#access-open'))$('#access-open').onclick=async()=>{try{cloudUiError='';await cloud.acceptRemote();render();}catch(e){cloudUiError=e.message;updateAccessScreen();}};
  if($('#access-initialize'))$('#access-initialize').onclick=async()=>{if(!confirm('Se subirá el inventario de este equipo a la nube vacía. ¿Es tu copia completa?'))return;try{await cloud.initialize(state);render();}catch(e){cloudUiError=e.message;updateAccessScreen();}};
  if($('#access-retry'))$('#access-retry').onclick=()=>cloud.pull();
+ if($('#access-reconnect'))$('#access-reconnect').onclick=()=>{cloudUiError='';void cloud.start();};
  if($('#access-signout'))$('#access-signout').onclick=()=>cloud.signOut();
  return false;
 }
@@ -144,8 +160,8 @@ const labels=createLabelsPanel({catalog,notify:toast,allowed:()=>hasAppAccess(cl
 const scanner=createStockScanner({catalog,getState:()=>state,save:async next=>persist(next),notify:toast,allowed:()=>hasAppAccess(cloud)&&view==='scanner'});
 window.addEventListener('pagehide',()=>{dictation.stop();stockVoice.stop();scanner.stop();});
 document.addEventListener('visibilitychange',()=>{if(document.hidden){dictation.stop();stockVoice.stop();scanner.stop();}});
-if(!localStorage.getItem('alma-mia-cloud-config'))localStorage.setItem('alma-mia-cloud-config',JSON.stringify(defaultCloudConfig));
-cloud=new CloudInventory({storage:localStorage,validate:data=>validateBackup(data,catalog),onData:data=>{state=data;cacheCloudState(data);syncProductionAttention();stripSync.connect();if(['strips','strip-designer'].includes(view)){remoteRenderPending=false;return;}if(canRefreshCloudView()){remoteRenderPending=false;render();}else remoteRenderPending=true;},onStatus:updateCloudStatus});
+if(!localStore.getItem('alma-mia-cloud-config'))localStore.setItem('alma-mia-cloud-config',JSON.stringify(defaultCloudConfig));
+cloud=new CloudInventory({storage:localStore,validate:data=>validateBackup(data,catalog),onData:data=>{state=data;cacheCloudState(data);syncProductionAttention();stripSync.connect();if(['strips','strip-designer'].includes(view)){remoteRenderPending=false;return;}if(canRefreshCloudView()){remoteRenderPending=false;render();}else remoteRenderPending=true;},onStatus:updateCloudStatus});
 updateCloudStatus();
 window.addEventListener('online',()=>cloud.pull());
 document.addEventListener('focusout',()=>setTimeout(refreshCloudView,0));
@@ -226,7 +242,7 @@ async function prepareMaterialsPdf(button){
  button.disabled=true;button.textContent='Preparando PDF…';if(output)output.textContent='Preparando reporte de materias primas…';
  try{
   if(storageError)throw Error('Recupera el respaldo antes de generar el reporte.');
-  const {createMaterialsPdf}=await import('./materials-pdf.js?v=70'),result=await createMaterialsPdf(snapshot,catalog);
+  const {createMaterialsPdf}=await import('./materials-pdf.js?v=71'),result=await createMaterialsPdf(snapshot,catalog);
   if(!active())return;
   output.replaceChildren();materialsPdfHandle=mountPdfActions(output,{blob:result.blob,filename:result.filename,title:'Reporte de materias primas'});
   button.hidden=true;materialsPdfHandle.anchor.click();
@@ -243,7 +259,7 @@ async function prepareProductionPdf(batch,{draft=false}={}){
  const active=()=>token===productionPdfEpoch&&hasAppAccess(cloud)&&dialog.open&&output.isConnected&&dialog.contains(output);
  output.innerHTML='<button type="button" class="secondary" disabled>Preparando PDF…</button>';
  try{
-  const {createProductionPdf}=await import('./production-pdf.js?v=70'),result=await createProductionPdf(snapshot,{draft});
+  const {createProductionPdf}=await import('./production-pdf.js?v=71'),result=await createProductionPdf(snapshot,{draft});
   if(!active())return;
   output.replaceChildren();productionPdfHandle=mountPdfActions(output,{blob:result.blob,filename:result.filename,title:draft?'Lista de producción · Borrador':'Lista de producción '+batchNumber(snapshot)});
  }catch(error){if(active()){output.innerHTML=`<p role="alert">No se pudo preparar el PDF: ${esc(error.message)}</p><button type="button" class="secondary" id="production-pdf-retry">Reintentar PDF</button>`;$('#production-pdf-retry').onclick=()=>prepareProductionPdf(snapshot,{draft});}}
@@ -279,9 +295,9 @@ function openBatchEditor(id,filter='all',message=''){
 
 function canRefreshCloudView(){return view!=='scanner'&&!document.querySelector('dialog[open]')&&!document.activeElement?.matches('input,textarea,select');}
 function refreshCloudView(){if(remoteRenderPending&&canRefreshCloudView()){remoteRenderPending=false;render();}}
-function cacheCloudState(data){try{clearBusinessCache(localStorage);}catch{}}
-function updateCloudStatus(){if(!cloud)return;stripSync.connect();const wasLocked=document.body.classList.contains('access-locked');if(cloud.mode==='auth'&&!cloud.user&&!wasLocked){clearBusinessCache(localStorage);state=initialState(catalog);sessionUser='';sessionStorage.removeItem('alma-mia-session-user');}updateAccessScreen();if(wasLocked&&hasAppAccess(cloud))render();const button=$('#cloud-status');button.textContent=cloud.enabled?cloud.message:'Conectar dispositivos';$('#storage-label').textContent=cloud.enabled?(cloud.mode==='ready'&&cloud.connected?'Datos compartidos en la nube':'Nube pendiente de conexión'):'Guardado en este navegador';$('#session-user').disabled=cloud.enabled;if(cloud.member){sessionUser=cloud.member.display_name;$('#session-user').value=sessionUser;}if(view==='cloud'&&canRefreshCloudView())render();}
-function preserveLocalInventory(){const backupKey='alma-mia-before-cloud-'+new Date().toISOString();localStorage.setItem(backupKey,JSON.stringify(state));localStorage.setItem('alma-mia-before-cloud-latest',backupKey);}
+function cacheCloudState(data){try{clearBusinessCache(localStore);}catch{}}
+function updateCloudStatus(){if(!cloud)return;stripSync.connect();const wasLocked=document.body.classList.contains('access-locked');if(cloud.mode==='auth'&&!cloud.user&&!wasLocked){clearBusinessCache(localStore);state=initialState(catalog);sessionUser='';sessionStore.removeItem('alma-mia-session-user');}updateAccessScreen();if(wasLocked&&hasAppAccess(cloud))render();const button=$('#cloud-status');button.textContent=cloud.enabled?cloud.message:'Conectar dispositivos';$('#storage-label').textContent=cloud.enabled?(cloud.mode==='ready'&&cloud.connected?'Datos compartidos en la nube':'Nube pendiente de conexión'):'Guardado en este navegador';$('#session-user').disabled=cloud.enabled;if(cloud.member){sessionUser=cloud.member.display_name;$('#session-user').value=sessionUser;}if(view==='cloud'&&canRefreshCloudView())render();}
+function preserveLocalInventory(){const backupKey='alma-mia-before-cloud-'+new Date().toISOString();localStore.setItem(backupKey,JSON.stringify(state));localStore.setItem('alma-mia-before-cloud-latest',backupKey);}
 function downloadJson(data,name){const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
 function cloudView(){
  const config=cloud?.config,localSummary=`${state.materials.filter(m=>m.stock>0).length} materias con existencias · ${Object.values(state.ready).reduce((a,b)=>a+b,0)} stock de perfumes · ${state.movements.length} movimientos`;
@@ -295,7 +311,9 @@ function mountCloud(){
  if($('#cloud-accept'))$('#cloud-accept').onclick=async()=>{try{cloudUiError='';await cloud.acceptRemote();render();}catch(e){cloudUiError=e.message;render();}};
  if($('#cloud-upload'))$('#cloud-upload').onclick=async()=>{if(!confirm('El inventario de ESTE dispositivo será la primera copia compartida. ¿Es el inventario completo que quieres usar?'))return;try{cloudUiError='';preserveLocalInventory();await cloud.initialize(state);render();}catch(e){cloudUiError=e.message;render();}};
  if($('#cloud-refresh'))$('#cloud-refresh').onclick=()=>cloud.pull();
- if($('#cloud-logout'))$('#cloud-logout').onclick=async()=>{await cloud.signOut();clearBusinessCache(localStorage);state=initialState(catalog);sessionUser='';sessionStorage.removeItem('alma-mia-session-user');view='overview';render();};
+ if($('#cloud-logout'))$('#cloud-logout').onclick=async()=>{await cloud.signOut();clearBusinessCache(localStore);state=initialState(catalog);sessionUser='';sessionStore.removeItem('alma-mia-session-user');view='overview';render();};
  if($('#cloud-failed'))$('#cloud-failed').onclick=()=>downloadJson(cloud.failedSave,'alma-mia-cambio-no-confirmado.json');
- $('#cloud-backup').onclick=()=>{try{const backupKey=localStorage.getItem('alma-mia-before-cloud-latest'),raw=backupKey&&localStorage.getItem(backupKey);if(!raw)throw Error('Todavía no hay copia local anterior. Usa Exportar respaldo para descargar la actual.');downloadJson(JSON.parse(raw),'alma-mia-antes-de-conectar.json');}catch(e){toast(e.message);}};
+ $('#cloud-backup').onclick=()=>{try{const backupKey=localStore.getItem('alma-mia-before-cloud-latest'),raw=backupKey&&localStore.getItem(backupKey);if(!raw)throw Error('Todavía no hay copia local anterior. Usa Exportar respaldo para descargar la actual.');downloadJson(JSON.parse(raw),'alma-mia-antes-de-conectar.json');}catch(e){toast(e.message);}};
 }
+
+})();
