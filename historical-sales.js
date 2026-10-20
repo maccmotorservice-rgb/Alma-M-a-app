@@ -1,5 +1,5 @@
-import {validateSalesNotes,salesPaymentSummary} from './sales.js?v=59';
-import {historicalSignature} from './sales-analytics.js?v=59';
+import {validateSalesNotes,salesPaymentSummary} from './sales.js?v=60';
+import {historicalSignature} from './sales-analytics.js?v=60';
 export function historicalMatch(existing,note,catalog){return existing.find(n=>n.importSource?.sha256===note.importSource?.sha256||n.id===note.id||historicalSignature(n,catalog)===historicalSignature(note,catalog));}
 export function mergeHistoricalSales(state,incoming,catalog,actor,at=new Date().toISOString()){
  if(!['Luis','Ximena'].includes(actor))throw Error('Inicia sesión antes de cargar las notas.');

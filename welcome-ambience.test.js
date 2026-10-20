@@ -3,8 +3,8 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {WELCOME_AMBIENCE_DURATION, createWelcomeAmbience} from './welcome-ambience.js';
 
-test('prepared welcome recording contains the complete seamless stereo piano cycle', async () => {
- const wav = await readFile(new URL('./assets/audio/welcome-piano-zen-v58.wav', import.meta.url));
+test('prepared welcome recording contains the complete seamless stereo choir cycle', async () => {
+ const wav = await readFile(new URL('./assets/audio/welcome-choir-zen-v60.wav', import.meta.url));
  assert.equal(wav.toString('ascii', 0, 4), 'RIFF');
  assert.equal(wav.toString('ascii', 8, 12), 'WAVE');
  assert.equal(wav.readUInt16LE(20), 1, 'uncompressed PCM decodes across browsers');
@@ -55,7 +55,7 @@ test('welcome music remains a bounded stereo loop without offline rendering supp
   stereoDifference += (left[i] - right[i]) ** 2;sum += left[i];
  }
  assert.ok(peak > .1 && peak <= .781, `unclipped audible music: ${peak}`);
- assert.ok(Math.sqrt(stereoDifference / left.length) > .003, 'piano and room have stereo width');
+ assert.ok(Math.sqrt(stereoDifference / left.length) > .003, 'choir and room have stereo width');
  assert.ok(Math.abs(sum / left.length) < .001, 'no DC offset');
  for (let second = 0; second < WELCOME_AMBIENCE_DURATION; second++) {
   let energy = 0;

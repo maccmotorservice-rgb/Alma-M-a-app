@@ -1,4 +1,5 @@
-import {createWelcomeAmbience} from './welcome-ambience.js?v=59';
+import {createWelcomeAmbience} from './welcome-ambience.js?v=60';
+import {createWelcomeVoice} from './welcome-voice.js?v=60';
 
 /* Device-only welcome preferences. This module never reads or writes inventory. */
 export const WELCOME_IDLE_MS = 2 * 60 * 60 * 1000;
@@ -47,6 +48,7 @@ function installWelcome() {
  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
  const unlocked = () => !document.body.classList.contains('access-locked');
  const eligibleScreen = () => unlocked() && root.dataset.version === '3' && document.visibilityState !== 'hidden';
+ const voice = createWelcomeVoice({allowed: () => soundOn && eligibleScreen()});
  function storageGet(key) {try {return localStorage.getItem(key);} catch {try {return sessionStorage.getItem(key);} catch {return null;}}}
  function storageSet(key, value) {try {localStorage.setItem(key, value);return true;} catch {try {sessionStorage.setItem(key, value);return true;} catch {return false;}}}
  function readState() {
@@ -82,7 +84,7 @@ function installWelcome() {
   }
  }
  function stopAudio(closeContext = false, fade = false) {
-  audioGeneration++;clearTimeout(audioTimer);
+  audioGeneration++;clearTimeout(audioTimer);voice.cancel();
   const sources = playing, nodes = audioNodes, master = activeMaster;
   playing = [];audioNodes = [];activeMaster = null;
   const disconnect = () => {for (const node of nodes) {try {node.disconnect();} catch {}}};
@@ -242,7 +244,17 @@ function installWelcome() {
     const button = document.getElementById('welcome-enter');button.disabled = true;
     // Start sound in this gesture, before dismissing. Failure to unlock audio never blocks entry.
     introAttemptId++;introPending = false;introAttempting = false;warmAudio();
+    voice.prime();
+    const user = document.getElementById('session-user')?.value;
     const attempt = playPortalSound('entry');
+    void attempt.then(played => {
+     if (!played) return;
+     const generation = audioGeneration, finalNote = playing.at(-1);
+     const valid = () => generation === audioGeneration && soundOn && eligibleScreen() && document.getElementById('session-user')?.value === user;
+     // The greeting follows the real final note, including its release. It never
+     // races the jingle or delays opening the workspace.
+     finalNote?.addEventListener('ended', () => {if (valid()) voice.speak(user, valid);}, {once: true});
+    });
     await Promise.race([attempt, new Promise(resolve => setTimeout(resolve, 350))]);
     if (!overlay.hidden) closeWelcome({preserveAudio: true});button.disabled = false;
    };

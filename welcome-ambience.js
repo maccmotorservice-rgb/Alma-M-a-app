@@ -1,198 +1,116 @@
-/* Original welcome music, prepared with the synthesizer below. Playback reuses
-   one stereo buffer; synthesis remains available if the local recording fails. */
+/* Original wordless choir and warm synth bass. The prepared recording starts
+   quickly; the same local synthesizer is available if loading it fails. */
 export const WELCOME_AMBIENCE_DURATION = 32;
-const RENDER_RATE = 24000;
+const RENDER_RATE = 24000, TABLE_LENGTH = 2048, TAU = Math.PI * 2;
 const cachedBuffers = new Map();
 const frequency = midi => 440 * 2 ** ((midi - 69) / 12);
-const CHORDS = [
- [52, 59, 66, 68], // E add9
- [49, 56, 63, 64], // C# minor9
- [45, 52, 59, 61], // A major9
- [47, 54, 61, 64]  // B suspended
-];
-const MELODIES = [
- [[1.2, 68, .47], [3.45, 71, .44], [5.1, 73, .38], [6.55, 71, .33]],
- [[1.45, 68, .43], [3.7, 66, .37], [5.3, 64, .39], [6.65, 71, .30]],
- [[1.2, 64, .43], [3.45, 66, .39], [5.15, 73, .38], [6.6, 71, .33]],
- [[1.4, 64, .40], [3.7, 66, .42], [5.3, 68, .35], [6.65, 66, .31]]
-];
-const PIANO_PARTIALS = [1, .39, .20, .105, .056, .029, .015, .007];
+const CHORDS = [[52, 59, 64, 68], [49, 56, 63, 68], [52, 57, 61, 68], [54, 59, 64, 66]];
+const BASS = [40, 37, 33, 35];
+const yieldFrame = () => new Promise(resolve => setTimeout(resolve, 0));
 
-function score() {
- const notes = [];
- for (let chord = 0; chord < CHORDS.length; chord++) {
-  const at = chord * 8, pitches = CHORDS[chord];
-  notes.push([at, pitches[0], .49], [at + .14, pitches[1], .34], [at + .36, pitches[2], .31]);
-  for (const [offset, pitch, velocity] of MELODIES[chord]) notes.push([at + offset, pitch, velocity]);
+function vocalTable(pitch, vowel, shift, rate) {
+ const table = new Float32Array(TABLE_LENGTH + 1), f0 = frequency(pitch);
+ const formants = vowel === 'ah' ? [[670, 110, 1], [1140, 170, .8], [2600, 310, .26]] : [[350, 95, 1], [790, 140, .75], [2350, 320, .20]];
+ for (let harmonic = 1; harmonic <= 40 && f0 * harmonic < Math.min(6500, rate * .44); harmonic++) {
+  const hz = f0 * harmonic;
+  const resonance = formants.reduce((sum, [center, width, weight]) => sum + weight * Math.exp(-.5 * ((hz - center * shift) / width) ** 2), 0);
+  const level = .15 / harmonic ** 1.5 + resonance / harmonic ** .65;
+  for (let i = 0; i < TABLE_LENGTH; i++) table[i] += level * Math.sin(TAU * harmonic * i / TABLE_LENGTH);
  }
- return notes;
+ let peak = 0;for (let i = 0; i < TABLE_LENGTH; i++) peak = Math.max(peak, Math.abs(table[i]));
+ for (let i = 0; i < TABLE_LENGTH; i++) table[i] /= Math.max(peak, .01);
+ table[TABLE_LENGTH] = table[0];return table;
 }
-
-function noiseBuffer(context, duration, seed = 9413) {
- const buffer = context.createBuffer(1, Math.ceil(context.sampleRate * duration), context.sampleRate);
- const data = buffer.getChannelData(0);
- let random = seed;
- for (let i = 0; i < data.length; i++) {
+function swell(t, duration = 12) {
+ if (t < 3) return Math.sin(t / 3 * Math.PI / 2) ** 2;
+ if (t > duration - 3) return Math.sin((duration - t) / 3 * Math.PI / 2) ** 2;
+ return 1;
+}
+function addVoice(left, right, rate, chord, part, singer) {
+ const pitch = CHORDS[chord][part], shift = [ .96, 1.015, 1.055 ][singer];
+ const ah = vocalTable(pitch, 'ah', shift, rate), oo = vocalTable(pitch, 'oo', shift, rate);
+ const length = left.length, frames = Math.round(12 * rate), start = Math.round((chord * 8 - 2 + singer * .065) * rate);
+ const detune = [-5.7, .8, 6.2][singer], step = frequency(pitch) * 2 ** (detune / 1200) * TABLE_LENGTH / rate;
+ const pan = [-.65, .12, .64][singer] + (part - 1.5) * .055, lg = Math.sqrt((1 - pan) / 2), rg = Math.sqrt((1 + pan) / 2);
+ let phase = (singer * 417 + part * 229) % TABLE_LENGTH, random = 701 + chord * 97 + part * 53 + singer * 19, breath = 0;
+ for (let i = 0; i < frames; i++) {
+  const t = i / rate, absolute = chord * 8 + t, vibrato = Math.sin(TAU * (4.6 + singer * .17) * t + part * .9) * Math.min(1, t / 2);
+  phase += step * (1 + .0011 * vibrato + .00038 * Math.sin(TAU * .23 * t + singer));
+  if (phase >= TABLE_LENGTH) phase -= TABLE_LENGTH;
+  const index = Math.floor(phase), mix = phase - index;
+  const a = ah[index] + mix * (ah[index + 1] - ah[index]), o = oo[index] + mix * (oo[index + 1] - oo[index]);
+  const morph = .48 + .29 * Math.sin(TAU * absolute / 16 + part * .5);
   random = (Math.imul(random, 1664525) + 1013904223) >>> 0;
-  data[i] = random / 2147483648 - 1;
- }
- return buffer;
-}
-
-function roomImpulse(context) {
- const length = Math.ceil(context.sampleRate * 2.8), buffer = context.createBuffer(2, length, context.sampleRate);
- for (let channel = 0; channel < 2; channel++) {
-  const data = buffer.getChannelData(channel);
-  let random = 8803 + channel * 1721, filtered = 0;
-  for (let i = 0; i < length; i++) {
-   random = (Math.imul(random, 1664525) + 1013904223) >>> 0;
-   filtered += .2 * (random / 2147483648 - 1 - filtered);
-   const time = i / context.sampleRate;
-   // A short pre-delay and a dark tail leave the piano's attack clear.
-   data[i] = time < .028 ? 0 : filtered * Math.exp(-time * 2.25) * Math.min(1, (time - .028) / .03);
-  }
- }
- return buffer;
-}
-
-function schedulePiano(context, destination, hammer, at, midi, velocity) {
- const fundamental = frequency(midi), length = midi < 55 ? 6.8 : 5.6;
- const panner = context.createStereoPanner();
- panner.pan.value = Math.max(-.38, Math.min(.38, (midi - 61) / 42));
- panner.connect(destination);
- for (let harmonic = 1; harmonic <= PIANO_PARTIALS.length; harmonic++) {
-  // Slight string inharmonicity and detuned paired strings create a piano,
-  // rather than an organ-like sine chord. Upper partials decay sooner.
-  const partial = fundamental * harmonic * Math.sqrt(1 + .00009 * harmonic * harmonic);
-  const decay = (midi < 55 ? 2.6 : 1.95) / (1 + .34 * (harmonic - 1));
-  const strings = harmonic <= 3 ? 2 : 1;
-  for (let string = 0; string < strings; string++) {
-   const oscillator = context.createOscillator(), envelope = context.createGain();
-   oscillator.type = 'sine';oscillator.frequency.value = partial;
-   oscillator.detune.value = strings === 2 ? (string ? 1.7 : -1.7) : 0;
-   const level = velocity * .31 * PIANO_PARTIALS[harmonic - 1] / strings;
-   envelope.gain.setValueAtTime(0, at);
-   envelope.gain.linearRampToValueAtTime(level, at + .006);
-   envelope.gain.exponentialRampToValueAtTime(Math.max(.000001, level * Math.exp(-length / decay)), at + length - .08);
-   envelope.gain.linearRampToValueAtTime(0, at + length);
-   oscillator.connect(envelope);envelope.connect(panner);oscillator.start(at);oscillator.stop(at + length);
-  }
- }
- const strike = context.createBufferSource(), filter = context.createBiquadFilter(), envelope = context.createGain();
- strike.buffer = hammer;filter.type = 'lowpass';filter.frequency.value = 1900;filter.Q.value = .4;
- envelope.gain.setValueAtTime(0, at);envelope.gain.linearRampToValueAtTime(velocity * .026, at + .003);
- envelope.gain.exponentialRampToValueAtTime(.000001, at + .048);
- strike.connect(filter);filter.connect(envelope);envelope.connect(panner);strike.start(at);strike.stop(at + .05);
-}
-
-function schedulePad(context, destination, at, chord) {
- for (let index = 0; index < chord.length; index++) {
-  const oscillator = context.createOscillator(), envelope = context.createGain(), panner = context.createStereoPanner();
-  oscillator.type = 'sine';oscillator.frequency.value = frequency(chord[index]);oscillator.detune.value = index % 2 ? 2.1 : -2.1;
-  panner.pan.value = index % 2 ? .46 : -.46;
-  envelope.gain.setValueAtTime(0, at);envelope.gain.linearRampToValueAtTime(.0033, at + 2.7);
-  envelope.gain.setValueAtTime(.0033, at + 5.8);envelope.gain.linearRampToValueAtTime(0, at + 10.5);
-  oscillator.connect(envelope);envelope.connect(panner);panner.connect(destination);oscillator.start(at);oscillator.stop(at + 10.5);
+  const air = random / 2147483648 - 1;breath += .16 * (air - breath);
+  const amplitude = .047 * swell(t) * (.92 + .08 * Math.sin(TAU * .28 * t + part + singer));
+  const value = ((a * morph + o * (1 - morph)) + (air - breath) * .012) * amplitude;
+  const at = ((start + i) % length + length) % length;left[at] += value * lg;right[at] += value * rg;
  }
 }
-
-function balanceBuffer(buffer) {
- let peak = 0;
- for (let channel = 0; channel < buffer.numberOfChannels; channel++) {
-  const data = buffer.getChannelData(channel);
-  for (let i = 0; i < data.length; i++) peak = Math.max(peak, Math.abs(data[i]));
+function addBass(left, right, rate, chord) {
+ const start = Math.round((chord * 8 - 2) * rate), frames = Math.round(12 * rate), f0 = frequency(BASS[chord]);
+ for (let i = 0; i < frames; i++) {
+  const t = i / rate, phase = TAU * f0 * t;
+  const value = .037 * swell(t) * (Math.sin(phase) + .22 * Math.sin(phase * 2) + .065 * Math.sin(phase * 3));
+  const shimmer = .0018 * swell(t) * Math.sin(TAU * frequency(CHORDS[chord][3] + 12) * t + .3 * Math.sin(TAU * .18 * t));
+  const at = ((start + i) % left.length + left.length) % left.length;
+  left[at] += value + shimmer * .75;right[at] += value + shimmer * .45;
  }
- const gain = peak > .000001 ? Math.min(4, .78 / peak) : 1;
- for (let channel = 0; channel < buffer.numberOfChannels; channel++) {
-  const data = buffer.getChannelData(channel);
-  for (let i = 0; i < data.length; i++) data[i] *= gain;
- }
- return buffer;
 }
-
-async function renderOffline(context, sampleRate) {
- const OfflineContext = globalThis.OfflineAudioContext || globalThis.webkitOfflineAudioContext;
- if (!OfflineContext) throw new Error('Offline audio unavailable');
- const length = Math.round(sampleRate * WELCOME_AMBIENCE_DURATION);
- const offline = new OfflineContext(2, length * 3, sampleRate);
- const piano = offline.createGain(), dry = offline.createGain(), room = offline.createConvolver(), wet = offline.createGain();
- piano.gain.value = 1;dry.gain.value = .84;wet.gain.value = .24;
- room.buffer = roomImpulse(offline);
- piano.connect(dry);dry.connect(offline.destination);piano.connect(room);room.connect(wet);wet.connect(offline.destination);
- const hammer = noiseBuffer(offline, .055);
- const notes = score();
- for (let cycle = 0; cycle < 3; cycle++) {
-  const cycleStart = cycle * WELCOME_AMBIENCE_DURATION;
-  for (const [at, midi, velocity] of notes) schedulePiano(offline, piano, hammer, cycleStart + at, midi, velocity);
-  for (let chord = 0; chord < CHORDS.length; chord++) schedulePad(offline, piano, cycleStart + chord * 8, CHORDS[chord]);
- }
- const rendered = await offline.startRendering();
- const buffer = context.createBuffer(2, length, sampleRate);
- // The middle performance already contains the previous cycle's piano and room
- // tails. Both boundaries therefore meet naturally, without silence or a fade.
- for (let channel = 0; channel < 2; channel++) buffer.copyToChannel(rendered.getChannelData(channel).subarray(length, length * 2), channel);
- return balanceBuffer(buffer);
-}
-
-async function renderFallback(context, sampleRate) {
- // Older Web Audio implementations can still play a true, seamless buffer loop.
- // Yield between notes so generating it never locks a slow phone's interface.
- const length = Math.round(sampleRate * WELCOME_AMBIENCE_DURATION), buffer = context.createBuffer(2, length, sampleRate);
- const left = buffer.getChannelData(0), right = buffer.getChannelData(1);
- for (const [at, midi, velocity] of score()) {
-  const pan = Math.max(-.38, Math.min(.38, (midi - 61) / 42)), leftGain = Math.sqrt((1 - pan) / 2), rightGain = Math.sqrt((1 + pan) / 2);
-  const start = Math.round(at * sampleRate), duration = midi < 55 ? 6.8 : 5.6, samples = Math.ceil(duration * sampleRate);
-  for (let harmonic = 1; harmonic <= PIANO_PARTIALS.length; harmonic++) {
-   const f = frequency(midi) * harmonic * Math.sqrt(1 + .00009 * harmonic * harmonic), angle = 2 * Math.PI * f / sampleRate;
-   const sinStep = Math.sin(angle), cosStep = Math.cos(angle), decay = (midi < 55 ? 2.6 : 1.95) / (1 + .34 * (harmonic - 1));
-   const release = Math.exp(-1 / (sampleRate * decay));
-   let sine = 0, cosine = 1, amplitude = velocity * .31 * PIANO_PARTIALS[harmonic - 1];
-   for (let i = 0; i < samples; i++) {
-    const attack = Math.min(1, i / (sampleRate * .006)), tail = Math.min(1, (samples - i) / (sampleRate * .08));
-    const value = sine * amplitude * attack * tail, position = (start + i) % length;
-    left[position] += value * leftGain;right[position] += value * rightGain;
-    const next = sine * cosStep + cosine * sinStep;cosine = cosine * cosStep - sine * sinStep;sine = next;amplitude *= release;
-   }
-  }
-  await new Promise(resolve => setTimeout(resolve, 0));
- }
- // Circular, damped stereo reflections also carry across the loop boundary.
- const dryLeft = left.slice(), dryRight = right.slice();
- for (const [delay, gain] of [[.173, .13], [.293, .08], [.419, .045]]) {
-  const offset = Math.round(delay * sampleRate);let lowLeft = 0, lowRight = 0;
+function diffuseRoom(left, right, rate) {
+ const length = left.length, dryLeft = left.slice(), dryRight = right.slice();
+ // Circular, low-passed reflections retain the choir's tails through the seam.
+ for (const [seconds, gain] of [[.13, .15], [.29, .12], [.47, .11], [.73, .095], [1.13, .08], [1.67, .07], [2.31, .055], [3.17, .041], [4.19, .027], [5.37, .017]]) {
+  const delay = Math.round(seconds * rate);let lowLeft = 0, lowRight = 0;
   for (let i = 0; i < length * 2; i++) {
-   const position = i % length;lowLeft += .16 * (dryLeft[position] - lowLeft);lowRight += .16 * (dryRight[position] - lowRight);
-   if (i >= length) {left[(position + offset) % length] += lowRight * gain;right[(position + offset) % length] += lowLeft * gain;}
+   const at = i % length;lowLeft += .22 * (dryLeft[at] - lowLeft);lowRight += .22 * (dryRight[at] - lowRight);
+   if (i >= length) {const reflected = (at + delay) % length;left[reflected] += lowRight * gain;right[reflected] += lowLeft * gain;}
   }
-  await new Promise(resolve => setTimeout(resolve, 0));
  }
- return balanceBuffer(buffer);
 }
-
+function balance(buffer) {
+ let peak = 0, energy = 0;
+ for (let channel = 0; channel < 2; channel++) {
+  const data = buffer.getChannelData(channel);let mean = 0;
+  // Match the boundary with a short, smooth correction, never a fade to silence.
+  const seam = (data[0] - data.at(-1)) / 2, edge = Math.min(Math.round(buffer.sampleRate * .01), Math.floor(data.length / 4));
+  for (let i = 0; i < edge; i++) {const correction = seam * (.5 + .5 * Math.cos(Math.PI * i / edge));data[i] -= correction;data[data.length - 1 - i] += correction;}
+  for (const sample of data) mean += sample;mean /= data.length;
+  for (let i = 0; i < data.length; i++) {data[i] -= mean;peak = Math.max(peak, Math.abs(data[i]));energy += data[i] ** 2;}
+ }
+ const rms = Math.sqrt(energy / (buffer.length * 2)), gain = Math.min(.78 / Math.max(peak, .001), .125 / Math.max(rms, .001));
+ for (let channel = 0; channel < 2; channel++) {const data = buffer.getChannelData(channel);for (let i = 0; i < data.length; i++) data[i] *= gain;}
+ return buffer;
+}
+export async function renderWelcomeChoir(context, sampleRate = RENDER_RATE) {
+ const buffer = context.createBuffer(2, Math.round(sampleRate * WELCOME_AMBIENCE_DURATION), sampleRate), left = buffer.getChannelData(0), right = buffer.getChannelData(1);
+ for (let chord = 0; chord < CHORDS.length; chord++) {
+  for (let part = 0; part < 4; part++) {
+   for (let singer = 0; singer < 3; singer++) addVoice(left, right, sampleRate, chord, part, singer);
+   await yieldFrame();
+  }
+  addBass(left, right, sampleRate, chord);await yieldFrame();
+ }
+ diffuseRoom(left, right, sampleRate);return balance(buffer);
+}
 async function loadPreparedAmbience(context, sampleRate) {
  if (typeof context.decodeAudioData !== 'function' || typeof fetch !== 'function') throw new Error('Audio decoding unavailable');
  const controller = new AbortController(), timeout = setTimeout(() => controller.abort(), 8000);
  try {
-  const response = await fetch(new URL('./assets/audio/welcome-piano-zen-v58.wav', import.meta.url), {cache: 'force-cache', signal: controller.signal});
+  const response = await fetch(new URL('./assets/audio/welcome-choir-zen-v60.wav', import.meta.url), {cache: 'force-cache', signal: controller.signal});
   if (!response.ok) throw new Error('Welcome recording unavailable');
-  const bytes = await response.arrayBuffer();
   const OfflineContext = globalThis.OfflineAudioContext || globalThis.webkitOfflineAudioContext;
-  // Decode at the recording's rate rather than doubling memory on 48 kHz devices.
   const decoder = OfflineContext ? new OfflineContext(2, 1, sampleRate) : context;
-  const buffer = await decoder.decodeAudioData(bytes);
+  const buffer = await decoder.decodeAudioData(await response.arrayBuffer());
   if (buffer.numberOfChannels !== 2 || Math.abs(buffer.duration - WELCOME_AMBIENCE_DURATION) > .01) throw new Error('Invalid welcome recording');
   return buffer;
  } finally {clearTimeout(timeout);}
 }
-
 export function createWelcomeAmbience(context) {
- // A 24 kHz stereo buffer uses roughly 6 MB. Piano and dark room tails retain
- // their detail, and playback uses one native source even on slower devices.
- const sampleRate = Math.min(RENDER_RATE, Math.max(16000, Number(context.sampleRate) || RENDER_RATE));
- if (!cachedBuffers.has(sampleRate)) {
-  const task = loadPreparedAmbience(context, sampleRate).catch(() => renderOffline(context, sampleRate)).catch(() => renderFallback(context, sampleRate));
-  cachedBuffers.set(sampleRate, task);
-  task.catch(() => {if (cachedBuffers.get(sampleRate) === task) cachedBuffers.delete(sampleRate);});
+ const rate = Math.min(RENDER_RATE, Math.max(16000, Number(context.sampleRate) || RENDER_RATE));
+ if (!cachedBuffers.has(rate)) {
+  const task = loadPreparedAmbience(context, rate).catch(() => renderWelcomeChoir(context, rate));cachedBuffers.set(rate, task);
+  task.catch(() => {if (cachedBuffers.get(rate) === task) cachedBuffers.delete(rate);});
  }
- return cachedBuffers.get(sampleRate);
+ return cachedBuffers.get(rate);
 }
