@@ -84,3 +84,32 @@ test('a delayed library reply never replaces a newer revision received by an in-
  const library=await a.cloud.changeStripLibrary({upsert:[record('one',{bucket:'strip-library',path:'luis/example/image.png',type:'image/png',size:50})]});
  assert.equal(library.entries.length,1);assert.equal(a.cloud.revision,3);assert.equal(a.updates.at(-1).ready.perfume,42);assert.equal(a.cloud.remote.revision,3);
 });
+
+test('manual strip refresh receives the latest shared artwork and stock without any writes',async t=>{
+ const f=fixture(),a=f.make('ximena');t.after(()=>a.cloud.stop());await a.cloud.start();
+ f.db.row.revision=2;f.db.row.data.ready.perfume=9;
+ f.db.row.data.stripLibrary.entries.push(record('from-luis',{bucket:'strip-library',path:'luis/shared/image.png',type:'image/png',size:50}));
+ const library=await a.cloud.refreshStripLibrary();
+ assert.equal(library.entries[0].id,'from-luis');assert.equal(a.cloud.revision,2);assert.equal(a.cloud.remote.revision,2);assert.equal(a.updates.at(-1).ready.perfume,9);
+ const count=a.updates.length;await a.cloud.refreshStripLibrary();assert.equal(a.updates.length,count,'unchanged metadata does not trigger another full render');
+ assert.equal(f.db.rpcCalls,0);assert.equal(f.db.uploads,0);assert.equal(f.db.objects.size,0);
+});
+
+test('manual strip refresh refuses cancellation and never updates a signed-out session',async t=>{
+ const f=fixture(),a=f.make();t.after(()=>a.cloud.stop());await a.cloud.start();
+ await assert.rejects(a.cloud.refreshStripLibrary({cancelled:()=>true}),/cancelada/);
+ const from=a.client.from;a.client.from=table=>{const query=from(table);if(table==='shared_inventory'){const single=query.single;query.single=async()=>{const row=await single();a.cloud.lockSession();return row;};}return query;};
+ f.db.row.revision++;const count=a.updates.length;
+ await assert.rejects(a.cloud.refreshStripLibrary(),/Inicia sesión/);assert.equal(a.updates.length,count);assert.equal(a.cloud.mode,'auth');assert.equal(f.db.rpcCalls,0);
+});
+
+test('a delayed manual strip refresh cannot roll back a newer inventory or library',async t=>{
+ const f=fixture(),a=f.make();t.after(()=>a.cloud.stop());await a.cloud.start();
+ f.db.row.revision=2;f.db.row.data.stripLibrary.entries.push(record('first',{bucket:'strip-library',path:'luis/shared/image.png',type:'image/png',size:50}));
+ let hold=true,release;const from=a.client.from;
+ a.client.from=table=>{const query=from(table);if(table==='shared_inventory'){const single=query.single;query.single=async()=>{if(hold){hold=false;const old=clone(f.db.row);return new Promise(resolve=>{release=()=>resolve({data:old});});}return single();};}return query;};
+ const refresh=a.cloud.refreshStripLibrary();
+ f.db.row.revision=3;f.db.row.data.ready.perfume=42;f.db.row.data.stripLibrary.entries.push(record('latest',{bucket:'strip-library',path:'ximena/new/image.png',type:'image/png',size:50}));
+ await a.cloud.pull();const count=a.updates.length;release();const library=await refresh;
+ assert.equal(library.entries.length,2);assert.equal(a.cloud.revision,3);assert.equal(a.cloud.remote.revision,3);assert.equal(a.updates.at(-1).ready.perfume,42);assert.equal(a.updates.length,count);assert.equal(f.db.rpcCalls,0);
+});

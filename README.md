@@ -397,3 +397,10 @@ La bienvenida reutiliza el formateador de fechas y reduce el tamaño de las capa
 La biblioteca detecta PNG, JPEG y WebP por la firma real del archivo, tanto al importar ZIP como al compartir imágenes existentes. Una foto JPEG con nombre `.png` se identifica como JPEG sin volver a codificarla ni cambiar sus bytes, calidad o medidas. La caché de impresión utiliza ese mismo tipo real.
 
 Si una imagen no tiene un formato compatible o contiene información inválida, se conserva en el equipo, aparece su nombre en **Archivos pendientes de sincronizar** y continúa la subida de las demás. Los lotes parciales correctos también se guardan. **Sincronizar ahora** reintenta solo los pendientes y reutiliza los archivos ya subidos. No requiere volver a ejecutar SQL ni reimportar el ZIP.
+
+
+### Biblioteca visible en el celular y creador independiente (v69)
+
+**Imprimir tiras** abre directamente la biblioteca compartida y la selección para los tabloides. **Crear tiras** es una sección independiente del menú **Imprimir**, con un atajo desde la biblioteca y un botón de regreso. Cambiar entre ambas conserva el borrador del diseño y las cantidades seleccionadas; cerrar sesión los limpia. Guardar un diseño mantiene los controles de descarga de imagen y el acceso a la biblioteca para imprimirlo.
+
+**Sincronizar ahora** consulta la biblioteca en Supabase aunque el navegador no haya recibido una notificación en tiempo real. El botón muestra progreso, confirma cuántas tiras hay disponibles y muestra los errores cuando no se pudo actualizar. Las respuestas atrasadas no reemplazan una revisión más reciente ni muestran datos después de cerrar sesión. No requiere reimportar imágenes ni ejecutar otro archivo SQL.
