@@ -1,4 +1,4 @@
-import {completedQuantity,recipeFor} from './inventory.js?v=70';
+import {completedQuantity,recipeFor} from './inventory.js?v=71';
 
 const GROUPS=['Dama','Caballero','Unisex'];
 const ZONE='America/Guatemala';

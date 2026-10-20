@@ -411,3 +411,10 @@ Si una imagen no tiene un formato compatible o contiene información inválida, 
 Al abrir o sincronizar, la app comprueba que exista el almacén local de imágenes. Si una creación anterior quedó incompleta, añade únicamente el almacén faltante a la base existente. Conserva los demás datos y admite versiones locales superiores a la inicial, sin borrar la biblioteca ni los originales pendientes de subir.
 
 Las conexiones cerradas se vuelven a abrir; solo se reintenta crear una transacción antes de ejecutar su operación, para evitar repetir escrituras. Si otra pestaña impide reparar el almacén, se explica en español cómo desbloquearlo. La biblioteca compartida, la descarga de originales y la impresión siguen usando los mismos permisos y archivos.
+
+
+### Arranque del portal y acceso con almacenamiento restringido (v71)
+
+La pantalla de acceso puede iniciar aunque Safari u otro navegador deniegue el almacenamiento de preferencias o sesión. La configuración y los cambios que no se puedan guardar localmente permanecen en memoria durante la página; el acceso sigue requiriendo una cuenta autorizada en Supabase. Se conservan los datos locales accesibles y las lecturas de otras pestañas. Cerrar sesión limpia el acceso y los datos mostrados, incluso si el navegador impide eliminar una clave local.
+
+Un cargador pequeño controla el inicio del portal. El catálogo y la comprobación del acceso tienen un límite de espera; los fallos de módulos o conexión ofrecen un mensaje y una acción para reintentar. El catálogo ya no se carga con await en el nivel superior del módulo principal. La bienvenida y los controles de PDF se cargan de forma independiente para que no bloqueen el acceso. Las respuestas tardías de autenticación no reabren una sesión cerrada ni sustituyen una conexión más reciente.
