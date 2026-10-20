@@ -418,3 +418,13 @@ Las conexiones cerradas se vuelven a abrir; solo se reintenta crear una transacc
 La pantalla de acceso puede iniciar aunque Safari u otro navegador deniegue el almacenamiento de preferencias o sesión. La configuración y los cambios que no se puedan guardar localmente permanecen en memoria durante la página; el acceso sigue requiriendo una cuenta autorizada en Supabase. Se conservan los datos locales accesibles y las lecturas de otras pestañas. Cerrar sesión limpia el acceso y los datos mostrados, incluso si el navegador impide eliminar una clave local.
 
 Un cargador pequeño controla el inicio del portal. El catálogo y la comprobación del acceso tienen un límite de espera; los fallos de módulos o conexión ofrecen un mensaje y una acción para reintentar. El catálogo ya no se carga con await en el nivel superior del módulo principal. La bienvenida y los controles de PDF se cargan de forma independiente para que no bloqueen el acceso. Las respuestas tardías de autenticación no reabren una sesión cerrada ni sustituyen una conexión más reciente.
+
+### Safari, obsequios y cliente opcional (v72)
+
+El portal copia los datos sin depender de `structuredClone` y genera identificadores seguros aunque Safari no incluya `crypto.randomUUID`. También evita `Array.at` en los módulos de la aplicación. Se conservan las claves de almacenamiento, inventarios, imágenes, notas, abonos e historial existentes; no requiere ejecutar SQL, importar respaldos ni borrar datos del navegador.
+
+En producción se puede elegir **Obsequio**, con destinatario opcional. Los avances consumen la misma receta y registran los envases terminados como los demás lotes. Al generar su nota se selecciona **Obsequio** automáticamente. También se puede elegir directamente en una nota: todos sus importes quedan en cero, sin ingresos, cobros ni saldos pendientes; las unidades regaladas y su costo de reposición siguen visibles en los reportes. Una nota con abonos existentes debe conservar Crédito.
+
+Los pedidos y obsequios pueden confirmarse sin cliente mediante una confirmación explícita. Las notas también piden confirmación al revisar sin nombre. El PDF generado omite por completo el encabezado, valor y espacio reservado del cliente cuando está vacío. Los PDF originales de notas históricas se conservan intactos.
+
+Después de actualizar, recarga la página en cada equipo para utilizar la misma versión. No borres los datos del sitio ni las imágenes locales pendientes de sincronizar.

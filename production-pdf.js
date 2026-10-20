@@ -1,4 +1,4 @@
-import {completedQuantity,recipeFor} from './inventory.js?v=71';
+import {completedQuantity,recipeFor,productionPurposeLabel} from './inventory.js?v=72';
 
 const GROUPS=['Dama','Caballero','Unisex'];
 const ZONE='America/Guatemala';
@@ -9,7 +9,7 @@ const clean=value=>String(value??'').replace(/\s+/g,' ').trim();
 // A print snapshot is derived from the displayed order, never from live stock.
 export function productionPdfData(batch,{draft=false}={}){
  if(!batch||typeof batch!=='object'||!Array.isArray(batch.items)||!batch.items.length)throw Error('No hay una lista de producción para descargar.');
- if(!Number.isSafeInteger(batch.number)||batch.number<1||!Number.isFinite(Date.parse(batch.date))||!['stock','customer'].includes(batch.purpose?.type))throw Error('Revisa los datos de la orden antes de generar el PDF.');
+ if(!Number.isSafeInteger(batch.number)||batch.number<1||!Number.isFinite(Date.parse(batch.date))||!['stock','customer','gift'].includes(batch.purpose?.type))throw Error('Revisa los datos de la orden antes de generar el PDF.');
  const rows=batch.items.map(item=>{
   const completed=completedQuantity(item);
   if(!clean(item.name)||![50,100].includes(item.size)||!Number.isSafeInteger(item.qty)||item.qty<1||!Number.isSafeInteger(completed)||completed<0||completed>item.qty)throw Error('La lista contiene cantidades de producción inválidas.');
@@ -20,8 +20,8 @@ export function productionPdfData(batch,{draft=false}={}){
  const categories=[...GROUPS,...new Set(rows.map(row=>row.category).filter(category=>!GROUPS.includes(category)))];
  const data={
   number:'AM-'+String(batch.number).padStart(4,'0'),date:batch.date,dateLabel:formatDate(batch.date),draft:Boolean(draft),
-  purpose:batch.purpose.type==='customer'?'Pedido · '+clean(batch.purpose.customerName):'Producción para stock',createdBy:clean(batch.createdBy),
-  status:draft?'Borrador · Pendiente de confirmación':cancelled?'Cancelado':totals.pending?'En producción':batch.purpose.type==='customer'?'Listo para entrega':'Listo para anaquel',
+  purpose:productionPurposeLabel({...batch.purpose,customerName:clean(batch.purpose.customerName)}),createdBy:clean(batch.createdBy),
+  status:draft?'Borrador · Pendiente de confirmación':cancelled?'Cancelado':totals.pending?'En producción':batch.purpose.type!=='stock'?'Listo para entrega':'Listo para anaquel',
   cancelled,groups:categories.map(category=>({category,items:rows.filter(row=>row.category===category)})).filter(group=>group.items.length),totals
  };
  if(cancelled)data.cancellation={reason:clean(batch.cancellationReason)||'Sin motivo registrado',by:clean(batch.cancelledBy),date:Number.isFinite(Date.parse(batch.cancelledAt))?formatDate(batch.cancelledAt):'',reversedUnits:Number.isSafeInteger(batch.cancellationReversedUnits)?batch.cancellationReversedUnits:0};
