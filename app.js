@@ -1,19 +1,20 @@
-import {mountPdfActions} from './pdf-share.js?v=66';
-import {filterMaterialStock,materialStockCounts,materialStatus,productStockView} from './stock-views.js?v=66';
-import {createStockDictation} from './stock-dictation.js?v=66';
-import {createStripsPanel} from './strips.js?v=66';
-import {createLabelsPanel} from './labels.js?v=66';
-import {createStockScanner} from './stock-scanner.js?v=66';
-import {hasAppAccess,defaultCloudConfig,clearBusinessCache} from './access.js?v=66';
-import {annualSalesCards,salesReportHtml} from './sales-reports.js?v=66';
-import {cancellationFields,mountCancellationFields,readCancellationFields} from './cancellation.js?v=66';
-import {catalogCategories,catalogCategoryMatches,filterCatalog,perfumeMatches} from './catalog-tools.js?v=66';
-import {activeSalesNoteForBatch,salesAccounts,salesMoney} from './sales.js?v=66';
-import {createSalesPanel} from './sales-panel.js?v=66';
-import {CloudInventory} from './cloud.js?v=66';
-import {createDictationPanel} from './dictation.js?v=66';
-import {initialState,applyMovement,recipeFor,registerCustomer,productionPreview,confirmProduction,completedQuantity,batchProgress,completeBatchItem,cancelBatch,readyBatch,setBottleStocks,readyMovement,validateBackup,attributeSessionChanges,extraBottles,bottleStock,isMaterialLow,removeReadyStock} from './inventory.js?v=66';
-const catalog=await fetch('./catalog.json?v=66').then(r=>{if(!r.ok)throw Error('No se pudo cargar el catálogo');return r.json()});
+import {createStripLibrarySync} from './strip-library-sync.js?v=67';
+import {mountPdfActions} from './pdf-share.js?v=67';
+import {filterMaterialStock,materialStockCounts,materialStatus,productStockView} from './stock-views.js?v=67';
+import {createStockDictation} from './stock-dictation.js?v=67';
+import {createStripsPanel} from './strips.js?v=67';
+import {createLabelsPanel} from './labels.js?v=67';
+import {createStockScanner} from './stock-scanner.js?v=67';
+import {hasAppAccess,defaultCloudConfig,clearBusinessCache} from './access.js?v=67';
+import {annualSalesCards,salesReportHtml} from './sales-reports.js?v=67';
+import {cancellationFields,mountCancellationFields,readCancellationFields} from './cancellation.js?v=67';
+import {catalogCategories,catalogCategoryMatches,filterCatalog,perfumeMatches} from './catalog-tools.js?v=67';
+import {activeSalesNoteForBatch,salesAccounts,salesMoney} from './sales.js?v=67';
+import {createSalesPanel} from './sales-panel.js?v=67';
+import {CloudInventory} from './cloud.js?v=67';
+import {createDictationPanel} from './dictation.js?v=67';
+import {initialState,applyMovement,recipeFor,registerCustomer,productionPreview,confirmProduction,completedQuantity,batchProgress,completeBatchItem,cancelBatch,readyBatch,setBottleStocks,readyMovement,validateBackup,attributeSessionChanges,extraBottles,bottleStock,isMaterialLow,removeReadyStock} from './inventory.js?v=67';
+const catalog=await fetch('./catalog.json?v=67').then(r=>{if(!r.ok)throw Error('No se pudo cargar el catálogo');return r.json()});
 let cloud=null,cloudUiError='',remoteRenderPending=false;
 let productionPdfEpoch=0,productionPdfHandle=null,productionPdfListening=false,materialsPdfEpoch=0,materialsPdfHandle=null;
 let salesReportYear=Number(new Intl.DateTimeFormat('en',{timeZone:'America/Guatemala',year:'numeric'}).format(new Date()));sessionStorage.removeItem('alma-sales-import-key');if(location.hash.startsWith('#cargar-ventas='))history.replaceState(null,'',location.pathname+location.search);
@@ -133,17 +134,18 @@ document.addEventListener('input',e=>{if(e.target.id==='search'){search=e.target
 document.addEventListener('change',e=>{if(e.target.id==='sales-report-year'){salesReportYear=Number(e.target.value);salesReportMonth=null;render();}if(e.target.id==='aroma-family'){aromaFamily=e.target.value;render();}if(e.target.id==='material-sort'){materialSort=e.target.value;render();}if(e.target.id==='stock-sort'){readySort=e.target.value;render();}if(e.target.id==='kind'){kind=e.target.value;render();}if(e.target.id==='batch-filter'){batchFilter=e.target.value;render();}});
 $('#close').onclick=()=>$('#modal').close();$('#form').onsubmit=async e=>{e.preventDefault();try{const next=submit(Object.fromEntries(new FormData(e.target)));if(next===null)return;await persist(next);$('#modal').close();render();toast('Movimiento guardado.','success');}catch(err){$('#form-error').textContent=err.name==='QuotaExceededError'?'No hay espacio de almacenamiento. Exporta un respaldo.':err.message;}};
 $('#export').onclick=()=>{if(!hasAppAccess(cloud))return;if(storageError){toast('No se exportarán saldos vacíos: primero recupera tu respaldo.');return;}const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='alma-mia-respaldo-'+new Date().toISOString().slice(0,10)+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
-$('#import').onchange=async e=>{if(!hasAppAccess(cloud))return;const file=e.target.files[0];if(!file)return;try{if(file.size>10000000)throw Error('El archivo es demasiado grande.');const next=validateBackup(JSON.parse(await file.text()),catalog);if(!confirm(cloud?.enabled?'Este respaldo reemplazará el inventario compartido de TODOS los dispositivos. ¿Continuar?':'Este respaldo reemplazará el inventario actual de este navegador. ¿Continuar?'))return;await persist(next,{attribute:false});storageError=false;render();toast('Respaldo importado.','success');}catch(err){toast(err.message);}finally{e.target.value='';}};
+$('#import').onchange=async e=>{if(!hasAppAccess(cloud))return;const file=e.target.files[0];if(!file)return;try{if(file.size>10000000)throw Error('El archivo es demasiado grande.');const imported=JSON.parse(await file.text()),next=validateBackup(imported,catalog);if(!Object.hasOwn(imported,'stripLibrary'))next.stripLibrary=state.stripLibrary;if(!confirm(cloud?.enabled?'Este respaldo reemplazará el inventario compartido de TODOS los dispositivos. ¿Continuar?':'Este respaldo reemplazará el inventario actual de este navegador. ¿Continuar?'))return;await persist(next,{attribute:false});storageError=false;render();toast('Respaldo importado.','success');}catch(err){toast(err.message);}finally{e.target.value='';}};
 const salesPanel=createSalesPanel({catalog,getState:()=>state,save:async next=>{if(storageError)throw Error('Recupera el respaldo antes de guardar.');await persist(next);},uploadEvidence:(file,id)=>cloud.uploadPaymentEvidence(file,id),getEvidenceUrl:evidence=>cloud.paymentEvidenceUrl(evidence),getActor:()=>cloud?.enabled?cloud.member?.display_name:sessionUser,notify:toast});
 const dictation=createDictationPanel({catalog,getState:()=>state,save:async next=>{if(storageError)throw Error('Recupera tu respaldo antes de guardar cambios.');await persist(next);},notify:toast});
 const stockVoice=createStockDictation({catalog,getState:()=>state,save:async next=>{if(storageError)throw Error('Recupera tu respaldo antes de actualizar el stock.');await persist(next);},notify:text=>toast(text,'success'),allowed:()=>hasAppAccess(cloud)&&view==='stock-dictation'});
-const strips=createStripsPanel({catalog,notify:toast,allowed:()=>hasAppAccess(cloud)&&view==='strips'});
+const stripSync=createStripLibrarySync({getCloud:()=>cloud,getLibrary:()=>state.stripLibrary,canAccess:()=>hasAppAccess(cloud),onChange:()=>{void strips.libraryChanged().catch(()=>{});}});
+const strips=createStripsPanel({catalog,notify:toast,sync:stripSync,allowed:()=>hasAppAccess(cloud)&&view==='strips'});
 const labels=createLabelsPanel({catalog,notify:toast,allowed:()=>hasAppAccess(cloud)&&view==='labels'});
 const scanner=createStockScanner({catalog,getState:()=>state,save:async next=>persist(next),notify:toast,allowed:()=>hasAppAccess(cloud)&&view==='scanner'});
 window.addEventListener('pagehide',()=>{dictation.stop();stockVoice.stop();scanner.stop();});
 document.addEventListener('visibilitychange',()=>{if(document.hidden){dictation.stop();stockVoice.stop();scanner.stop();}});
 if(!localStorage.getItem('alma-mia-cloud-config'))localStorage.setItem('alma-mia-cloud-config',JSON.stringify(defaultCloudConfig));
-cloud=new CloudInventory({storage:localStorage,validate:data=>validateBackup(data,catalog),onData:data=>{state=data;cacheCloudState(data);syncProductionAttention();if(canRefreshCloudView()){remoteRenderPending=false;render();}else remoteRenderPending=true;},onStatus:updateCloudStatus});
+cloud=new CloudInventory({storage:localStorage,validate:data=>validateBackup(data,catalog),onData:data=>{state=data;cacheCloudState(data);syncProductionAttention();stripSync.connect();if(view==='strips'){remoteRenderPending=false;return;}if(canRefreshCloudView()){remoteRenderPending=false;render();}else remoteRenderPending=true;},onStatus:updateCloudStatus});
 updateCloudStatus();
 window.addEventListener('online',()=>cloud.pull());
 document.addEventListener('focusout',()=>setTimeout(refreshCloudView,0));
@@ -224,7 +226,7 @@ async function prepareMaterialsPdf(button){
  button.disabled=true;button.textContent='Preparando PDF…';if(output)output.textContent='Preparando reporte de materias primas…';
  try{
   if(storageError)throw Error('Recupera el respaldo antes de generar el reporte.');
-  const {createMaterialsPdf}=await import('./materials-pdf.js?v=66'),result=await createMaterialsPdf(snapshot,catalog);
+  const {createMaterialsPdf}=await import('./materials-pdf.js?v=67'),result=await createMaterialsPdf(snapshot,catalog);
   if(!active())return;
   output.replaceChildren();materialsPdfHandle=mountPdfActions(output,{blob:result.blob,filename:result.filename,title:'Reporte de materias primas'});
   button.hidden=true;materialsPdfHandle.anchor.click();
@@ -241,7 +243,7 @@ async function prepareProductionPdf(batch,{draft=false}={}){
  const active=()=>token===productionPdfEpoch&&hasAppAccess(cloud)&&dialog.open&&output.isConnected&&dialog.contains(output);
  output.innerHTML='<button type="button" class="secondary" disabled>Preparando PDF…</button>';
  try{
-  const {createProductionPdf}=await import('./production-pdf.js?v=66'),result=await createProductionPdf(snapshot,{draft});
+  const {createProductionPdf}=await import('./production-pdf.js?v=67'),result=await createProductionPdf(snapshot,{draft});
   if(!active())return;
   output.replaceChildren();productionPdfHandle=mountPdfActions(output,{blob:result.blob,filename:result.filename,title:draft?'Lista de producción · Borrador':'Lista de producción '+batchNumber(snapshot)});
  }catch(error){if(active()){output.innerHTML=`<p role="alert">No se pudo preparar el PDF: ${esc(error.message)}</p><button type="button" class="secondary" id="production-pdf-retry">Reintentar PDF</button>`;$('#production-pdf-retry').onclick=()=>prepareProductionPdf(snapshot,{draft});}}
@@ -278,7 +280,7 @@ function openBatchEditor(id,filter='all',message=''){
 function canRefreshCloudView(){return view!=='scanner'&&!document.querySelector('dialog[open]')&&!document.activeElement?.matches('input,textarea,select');}
 function refreshCloudView(){if(remoteRenderPending&&canRefreshCloudView()){remoteRenderPending=false;render();}}
 function cacheCloudState(data){try{clearBusinessCache(localStorage);}catch{}}
-function updateCloudStatus(){if(!cloud)return;const wasLocked=document.body.classList.contains('access-locked');if(cloud.mode==='auth'&&!cloud.user&&!wasLocked){clearBusinessCache(localStorage);state=initialState(catalog);sessionUser='';sessionStorage.removeItem('alma-mia-session-user');}updateAccessScreen();if(wasLocked&&hasAppAccess(cloud))render();const button=$('#cloud-status');button.textContent=cloud.enabled?cloud.message:'Conectar dispositivos';$('#storage-label').textContent=cloud.enabled?(cloud.mode==='ready'&&cloud.connected?'Datos compartidos en la nube':'Nube pendiente de conexión'):'Guardado en este navegador';$('#session-user').disabled=cloud.enabled;if(cloud.member){sessionUser=cloud.member.display_name;$('#session-user').value=sessionUser;}if(view==='cloud'&&canRefreshCloudView())render();}
+function updateCloudStatus(){if(!cloud)return;stripSync.connect();const wasLocked=document.body.classList.contains('access-locked');if(cloud.mode==='auth'&&!cloud.user&&!wasLocked){clearBusinessCache(localStorage);state=initialState(catalog);sessionUser='';sessionStorage.removeItem('alma-mia-session-user');}updateAccessScreen();if(wasLocked&&hasAppAccess(cloud))render();const button=$('#cloud-status');button.textContent=cloud.enabled?cloud.message:'Conectar dispositivos';$('#storage-label').textContent=cloud.enabled?(cloud.mode==='ready'&&cloud.connected?'Datos compartidos en la nube':'Nube pendiente de conexión'):'Guardado en este navegador';$('#session-user').disabled=cloud.enabled;if(cloud.member){sessionUser=cloud.member.display_name;$('#session-user').value=sessionUser;}if(view==='cloud'&&canRefreshCloudView())render();}
 function preserveLocalInventory(){const backupKey='alma-mia-before-cloud-'+new Date().toISOString();localStorage.setItem(backupKey,JSON.stringify(state));localStorage.setItem('alma-mia-before-cloud-latest',backupKey);}
 function downloadJson(data,name){const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
 function cloudView(){

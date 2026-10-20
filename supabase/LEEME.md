@@ -28,3 +28,14 @@ Al agregar un abono, elige Efectivo o Transferencia. Efectivo permite un recorda
 El respaldo JSON conserva las referencias a los archivos, no sus contenidos. Conserva también el depósito de Storage: mover el respaldo a otro proyecto no copia los comprobantes. Las notas y abonos anteriores permanecen; no se inventan medios de pago ni comprobantes retroactivos.
 
 Los PDF originales de notas históricas utilizan el mismo almacenamiento privado configurado por `03-comprobantes.sql`; no hace falta ejecutar otra migración. La carga debe realizarse desde la cuenta autorizada de la app, mediante el enlace privado de importación. Al terminar, originales y notas quedan disponibles para los demás miembros conectados sin volver a usar ese enlace.
+
+
+## Biblioteca compartida de tiras
+
+En el **SQL Editor del mismo proyecto**, ejecuta completo `04-biblioteca-tiras.sql` y pulsa **Run**. **Success. No rows returned** indica que terminó. Es una configuración única y se puede repetir sin borrar información. No requiere cambiar usuarios, contraseñas ni los comprobantes anteriores.
+
+Crea el depósito privado `strip-library` y permite que Luis y Ximena consulten las mismas imágenes desde cualquier equipo autorizado. Cada subida utiliza una ruta nueva; los originales grandes se dividen en objetos de hasta 8 MB y se reconstruyen con sus bytes originales al imprimir. El archivo también protege la biblioteca cuando un equipo con una versión anterior de la app guarda movimientos. No publica imágenes ni concede acceso a usuarios anónimos.
+
+Abre después la app actualizada en la laptop y el navegador que conservan las tiras existentes. Ese equipo tiene que permanecer conectado mientras se comparte la biblioteca; no hace falta volver a importar el ZIP. Las tiras nuevas añadidas desde el creador también se comparten. Los demás equipos obtienen la misma biblioteca al iniciar sesión como Luis o Ximena.
+
+Los respaldos JSON guardan referencias y metadatos; los archivos permanecen en Storage. Conserva el depósito privado al recuperar un respaldo. Las imágenes consumen la cuota de almacenamiento y transferencia del proyecto Supabase; la app no contrata servicios ni cambia de plan.

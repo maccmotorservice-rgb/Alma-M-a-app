@@ -379,3 +379,14 @@ Un punto naranja junto al icono de **Generar un lote o pedido** indica que exist
 La música intenta comenzar en cuanto aparece **Acceso privado**, antes de completar campos o enviar **Iniciar sesión**, cuando corresponde una nueva bienvenida. Si el navegador bloquea la reproducción automática, el primer toque, clic o tecla en esa pantalla permite iniciarla sin enviar el formulario. Un control de sonido en el recuadro permite silenciarla y conserva la preferencia.
 
 Se mantiene una sola reproducción durante el acceso, los reintentos y la bienvenida autenticada; no se reinicia al cambiar de ventana. Un intento fallido conserva el fondo mientras permanece Acceso privado, sin registrar todavía la bienvenida. El audio se detiene al acceder al portal o cerrar la bienvenida, con el jingle de acceso habitual. Se respetan las versiones anteriores, el sonido desactivado y la frecuencia diaria o tras dos horas sin actividad.
+
+
+### Biblioteca de tiras compartida y bienvenida más ligera (v67)
+
+**Imprimir tiras** comparte la misma biblioteca con Luis y Ximena en todos sus equipos. La configuración inicial requiere ejecutar una vez [`supabase/04-biblioteca-tiras.sql`](supabase/04-biblioteca-tiras.sql) en el SQL Editor del proyecto Supabase. Crea un depósito privado y conserva las tiras cuando una versión anterior guarda inventario. No borra los datos existentes ni publica las imágenes.
+
+Después de activarlo, abre la app actualizada en cada navegador que ya tenga tiras y deja terminar la sincronización; si seguía abierta, pulsa **Sincronizar ahora**. Migra automáticamente las importadas desde ZIP y las creadas en la herramienta, sin volver a cargar el ZIP. La bienvenida termina antes de empezar las cargas. Los equipos nuevos reciben la misma biblioteca y las miniaturas; descargan los originales al imprimir y los conservan en caché. Se mantiene la imagen original, verificada por SHA256, y las medidas de 50/100 ml, con hasta tres tiras por tabloide.
+
+Las altas nuevas y las eliminaciones de diseños se comparten. Los registros de eliminación impiden que otro navegador vuelva a cargar por accidente una tira borrada. Una carga interrumpida conserva el archivo local y permite reintentar. Las imágenes permanecen privadas para los miembros; los respaldos JSON guardan sus referencias, no los archivos. Restaurar un respaldo antiguo que no incluya biblioteca conserva la colección compartida actual.
+
+La bienvenida reutiliza el formateador de fechas y reduce el tamaño de las capas de luz en movimiento. En la comprobación de escritorio, la superficie de composición disminuyó aproximadamente un 12 %, manteniendo las cinco animaciones, los dos temas y los sonidos.
