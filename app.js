@@ -1,23 +1,23 @@
-import {materialsQuoteEssences} from './materials-pdf.js?v=79';
-import {productionPurposeLabel} from './inventory.js?v=79';
-import {cloneData} from './clone-data.js?v=79';
-import {createStripLibrarySync} from './strip-library-sync.js?v=79';
-import {mountPdfActions} from './pdf-share.js?v=79';
-import {filterMaterialStock,materialStockCounts,materialStatus,productStockView} from './stock-views.js?v=79';
-import {createStockDictation} from './stock-dictation.js?v=79';
-import {createStripsPanel} from './strips.js?v=79';
-import {createLabelsPanel} from './labels.js?v=79';
-import {createStockScanner} from './stock-scanner.js?v=79';
-import {hasAppAccess,defaultCloudConfig,clearBusinessCache} from './access.js?v=79';
-import {annualSalesCards,salesReportHtml} from './sales-reports.js?v=79';
-import {cancellationFields,mountCancellationFields,readCancellationFields} from './cancellation.js?v=79';
-import {catalogCategories,catalogCategoryMatches,filterCatalog,perfumeMatches} from './catalog-tools.js?v=79';
-import {activeSalesNoteForBatch,salesAccounts,salesMoney} from './sales.js?v=79';
-import {createSalesPanel} from './sales-panel.js?v=79';
-import {CloudInventory} from './cloud.js?v=79';
-import {createDictationPanel} from './dictation.js?v=79';
-import {initialState,applyMovement,recipeFor,registerCustomer,productionPreview,confirmProduction,completedQuantity,batchProgress,completeBatchItem,completeBatchWithExtras,cancelBatch,readyBatch,setBottleStocks,readyMovement,validateBackup,attributeSessionChanges,extraBottles,bottleStock,isMaterialLow,removeReadyStock} from './inventory.js?v=79';
-import {localStore,sessionStore} from './browser-storage.js?v=79';
+import {materialsQuoteEssences} from './materials-pdf.js?v=80';
+import {productionPurposeLabel} from './inventory.js?v=80';
+import {cloneData} from './clone-data.js?v=80';
+import {createStripLibrarySync} from './strip-library-sync.js?v=80';
+import {mountPdfActions} from './pdf-share.js?v=80';
+import {filterMaterialStock,materialStockCounts,materialStatus,productStockView} from './stock-views.js?v=80';
+import {createStockDictation} from './stock-dictation.js?v=80';
+import {createStripsPanel} from './strips.js?v=80';
+import {createLabelsPanel} from './labels.js?v=80';
+import {createStockScanner} from './stock-scanner.js?v=80';
+import {hasAppAccess,defaultCloudConfig,clearBusinessCache} from './access.js?v=80';
+import {annualSalesCards,salesReportHtml} from './sales-reports.js?v=80';
+import {cancellationFields,mountCancellationFields,readCancellationFields} from './cancellation.js?v=80';
+import {catalogCategories,catalogCategoryMatches,filterCatalog,perfumeMatches} from './catalog-tools.js?v=80';
+import {activeSalesNoteForBatch,salesAccounts,salesMoney} from './sales.js?v=80';
+import {createSalesPanel} from './sales-panel.js?v=80';
+import {CloudInventory} from './cloud.js?v=80';
+import {createDictationPanel} from './dictation.js?v=80';
+import {initialState,applyMovement,recipeFor,registerCustomer,productionPreview,confirmProduction,completedQuantity,batchProgress,completeBatchItem,completeBatchWithExtras,cancelBatch,readyBatch,setBottleStocks,readyMovement,validateBackup,attributeSessionChanges,extraBottles,bottleStock,isMaterialLow,removeReadyStock} from './inventory.js?v=80';
+import {localStore,sessionStore} from './browser-storage.js?v=80';
 
 // Export startup so the small loader can report load failures without leaving
 // the access screen waiting forever. Keep top-level await out of this entry.
@@ -25,7 +25,7 @@ export const portalReady=(async()=>{
 async function loadCatalog(){
  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),12000);
  try{
-  const response=await fetch('./catalog.json?v=79',{signal:controller.signal});
+  const response=await fetch('./catalog.json?v=80',{signal:controller.signal});
   if(!response.ok)throw Error('Catálogo no disponible.');
   const data=await response.json();if(!Array.isArray(data)||!data.length)throw Error('Catálogo no válido.');
   return data;
@@ -34,7 +34,7 @@ async function loadCatalog(){
 }
 const catalog=await loadCatalog();
 let cloud=null,cloudUiError='',remoteRenderPending=false;
-let materialsReportMode='normal',materialsQuoteQuantities={},materialsQuoteSelectedIds=null,materialsQuoteSearch='',materialsQuoteOnlyLow=true,materialsQuoteIncludeAlcohol=false,materialsQuoteAlcoholMl=4000;
+let materialsReportMode='normal',materialsQuoteQuantities={},materialsQuoteSelectedIds=null,materialsQuoteSearch='',materialsQuoteFilter='missing',materialsQuoteIncludeAlcohol=false,materialsQuoteAlcoholMl=4000;
 let productionPdfEpoch=0,productionPdfHandle=null,productionPdfListening=false,materialsPdfEpoch=0,materialsPdfHandle=null;
 let salesReportYear=Number(new Intl.DateTimeFormat('en',{timeZone:'America/Guatemala',year:'numeric'}).format(new Date()));sessionStore.removeItem('alma-sales-import-key');if(location.hash.startsWith('#cargar-ventas='))history.replaceState(null,'',location.pathname+location.search);
 const key='alma-mia-inventory-v1';let state=initialState(catalog),view='overview',search='',category='all',advancedCatalog=false,aromaFamily='all',kind='Todos',materialGroup='Todas',materialAvailability='all',materialSort='quantity-desc',readyGender='all',readySize='all',readySort='name',batchFilter='all',batchArchive='active',storageError=false;
@@ -108,19 +108,26 @@ function materialReport(){
 function materialsPdfPreviewHtml(){return '<section id="materials-pdf-preview" class="card materials-pdf-preview" aria-label="Vista previa del PDF" hidden><h2>Vista previa del PDF</h2><p id="materials-pdf-status" role="status"></p><div id="materials-pdf-output" class="report-actions" aria-live="polite"></div><div id="materials-pdf-viewer"></div></section>';}
 function quoteEssenceStatus(id){const material=state.materials.find(m=>m.id===id);return material?.stock===0?'Agotada':material&&isMaterialLow(material)?'Por agotarse':'Disponible';}
 function materialsQuoteVisibleEssences(){
- const ids=state.materials.filter(m=>m.kind==='Esencia'&&(!materialsQuoteOnlyLow||m.stock===0||isMaterialLow(m))).map(m=>m.id);
+ const ids=state.materials.filter(m=>m.kind==='Esencia'&&(materialsQuoteFilter==='all'||(materialsQuoteFilter==='missing'?m.stock===0:isMaterialLow(m)))).map(m=>m.id);
  const rank=id=>({'Agotada':0,'Por agotarse':1,'Disponible':2})[quoteEssenceStatus(id)];
  return materialsQuoteEssences(state,catalog,{selectedIds:ids}).sort((a,b)=>rank(a.id)-rank(b.id));
 }
 function materialsQuoteAddOptions(){
  const ids=state.materials.filter(m=>m.kind==='Esencia'&&!materialsQuoteSelectedIds?.includes(m.id)).map(m=>m.id),query=normalize(materialsQuoteSearch);
  const items=materialsQuoteEssences(state,catalog,{selectedIds:ids}).filter(item=>normalize(item.name+' '+item.house+' '+(catalog.find(p=>p.id===item.id.slice(4))?.name??'')).includes(query));
- return '<option value="">'+(items.length?'Selecciona una esencia':'No hay más esencias con esta búsqueda')+'</option>'+items.map(item=>`<option value="${esc(item.id)}">${esc(item.name)} · ${esc(item.house)} · ${quoteEssenceStatus(item.id)}</option>`).join('');
+ return '<option value="">'+(items.length?'Selecciona una esencia':'No hay más esencias con esta búsqueda')+'</option>'+[['Agotada','Agotadas'],['Por agotarse','Por agotarse'],['Disponible','Disponibles']].map(([status,label])=>{const group=items.filter(item=>quoteEssenceStatus(item.id)===status);return group.length?`<optgroup label="${label}">${group.map(item=>`<option value="${esc(item.id)}">${esc(item.name)} · ${esc(item.house)} · ${esc(item.category)}</option>`).join('')}</optgroup>`:'';}).join('');
+}
+function materialsQuoteGroupsHtml(items){
+ return [['Agotada','Agotadas'],['Por agotarse','Por agotarse'],['Disponible','Disponibles']].map(([status,label])=>{
+ const groupItems=items.filter(item=>quoteEssenceStatus(item.id)===status);
+ if(!groupItems.length)return '';
+ return `<section class="materials-quote-group" data-quote-group="${esc(status)}"><h3>${label} <span class="badge">${groupItems.length}</span></h3><div class="table-wrap materials-quote-table"><table><thead><tr><th>Nombre real / referencia</th><th>Casa productora</th><th>Cantidad solicitada</th></tr></thead><tbody>${groupItems.map(item=>`<tr data-quote-row="${esc(item.id)}"><td><label><input type="checkbox" data-quote-select="${esc(item.id)}" ${materialsQuoteSelectedIds.includes(item.id)?'checked':''} aria-label="Incluir ${esc(item.name)} en la cotización"> ${esc(item.name)}</label><span class="badge quote-essence-status">${quoteEssenceStatus(item.id)}</span></td><td>${esc(item.house)}<small>${esc(item.category)}</small></td><td><label class="field"><input type="number" min="250" max="1000000" step="1" data-quote-quantity="${esc(item.id)}" aria-label="Cantidad de ${esc(item.name)} en ml" value="${esc(materialsQuoteQuantities[item.id]??250)}"> ml</label><button type="button" class="secondary quote-remove-button" data-quote-remove="${esc(item.id)}" aria-label="Quitar ${esc(item.name)} de la cotización">Quitar</button></td></tr>`).join('')||'<tr><td colspan="3">No hay esencias en este filtro. Muestra todas las esencias o incluye alcohol.</td></tr>'}</tbody></table></div></section>`;
+ }).join('')||'<p class="empty">No hay esencias en este grupo.</p>';
 }
 function materialsQuotationHtml(){
  if(materialsQuoteSelectedIds===null)materialsQuoteSelectedIds=materialsQuoteEssences(state,catalog).map(item=>item.id);
  const items=materialsQuoteVisibleEssences();
- return `<section class="card materials-quote-controls"><h2>Solicitar cotización</h2><p>La lista inicia con las esencias agotadas y por agotarse. Puedes quitarlas o agregar otras del catálogo. Cantidad inicial: 250 ml por esencia, editable. El estado de existencias se muestra solo aquí y no aparece en el PDF.</p><div class="materials-quote-add-controls"><label class="field">Buscar otra esencia<input id="materials-quote-search" type="search" value="${esc(materialsQuoteSearch)}" placeholder="Nombre real, casa o nombre del catálogo…"></label><label class="field">Esencia para agregar<select id="materials-quote-add-select">${materialsQuoteAddOptions()}</select></label><button type="button" class="secondary" id="materials-quote-add">Agregar esencia</button></div><label class="quote-alcohol-toggle"><input type="checkbox" id="materials-quote-alcohol" ${materialsQuoteIncludeAlcohol?'checked':''}> Incluir alcohol</label><label class="field" id="materials-quote-alcohol-field" ${materialsQuoteIncludeAlcohol?'':'hidden'}>Cantidad de alcohol (ml)<input type="number" id="materials-quote-alcohol-ml" min="250" max="1000000" step="1" value="${esc(materialsQuoteAlcoholMl)}"><small>4000 ml equivalen a un galón de 4 litros.</small></label><p id="materials-quote-error" role="alert"></p><div class="report-actions"><button type="button" class="secondary" id="materials-quote-filter" aria-pressed="${materialsQuoteOnlyLow}">Mostrar agotadas y por agotarse</button><button type="button" class="secondary" id="materials-quote-show-all" aria-pressed="${!materialsQuoteOnlyLow}">Mostrar todas las esencias</button><button type="button" class="secondary" id="materials-quote-select-all">Seleccionar todo</button><button type="button" class="secondary" id="materials-quote-deselect-all">Deseleccionar todo</button></div><p>${materialsQuoteSelectedIds.length} esencias seleccionadas en total. Los controles de selección se aplican a las esencias visibles. Solo las marcadas se incluyen en el PDF.</p><div class="table-wrap materials-quote-table"><table><thead><tr><th>Nombre real / referencia</th><th>Casa productora</th><th>Cantidad solicitada</th></tr></thead><tbody>${items.map(item=>`<tr data-quote-row="${esc(item.id)}"><td><label><input type="checkbox" data-quote-select="${esc(item.id)}" ${materialsQuoteSelectedIds.includes(item.id)?'checked':''} aria-label="Incluir ${esc(item.name)} en la cotización"> ${esc(item.name)}</label><span class="badge quote-essence-status">${quoteEssenceStatus(item.id)}</span></td><td>${esc(item.house)}</td><td><label class="field"><input type="number" min="250" max="1000000" step="1" data-quote-quantity="${esc(item.id)}" aria-label="Cantidad de ${esc(item.name)} en ml" value="${esc(materialsQuoteQuantities[item.id]??250)}"> ml</label><button type="button" class="secondary quote-remove-button" data-quote-remove="${esc(item.id)}" aria-label="Quitar ${esc(item.name)} de la cotización">Quitar</button></td></tr>`).join('')||'<tr><td colspan="3">No hay esencias en este filtro. Muestra todas las esencias o incluye alcohol.</td></tr>'}</tbody></table></div><p>El PDF de la solicitud incluye solo los nombres, casas y cantidades de las esencias seleccionadas; no incluye nombres internos ni saldos del inventario.</p></section>`;
+ return `<section class="card materials-quote-controls"><h2>Solicitar cotización</h2><p>Las esencias agotadas y por agotarse se consultan en grupos separados. Puedes quitarlas o agregar otras del catálogo. Cantidad inicial: 250 ml por esencia, editable. El estado de existencias se muestra solo aquí y no aparece en el PDF.</p><div class="materials-quote-add-controls"><label class="field">Buscar otra esencia<input id="materials-quote-search" type="search" value="${esc(materialsQuoteSearch)}" placeholder="Nombre real, casa o nombre del catálogo…"></label><label class="field">Esencia para agregar<select id="materials-quote-add-select">${materialsQuoteAddOptions()}</select></label><button type="button" class="secondary" id="materials-quote-add">Agregar esencia</button></div><label class="quote-alcohol-toggle"><input type="checkbox" id="materials-quote-alcohol" ${materialsQuoteIncludeAlcohol?'checked':''}> Incluir alcohol</label><label class="field" id="materials-quote-alcohol-field" ${materialsQuoteIncludeAlcohol?'':'hidden'}>Cantidad de alcohol (ml)<input type="number" id="materials-quote-alcohol-ml" min="250" max="1000000" step="1" value="${esc(materialsQuoteAlcoholMl)}"><small>4000 ml equivalen a un galón de 4 litros.</small></label><p id="materials-quote-error" role="alert"></p><div class="report-actions"><button type="button" class="secondary" id="materials-quote-filter" aria-pressed="${materialsQuoteFilter==='missing'}">Agotadas</button><button type="button" class="secondary" id="materials-quote-low" aria-pressed="${materialsQuoteFilter==='low'}">Por agotarse</button><button type="button" class="secondary" id="materials-quote-show-all" aria-pressed="${materialsQuoteFilter==='all'}">Mostrar todas las esencias</button><button type="button" class="secondary" id="materials-quote-select-all">Seleccionar todo</button><button type="button" class="secondary" id="materials-quote-deselect-all">Deseleccionar todo</button></div><p>${materialsQuoteSelectedIds.length} esencias seleccionadas en total. Los controles de selección se aplican a las esencias visibles. Solo las marcadas se incluyen en el PDF.</p>${materialsQuoteGroupsHtml(items)}<p>El PDF de la solicitud incluye solo los nombres, casas, categorías (Dama, Caballero o Unisex) y cantidades de las esencias seleccionadas; no incluye nombres internos ni saldos del inventario.</p></section>`;
 }
 function ready(){
  const {summary,categoryCounts,rows,visibleUnits}=productStockView(state.ready,catalog,{gender:readyGender,size:readySize,query:search,sort:readySort});
@@ -167,11 +174,12 @@ function open(type,id,size){if(!hasAppAccess(cloud))return;
  $('#modal').showModal();
 }
 document.addEventListener('click',async e=>{if(!hasAppAccess(cloud))return;if(view==='material-report'&&materialsReportMode==='quote'){
- if(e.target.closest('#materials-quote-filter')){materialsQuoteOnlyLow=true;render();return;}
- if(e.target.closest('#materials-quote-show-all')){materialsQuoteOnlyLow=false;render();return;}
+ if(e.target.closest('#materials-quote-filter')){materialsQuoteFilter='missing';render();return;}
+ if(e.target.closest('#materials-quote-low')){materialsQuoteFilter='low';render();return;}
+ if(e.target.closest('#materials-quote-show-all')){materialsQuoteFilter='all';render();return;}
  if(e.target.closest('#materials-quote-select-all')){materialsQuoteSelectedIds=[...new Set([...materialsQuoteSelectedIds,...materialsQuoteVisibleEssences().map(item=>item.id)])];render();return;}
  if(e.target.closest('#materials-quote-deselect-all')){const visible=new Set(materialsQuoteVisibleEssences().map(item=>item.id));materialsQuoteSelectedIds=materialsQuoteSelectedIds.filter(id=>!visible.has(id));render();return;}
- }const quoteRemove=e.target.closest('[data-quote-remove]');if(quoteRemove&&view==='material-report'&&materialsReportMode==='quote'){materialsQuoteSelectedIds=materialsQuoteSelectedIds.filter(id=>id!==quoteRemove.dataset.quoteRemove);render();return;}if(e.target.closest('#materials-quote-add')&&view==='material-report'&&materialsReportMode==='quote'){const id=$('#materials-quote-add-select').value;if(!id){$('#materials-quote-error').textContent='Selecciona la esencia que quieres agregar.';return;}if(!materialsQuoteSelectedIds.includes(id))materialsQuoteSelectedIds.push(id);materialsQuoteOnlyLow=false;render();return;}const reportMode=e.target.closest('[data-material-report-mode]');if(reportMode){materialsReportMode=reportMode.dataset.materialReportMode;render();return;}const pdfButton=e.target.closest('#materials-pdf');if(pdfButton){await prepareMaterialsPdf(pdfButton);return;}const rankGender=e.target.closest('[data-sales-rank-gender]');if(rankGender){salesRankGender=rankGender.dataset.salesRankGender;render();return;}const rankMode=e.target.closest('[data-sales-rank-mode]');if(rankMode){salesRankMode=rankMode.dataset.salesRankMode;render();return;}const rankLimit=e.target.closest('[data-sales-rank-limit]');if(rankLimit){salesRankLimit=rankLimit.dataset.salesRankLimit==='all'?'all':Number(rankLimit.dataset.salesRankLimit);render();return;}const salesMonth=e.target.closest('[data-sales-month]');if(salesMonth){salesReportMonth=Number(salesMonth.dataset.salesMonth);render();return;}const catalogButton=e.target.closest('[data-catalog-category]');if(catalogButton){category=catalogButton.dataset.catalogCategory;aromaFamily='all';render();return;}if(e.target.closest('[data-catalog-advanced]')){advancedCatalog=!advancedCatalog;render();return;}const archive=e.target.closest('[data-batch-archive]');if(archive){batchArchive=archive.dataset.batchArchive;render();return;}const materialStatusButton=e.target.closest('[data-material-status]');if(materialStatusButton){materialAvailability=materialStatusButton.dataset.materialStatus;render();return;}const sizeButton=e.target.closest('[data-stock-size]');if(sizeButton){readySize=sizeButton.dataset.stockSize;render();return;}const genderButton=e.target.closest('[data-stock-gender]');if(genderButton){readyGender=genderButton.dataset.stockGender;render();return;}const group=e.target.closest('[data-material-group]');if(group){materialGroup=group.dataset.materialGroup;render();return;}const b=e.target.closest('[data-view],[data-action]');if(!b)return;if(b.dataset.view){dictation.stop();stockVoice.stop();scanner.stop();if(b.dataset.view==='sales')salesPanel.showHistory();if(b.dataset.view==='batches')batchArchive='active';view=b.dataset.view;search='';render();window.scrollTo({top:0});}else open(b.dataset.action,b.dataset.id,b.dataset.size);});
+ }const quoteRemove=e.target.closest('[data-quote-remove]');if(quoteRemove&&view==='material-report'&&materialsReportMode==='quote'){materialsQuoteSelectedIds=materialsQuoteSelectedIds.filter(id=>id!==quoteRemove.dataset.quoteRemove);render();return;}if(e.target.closest('#materials-quote-add')&&view==='material-report'&&materialsReportMode==='quote'){const id=$('#materials-quote-add-select').value;if(!id){$('#materials-quote-error').textContent='Selecciona la esencia que quieres agregar.';return;}if(!materialsQuoteSelectedIds.includes(id))materialsQuoteSelectedIds.push(id);materialsQuoteFilter='all';render();return;}const reportMode=e.target.closest('[data-material-report-mode]');if(reportMode){materialsReportMode=reportMode.dataset.materialReportMode;render();return;}const pdfButton=e.target.closest('#materials-pdf');if(pdfButton){await prepareMaterialsPdf(pdfButton);return;}const rankGender=e.target.closest('[data-sales-rank-gender]');if(rankGender){salesRankGender=rankGender.dataset.salesRankGender;render();return;}const rankMode=e.target.closest('[data-sales-rank-mode]');if(rankMode){salesRankMode=rankMode.dataset.salesRankMode;render();return;}const rankLimit=e.target.closest('[data-sales-rank-limit]');if(rankLimit){salesRankLimit=rankLimit.dataset.salesRankLimit==='all'?'all':Number(rankLimit.dataset.salesRankLimit);render();return;}const salesMonth=e.target.closest('[data-sales-month]');if(salesMonth){salesReportMonth=Number(salesMonth.dataset.salesMonth);render();return;}const catalogButton=e.target.closest('[data-catalog-category]');if(catalogButton){category=catalogButton.dataset.catalogCategory;aromaFamily='all';render();return;}if(e.target.closest('[data-catalog-advanced]')){advancedCatalog=!advancedCatalog;render();return;}const archive=e.target.closest('[data-batch-archive]');if(archive){batchArchive=archive.dataset.batchArchive;render();return;}const materialStatusButton=e.target.closest('[data-material-status]');if(materialStatusButton){materialAvailability=materialStatusButton.dataset.materialStatus;render();return;}const sizeButton=e.target.closest('[data-stock-size]');if(sizeButton){readySize=sizeButton.dataset.stockSize;render();return;}const genderButton=e.target.closest('[data-stock-gender]');if(genderButton){readyGender=genderButton.dataset.stockGender;render();return;}const group=e.target.closest('[data-material-group]');if(group){materialGroup=group.dataset.materialGroup;render();return;}const b=e.target.closest('[data-view],[data-action]');if(!b)return;if(b.dataset.view){dictation.stop();stockVoice.stop();scanner.stop();if(b.dataset.view==='sales')salesPanel.showHistory();if(b.dataset.view==='batches')batchArchive='active';view=b.dataset.view;search='';render();window.scrollTo({top:0});}else open(b.dataset.action,b.dataset.id,b.dataset.size);});
 document.addEventListener('input',e=>{
  if(!hasAppAccess(cloud)||view!=='material-report')return;
  if(e.target.id==='materials-quote-search'){materialsQuoteSearch=e.target.value;$('#materials-quote-add-select').innerHTML=materialsQuoteAddOptions();return;}
@@ -287,7 +295,7 @@ async function prepareMaterialsPdf(button){
  button.disabled=true;button.textContent='Preparando PDF…';preview.hidden=false;status.textContent='Preparando vista previa…';const quoteError=$('#materials-quote-error');if(quoteError)quoteError.textContent='';
  try{
   if(storageError)throw Error('Recupera el respaldo antes de generar el reporte.');
-  const module=await import('./materials-pdf.js?v=79'),result=mode==='quote'?await module.createMaterialsQuotationPdf(snapshot,catalog,options):await module.createMaterialsPdf(snapshot,catalog);
+  const module=await import('./materials-pdf.js?v=80'),result=mode==='quote'?await module.createMaterialsQuotationPdf(snapshot,catalog,options):await module.createMaterialsPdf(snapshot,catalog);
   if(!active())return;
   materialsPdfHandle=mountPdfActions(output,{blob:result.blob,filename:result.filename,title:mode==='quote'?'Solicitud de cotización':'Reporte de materias primas'});
   const open=document.createElement('a');open.href=materialsPdfHandle.url;open.target='_blank';open.rel='noopener noreferrer';open.className='secondary';open.textContent='Abrir PDF';output.prepend(open);
@@ -307,7 +315,7 @@ async function prepareProductionPdf(batch,{draft=false}={}){
  const active=()=>token===productionPdfEpoch&&hasAppAccess(cloud)&&dialog.open&&output.isConnected&&dialog.contains(output);
  output.innerHTML='<button type="button" class="secondary" disabled>Preparando PDF…</button>';
  try{
-  const {createProductionPdf}=await import('./production-pdf.js?v=79'),result=await createProductionPdf(snapshot,{draft});
+  const {createProductionPdf}=await import('./production-pdf.js?v=80'),result=await createProductionPdf(snapshot,{draft});
   if(!active())return;
   output.replaceChildren();productionPdfHandle=mountPdfActions(output,{blob:result.blob,filename:result.filename,title:draft?'Lista de producción · Borrador':'Lista de producción '+batchNumber(snapshot)});
  }catch(error){if(active()){output.innerHTML=`<p role="alert">No se pudo preparar el PDF: ${esc(error.message)}</p><button type="button" class="secondary" id="production-pdf-retry">Reintentar PDF</button>`;$('#production-pdf-retry').onclick=()=>prepareProductionPdf(snapshot,{draft});}}

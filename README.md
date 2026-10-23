@@ -486,3 +486,9 @@ Al aumentar las unidades terminadas se revisa el avance antes de guardarlo. **¿
 La confirmación descuenta los insumos y registra los perfumes nuevos de todos los destinos en una sola operación. Si falta materia prima o cambió el lote en otra sesión, no se guarda parcialmente. Volver sin guardar no modifica el inventario. Las cantidades extra son adicionales a los avances indicados para el pedido original.
 
 Si existe una nota vigente del lote, los extras incluidos en el pedido actualizan esa misma nota y sus importes, conservando precios anteriores, descuento, abonos, cliente, tipo de pago y evidencia original; las nuevas presentaciones usan el precio del catálogo. Los obsequios mantienen sus importes en cero. Una nota con entrega registrada conserva los perfumes y cantidades de su entrega: en ese caso los extras se envían a stock o se registran en otro pedido. Los extras para stock nunca alteran la nota original. No se requieren SQL ni cambios en los datos existentes.
+
+### Grupos separados y categoría en la cotización (v80)
+
+En **Solicitar cotización** hay botones independientes para **Agotadas**, **Por agotarse** y **Mostrar todas las esencias**. La vista completa conserva secciones separadas, en ese orden, seguidas por Disponibles; el menú para añadir esencias también agrupa las opciones por estado. Seleccionar o deseleccionar todo sigue afectando únicamente al grupo visible, sin perder cantidades ni selecciones de otros grupos.
+
+La solicitud PDF añade una columna **Categoría**, con **Dama**, **Caballero** o **Unisex** según el catálogo, junto al nombre real, casa productora y mililitros solicitados. El alcohol no tiene categoría de perfume. El PDF no contiene estados de stock ni las divisiones Agotadas/Por agotarse. No modifica inventarios ni datos existentes.

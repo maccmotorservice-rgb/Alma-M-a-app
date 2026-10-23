@@ -59,3 +59,12 @@ test('the edited PDF prints only selected references, houses and quantities, wit
  const state=fixture(),before=JSON.stringify(state),result=await createMaterialsQuotationPdf(state,catalog,{now,selectedIds:['ess-01','ess-04'],quantities:{'ess-04':500}}),text=await result.blob.text();
  assert.equal(result.data.items.length,2);assert.match(text,/CH Men/);assert.match(text,/Armani/);assert.match(text,/500 ml/);assert.doesNotMatch(text,/Chic for Men|Bad Boy|Agotada|Por agotarse|Disponible|Existencias|Mediterranean Asset|Sugared Leather/);assert.ok(result.data.items.every(i=>!('status' in i)));assert.equal(JSON.stringify(state),before);
 });
+
+test('supplier PDF includes each catalog gender with real references and no inventory statuses',async()=>{
+ const state=initialState(catalog),before=JSON.stringify(state),products=['Dama','Caballero','Unisex'].map(category=>catalog.find(p=>p.category===category)),selectedIds=products.map(p=>'ess-'+p.id),quote=await createMaterialsQuotationPdf(state,catalog,{now,selectedIds,includeAlcohol:true}),text=await quote.blob.text();
+ for(const p of products){assert.equal(quote.data.items.find(i=>i.id==='ess-'+p.id).category,p.category);assert.match(text,new RegExp(p.category));}
+ assert.doesNotMatch(text,/Agotada|Por agotarse|Disponible|Existencias/);assert.ok(!('category' in quote.data.items.find(i=>i.id==='alcohol')));assert.equal(JSON.stringify(state),before);
+});
+test('missing or invalid catalog gender blocks quotations rather than inventing a classification',()=>{
+ const state=fixture();for(const category of [undefined,'','Otro'])assert.throws(()=>materialsQuotation(state,catalog.map(p=>p.id==='01'?{...p,category}:p)),/categoría/);
+});
