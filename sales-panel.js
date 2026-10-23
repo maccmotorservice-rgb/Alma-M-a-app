@@ -1,10 +1,10 @@
-import {cloneData,randomId} from './clone-data.js?v=76';
-import {perfumeMatches} from './catalog-tools.js?v=76';
-import {cancellationFields,mountCancellationFields,readCancellationFields} from './cancellation.js?v=76';
-import {validateEvidenceFile} from './evidence.js?v=76';
-import {buildSalesNote,salesAccounts,salesCategories,salesCategory,salesTotals,salesMoney,salesGroups,salesDate,salesCapacity,salesNoteStatus,editSalesNote,cancelSalesNote,salesPaymentSummary,addSalesPayment,validateSalesPayments,salesDraftFromBatch,salesSourceLabel,activeSalesNoteForBatch,insertSalesNote,salesFilename} from './sales.js?v=76';
-import {createSalesPdf} from './sales-pdf.js?v=76';
-import {mountPdfActions} from './pdf-share.js?v=76';
+import {cloneData,randomId} from './clone-data.js?v=77';
+import {perfumeMatches} from './catalog-tools.js?v=77';
+import {cancellationFields,mountCancellationFields,readCancellationFields} from './cancellation.js?v=77';
+import {validateEvidenceFile} from './evidence.js?v=77';
+import {buildSalesNote,salesAccounts,salesCategories,salesCategory,salesTotals,salesMoney,salesGroups,salesDate,salesCapacity,salesNoteStatus,editSalesNote,cancelSalesNote,salesPaymentSummary,addSalesPayment,validateSalesPayments,salesDraftFromBatch,salesSourceLabel,activeSalesNoteForBatch,insertSalesNote,salesFilename} from './sales.js?v=77';
+import {createSalesPdf} from './sales-pdf.js?v=77';
+import {mountPdfActions} from './pdf-share.js?v=77';
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const localDate=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
 export function createSalesPanel({catalog,getState,save,getActor,notify,uploadEvidence,getEvidenceUrl}){

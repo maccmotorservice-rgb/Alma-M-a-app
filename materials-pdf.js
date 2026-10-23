@@ -1,4 +1,4 @@
-import {isMaterialLow,extraBottles,bottleStock} from './inventory.js?v=76';
+import {isMaterialLow,extraBottles,bottleStock} from './inventory.js?v=77';
 export async function createMaterialsPdf(state,catalog,{now=new Date()}={}){
  const {jsPDF,autoTable}=await import('./assets/pdf-client.js');
  const doc=new jsPDF({unit:'mm',format:'a4'}),margin=16,zone='America/Guatemala';
@@ -31,8 +31,11 @@ export async function downloadMaterialsPdf(state,catalog){
 }
 
 // Supplier-facing names come from catalog references, never internal aliases.
-export function materialsQuoteEssences(state,catalog){
- return state.materials.filter(m=>m.kind==='Esencia'&&(m.stock===0||isMaterialLow(m))).map(material=>{
+export function materialsQuoteEssences(state,catalog,{selectedIds}={}){
+ const essences=state.materials.filter(m=>m.kind==='Esencia');
+ if(selectedIds!==undefined&&(!Array.isArray(selectedIds)||new Set(selectedIds).size!==selectedIds.length||selectedIds.some(id=>typeof id!=='string'||!essences.some(m=>m.id===id))))throw Error('La selección de esencias no es válida. Elige esencias del catálogo sin repetirlas.');
+ const selected=selectedIds===undefined?essences.filter(m=>m.stock===0||isMaterialLow(m)):essences.filter(m=>selectedIds.includes(m.id));
+ return selected.map(material=>{
   const product=catalog.find(p=>p.id===material.id.slice(4));
   if(!product?.brand?.trim()||!product.reference?.trim())throw Error('Falta el nombre real o la casa productora de la esencia '+material.id+'.');
   const house=product.brand.trim(),guide=String(product.guideReference??''),prefix=house+' / ';
@@ -41,12 +44,12 @@ export function materialsQuoteEssences(state,catalog){
   return {id:material.id,name,house,quantityMl:250};
  }).sort((a,b)=>a.house.localeCompare(b.house,'es')||a.name.localeCompare(b.name,'es'));
 }
-export function materialsQuotation(state,catalog,{quantities={},includeAlcohol=false,alcoholMl=4000}={}){
+export function materialsQuotation(state,catalog,{quantities={},includeAlcohol=false,alcoholMl=4000,selectedIds}={}){
  if(typeof includeAlcohol!=='boolean')throw Error('Indica si deseas incluir alcohol.');
  const quantity=(value,label)=>{const ml=Number(value);if(!Number.isSafeInteger(ml)||ml<250||ml>1000000)throw Error(label+': indica una cantidad entera de 250 a 1,000,000 ml.');return ml;};
- const items=materialsQuoteEssences(state,catalog).map(item=>({...item,quantityMl:quantity(quantities[item.id]??250,item.name)}));
+ const items=materialsQuoteEssences(state,catalog,{selectedIds}).map(item=>({...item,quantityMl:quantity(quantities[item.id]??250,item.name)}));
  if(includeAlcohol)items.push({id:'alcohol',name:'Alcohol',house:'',quantityMl:quantity(alcoholMl,'Alcohol')});
- if(!items.length)throw Error('No hay esencias pendientes de reposición. Puedes incluir alcohol para solicitar su cotización.');
+ if(!items.length)throw Error('No hay esencias seleccionadas. Agrega una esencia del catálogo o incluye alcohol para solicitar su cotización.');
  return {items,totalMl:items.reduce((sum,item)=>sum+item.quantityMl,0)};
 }
 export async function createMaterialsQuotationPdf(state,catalog,{now=new Date(),...options}={}){
