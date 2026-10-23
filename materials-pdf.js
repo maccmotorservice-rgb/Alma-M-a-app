@@ -1,4 +1,4 @@
-import {isMaterialLow,extraBottles,bottleStock} from './inventory.js?v=75';
+import {isMaterialLow,extraBottles,bottleStock} from './inventory.js?v=76';
 export async function createMaterialsPdf(state,catalog,{now=new Date()}={}){
  const {jsPDF,autoTable}=await import('./assets/pdf-client.js');
  const doc=new jsPDF({unit:'mm',format:'a4'}),margin=16,zone='America/Guatemala';
@@ -28,4 +28,40 @@ export async function downloadMaterialsPdf(state,catalog){
  const {blob,filename}=await createMaterialsPdf(state,catalog),url=URL.createObjectURL(blob),anchor=document.createElement('a');
  anchor.href=url;anchor.download=filename;anchor.hidden=true;document.body.append(anchor);
  try{anchor.click();}finally{anchor.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+}
+
+// Supplier-facing names come from catalog references, never internal aliases.
+export function materialsQuoteEssences(state,catalog){
+ return state.materials.filter(m=>m.kind==='Esencia'&&(m.stock===0||isMaterialLow(m))).map(material=>{
+  const product=catalog.find(p=>p.id===material.id.slice(4));
+  if(!product?.brand?.trim()||!product.reference?.trim())throw Error('Falta el nombre real o la casa productora de la esencia '+material.id+'.');
+  const house=product.brand.trim(),guide=String(product.guideReference??''),prefix=house+' / ';
+  const name=(guide.startsWith(prefix)?guide.slice(prefix.length):product.reference).trim();
+  if(!name)throw Error('Falta el nombre real de la esencia '+material.id+'.');
+  return {id:material.id,name,house,quantityMl:250};
+ }).sort((a,b)=>a.house.localeCompare(b.house,'es')||a.name.localeCompare(b.name,'es'));
+}
+export function materialsQuotation(state,catalog,{quantities={},includeAlcohol=false,alcoholMl=4000}={}){
+ if(typeof includeAlcohol!=='boolean')throw Error('Indica si deseas incluir alcohol.');
+ const quantity=(value,label)=>{const ml=Number(value);if(!Number.isSafeInteger(ml)||ml<250||ml>1000000)throw Error(label+': indica una cantidad entera de 250 a 1,000,000 ml.');return ml;};
+ const items=materialsQuoteEssences(state,catalog).map(item=>({...item,quantityMl:quantity(quantities[item.id]??250,item.name)}));
+ if(includeAlcohol)items.push({id:'alcohol',name:'Alcohol',house:'',quantityMl:quantity(alcoholMl,'Alcohol')});
+ if(!items.length)throw Error('No hay esencias pendientes de reposición. Puedes incluir alcohol para solicitar su cotización.');
+ return {items,totalMl:items.reduce((sum,item)=>sum+item.quantityMl,0)};
+}
+export async function createMaterialsQuotationPdf(state,catalog,{now=new Date(),...options}={}){
+ const data=materialsQuotation(state,catalog,options),{jsPDF,autoTable}=await import('./assets/pdf-client.js');
+ const doc=new jsPDF({unit:'mm',format:'a4'}),margin=16,zone='America/Guatemala';
+ const number=n=>new Intl.NumberFormat('es-MX',{maximumFractionDigits:0}).format(n);
+ const date=new Intl.DateTimeFormat('es-MX',{timeZone:zone,dateStyle:'long'}).format(now);
+ doc.setProperties({title:'Solicitud de cotización de esencias',subject:'Nombres reales, casas productoras y cantidades solicitadas'});
+ doc.setFont('helvetica','bold');doc.setFontSize(19);doc.text('Solicitud de cotización',margin,24);
+ doc.setFont('helvetica','normal');doc.setFontSize(10);doc.text(date+' · Guatemala',margin,33);
+ doc.text('Solicito precio y disponibilidad de los siguientes insumos:',margin,44);
+ autoTable(doc,{startY:51,head:[['Nombre real / referencia','Casa productora','Cantidad solicitada']],body:data.items.map(item=>[item.name,item.house||'—',number(item.quantityMl)+' ml']),theme:'striped',margin:{left:margin,right:margin,top:20,bottom:23},styles:{font:'helvetica',fontSize:9,cellPadding:3,overflow:'linebreak',textColor:35},headStyles:{fillColor:[235,238,237],textColor:35},columnStyles:{0:{cellWidth:82},1:{cellWidth:58},2:{cellWidth:38,halign:'right'}},rowPageBreak:'avoid'});
+ const pages=doc.getNumberOfPages();for(let page=1;page<=pages;page++){
+  doc.setPage(page);doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(100);doc.text('Solicitud de cotización',margin,287);doc.text(`${page} / ${pages}`,194,287,{align:'right'});
+ }
+ const filenameDate=new Intl.DateTimeFormat('en-CA',{timeZone:zone,year:'numeric',month:'2-digit',day:'2-digit'}).format(now);
+ return {blob:doc.output('blob'),filename:`Solicitud-Cotizacion-Esencias-${filenameDate}.pdf`,data,pages};
 }
