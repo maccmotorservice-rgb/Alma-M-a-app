@@ -1,22 +1,23 @@
-import {productionPurposeLabel} from './inventory.js?v=75';
-import {cloneData} from './clone-data.js?v=75';
-import {createStripLibrarySync} from './strip-library-sync.js?v=75';
-import {mountPdfActions} from './pdf-share.js?v=75';
-import {filterMaterialStock,materialStockCounts,materialStatus,productStockView} from './stock-views.js?v=75';
-import {createStockDictation} from './stock-dictation.js?v=75';
-import {createStripsPanel} from './strips.js?v=75';
-import {createLabelsPanel} from './labels.js?v=75';
-import {createStockScanner} from './stock-scanner.js?v=75';
-import {hasAppAccess,defaultCloudConfig,clearBusinessCache} from './access.js?v=75';
-import {annualSalesCards,salesReportHtml} from './sales-reports.js?v=75';
-import {cancellationFields,mountCancellationFields,readCancellationFields} from './cancellation.js?v=75';
-import {catalogCategories,catalogCategoryMatches,filterCatalog,perfumeMatches} from './catalog-tools.js?v=75';
-import {activeSalesNoteForBatch,salesAccounts,salesMoney} from './sales.js?v=75';
-import {createSalesPanel} from './sales-panel.js?v=75';
-import {CloudInventory} from './cloud.js?v=75';
-import {createDictationPanel} from './dictation.js?v=75';
-import {initialState,applyMovement,recipeFor,registerCustomer,productionPreview,confirmProduction,completedQuantity,batchProgress,completeBatchItem,cancelBatch,readyBatch,setBottleStocks,readyMovement,validateBackup,attributeSessionChanges,extraBottles,bottleStock,isMaterialLow,removeReadyStock} from './inventory.js?v=75';
-import {localStore,sessionStore} from './browser-storage.js?v=75';
+import {materialsQuoteEssences} from './materials-pdf.js?v=76';
+import {productionPurposeLabel} from './inventory.js?v=76';
+import {cloneData} from './clone-data.js?v=76';
+import {createStripLibrarySync} from './strip-library-sync.js?v=76';
+import {mountPdfActions} from './pdf-share.js?v=76';
+import {filterMaterialStock,materialStockCounts,materialStatus,productStockView} from './stock-views.js?v=76';
+import {createStockDictation} from './stock-dictation.js?v=76';
+import {createStripsPanel} from './strips.js?v=76';
+import {createLabelsPanel} from './labels.js?v=76';
+import {createStockScanner} from './stock-scanner.js?v=76';
+import {hasAppAccess,defaultCloudConfig,clearBusinessCache} from './access.js?v=76';
+import {annualSalesCards,salesReportHtml} from './sales-reports.js?v=76';
+import {cancellationFields,mountCancellationFields,readCancellationFields} from './cancellation.js?v=76';
+import {catalogCategories,catalogCategoryMatches,filterCatalog,perfumeMatches} from './catalog-tools.js?v=76';
+import {activeSalesNoteForBatch,salesAccounts,salesMoney} from './sales.js?v=76';
+import {createSalesPanel} from './sales-panel.js?v=76';
+import {CloudInventory} from './cloud.js?v=76';
+import {createDictationPanel} from './dictation.js?v=76';
+import {initialState,applyMovement,recipeFor,registerCustomer,productionPreview,confirmProduction,completedQuantity,batchProgress,completeBatchItem,cancelBatch,readyBatch,setBottleStocks,readyMovement,validateBackup,attributeSessionChanges,extraBottles,bottleStock,isMaterialLow,removeReadyStock} from './inventory.js?v=76';
+import {localStore,sessionStore} from './browser-storage.js?v=76';
 
 // Export startup so the small loader can report load failures without leaving
 // the access screen waiting forever. Keep top-level await out of this entry.
@@ -24,7 +25,7 @@ export const portalReady=(async()=>{
 async function loadCatalog(){
  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),12000);
  try{
-  const response=await fetch('./catalog.json?v=75',{signal:controller.signal});
+  const response=await fetch('./catalog.json?v=76',{signal:controller.signal});
   if(!response.ok)throw Error('Catálogo no disponible.');
   const data=await response.json();if(!Array.isArray(data)||!data.length)throw Error('Catálogo no válido.');
   return data;
@@ -33,6 +34,7 @@ async function loadCatalog(){
 }
 const catalog=await loadCatalog();
 let cloud=null,cloudUiError='',remoteRenderPending=false;
+let materialsReportMode='normal',materialsQuoteQuantities={},materialsQuoteIncludeAlcohol=false,materialsQuoteAlcoholMl=4000;
 let productionPdfEpoch=0,productionPdfHandle=null,productionPdfListening=false,materialsPdfEpoch=0,materialsPdfHandle=null;
 let salesReportYear=Number(new Intl.DateTimeFormat('en',{timeZone:'America/Guatemala',year:'numeric'}).format(new Date()));sessionStore.removeItem('alma-sales-import-key');if(location.hash.startsWith('#cargar-ventas='))history.replaceState(null,'',location.pathname+location.search);
 const key='alma-mia-inventory-v1';let state=initialState(catalog),view='overview',search='',category='all',advancedCatalog=false,aromaFamily='all',kind='Todos',materialGroup='Todas',materialAvailability='all',materialSort='quantity-desc',readyGender='all',readySize='all',readySort='name',batchFilter='all',batchArchive='active',storageError=false;
@@ -101,7 +103,12 @@ function materials(){
 function materialReport(){
  const missing=state.materials.filter(m=>m.stock===0),low=state.materials.filter(m=>isMaterialLow(m)).sort((a,b)=>a.stock-b.stock);
  const section=(items,label,id)=>`<section class="replenishment-section" id="${id}"><h2>${label} <span class="badge">${items.length}</span></h2>${items.length?`<div class="replenishment-grid">${items.map(m=>`<article class="card"><div class="section-head"><h3>${esc(m.name)}</h3><span class="badge ${m.stock===0?'report-missing':''}">${m.stock===0?'Agotado':'Por terminar'}</span></div><p>${esc(materialGroupName(m))}${m.kind==='Esencia'?`<br>Inspirado en ${esc(product(m.id.slice(4)).displayReference??product(m.id.slice(4)).reference)}`:''}</p><dl><div><dt>Existencias totales</dt><dd>${quantity(m)}${m.id!=='galaxolide'?`<small>${num(m.stock)} ml</small>`:''}</dd></div><div><dt>${m.kind==='Esencia'?'Criterio por frasco':'Mínimo de inventario'}</dt><dd>${m.kind==='Esencia'?'1/4 o menos':quantity(m,m.min)}${m.kind!=='Esencia'&&m.id!=='galaxolide'?`<small>${num(m.min)} ml</small>`:''}</dd></div></dl>${bottleDescription(m)}<div class="report-actions">${action('Actualizar información','stock-update','secondary',`data-id="${esc(m.id)}"`)}${m.kind==='Esencia'?'':action('Modificar mínimo','minimum','text-button',`data-id="${esc(m.id)}"`)}</div></article>`).join('')}</div>`:`<div class="card empty">${id==='report-missing'?'No hay insumos agotados.':'No hay insumos por terminar.'}</div>`}</section>`;
- return title('MATERIAS PRIMAS','Reporte de reposición','Insumos faltantes y próximos a terminar.', '<div class="report-actions"><button type="button" class="primary" id="materials-pdf">Descargar PDF</button><button type="button" class="secondary" data-view="materials">Volver a Stock de materia prima</button></div>')+`<div id="materials-pdf-output" class="report-actions" aria-live="polite"></div><div class="stats financial-stats"><div class="card"><div class="stat-label">Insumos faltantes</div><div class="number">${missing.length}</div><div class="hint">Sin existencias registradas</div></div><div class="card"><div class="stat-label">Insumos por terminar</div><div class="number">${low.length}</div><div class="hint">Esencias con 1/4 o menos en cada frasco</div></div></div><p class="notice">Las esencias aparecen por terminar si a todos sus frascos les queda 1/4 o menos. Dos frascos con 1/4 cada uno también se incluyen; si alguno supera 1/4, no se incluye esa esencia. Para alcohol y galaxolide se usa el mínimo configurado. Las existencias en cero se muestran en faltantes.</p>${section(missing,'Insumos faltantes','report-missing')}${section(low,'Insumos por terminar','report-low')}`;
+ return title('MATERIAS PRIMAS','Reporte de reposición','Insumos faltantes y próximos a terminar.', '<div class="report-actions"><button type="button" class="primary" id="materials-pdf">Ver PDF</button><button type="button" class="secondary" data-view="materials">Volver a Stock de materia prima</button></div>')+`<div class="group-tabs" aria-label="Tipo de documento de reposición">${[['normal','Reporte normal'],['quote','Solicitar cotización']].map(([mode,label])=>`<button type="button" data-material-report-mode="${mode}" aria-pressed="${materialsReportMode===mode}">${label}</button>`).join('')}</div>${materialsPdfPreviewHtml()}${materialsReportMode==='quote'?materialsQuotationHtml():`<div class="stats financial-stats"><div class="card"><div class="stat-label">Insumos faltantes</div><div class="number">${missing.length}</div><div class="hint">Sin existencias registradas</div></div><div class="card"><div class="stat-label">Insumos por terminar</div><div class="number">${low.length}</div><div class="hint">Esencias con 1/4 o menos en cada frasco</div></div></div><p class="notice">Las esencias aparecen por terminar si a todos sus frascos les queda 1/4 o menos. Dos frascos con 1/4 cada uno también se incluyen; si alguno supera 1/4, no se incluye esa esencia. Para alcohol y galaxolide se usa el mínimo configurado. Las existencias en cero se muestran en faltantes.</p>${section(missing,'Insumos faltantes','report-missing')}${section(low,'Insumos por terminar','report-low')}`}`;
+}
+function materialsPdfPreviewHtml(){return '<section id="materials-pdf-preview" class="card materials-pdf-preview" aria-label="Vista previa del PDF" hidden><h2>Vista previa del PDF</h2><p id="materials-pdf-status" role="status"></p><div id="materials-pdf-output" class="report-actions" aria-live="polite"></div><div id="materials-pdf-viewer"></div></section>';}
+function materialsQuotationHtml(){
+ const items=materialsQuoteEssences(state,catalog);
+ return `<section class="card materials-quote-controls"><h2>Solicitar cotización</h2><p>Esencias agotadas o por terminar, con su nombre real y casa productora. Cantidad inicial: 250 ml por esencia; puedes pedir más. Esta solicitud no registra una compra ni cambia existencias.</p><label class="quote-alcohol-toggle"><input type="checkbox" id="materials-quote-alcohol" ${materialsQuoteIncludeAlcohol?'checked':''}> Incluir alcohol</label><label class="field" id="materials-quote-alcohol-field" ${materialsQuoteIncludeAlcohol?'':'hidden'}>Cantidad de alcohol (ml)<input type="number" id="materials-quote-alcohol-ml" min="250" max="1000000" step="1" value="${esc(materialsQuoteAlcoholMl)}"><small>4000 ml equivalen a un galón de 4 litros.</small></label><p id="materials-quote-error" role="alert"></p><div class="table-wrap materials-quote-table"><table><thead><tr><th>Nombre real / referencia</th><th>Casa productora</th><th>Cantidad solicitada</th></tr></thead><tbody>${items.map(item=>`<tr><td>${esc(item.name)}</td><td>${esc(item.house)}</td><td><label class="field"><input type="number" min="250" max="1000000" step="1" data-quote-quantity="${esc(item.id)}" aria-label="Cantidad de ${esc(item.name)} en ml" value="${esc(materialsQuoteQuantities[item.id]??250)}"> ml</label></td></tr>`).join('')||'<tr><td colspan="3">No hay esencias pendientes de reposición. Puedes incluir alcohol si deseas cotizarlo.</td></tr>'}</tbody></table></div><p>El PDF de la solicitud incluye solo estos nombres, casas y cantidades; no incluye nombres internos ni saldos del inventario.</p></section>`;
 }
 function ready(){
  const {summary,categoryCounts,rows,visibleUnits}=productStockView(state.ready,catalog,{gender:readyGender,size:readySize,query:search,sort:readySort});
@@ -147,7 +154,18 @@ function open(type,id,size){if(!hasAppAccess(cloud))return;
  }else return;
  $('#modal').showModal();
 }
-document.addEventListener('click',async e=>{if(!hasAppAccess(cloud))return;const pdfButton=e.target.closest('#materials-pdf');if(pdfButton){await prepareMaterialsPdf(pdfButton);return;}const rankGender=e.target.closest('[data-sales-rank-gender]');if(rankGender){salesRankGender=rankGender.dataset.salesRankGender;render();return;}const rankMode=e.target.closest('[data-sales-rank-mode]');if(rankMode){salesRankMode=rankMode.dataset.salesRankMode;render();return;}const rankLimit=e.target.closest('[data-sales-rank-limit]');if(rankLimit){salesRankLimit=rankLimit.dataset.salesRankLimit==='all'?'all':Number(rankLimit.dataset.salesRankLimit);render();return;}const salesMonth=e.target.closest('[data-sales-month]');if(salesMonth){salesReportMonth=Number(salesMonth.dataset.salesMonth);render();return;}const catalogButton=e.target.closest('[data-catalog-category]');if(catalogButton){category=catalogButton.dataset.catalogCategory;aromaFamily='all';render();return;}if(e.target.closest('[data-catalog-advanced]')){advancedCatalog=!advancedCatalog;render();return;}const archive=e.target.closest('[data-batch-archive]');if(archive){batchArchive=archive.dataset.batchArchive;render();return;}const materialStatusButton=e.target.closest('[data-material-status]');if(materialStatusButton){materialAvailability=materialStatusButton.dataset.materialStatus;render();return;}const sizeButton=e.target.closest('[data-stock-size]');if(sizeButton){readySize=sizeButton.dataset.stockSize;render();return;}const genderButton=e.target.closest('[data-stock-gender]');if(genderButton){readyGender=genderButton.dataset.stockGender;render();return;}const group=e.target.closest('[data-material-group]');if(group){materialGroup=group.dataset.materialGroup;render();return;}const b=e.target.closest('[data-view],[data-action]');if(!b)return;if(b.dataset.view){dictation.stop();stockVoice.stop();scanner.stop();if(b.dataset.view==='sales')salesPanel.showHistory();if(b.dataset.view==='batches')batchArchive='active';view=b.dataset.view;search='';render();window.scrollTo({top:0});}else open(b.dataset.action,b.dataset.id,b.dataset.size);});
+document.addEventListener('click',async e=>{if(!hasAppAccess(cloud))return;const reportMode=e.target.closest('[data-material-report-mode]');if(reportMode){materialsReportMode=reportMode.dataset.materialReportMode;render();return;}const pdfButton=e.target.closest('#materials-pdf');if(pdfButton){await prepareMaterialsPdf(pdfButton);return;}const rankGender=e.target.closest('[data-sales-rank-gender]');if(rankGender){salesRankGender=rankGender.dataset.salesRankGender;render();return;}const rankMode=e.target.closest('[data-sales-rank-mode]');if(rankMode){salesRankMode=rankMode.dataset.salesRankMode;render();return;}const rankLimit=e.target.closest('[data-sales-rank-limit]');if(rankLimit){salesRankLimit=rankLimit.dataset.salesRankLimit==='all'?'all':Number(rankLimit.dataset.salesRankLimit);render();return;}const salesMonth=e.target.closest('[data-sales-month]');if(salesMonth){salesReportMonth=Number(salesMonth.dataset.salesMonth);render();return;}const catalogButton=e.target.closest('[data-catalog-category]');if(catalogButton){category=catalogButton.dataset.catalogCategory;aromaFamily='all';render();return;}if(e.target.closest('[data-catalog-advanced]')){advancedCatalog=!advancedCatalog;render();return;}const archive=e.target.closest('[data-batch-archive]');if(archive){batchArchive=archive.dataset.batchArchive;render();return;}const materialStatusButton=e.target.closest('[data-material-status]');if(materialStatusButton){materialAvailability=materialStatusButton.dataset.materialStatus;render();return;}const sizeButton=e.target.closest('[data-stock-size]');if(sizeButton){readySize=sizeButton.dataset.stockSize;render();return;}const genderButton=e.target.closest('[data-stock-gender]');if(genderButton){readyGender=genderButton.dataset.stockGender;render();return;}const group=e.target.closest('[data-material-group]');if(group){materialGroup=group.dataset.materialGroup;render();return;}const b=e.target.closest('[data-view],[data-action]');if(!b)return;if(b.dataset.view){dictation.stop();stockVoice.stop();scanner.stop();if(b.dataset.view==='sales')salesPanel.showHistory();if(b.dataset.view==='batches')batchArchive='active';view=b.dataset.view;search='';render();window.scrollTo({top:0});}else open(b.dataset.action,b.dataset.id,b.dataset.size);});
+document.addEventListener('input',e=>{
+ if(!hasAppAccess(cloud)||view!=='material-report')return;
+ if(e.target.matches('[data-quote-quantity]'))materialsQuoteQuantities[e.target.dataset.quoteQuantity]=e.target.value;
+ else if(e.target.id==='materials-quote-alcohol-ml')materialsQuoteAlcoholMl=e.target.value;
+ else return;
+ clearMaterialsPdf();const error=$('#materials-quote-error');if(error)error.textContent='';
+});
+document.addEventListener('change',e=>{
+ if(!hasAppAccess(cloud)||view!=='material-report'||e.target.id!=='materials-quote-alcohol')return;
+ materialsQuoteIncludeAlcohol=e.target.checked;$('#materials-quote-alcohol-field').hidden=!materialsQuoteIncludeAlcohol;clearMaterialsPdf();
+});
 document.addEventListener('input',e=>{if(e.target.id==='search'){search=e.target.value;render();}if(e.target.id==='sales-rank-search'){salesRankSearch=e.target.value;render();}});
 document.addEventListener('change',e=>{if(e.target.id==='sales-report-year'){salesReportYear=Number(e.target.value);salesReportMonth=null;render();}if(e.target.id==='aroma-family'){aromaFamily=e.target.value;render();}if(e.target.id==='material-sort'){materialSort=e.target.value;render();}if(e.target.id==='stock-sort'){readySort=e.target.value;render();}if(e.target.id==='kind'){kind=e.target.value;render();}if(e.target.id==='batch-filter'){batchFilter=e.target.value;render();}});
 $('#close').onclick=()=>$('#modal').close();$('#form').onsubmit=async e=>{e.preventDefault();try{const next=submit(Object.fromEntries(new FormData(e.target)));if(next===null)return;await persist(next);$('#modal').close();render();toast('Movimiento guardado.','success');}catch(err){$('#form-error').textContent=err.name==='QuotaExceededError'?'No hay espacio de almacenamiento. Exporta un respaldo.':err.message;}};
@@ -236,21 +254,29 @@ function batchDate(batch){return new Date(batch.date).toLocaleString('es-MX',{da
 function batchPurpose(batch){return productionPurposeLabel(batch.purpose);}
 function officialProductionList(batch){return `<div class="official-list"><img class="production-logo" src="./assets/logo.png" alt="Alma Mía"><div class="eyeline">ORDEN DE PRODUCCIÓN</div><h2>${batchNumber(batch)}</h2><p><strong>${esc(batchPurpose(batch))}</strong><br>${esc(batchDate(batch))}${batch.createdBy?`<br>Creado por: ${esc(batch.createdBy)}`:''}</p>${batchStatus(batch)}${batchCancellationInfo(batch)}<div class="table-wrap"><table><thead><tr><th>Perfume</th><th>Presentación</th><th>Envases</th></tr></thead><tbody>${['Dama','Caballero','Unisex'].map(g=>{const items=batch.items.filter(x=>x.category===g);return items.length?`<tr class="group-heading"><th colspan="3">${g}</th></tr>`+items.map(p=>`<tr><td>${esc(p.name)}<small>Inspirado en ${esc(p.displayReference??p.reference)} · ${esc(p.line)}</small></td><td>${p.size} ml</td><td>${p.qty}<small>${completedQuantity(p)} terminados · ${p.qty-completedQuantity(p)} ${batch.status==='cancelled'?'sin producir':'pendientes'}</small></td></tr>`).join(''):'';}).join('')}</tbody></table></div><div class="production-totals"><strong>${num(batch.totals.qty)} envases · ${num(batch.totals.volumeMl)} ml</strong><p>Materia prima para el lote:<br>${num(batch.totals.essenceMl)} ml de esencia · ${num(batch.totals.fixativeMl)} ml de galaxolide · ${num(batch.totals.alcoholMl)} ml de alcohol.</p></div></div>`;}
 
-function clearMaterialsPdf(){materialsPdfEpoch++;materialsPdfHandle?.dispose();materialsPdfHandle=null;}
+function clearMaterialsPdf(){
+ materialsPdfEpoch++;materialsPdfHandle?.dispose();materialsPdfHandle=null;
+ const preview=$('#materials-pdf-preview'),viewer=$('#materials-pdf-viewer'),output=$('#materials-pdf-output'),status=$('#materials-pdf-status'),button=$('#materials-pdf');
+ viewer?.replaceChildren();output?.replaceChildren();if(preview)preview.hidden=true;if(status)status.textContent='';if(button){button.disabled=false;button.textContent='Ver PDF';}
+}
 async function prepareMaterialsPdf(button){
  if(!hasAppAccess(cloud)||view!=='material-report'||button.disabled)return;
- clearMaterialsPdf();const token=materialsPdfEpoch,output=$('#materials-pdf-output'),snapshot=cloneData(state);
+ clearMaterialsPdf();const token=materialsPdfEpoch,output=$('#materials-pdf-output'),preview=$('#materials-pdf-preview'),viewer=$('#materials-pdf-viewer'),status=$('#materials-pdf-status'),snapshot=cloneData(state),mode=materialsReportMode;
+ const options={quantities:{...materialsQuoteQuantities},includeAlcohol:materialsQuoteIncludeAlcohol,alcoholMl:materialsQuoteAlcoholMl};
  const active=()=>token===materialsPdfEpoch&&hasAppAccess(cloud)&&view==='material-report'&&button.isConnected&&output?.isConnected;
- button.disabled=true;button.textContent='Preparando PDF…';if(output)output.textContent='Preparando reporte de materias primas…';
+ button.disabled=true;button.textContent='Preparando PDF…';preview.hidden=false;status.textContent='Preparando vista previa…';const quoteError=$('#materials-quote-error');if(quoteError)quoteError.textContent='';
  try{
   if(storageError)throw Error('Recupera el respaldo antes de generar el reporte.');
-  const {createMaterialsPdf}=await import('./materials-pdf.js?v=75'),result=await createMaterialsPdf(snapshot,catalog);
+  const module=await import('./materials-pdf.js?v=76'),result=mode==='quote'?await module.createMaterialsQuotationPdf(snapshot,catalog,options):await module.createMaterialsPdf(snapshot,catalog);
   if(!active())return;
-  output.replaceChildren();materialsPdfHandle=mountPdfActions(output,{blob:result.blob,filename:result.filename,title:'Reporte de materias primas'});
-  button.hidden=true;materialsPdfHandle.anchor.click();
- }catch(error){if(active()){output.textContent='No se pudo generar el reporte: '+error.message;toast(output.textContent);}}
- finally{if(active()){button.disabled=false;button.textContent='Descargar PDF';}}
+  materialsPdfHandle=mountPdfActions(output,{blob:result.blob,filename:result.filename,title:mode==='quote'?'Solicitud de cotización':'Reporte de materias primas'});
+  const open=document.createElement('a');open.href=materialsPdfHandle.url;open.target='_blank';open.rel='noopener noreferrer';open.className='secondary';open.textContent='Abrir PDF';output.prepend(open);
+  const frame=document.createElement('iframe');frame.title=mode==='quote'?'Solicitud de cotización PDF':'Reporte de reposición PDF';frame.src=materialsPdfHandle.url;viewer.replaceChildren(frame);status.textContent='Revisa el documento antes de descargarlo. Si no se muestra aquí, pulsa Abrir PDF.';
+  preview.scrollIntoView({block:'start',behavior:'smooth'});
+ }catch(error){if(active()){status.textContent='No se pudo generar el PDF: '+error.message;if(quoteError)quoteError.textContent=error.message;}}
+ finally{if(active()){button.disabled=false;button.textContent='Ver PDF';}}
 }
+
 function clearProductionPdf(){productionPdfEpoch++;productionPdfHandle?.dispose();productionPdfHandle=null;}
 function productionPdfControls(){return '<div id="production-pdf-actions" class="production-actions production-document-actions" aria-live="polite"><button type="button" class="secondary" disabled>Preparando PDF…</button></div>';}
 async function prepareProductionPdf(batch,{draft=false}={}){
@@ -261,7 +287,7 @@ async function prepareProductionPdf(batch,{draft=false}={}){
  const active=()=>token===productionPdfEpoch&&hasAppAccess(cloud)&&dialog.open&&output.isConnected&&dialog.contains(output);
  output.innerHTML='<button type="button" class="secondary" disabled>Preparando PDF…</button>';
  try{
-  const {createProductionPdf}=await import('./production-pdf.js?v=75'),result=await createProductionPdf(snapshot,{draft});
+  const {createProductionPdf}=await import('./production-pdf.js?v=76'),result=await createProductionPdf(snapshot,{draft});
   if(!active())return;
   output.replaceChildren();productionPdfHandle=mountPdfActions(output,{blob:result.blob,filename:result.filename,title:draft?'Lista de producción · Borrador':'Lista de producción '+batchNumber(snapshot)});
  }catch(error){if(active()){output.innerHTML=`<p role="alert">No se pudo preparar el PDF: ${esc(error.message)}</p><button type="button" class="secondary" id="production-pdf-retry">Reintentar PDF</button>`;$('#production-pdf-retry').onclick=()=>prepareProductionPdf(snapshot,{draft});}}

@@ -456,3 +456,13 @@ La imagen original se procesa en el navegador; no se envía por separado. La bib
 Al principio de las opciones personalizadas aparece **Tamaño del nombre del perfume**, con un control de 50 % a 160 % y los botones **Más pequeño** y **Más grande**. Se sincroniza con el control general de tamaño y actualiza la vista previa, ambas caras, la etiqueta central y el PNG/PDF guardados. El aumento se limita al espacio disponible para evitar recortes. Reacomodar conserva el tamaño elegido.
 
 Las tiras creadas con la opción anterior siguen disponibles con sus imágenes y archivos de impresión intactos. La lectura admite el formato anterior sin eliminar diseños ni cambiar inventarios. Recarga la app en tus equipos para ver los controles nuevos.
+
+### Vista previa y solicitud de cotización de reposición (v76)
+
+En **Stock de materia prima → Reporte de reposición / PDF** hay dos opciones: **Reporte normal** conserva los faltantes, saldos y referencias internas; **Solicitar cotización** prepara una lista para el proveedor con los nombres reales de las fragancias, sus casas productoras y las cantidades solicitadas. Usa las referencias completas y marcas del catálogo, sin incluir los nombres internos de Alma Mía ni las existencias actuales en la solicitud.
+
+La cotización incluye las esencias agotadas y las que cumplen el mismo criterio de reposición por frasco del reporte. Cada esencia comienza en **250 ml**. Puedes editar su cantidad de forma independiente desde 250 ml; no exige múltiplos de 250. **Incluir alcohol** es opcional y está desactivado por defecto. Al activarlo comienza con 4000 ml (un galón de 4 litros), también editables. No agrega galaxolide automáticamente.
+
+En ambas opciones, **Ver PDF** prepara la vista previa sin descargar nada. Puedes **Abrir PDF** en otra pestaña si tu navegador no muestra el visor, o pulsar **Descargar PDF** después de revisarlo. Cambiar cantidades, alcohol o tipo de documento retira el PDF anterior para evitar descargar una versión desactualizada; vuelve a pulsar Ver PDF. Las cantidades del borrador se conservan al cambiar entre las dos opciones durante la sesión.
+
+Generar una solicitud no la envía al proveedor, no registra compras ni modifica materias primas, ventas, unidades o datos existentes. No requiere SQL ni cambiar la configuración de Supabase. Recarga la app en tus equipos para ver las opciones nuevas.
