@@ -466,3 +466,9 @@ La cotización incluye las esencias agotadas y las que cumplen el mismo criterio
 En ambas opciones, **Ver PDF** prepara la vista previa sin descargar nada. Puedes **Abrir PDF** en otra pestaña si tu navegador no muestra el visor, o pulsar **Descargar PDF** después de revisarlo. Cambiar cantidades, alcohol o tipo de documento retira el PDF anterior para evitar descargar una versión desactualizada; vuelve a pulsar Ver PDF. Las cantidades del borrador se conservan al cambiar entre las dos opciones durante la sesión.
 
 Generar una solicitud no la envía al proveedor, no registra compras ni modifica materias primas, ventas, unidades o datos existentes. No requiere SQL ni cambiar la configuración de Supabase. Recarga la app en tus equipos para ver las opciones nuevas.
+
+### Lista editable de cotización (v77)
+
+En el mismo menú donde editas los mililitros, cada esencia muestra **Agotada**, **Por agotarse** o **Disponible**. Puedes **Quitar** cualquier fila y **Agregar esencia** desde el catálogo, buscándola por nombre o casa productora. Las esencias añadidas comienzan en 250 ml y puedes aumentar su cantidad. Quitar todas las filas conserva la lista vacía; puedes añadir otras o solicitar solamente alcohol.
+
+Estas marcas sirven únicamente para preparar la lista: el PDF contiene nombres reales, casas productoras y cantidades, sin indicar el estado del inventario. Agregar o quitar filas invalida la vista previa anterior. La selección y las cantidades se conservan al alternar entre Reporte normal y Solicitar cotización durante la sesión. Esta edición no modifica existencias ni datos guardados.

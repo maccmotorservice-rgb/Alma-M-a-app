@@ -1,4 +1,4 @@
-import {validateStripDesign} from './strip-designer.js?v=76';
+import {validateStripDesign} from './strip-designer.js?v=77';
 
 export const STRIP_LIBRARY_BUCKET = 'strip-library';
 export const MAX_STRIP_ASSET_BYTES = 80 * 1024 * 1024;

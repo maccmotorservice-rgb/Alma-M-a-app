@@ -43,3 +43,19 @@ test('normal PDF keeps internal names while the supplier PDF contains only real 
 test('a full 112-essence supplier request paginates and keeps all names and quantities',async()=>{
  const state=initialState(catalog),before=JSON.stringify(state),quote=await createMaterialsQuotationPdf(state,catalog,{now});assert.equal(quote.data.items.length,112);assert.equal(quote.data.totalMl,28000);assert.ok(quote.pages>=3);assert.ok(quote.blob.size>20000);assert.equal(JSON.stringify(state),before);
 });
+
+test('an explicit editable selection can remove report essences and add available catalog essences',()=>{
+ const state=fixture(),before=JSON.stringify(state),result=materialsQuotation(state,catalog,{selectedIds:['ess-01','ess-04'],quantities:{'ess-01':750,'ess-04':500,'ess-02':1000}});
+ assert.deepEqual(result.items.map(i=>i.id).sort(),['ess-01','ess-04']);assert.equal(result.items.find(i=>i.id==='ess-01').quantityMl,750);assert.equal(result.items.find(i=>i.id==='ess-04').quantityMl,500);assert.equal(JSON.stringify(state),before);
+ const available=initialState(catalog);for(const m of available.materials)m.stock=500;assert.equal(materialsQuotation(available,catalog,{selectedIds:['ess-05']}).items[0].id,'ess-05');
+});
+test('removing every essence stays empty and does not repopulate the automatic report selection',()=>{
+ const state=fixture();assert.deepEqual(materialsQuoteEssences(state,catalog,{selectedIds:[]}),[]);assert.throws(()=>materialsQuotation(state,catalog,{selectedIds:[]}),/No hay esencias seleccionadas/);const alcohol=materialsQuotation(state,catalog,{selectedIds:[],includeAlcohol:true});assert.equal(alcohol.items.length,1);assert.equal(alcohol.items[0].id,'alcohol');
+});
+test('editable selections reject duplicate, unknown and non-essence IDs without altering stock',()=>{
+ const state=fixture(),before=JSON.stringify(state);for(const selectedIds of [['ess-01','ess-01'],['ess-999'],['alcohol'],null,'ess-01',[undefined]])assert.throws(()=>materialsQuotation(state,catalog,{selectedIds}),/selección de esencias/);assert.equal(JSON.stringify(state),before);
+});
+test('the edited PDF prints only selected references, houses and quantities, without inventory status or removed rows',async()=>{
+ const state=fixture(),before=JSON.stringify(state),result=await createMaterialsQuotationPdf(state,catalog,{now,selectedIds:['ess-01','ess-04'],quantities:{'ess-04':500}}),text=await result.blob.text();
+ assert.equal(result.data.items.length,2);assert.match(text,/CH Men/);assert.match(text,/Armani/);assert.match(text,/500 ml/);assert.doesNotMatch(text,/Chic for Men|Bad Boy|Agotada|Por agotarse|Disponible|Existencias|Mediterranean Asset|Sugared Leather/);assert.ok(result.data.items.every(i=>!('status' in i)));assert.equal(JSON.stringify(state),before);
+});
