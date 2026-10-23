@@ -1,6 +1,6 @@
-import {cloneData,randomId} from './clone-data.js?v=78';
-import {resolveCancellationReason} from './cancellation.js?v=78';
-import {validateEvidenceMetadata} from './evidence.js?v=78';
+import {cloneData,randomId} from './clone-data.js?v=79';
+import {resolveCancellationReason} from './cancellation.js?v=79';
+import {validateEvidenceMetadata} from './evidence.js?v=79';
 export const salesCategories=['Perfumes unisex - Nicho','Perfumes de dama - Nicho','Perfumes de caballero - Nicho','Perfumes de dama - Diseñador','Perfumes de caballero - Diseñador','Perfumes unisex - Diseñador','Material promocional','Testers / probadores'];
 export const salesCategory=p=>`Perfumes ${p.category==='Dama'?'de dama':p.category==='Caballero'?'de caballero':'unisex'} - ${p.line}`;
 export const salesMoney=cents=>new Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',minimumFractionDigits:2,maximumFractionDigits:2}).format(cents/100);

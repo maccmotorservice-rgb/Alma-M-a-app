@@ -380,3 +380,9 @@ html[data-design=modern][data-version="3"] #materials-quote-error{color:#ffb8aa}
 .quote-essence-status{display:block;width:fit-content;max-width:100%;margin-top:8px;white-space:normal}
 .materials-quote-table .quote-remove-button{margin-top:8px;min-height:44px;max-width:112px;width:100%;padding:8px 6px}
 @media(max-width:760px){.materials-quote-add-controls{grid-template-columns:minmax(0,1fr)}.materials-quote-add-controls button{width:100%}}
+
+.ready-stock-notice{display:block;margin-top:8px;padding:8px 10px;border-radius:8px;background:#edf6ee;color:#23442d;white-space:normal}
+.completion-extra-row{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:12px;margin:14px 0}
+.completion-extra-row .field{min-width:0}
+.completion-extra-row input,.completion-extra-row select{width:100%;min-width:0;max-width:100%}
+@media(max-width:600px){.completion-extra-row{grid-template-columns:minmax(0,1fr)}}

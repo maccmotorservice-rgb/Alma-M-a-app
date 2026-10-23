@@ -476,3 +476,13 @@ Estas marcas sirven únicamente para preparar la lista: el PDF contiene nombres 
 ### Orden y selección de esencias para cotizar (v78)
 
 La lista muestra primero las esencias agotadas, después las que están por agotarse y al final las disponibles. Inicia filtrada en **Mostrar agotadas y por agotarse**; **Mostrar todas las esencias** permite consultar el catálogo completo. Cada fila tiene una casilla para incluirla en la cotización. **Seleccionar todo** y **Deseleccionar todo** se aplican a las filas visibles y conservan las selecciones fuera del filtro y las cantidades editadas. El contador indica todas las esencias seleccionadas, incluidas las ocultas por el filtro. Agregar una esencia muestra el catálogo completo para poder editarla. El PDF solo incluye las esencias seleccionadas, sin estados de inventario.
+
+### Aviso de stock y perfumes adicionales al confirmar producción (v79)
+
+Al elegir perfumes para un lote o pedido, y al editar su avance, aparece un aviso con las unidades ya preparadas de esa presentación en Stock. Es el saldo físico registrado y puede incluir unidades de otros pedidos; el aviso no reserva, entrega ni descuenta perfumes y no sustituye la producción solicitada.
+
+Al aumentar las unidades terminadas se revisa el avance antes de guardarlo. **¿Hiciste más de un perfume?** permite añadir varias filas de extras, cada una con perfume, presentación, cantidad adicional y destino: **Incluir en el pedido/lote original y su nota** aumenta sus cantidades; **Enviar a stock** crea un lote separado, terminado y vinculado al original, sin incluirlo en su nota. Para registrar extras de un perfume que ya tiene avances, el mismo botón aparece junto a sus controles de producción.
+
+La confirmación descuenta los insumos y registra los perfumes nuevos de todos los destinos en una sola operación. Si falta materia prima o cambió el lote en otra sesión, no se guarda parcialmente. Volver sin guardar no modifica el inventario. Las cantidades extra son adicionales a los avances indicados para el pedido original.
+
+Si existe una nota vigente del lote, los extras incluidos en el pedido actualizan esa misma nota y sus importes, conservando precios anteriores, descuento, abonos, cliente, tipo de pago y evidencia original; las nuevas presentaciones usan el precio del catálogo. Los obsequios mantienen sus importes en cero. Una nota con entrega registrada conserva los perfumes y cantidades de su entrega: en ese caso los extras se envían a stock o se registran en otro pedido. Los extras para stock nunca alteran la nota original. No se requieren SQL ni cambios en los datos existentes.

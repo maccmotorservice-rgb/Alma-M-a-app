@@ -1,4 +1,4 @@
-import {completedQuantity,recipeFor,productionPurposeLabel} from './inventory.js?v=78';
+import {completedQuantity,recipeFor,productionPurposeLabel} from './inventory.js?v=79';
 
 const GROUPS=['Dama','Caballero','Unisex'];
 const ZONE='America/Guatemala';
