@@ -1,4 +1,4 @@
-import {isMaterialLow,extraBottles,bottleStock} from './inventory.js?v=79';
+import {isMaterialLow,extraBottles,bottleStock} from './inventory.js?v=80';
 export async function createMaterialsPdf(state,catalog,{now=new Date()}={}){
  const {jsPDF,autoTable}=await import('./assets/pdf-client.js');
  const doc=new jsPDF({unit:'mm',format:'a4'}),margin=16,zone='America/Guatemala';
@@ -41,7 +41,8 @@ export function materialsQuoteEssences(state,catalog,{selectedIds}={}){
   const house=product.brand.trim(),guide=String(product.guideReference??''),prefix=house+' / ';
   const name=(guide.startsWith(prefix)?guide.slice(prefix.length):product.reference).trim();
   if(!name)throw Error('Falta el nombre real de la esencia '+material.id+'.');
-  return {id:material.id,name,house,quantityMl:250};
+  if(!['Dama','Caballero','Unisex'].includes(product.category))throw Error('Falta la categoría Dama, Caballero o Unisex de la esencia '+material.id+'.');
+  return {id:material.id,name,house,category:product.category,quantityMl:250};
  }).sort((a,b)=>a.house.localeCompare(b.house,'es')||a.name.localeCompare(b.name,'es'));
 }
 export function materialsQuotation(state,catalog,{quantities={},includeAlcohol=false,alcoholMl=4000,selectedIds}={}){
@@ -57,11 +58,11 @@ export async function createMaterialsQuotationPdf(state,catalog,{now=new Date(),
  const doc=new jsPDF({unit:'mm',format:'a4'}),margin=16,zone='America/Guatemala';
  const number=n=>new Intl.NumberFormat('es-MX',{maximumFractionDigits:0}).format(n);
  const date=new Intl.DateTimeFormat('es-MX',{timeZone:zone,dateStyle:'long'}).format(now);
- doc.setProperties({title:'Solicitud de cotización de esencias',subject:'Nombres reales, casas productoras y cantidades solicitadas'});
+ doc.setProperties({title:'Solicitud de cotización de esencias',subject:'Nombres reales, casas productoras, categorías y cantidades solicitadas'});
  doc.setFont('helvetica','bold');doc.setFontSize(19);doc.text('Solicitud de cotización',margin,24);
  doc.setFont('helvetica','normal');doc.setFontSize(10);doc.text(date+' · Guatemala',margin,33);
  doc.text('Solicito precio y disponibilidad de los siguientes insumos:',margin,44);
- autoTable(doc,{startY:51,head:[['Nombre real / referencia','Casa productora','Cantidad solicitada']],body:data.items.map(item=>[item.name,item.house||'—',number(item.quantityMl)+' ml']),theme:'striped',margin:{left:margin,right:margin,top:20,bottom:23},styles:{font:'helvetica',fontSize:9,cellPadding:3,overflow:'linebreak',textColor:35},headStyles:{fillColor:[235,238,237],textColor:35},columnStyles:{0:{cellWidth:82},1:{cellWidth:58},2:{cellWidth:38,halign:'right'}},rowPageBreak:'avoid'});
+ autoTable(doc,{startY:51,head:[['Nombre real / referencia','Casa productora','Categoría','Cantidad solicitada']],body:data.items.map(item=>[item.name,item.house||'—',item.category||'—',number(item.quantityMl)+' ml']),theme:'striped',margin:{left:margin,right:margin,top:20,bottom:23},styles:{font:'helvetica',fontSize:9,cellPadding:3,overflow:'linebreak',textColor:35},headStyles:{fillColor:[235,238,237],textColor:35},columnStyles:{0:{cellWidth:65},1:{cellWidth:46},2:{cellWidth:29},3:{cellWidth:38,halign:'right'}},rowPageBreak:'avoid'});
  const pages=doc.getNumberOfPages();for(let page=1;page<=pages;page++){
   doc.setPage(page);doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(100);doc.text('Solicitud de cotización',margin,287);doc.text(`${page} / ${pages}`,194,287,{align:'right'});
  }
