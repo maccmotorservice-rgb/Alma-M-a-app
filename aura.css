@@ -1,141 +1,246 @@
 .aura-only{display:none}
 .design-versions{grid-template-columns:repeat(4,minmax(0,1fr))}
-.design-mini-4{grid-template-columns:1fr 1fr 1fr;grid-template-rows:14px 1fr 28px;background:#edf2fc}.design-mini-4 i:first-child{grid-column:1/-1;grid-row:1;background:#fff}.design-mini-4 i:nth-child(2){grid-column:1/3;grid-row:2;background:linear-gradient(150deg,#f8faff,#e1e4ff)}.design-mini-4 i:nth-child(3){grid-column:3;grid-row:2;background:#fff}.design-mini-4 i:last-child{grid-column:1/-1;grid-row:3;background:#fff}
-html[data-design=modern][data-version="4"][data-color-theme=light]{--ink:#15234d;--muted:#58688b;--quiet:#627397;--accent:#6055e8;--accent-soft:#edf0ff;--surface:#fff;--canvas:#f3f6fc;--soft:#f4f7fd;--line:#e1e7f2;--portal-sidebar:0px;background:#f3f6fc;color-scheme:light;color:var(--ink)}
-html[data-design=modern][data-version="4"][data-color-theme=light] body{background:#f3f6fc;color:var(--ink);font-family:Manrope,-apple-system,sans-serif}
-html[data-design=modern][data-version="4"][data-color-theme=light] body::before,html[data-design=modern][data-version="4"][data-color-theme=light] body::after{display:none}
-html[data-design=modern][data-version="4"][data-color-theme=light] body>aside{display:none!important}
-html[data-design=modern][data-version="4"][data-color-theme=light] main{margin:0 auto!important;width:100%;max-width:1480px;padding:12px 36px 55px;min-height:calc(100dvh - 78px)}
-html[data-design=modern][data-version="4"][data-color-theme=light] main>header{position:static;display:flex;justify-content:space-between;align-items:center;background:transparent;border:0;box-shadow:none;height:auto;min-height:42px;padding:8px 0;margin-bottom:12px;color:#65718f;gap:12px}
-html[data-design=modern][data-version="4"][data-color-theme=light] main>header>span{font-size:9px;letter-spacing:1px}
-html[data-design=modern][data-version="4"][data-color-theme=light] .header-session{gap:12px;color:#66738e;flex-wrap:wrap;justify-content:flex-end}
-html[data-design=modern][data-version="4"][data-color-theme=light] .header-session :is(button,select){color:#405175;font-size:10px;background:#fff;border:1px solid #e1e7f2;min-height:32px;padding:6px 9px}
-html[data-design=modern][data-version="4"][data-color-theme=light] #date{font-size:10px}
-html[data-design=modern][data-version="4"][data-color-theme=light] .session-picker{font-size:10px;color:#58688b}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-only{display:block}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-header{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:18px;min-height:78px;padding:14px 32px;background:#ffffffef;border-bottom:1px solid #e3e9f4;box-shadow:0 3px 20px #1f356a05;backdrop-filter:blur(14px)}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-wordmark{border:0;background:transparent;box-shadow:none;padding:0;text-align:left;font-family:'Instrument Serif',Georgia,serif;color:#12204c;font-size:37px;font-weight:400;line-height:1;letter-spacing:-1px;white-space:nowrap}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-wordmark small{display:block;font:600 6px/1.6 Manrope,sans-serif;letter-spacing:1.7px;margin-top:5px}
-html[data-design=modern][data-version="4"][data-color-theme=light] #aura-navigation{display:flex;align-items:center;gap:4px;flex:1;justify-content:center;overflow:visible;position:static;background:transparent;border:0;box-shadow:none}
-html[data-design=modern][data-version="4"][data-color-theme=light] #aura-navigation>button,html[data-design=modern][data-version="4"][data-color-theme=light] .aura-nav-group>summary{display:flex;align-items:center;gap:8px;border:0;min-height:40px;background:transparent;padding:10px 12px;border-radius:24px;color:#25345a;font-size:11px;white-space:nowrap;cursor:pointer;list-style:none;box-shadow:none}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-nav-group>summary::-webkit-details-marker{display:none}
-html[data-design=modern][data-version="4"][data-color-theme=light] #aura-navigation>button.active,html[data-design=modern][data-version="4"][data-color-theme=light] .aura-nav-group.is-active>summary{background:#1b2f80;color:white}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-nav-group{position:relative;border:0;background:transparent;padding:0;margin:0}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-nav-group>div{position:absolute;top:calc(100% + 10px);left:0;width:245px;padding:8px;border:1px solid #e0e7f3;border-radius:14px;background:#fff;box-shadow:0 15px 40px #20376c22;display:flex;flex-direction:column;gap:4px;z-index:60}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-nav-group:last-child>div{right:0;left:auto}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-nav-group:not([open])>div{display:none}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-nav-group>div>button{border:0;background:transparent;box-shadow:none;padding:12px 14px;min-height:42px;font-size:12px;white-space:normal;text-align:left;color:#263961;border-radius:9px;display:block;width:100%}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-nav-group>div>button:hover{background:#f0f3ff;color:#5047d8}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-search,html[data-design=modern][data-version="4"][data-color-theme=light] .aura-design{border:1px solid #e1e8f6;background:#f8faff;color:#4c6087;min-height:38px;font-size:11px;white-space:nowrap;border-radius:10px;box-shadow:none}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-design{font-size:20px;padding:6px 12px}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-menu-toggle{display:none}
-html[data-design=modern][data-version="4"][data-color-theme=light] .interaction-toolbar{background:transparent;border:0;box-shadow:none;padding:0 0 14px;min-height:34px}
-html[data-design=modern][data-version="4"][data-color-theme=light] .interaction-toolbar .studio-trail{color:#6c7d98}
-html[data-design=modern][data-version="4"][data-color-theme=light] .interaction-toolbar .quick-open{background:white;border:1px solid #e1e7f2;color:#586c91;box-shadow:none}
-html[data-design=modern][data-version="4"][data-color-theme=light] #workspace-help{color:#526487;background:transparent}
-html[data-design=modern][data-version="4"][data-color-theme=light] :is(h1,h2,h3,h4){color:#15234d}
-html[data-design=modern][data-version="4"][data-color-theme=light] #content{padding:0;min-width:0}
-html[data-design=modern][data-version="4"][data-color-theme=light] .card{background:#fff;border:1px solid #e4eaf4;box-shadow:0 4px 20px #31477a04;border-radius:18px;color:#25365a}
-html[data-design=modern][data-version="4"][data-color-theme=light] .card::before,html[data-design=modern][data-version="4"][data-color-theme=light] .card::after{display:none}
-html[data-design=modern][data-version="4"][data-color-theme=light] :is(.card p,.hint,.unit-help,small){color:#647396}
-html[data-design=modern][data-version="4"][data-color-theme=light] button.primary,html[data-design=modern][data-version="4"][data-color-theme=light] a.primary{background:linear-gradient(105deg,#5749ec,#6963ff);color:#fff;border:1px solid #6159ee;border-radius:11px;box-shadow:0 4px 12px #665aff19;min-height:42px}
-html[data-design=modern][data-version="4"][data-color-theme=light] .secondary{background:#f5f7ff;color:#34497b;border:1px solid #e1e6f7;box-shadow:none;border-radius:10px}
-html[data-design=modern][data-version="4"][data-color-theme=light] .text-button{color:#4d4ad3;background:transparent;border:0;box-shadow:none}
-html[data-design=modern][data-version="4"][data-color-theme=light] :is(input,select,textarea){background:#fbfcff;color:#25365a;border-color:#dce4f2;border-radius:10px}
-html[data-design=modern][data-version="4"][data-color-theme=light] input[type=checkbox]{accent-color:#6254e8}
-html[data-design=modern][data-version="4"][data-color-theme=light] .badge{background:#f0f3fd;border-color:#e1e7f7;color:#435b8b}
-html[data-design=modern][data-version="4"][data-color-theme=light] .group-tabs button{background:#f5f7ff;border-color:#e1e7f7;color:#4e6085}
-html[data-design=modern][data-version="4"][data-color-theme=light] .group-tabs button[aria-pressed=true]{background:#233c8c;color:#fff;border-color:#233c8c}
-html[data-design=modern][data-version="4"][data-color-theme=light] :is(.table-wrap,table){border-color:#e3e9f5}
-html[data-design=modern][data-version="4"][data-color-theme=light] th{background:#f3f6fd;color:#596d95}
-html[data-design=modern][data-version="4"][data-color-theme=light] td{border-color:#edf0f7;color:#2a3b61}
-html[data-design=modern][data-version="4"][data-color-theme=light] .page-title h1{font-family:'Instrument Serif',Georgia,serif;font-weight:400;letter-spacing:-.6px}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-greeting{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:12px 0 25px}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-eyebrow{font-size:8px;letter-spacing:1.8px;font-weight:650;color:#7483a1}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-greeting h1{font:400 clamp(38px,4vw,55px)/1.1 'Instrument Serif',Georgia,serif;letter-spacing:-1px;margin:10px 0}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-greeting p{margin:0;color:#607397;font-size:14px}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin:0 0 22px}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-metric{display:flex;align-items:center;gap:12px;padding:20px 16px;border:1px solid #e3e9f5;border-radius:15px;background:#fff;color:#25365a;text-align:left;box-shadow:0 3px 18px #30436e03;min-width:0;white-space:normal;position:relative}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-metric>span:nth-child(2){font-size:11px;line-height:1.5;min-width:0}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-metric strong{display:block;font-size:clamp(17px,1.7vw,25px);line-height:1.5;color:#15234d;letter-spacing:-.5px;overflow-wrap:anywhere}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-metric small{font-size:9px;display:block;margin-top:4px}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-metric-icon{width:38px;height:38px;border-radius:10px;flex-shrink:0;display:grid;place-items:center;font-size:23px;color:#6555f0;background:#eeedff;align-self:flex-start}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-metric-icon.color-1{color:#14a68f;background:#e9faf5}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-metric-icon.color-2{color:#df812a;background:#fff2e7}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-metric-icon.color-3{color:#e35082;background:#fff0f5}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-mini-bars{display:none}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-insights{display:grid;grid-template-columns:minmax(0,2fr) minmax(270px,1fr);gap:18px;margin-bottom:20px;align-items:stretch}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-chart{padding:22px 24px;min-width:0}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-chart svg{display:block;width:100%;height:auto;margin-top:15px;overflow:visible}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-chart p{font-size:10px;margin:0}
-html[data-design=modern][data-version="4"][data-color-theme=light] .section-head h2,html[data-design=modern][data-version="4"][data-color-theme=light] .aura-priorities h2,html[data-design=modern][data-version="4"][data-color-theme=light] .aura-tools h2{font-size:15px;letter-spacing:-.3px;margin:0}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-empty-chart{text-align:center;margin:6px 0!important}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-priorities{padding:22px;display:flex;flex-direction:column;gap:12px}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-priorities>button:not(.secondary){display:flex;align-items:center;gap:12px;text-align:left;background:#fff;border:0;box-shadow:none;padding:10px 0;border-bottom:1px solid #edf0f7;min-height:56px;color:#243a64;white-space:normal}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-priorities button>span:nth-child(2){flex:1;min-width:0}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-priorities strong{display:block;font-size:12px}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-priorities small{display:block;font-size:10px;margin-top:5px}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-priorities>.secondary{margin-top:auto;width:100%;min-height:36px}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-status{height:10px;width:10px;flex-shrink:0;border-radius:50%;background:#f15f77}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-status.low{background:#f0a443}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-status.pending{background:#5b8cea}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-tools{padding:22px;margin-bottom:20px}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-tools-heading{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:20px}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-tools-heading p{font-size:10px;margin:5px 0 0}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-tabs{display:flex;gap:4px;padding:4px;background:#f3f6fe;border-radius:26px;overflow-x:auto}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-tabs button{padding:9px 14px;min-height:35px;font-size:10px;white-space:nowrap;background:transparent;border:0;border-radius:20px;box-shadow:none;color:#51658e}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-tabs button[aria-pressed=true]{background:#1d347f;color:#fff}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-tool-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-tool-grid[hidden]{display:none}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-tool-grid>button{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid #e5ebf7;border-radius:12px;padding:16px 14px;text-align:left;box-shadow:none;color:#25365a;min-width:0;white-space:normal}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-tool-grid>button>span:nth-child(2){flex:1;min-width:0}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-tool-grid strong{font-size:11px;display:block}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-tool-grid small{font-size:10px;display:block;line-height:1.7;margin-top:5px}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-tool-icon{width:30px;height:32px;background:#f2efff;color:#7a61e7;border-radius:8px;display:grid;place-items:center;font-size:22px;flex-shrink:0}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-recent{padding:22px;margin-bottom:18px}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-recent table{min-width:620px}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-recent .table-wrap{overflow-x:auto;border:0;margin-top:18px}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-recent td{font-size:11px;padding:13px 10px}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-recent th{font-size:10px;padding:10px}
-html[data-design=modern][data-version="4"][data-color-theme=light] progress{accent-color:#7864ee;height:7px;max-width:100px;margin-right:7px}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-ribbon{height:4px;width:90%;margin:24px auto;border-radius:100%;background:linear-gradient(95deg,#c4bbff,#e6b9de,#94d9e9,#8b78ff,#f4b4da);opacity:.8}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-original-details{padding:0;background:transparent;border:0;margin:24px 0}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-original-details>summary{cursor:pointer;color:#475d90;font-size:12px;border-top:1px solid #e0e7f3;padding:18px 0;font-weight:600}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-original-details>summary::marker{color:#7060e3}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-original-details .studio-overview-heading{display:none}
-html[data-design=modern][data-version="4"][data-color-theme=light] .hero{background:#edf1ff;border:1px solid #dee5f9;color:#25365a}
-html[data-design=modern][data-version="4"][data-color-theme=light] .studio-production-visual{display:none}
-html[data-design=modern][data-version="4"][data-color-theme=light] footer{background:transparent;color:#7485a6;border:0;font-size:9px}
-html[data-design=modern][data-version="4"][data-color-theme=light] .studio-dock{background:#ffffffed;border-color:#dce4f2;box-shadow:0 -4px 20px #31487909}
-html[data-design=modern][data-version="4"][data-color-theme=light] .studio-dock button{color:#65779c}
-html[data-design=modern][data-version="4"][data-color-theme=light] .studio-dock button.active{color:#4f47d8;background:#f0eeff}
-html[data-design=modern][data-version="4"][data-color-theme=light] .notice{background:#f2f5ff;border-color:#dce5f9;color:#3d557e}
-html[data-design=modern][data-version="4"][data-color-theme=light] :is(dialog,#design-picker,#quick-navigation){background:#fff;color:#25365a;border-color:#dce4f2}
-html[data-design=modern][data-version="4"][data-color-theme=light] :is(dialog,#design-picker) :is(h1,h2,h3,p,label,small){color:inherit}
-html[data-design=modern][data-version="4"][data-color-theme=light] .design-versions>button{background:#fbfcff;border-color:#e1e7f2;color:#283e6f}
-html[data-design=modern][data-version="4"][data-color-theme=light] .design-versions>button[aria-pressed=true]{background:#f0eeff;border-color:#8a77ed}
-html[data-design=modern][data-version="4"][data-color-theme=light] #studio-welcome{background:#f3f6fc;color:#15234d}
-html[data-design=modern][data-version="4"][data-color-theme=light] #studio-welcome .welcome-scene{display:none}
-html[data-design=modern][data-version="4"][data-color-theme=light] #studio-welcome :is(.welcome-greeting,.welcome-eyebrow,.welcome-quote,.welcome-detail,.welcome-note){color:#25365a}
-html[data-design=modern][data-version="4"][data-color-theme=light] #studio-welcome .welcome-mark img{filter:none}
-html[data-design=modern][data-version="4"][data-color-theme=light] #studio-welcome .welcome-close{background:#fff;color:#283e6f;border-color:#d8e2f4}
-html[data-design=modern][data-version="4"][data-color-theme=light] .access-card{background:white;border-color:#dce4f2;color:#25365a;box-shadow:0 10px 45px #263b6d0b}
-html[data-design=modern][data-version="4"][data-color-theme=light] #access-screen{background:#f3f6fc;color:#25365a}
+.design-mini-4{grid-template-columns:1fr 1fr 1fr;grid-template-rows:14px 1fr 28px;background:#101521}.design-mini-4 i:first-child{grid-column:1/-1;grid-row:1;background:#121722}.design-mini-4 i:nth-child(2){grid-column:1/3;grid-row:2;background:linear-gradient(150deg,#141a27,#2a2550)}.design-mini-4 i:nth-child(3){grid-column:3;grid-row:2;background:#121722}.design-mini-4 i:last-child{grid-column:1/-1;grid-row:3;background:#121722}
+html[data-design=modern][data-version="4"][data-color-theme=dark]{--ink:#f0f3ff;--muted:#a6b2ce;--quiet:#9eacca;--accent:#6055e8;--accent-soft:#252343;--surface:#121722;--canvas:#090c13;--soft:#111722;--line:#293246;--portal-sidebar:0px;background:#090c13;color-scheme:dark;color:var(--ink)}
+html[data-design=modern][data-version="4"][data-color-theme=dark] body{background:#090c13;color:var(--ink);font-family:Manrope,-apple-system,sans-serif}
+html[data-design=modern][data-version="4"][data-color-theme=dark] body::before,html[data-design=modern][data-version="4"][data-color-theme=dark] body::after{display:none}
+html[data-design=modern][data-version="4"][data-color-theme=dark] body>aside{display:none!important}
+html[data-design=modern][data-version="4"][data-color-theme=dark] main{margin:0 auto!important;width:100%;max-width:1480px;padding:12px 36px 55px;min-height:calc(100dvh - 78px)}
+html[data-design=modern][data-version="4"][data-color-theme=dark] main>header{position:static;display:flex;justify-content:space-between;align-items:center;background:transparent;border:0;box-shadow:none;height:auto;min-height:42px;padding:8px 0;margin-bottom:12px;color:#94a3c2;gap:12px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] main>header>span{font-size:9px;letter-spacing:1px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .header-session{gap:12px;color:#98a6c2;flex-wrap:wrap;justify-content:flex-end}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .header-session :is(button,select){color:#c2d0ee;font-size:10px;background:#121722;border:1px solid #293246;min-height:32px;padding:6px 9px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] #date{font-size:10px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .session-picker{font-size:10px;color:#a6b2ce}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-only{display:block}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-header{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:18px;min-height:78px;padding:14px 32px;background:#0c1019ed;border-bottom:1px solid #293246;box-shadow:0 3px 20px #1f356a05;backdrop-filter:blur(14px)}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-wordmark{border:0;background:transparent;box-shadow:none;padding:0;text-align:left;font-family:Manrope,-apple-system,sans-serif;color:#f0f3ff;font-size:37px;font-weight:400;line-height:1;letter-spacing:-1px;white-space:nowrap}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-wordmark small{display:block;font:600 6px/1.6 Manrope,sans-serif;letter-spacing:1.7px;margin-top:5px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] #aura-navigation{display:flex;align-items:center;gap:4px;flex:1;justify-content:center;overflow:visible;position:static;background:transparent;border:0;box-shadow:none}
+html[data-design=modern][data-version="4"][data-color-theme=dark] #aura-navigation>button,html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-nav-group>summary{display:flex;align-items:center;gap:8px;border:0;min-height:40px;background:transparent;padding:10px 12px;border-radius:24px;color:#dce3f8;font-size:11px;white-space:nowrap;cursor:pointer;list-style:none;box-shadow:none}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-nav-group>summary::-webkit-details-marker{display:none}
+html[data-design=modern][data-version="4"][data-color-theme=dark] #aura-navigation>button.active,html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-nav-group.is-active>summary{background:#37305f;color:white}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-nav-group{position:relative;border:0;background:transparent;padding:0;margin:0}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-nav-group>div{position:absolute;top:calc(100% + 10px);left:0;width:245px;padding:8px;border:1px solid #293246;border-radius:14px;background:#121722;box-shadow:0 15px 40px #20376c22;display:flex;flex-direction:column;gap:4px;z-index:60}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-nav-group:last-child>div{right:0;left:auto}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-nav-group:not([open])>div{display:none}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-nav-group>div>button{border:0;background:transparent;box-shadow:none;padding:12px 14px;min-height:42px;font-size:12px;white-space:normal;text-align:left;color:#e0e7fa;border-radius:9px;display:block;width:100%}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-nav-group>div>button:hover{background:#25243f;color:#5047d8}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-search,html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-design{border:1px solid #293246;background:#141a27;color:#a5b5d3;min-height:38px;font-size:11px;white-space:nowrap;border-radius:10px;box-shadow:none}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-design{font-size:20px;padding:6px 12px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-menu-toggle{display:none}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .interaction-toolbar{background:transparent;border:0;box-shadow:none;padding:0 0 14px;min-height:34px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .interaction-toolbar .studio-trail{color:#94a3c4}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .interaction-toolbar .quick-open{background:white;border:1px solid #293246;color:#a7b4d0;box-shadow:none}
+html[data-design=modern][data-version="4"][data-color-theme=dark] #workspace-help{color:#9eadc9;background:transparent}
+html[data-design=modern][data-version="4"][data-color-theme=dark] :is(h1,h2,h3,h4){color:#f0f3ff}
+html[data-design=modern][data-version="4"][data-color-theme=dark] #content{padding:0;min-width:0}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .card{background:#121722;border:1px solid #293246;box-shadow:0 4px 20px #31477a04;border-radius:18px;color:#dce3f8}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .card::before,html[data-design=modern][data-version="4"][data-color-theme=dark] .card::after{display:none}
+html[data-design=modern][data-version="4"][data-color-theme=dark] :is(.card p,.hint,.unit-help,small){color:#97a7c6}
+html[data-design=modern][data-version="4"][data-color-theme=dark] button.primary,html[data-design=modern][data-version="4"][data-color-theme=dark] a.primary{background:linear-gradient(105deg,#5749ec,#6963ff);color:#121722;border:1px solid #6159ee;border-radius:11px;box-shadow:0 4px 12px #665aff19;min-height:42px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .secondary{background:#171e30;color:#c4d1ef;border:1px solid #293246;box-shadow:none;border-radius:10px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .text-button{color:#4d4ad3;background:transparent;border:0;box-shadow:none}
+html[data-design=modern][data-version="4"][data-color-theme=dark] :is(input,select,textarea){background:#111722;color:#dce3f8;border-color:#293246;border-radius:10px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] input[type=checkbox]{accent-color:#6254e8}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .badge{background:#1f2940;border-color:#293246;color:#bfd2f9}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .group-tabs button{background:#171e30;border-color:#293246;color:#a9b9da}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .group-tabs button[aria-pressed=true]{background:#49387d;color:#121722;border-color:#49387d}
+html[data-design=modern][data-version="4"][data-color-theme=dark] :is(.table-wrap,table){border-color:#293246}
+html[data-design=modern][data-version="4"][data-color-theme=dark] th{background:#171e2c;color:#a5b8d8}
+html[data-design=modern][data-version="4"][data-color-theme=dark] td{border-color:#293246;color:#d2dcee}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .page-title h1{font-family:Manrope,-apple-system,sans-serif;font-weight:400;letter-spacing:-.6px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-greeting{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:12px 0 25px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-eyebrow{font-size:8px;letter-spacing:1.8px;font-weight:650;color:#95a4c5}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-greeting h1{font:750 clamp(34px,4vw,54px)/1.1 Manrope,-apple-system,sans-serif;letter-spacing:-1px;margin:10px 0}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-greeting p{margin:0;color:#a4b2ce;font-size:14px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin:0 0 22px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-metric{display:flex;align-items:center;gap:12px;padding:20px 16px;border:1px solid #293246;border-radius:15px;background:#121722;color:#dce3f8;text-align:left;box-shadow:0 3px 18px #30436e03;min-width:0;white-space:normal;position:relative}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-metric>span:nth-child(2){font-size:11px;line-height:1.5;min-width:0}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-metric strong{display:block;font-size:clamp(17px,1.7vw,25px);line-height:1.5;color:#f0f3ff;letter-spacing:-.5px;overflow-wrap:anywhere}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-metric small{font-size:9px;display:block;margin-top:4px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-metric-icon{width:38px;height:38px;border-radius:10px;flex-shrink:0;display:grid;place-items:center;font-size:23px;color:#6555f0;background:#2a2546;align-self:flex-start}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-metric-icon.color-1{color:#6de2c9;background:#14312f}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-metric-icon.color-2{color:#f9b17f;background:#33251e}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-metric-icon.color-3{color:#f08fbd;background:#321f32}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-mini-bars{display:none}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-insights{display:grid;grid-template-columns:minmax(0,2fr) minmax(270px,1fr);gap:18px;margin-bottom:20px;align-items:stretch}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-chart{padding:22px 24px;min-width:0}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-chart svg{display:block;width:100%;height:auto;margin-top:15px;overflow:visible}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-chart p{font-size:10px;margin:0}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .section-head h2,html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-priorities h2,html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-tools h2{font-size:15px;letter-spacing:-.3px;margin:0}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-empty-chart{text-align:center;margin:6px 0!important}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-priorities{padding:22px;display:flex;flex-direction:column;gap:12px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-priorities>button:not(.secondary){display:flex;align-items:center;gap:12px;text-align:left;background:#121722;border:0;box-shadow:none;padding:10px 0;border-bottom:1px solid #293246;min-height:56px;color:#dce5fa;white-space:normal}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-priorities button>span:nth-child(2){flex:1;min-width:0}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-priorities strong{display:block;font-size:12px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-priorities small{display:block;font-size:10px;margin-top:5px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-priorities>.secondary{margin-top:auto;width:100%;min-height:36px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-status{height:10px;width:10px;flex-shrink:0;border-radius:50%;background:#f15f77}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-status.low{background:#f0a443}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-status.pending{background:#5b8cea}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-tools{padding:22px;margin-bottom:20px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-tools-heading{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:20px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-tools-heading p{font-size:10px;margin:5px 0 0}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-tabs{display:flex;gap:4px;padding:4px;background:#171d2c;border-radius:26px;overflow-x:auto}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-tabs button{padding:9px 14px;min-height:35px;font-size:10px;white-space:nowrap;background:transparent;border:0;border-radius:20px;box-shadow:none;color:#afbad4}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-tabs button[aria-pressed=true]{background:#3b3067;color:#121722}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-tool-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-tool-grid[hidden]{display:none}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-tool-grid>button{display:flex;align-items:center;gap:12px;background:#121722;border:1px solid #293246;border-radius:12px;padding:16px 14px;text-align:left;box-shadow:none;color:#dce3f8;min-width:0;white-space:normal}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-tool-grid>button>span:nth-child(2){flex:1;min-width:0}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-tool-grid strong{font-size:11px;display:block}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-tool-grid small{font-size:10px;display:block;line-height:1.7;margin-top:5px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-tool-icon{width:30px;height:32px;background:#25223d;color:#7a61e7;border-radius:8px;display:grid;place-items:center;font-size:22px;flex-shrink:0}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-recent{padding:22px;margin-bottom:18px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-recent table{min-width:620px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-recent .table-wrap{overflow-x:auto;border:0;margin-top:18px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-recent td{font-size:11px;padding:13px 10px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-recent th{font-size:10px;padding:10px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] progress{accent-color:#7864ee;height:7px;max-width:100px;margin-right:7px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-ribbon{height:4px;width:90%;margin:24px auto;border-radius:100%;background:linear-gradient(95deg,#c4bbff,#e6b9de,#94d9e9,#8b78ff,#f4b4da);opacity:.8}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-original-details{padding:0;background:transparent;border:0;margin:24px 0}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-original-details>summary{cursor:pointer;color:#bdc9e6;font-size:12px;border-top:1px solid #293246;padding:18px 0;font-weight:600}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-original-details>summary::marker{color:#7060e3}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-original-details .studio-overview-heading{display:none}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .hero{background:#14192a;border:1px solid #293246;color:#dce3f8}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .studio-production-visual{display:none}
+html[data-design=modern][data-version="4"][data-color-theme=dark] footer{background:transparent;color:#889ab8;border:0;font-size:9px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .studio-dock{background:#111722ed;border-color:#293246;box-shadow:0 -4px 20px #31487909}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .studio-dock button{color:#9eafce}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .studio-dock button.active{color:#4f47d8;background:#292346}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .notice{background:#181f31;border-color:#293246;color:#b5c8e7}
+html[data-design=modern][data-version="4"][data-color-theme=dark] :is(dialog,#design-picker,#quick-navigation){background:#121722;color:#dce3f8;border-color:#293246}
+html[data-design=modern][data-version="4"][data-color-theme=dark] :is(dialog,#design-picker) :is(h1,h2,h3,p,label,small){color:inherit}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .design-versions>button{background:#111722;border-color:#293246;color:#dce3f8}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .design-versions>button[aria-pressed=true]{background:#292346;border-color:#8a77ed}
+html[data-design=modern][data-version="4"][data-color-theme=dark] #studio-welcome{background:#090c13;color:#f0f3ff}
+html[data-design=modern][data-version="4"][data-color-theme=dark] #studio-welcome .welcome-scene{display:none}
+html[data-design=modern][data-version="4"][data-color-theme=dark] #studio-welcome :is(.welcome-greeting,.welcome-eyebrow,.welcome-quote,.welcome-detail,.welcome-note){color:#dce3f8}
+html[data-design=modern][data-version="4"][data-color-theme=dark] #studio-welcome .welcome-mark img{filter:none}
+html[data-design=modern][data-version="4"][data-color-theme=dark] #studio-welcome .welcome-close{background:#121722;color:#dce3f8;border-color:#293246}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .access-card{background:white;border-color:#293246;color:#dce3f8;box-shadow:0 10px 45px #263b6d0b}
+html[data-design=modern][data-version="4"][data-color-theme=dark] #access-screen{background:#090c13;color:#dce3f8}
 body.access-locked>.aura-header{display:none!important}
-@media(max-width:1200px){html[data-design=modern][data-version="4"][data-color-theme=light] .aura-header{gap:10px;padding:12px 22px}html[data-design=modern][data-version="4"][data-color-theme=light] .aura-search span{display:none}html[data-design=modern][data-version="4"][data-color-theme=light] .aura-wordmark{font-size:31px}html[data-design=modern][data-version="4"][data-color-theme=light] .aura-nav-group>summary,html[data-design=modern][data-version="4"][data-color-theme=light] #aura-navigation>button{padding:10px 9px;font-size:10px}}
-@media(max-width:950px){html[data-design=modern][data-version="4"][data-color-theme=light] .aura-header{flex-wrap:wrap;min-height:70px;padding:12px 20px;gap:12px}html[data-design=modern][data-version="4"][data-color-theme=light] .aura-wordmark{margin-right:auto}html[data-design=modern][data-version="4"][data-color-theme=light] .aura-menu-toggle{display:block;min-height:36px;order:4}html[data-design=modern][data-version="4"][data-color-theme=light] #aura-navigation{display:none;order:5;flex-basis:100%;flex-direction:column;align-items:stretch;padding:10px 0;max-height:65dvh;overflow:auto;justify-content:flex-start}html[data-design=modern][data-version="4"][data-color-theme=light] .aura-menu-open #aura-navigation{display:flex}html[data-design=modern][data-version="4"][data-color-theme=light] .aura-nav-group>div{position:static;width:100%;margin:6px 0;box-shadow:none;background:#f6f8fe}html[data-design=modern][data-version="4"][data-color-theme=light] .aura-nav-group>summary{justify-content:space-between;font-size:12px}html[data-design=modern][data-version="4"][data-color-theme=light] main{padding:12px 20px 95px}html[data-design=modern][data-version="4"][data-color-theme=light] .aura-insights{grid-template-columns:minmax(0,1fr)}html[data-design=modern][data-version="4"][data-color-theme=light] .aura-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}html[data-design=modern][data-version="4"][data-color-theme=light] main>header>span,html[data-design=modern][data-version="4"][data-color-theme=light] #date{display:none}html[data-design=modern][data-version="4"][data-color-theme=light] main>header{justify-content:flex-end}html[data-design=modern][data-version="4"][data-color-theme=light] .aura-tools-heading{align-items:flex-start;flex-direction:column}html[data-design=modern][data-version="4"][data-color-theme=light] .aura-tool-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:600px){.design-versions{grid-template-columns:repeat(2,minmax(0,1fr))}html[data-design=modern][data-version="4"][data-color-theme=light] main{padding:8px 14px 100px}html[data-design=modern][data-version="4"][data-color-theme=light] .aura-header{padding:12px 14px;gap:8px}html[data-design=modern][data-version="4"][data-color-theme=light] .aura-search{padding:6px 10px;font-size:18px}html[data-design=modern][data-version="4"][data-color-theme=light] .aura-design{padding:6px 10px}html[data-design=modern][data-version="4"][data-color-theme=light] .header-session{gap:5px}html[data-design=modern][data-version="4"][data-color-theme=light] .session-picker{font-size:0}html[data-design=modern][data-version="4"][data-color-theme=light] .aura-greeting{align-items:flex-start;padding-top:5px;gap:10px}html[data-design=modern][data-version="4"][data-color-theme=light] .aura-greeting h1{font-size:37px}html[data-design=modern][data-version="4"][data-color-theme=light] .aura-greeting p{font-size:11px;line-height:1.8}html[data-design=modern][data-version="4"][data-color-theme=light] .aura-greeting .primary{font-size:9px;padding:8px 9px;min-width:100px;white-space:normal;margin-top:18px}html[data-design=modern][data-version="4"][data-color-theme=light] .aura-eyebrow{font-size:6px;letter-spacing:1.1px}html[data-design=modern][data-version="4"][data-color-theme=light] .aura-metrics{gap:10px}html[data-design=modern][data-version="4"][data-color-theme=light] .aura-metric{gap:8px;padding:14px 10px}html[data-design=modern][data-version="4"][data-color-theme=light] .aura-metric-icon{height:28px;width:28px;font-size:18px}html[data-design=modern][data-version="4"][data-color-theme=light] .aura-metric>span:nth-child(2){font-size:9px}html[data-design=modern][data-version="4"][data-color-theme=light] .aura-metric strong{font-size:18px}html[data-design=modern][data-version="4"][data-color-theme=light] .aura-metric small{font-size:8px}html[data-design=modern][data-version="4"][data-color-theme=light] .aura-chart,html[data-design=modern][data-version="4"][data-color-theme=light] .aura-priorities,html[data-design=modern][data-version="4"][data-color-theme=light] .aura-tools,html[data-design=modern][data-version="4"][data-color-theme=light] .aura-recent{padding:17px 14px}html[data-design=modern][data-version="4"][data-color-theme=light] .aura-tool-grid{grid-template-columns:minmax(0,1fr)}html[data-design=modern][data-version="4"][data-color-theme=light] .aura-tabs{width:100%;justify-content:space-between}html[data-design=modern][data-version="4"][data-color-theme=light] .aura-tabs button{padding:9px 12px}html[data-design=modern][data-version="4"][data-color-theme=light] .aura-recent table{min-width:560px}html[data-design=modern][data-version="4"][data-color-theme=light] .aura-priorities strong{font-size:12px}}
+@media(max-width:1200px){html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-header{gap:10px;padding:12px 22px}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-search span{display:none}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-wordmark{font-size:31px}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-nav-group>summary,html[data-design=modern][data-version="4"][data-color-theme=dark] #aura-navigation>button{padding:10px 9px;font-size:10px}}
+@media(max-width:950px){html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-header{flex-wrap:wrap;min-height:70px;padding:12px 20px;gap:12px}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-wordmark{margin-right:auto}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-menu-toggle{display:block;min-height:36px;order:4}html[data-design=modern][data-version="4"][data-color-theme=dark] #aura-navigation{display:none;order:5;flex-basis:100%;flex-direction:column;align-items:stretch;padding:10px 0;max-height:65dvh;overflow:auto;justify-content:flex-start}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-menu-open #aura-navigation{display:flex}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-nav-group>div{position:static;width:100%;margin:6px 0;box-shadow:none;background:#151c2b}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-nav-group>summary{justify-content:space-between;font-size:12px}html[data-design=modern][data-version="4"][data-color-theme=dark] main{padding:12px 20px 95px}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-insights{grid-template-columns:minmax(0,1fr)}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}html[data-design=modern][data-version="4"][data-color-theme=dark] main>header>span,html[data-design=modern][data-version="4"][data-color-theme=dark] #date{display:none}html[data-design=modern][data-version="4"][data-color-theme=dark] main>header{justify-content:flex-end}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-tools-heading{align-items:flex-start;flex-direction:column}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-tool-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.design-versions{grid-template-columns:repeat(2,minmax(0,1fr))}html[data-design=modern][data-version="4"][data-color-theme=dark] main{padding:8px 14px 100px}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-header{padding:12px 14px;gap:8px}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-search{padding:6px 10px;font-size:18px}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-design{padding:6px 10px}html[data-design=modern][data-version="4"][data-color-theme=dark] .header-session{gap:5px}html[data-design=modern][data-version="4"][data-color-theme=dark] .session-picker{font-size:0}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-greeting{align-items:flex-start;padding-top:5px;gap:10px}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-greeting h1{font-size:37px}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-greeting p{font-size:11px;line-height:1.8}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-greeting .primary{font-size:9px;padding:8px 9px;min-width:100px;white-space:normal;margin-top:18px}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-eyebrow{font-size:6px;letter-spacing:1.1px}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-metrics{gap:10px}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-metric{gap:8px;padding:14px 10px}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-metric-icon{height:28px;width:28px;font-size:18px}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-metric>span:nth-child(2){font-size:9px}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-metric strong{font-size:18px}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-metric small{font-size:8px}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-chart,html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-priorities,html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-tools,html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-recent{padding:17px 14px}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-tool-grid{grid-template-columns:minmax(0,1fr)}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-tabs{width:100%;justify-content:space-between}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-tabs button{padding:9px 12px}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-recent table{min-width:560px}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-priorities strong{font-size:12px}}
 /* Keep the first screen compact and the primary controls easy to read. */
-html[data-design=modern][data-version="4"][data-color-theme=light] .interaction-toolbar{margin:0 0 8px!important;padding:0;min-height:28px}
-html[data-design=modern][data-version="4"][data-color-theme=light] .interaction-toolbar .quick-open{display:none}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-greeting{padding-top:6px;padding-bottom:22px}
-html[data-design=modern][data-version="4"][data-color-theme=light] #content .primary{background:linear-gradient(105deg,#5749ec,#6963ff);color:white;border-color:#6159ee;box-shadow:0 4px 12px #665aff19}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-nav-group>summary,html[data-design=modern][data-version="4"][data-color-theme=light] #aura-navigation>button{font-size:12px}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-tool-grid strong{font-size:12px}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-tool-grid small{font-size:11px}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-metric>span:nth-child(2){font-size:12px}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-metric small{font-size:10px}
-@media(max-width:1200px){html[data-design=modern][data-version="4"][data-color-theme=light] .aura-nav-group>summary,html[data-design=modern][data-version="4"][data-color-theme=light] #aura-navigation>button{font-size:11px}}
-@media(max-width:600px){html[data-design=modern][data-version="4"][data-color-theme=light] .aura-metric>span:nth-child(2){font-size:10px}html[data-design=modern][data-version="4"][data-color-theme=light] .aura-metric small{font-size:9px}}
-html[data-design=modern][data-version="4"][data-color-theme=light] .aura-chart svg{height:220px}
-@media(max-width:600px){html[data-design=modern][data-version="4"][data-color-theme=light] .aura-chart svg{height:170px}}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .interaction-toolbar{margin:0 0 8px!important;padding:0;min-height:28px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .interaction-toolbar .quick-open{display:none}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-greeting{padding-top:6px;padding-bottom:22px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] #content .primary{background:linear-gradient(105deg,#5749ec,#6963ff);color:white;border-color:#6159ee;box-shadow:0 4px 12px #665aff19}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-nav-group>summary,html[data-design=modern][data-version="4"][data-color-theme=dark] #aura-navigation>button{font-size:12px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-tool-grid strong{font-size:12px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-tool-grid small{font-size:11px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-metric>span:nth-child(2){font-size:12px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-metric small{font-size:10px}
+@media(max-width:1200px){html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-nav-group>summary,html[data-design=modern][data-version="4"][data-color-theme=dark] #aura-navigation>button{font-size:11px}}
+@media(max-width:600px){html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-metric>span:nth-child(2){font-size:10px}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-metric small{font-size:9px}}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-chart svg{height:220px}
+@media(max-width:600px){html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-chart svg{height:170px}}
+
+/* Liquid: solid charcoal surfaces with fluid colour used as a graphic element. */
+html[data-design=modern][data-version="4"][data-color-theme=dark]{--ink:#eff3ff;--muted:#a4b2ce;--quiet:#91a0bf;--surface:#111722;--canvas:#090c13;--soft:#171e2c;--line:#293246;--accent:#a28aff;--accent-soft:#26223d;font-family:Manrope,-apple-system,sans-serif;color-scheme:dark}
+html[data-design=modern][data-version="4"][data-color-theme=dark] body{background:#090c13}
+html[data-design=modern][data-version="4"][data-color-theme=dark] :is(h1,h2,h3,h4,.welcome-greeting,#design-picker-title){font-family:Manrope,-apple-system,sans-serif!important;font-weight:680;letter-spacing:-.5px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-header{min-height:72px;background:#0d111bec;border-bottom:1px solid #232b3b;padding-top:12px;padding-bottom:12px;box-shadow:none}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-wordmark{display:flex;align-items:center;gap:11px;color:#f2f4ff;font:750 23px/1.1 Manrope,-apple-system,sans-serif;letter-spacing:-1.1px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-wordmark small{font-size:7px;letter-spacing:2.2px;font-weight:500;color:#8a9cbf;margin-top:5px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .liquid-brand-mark{display:block;position:relative;width:28px;height:31px;transform:rotate(-18deg);border-radius:12px 16px 11px 15px;background:linear-gradient(135deg,#8f64ff 6%,#c7a6ff 34%,#56dadd 67%,#6b6be5);box-shadow:inset 2px 2px 5px #ffffff75,inset -3px -3px 5px #28235f80}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .liquid-brand-mark:after{content:'';position:absolute;inset:8px 7px;border-radius:50%;background:#15172a;box-shadow:inset 1px 1px 3px #040510}
+html[data-design=modern][data-version="4"][data-color-theme=dark] #aura-navigation>button,html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-nav-group>summary{border-radius:11px;font-weight:550;color:#a7b4d0}
+html[data-design=modern][data-version="4"][data-color-theme=dark] #aura-navigation>button.active,html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-nav-group.is-active>summary{background:#25213d;color:#d6c7ff;box-shadow:inset 0 0 0 1px #70619c55}
+html[data-design=modern][data-version="4"][data-color-theme=dark] #aura-navigation>button svg,html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-search svg{width:16px;height:16px;display:inline-block;flex-shrink:0}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-search{display:flex;align-items:center;gap:8px;background:#151b28;border:1px solid #2b354b;color:#aabbd8}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-nav-group>div{background:#141b29;border:1px solid #303b53;box-shadow:0 18px 55px #0008}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-nav-group>div>button:hover{background:#27253d;color:#d1c3ff}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-greeting{position:relative;min-height:165px;overflow:hidden;padding:28px 30px;border:1px solid #293247;border-radius:22px;background:#111622;margin:8px 0 20px;isolation:isolate;gap:20px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-greeting>div,html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-greeting>button{position:relative;z-index:2}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-greeting>div{max-width:55%}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-greeting h1{font:750 clamp(32px,3.6vw,48px)/1.15 Manrope,-apple-system,sans-serif;letter-spacing:-1.8px;margin:12px 0 10px;color:#f2f5ff}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-eyebrow{display:flex;align-items:center;gap:7px;font-size:8px;letter-spacing:1.5px;color:#a9b5d2}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-eyebrow i{height:5px;width:5px;border-radius:50%;background:#74e5d1;box-shadow:0 0 8px #74e5d155}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-greeting p{font-size:12px;color:#a6b5d1;max-width:360px;line-height:1.8}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .liquid-graphic{position:absolute;z-index:0;right:90px;top:0;width:50%;height:100%;opacity:.95;pointer-events:none}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-greeting>.primary{align-self:flex-end;font-size:11px;background:#28243e!important;border:1px solid #72619e!important;box-shadow:inset 0 1px 0 #bda7ff23!important;border-radius:11px;color:#e7dfff!important;backdrop-filter:blur(10px);white-space:nowrap}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-metrics{gap:13px;margin-bottom:20px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-metric{position:relative;overflow:hidden;border-radius:15px;background:#121824;border:1px solid #293246;padding:20px 18px;min-height:116px;transition:border-color .18s,background .18s}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-metric:hover{background:#171e2d;border-color:#6f608f}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-metric:after{content:'';position:absolute;bottom:0;left:20px;right:20px;height:2px;border-radius:50%;opacity:.6;background:linear-gradient(90deg,transparent,#9b73ff,#62d7df,transparent)}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-metric:nth-child(2):after{background:linear-gradient(90deg,transparent,#55c9d1,#97f2cb,transparent)}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-metric:nth-child(3):after{background:linear-gradient(90deg,transparent,#ea9ab1,#c5a0ff,transparent)}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-metric:nth-child(4):after{background:linear-gradient(90deg,transparent,#e486dc,#b291ff,transparent)}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-metric-icon{color:#bda9ff;background:#2a2443;border:1px solid #66508b55;border-radius:12px;width:39px;height:39px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-metric-icon.color-1{color:#7ae7db;background:#193237;border-color:#4aa79f44}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-metric-icon.color-2{color:#efaacc;background:#342235;border-color:#a15b8344}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-metric-icon.color-3{color:#c5a6fa;background:#2b2340;border-color:#805baf44}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-metric-icon svg{height:21px;width:21px;display:block}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-metric strong{font-weight:720;font-size:27px;letter-spacing:-.9px;margin-top:3px;color:#f1f5ff}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .card{border:1px solid #283145;background:#111722;box-shadow:none;border-radius:17px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .section-head h2,html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-priorities h2,html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-tools h2{font-size:15px;font-weight:640;letter-spacing:-.35px;color:#e8edfd}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-chart svg{height:205px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-chart svg text{fill:#95a8c7;font-family:Manrope,sans-serif}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-chart svg line{stroke:#263044}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-chart svg circle{fill:#131b29;stroke:#73e3d7}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-priorities>button:not(.secondary){background:transparent;border-color:#263045;color:#e0e7fa}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-priorities>.secondary{background:#1b2435;border-color:#34425b;color:#c2d3f5}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-tools{background:#101621;border-color:#283145}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-tabs{background:#171e2b;border:1px solid #2a3448;padding:4px;border-radius:13px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-tabs button{border-radius:9px;color:#9dabc6;font-weight:550}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-tabs button[aria-pressed=true]{background:linear-gradient(120deg,#38304d,#263d49);color:#e6e2ff;box-shadow:inset 0 0 0 1px #8c79b344}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-tool-grid>button{background:#151c29;border-color:#2a3448;border-radius:12px;color:#dce6fa;padding:17px 15px;transition:background .18s,border-color .18s}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-tool-grid>button:hover{background:#1b2334;border-color:#64759b}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-tool-icon{width:34px;height:36px;background:#26253f;border:1px solid #63518444;color:#b5a3ee;border-radius:10px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-tool-icon svg{width:19px;height:19px;display:block}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-tool-grid strong{font-size:12px;font-weight:600}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-tool-grid small{color:#94a6c7;font-size:10px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-tool-grid>button:nth-child(3n+2) .aura-tool-icon{background:#1a3037;border-color:#3f8d9f44;color:#72c5d8}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-tool-grid>button:nth-child(3n) .aura-tool-icon{background:#30233b;border-color:#8d5f9f44;color:#d49bdc}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-recent th{background:#1a2232;color:#a2b4d2;text-transform:none;letter-spacing:.2px;font-weight:500}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-recent td{color:#c6d3ec;border-color:#242e40}
+html[data-design=modern][data-version="4"][data-color-theme=dark] progress{accent-color:#aa86ff;background:#20283b;border:0;border-radius:8px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] progress::-webkit-progress-bar{background:#20283b;border-radius:8px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] progress::-webkit-progress-value{background:linear-gradient(90deg,#a477f3,#6bd7db);border-radius:8px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] progress::-moz-progress-bar{background:linear-gradient(90deg,#a477f3,#6bd7db);border-radius:8px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .badge{background:#212a3e;color:#bdcdf1;border-color:#35415c}
+html[data-design=modern][data-version="4"][data-color-theme=dark] #content .primary{background:linear-gradient(110deg,#6d55cf,#9974e4);border-color:#ae8be9;color:#fff;box-shadow:inset 0 1px 0 #ffffff26,0 4px 15px #513b8522}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .secondary{background:#1a2333;border-color:#34415b;color:#bacbeb}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .text-button{color:#ae9ce4}
+html[data-design=modern][data-version="4"][data-color-theme=dark] :is(input,select,textarea){background:#0e1420;color:#dee8fd;border-color:#34415b}
+html[data-design=modern][data-version="4"][data-color-theme=dark] input::placeholder,html[data-design=modern][data-version="4"][data-color-theme=dark] textarea::placeholder{color:#7f91b1}
+html[data-design=modern][data-version="4"][data-color-theme=dark] input:focus,html[data-design=modern][data-version="4"][data-color-theme=dark] select:focus,html[data-design=modern][data-version="4"][data-color-theme=dark] textarea:focus{border-color:#aa8ce2;outline-color:#aa8ce2}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .group-tabs button{background:#171f2e;color:#b5c4df;border-color:#2c3952}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .group-tabs button[aria-pressed=true]{background:#3b3057;color:#e5d5ff;border-color:#7e63ae}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-ribbon{height:3px;opacity:.7;background:linear-gradient(90deg,transparent,#9866e9,#e897d4,#7be8db,#6c86f1,transparent)}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-original-details>summary{color:#9dadc9;border-color:#293246}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-original-details .hero{background:#171e30;border-color:#34415d;color:#d4dff5}
+html[data-design=modern][data-version="4"][data-color-theme=dark] #studio-welcome .welcome-greeting{font-family:Manrope,sans-serif!important;font-weight:700;font-size:clamp(36px,5vw,62px);letter-spacing:-1.5px}
+html[data-design=modern][data-version="4"][data-color-theme=dark] #studio-welcome .welcome-mark img{filter:brightness(0) invert(1)}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .design-mini-4{background:#111623}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .design-mini-4 i:first-child{background:#1d2639;border-color:#35415a}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .design-mini-4 i:nth-child(2){background:linear-gradient(140deg,#8f64dc,#e899cc 45%,#54cbda);border:0}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .design-mini-4 i:nth-child(3),html[data-design=modern][data-version="4"][data-color-theme=dark] .design-mini-4 i:last-child{background:#212b3f;border-color:#35415a}
+html[data-design=modern][data-version="4"][data-color-theme=dark] #design-picker .design-versions>button{background:#171f2e;border-color:#35415b;color:#d7e3fa}
+html[data-design=modern][data-version="4"][data-color-theme=dark] #design-picker .design-versions>button[aria-pressed=true]{background:#29213e;border-color:#a183dc}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .sales-document{color:#253044;background:#fff}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .sales-document :is(h1,h2,h3,p,td,th,label,small){color:#253044}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .sales-document th{background:#edf1f7}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .sales-document td{background:#fff;border-color:#d9e0eb}
+@media(max-width:950px){html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-nav-group>div{background:#131c2a}html[data-design=modern][data-version="4"][data-color-theme=dark] .liquid-graphic{right:-50px;width:70%;opacity:.7}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-greeting{padding:26px 22px;min-height:170px}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-greeting>div{max-width:70%}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-greeting>.primary{font-size:10px}}
+@media(max-width:600px){html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-wordmark{font-size:21px;gap:8px}html[data-design=modern][data-version="4"][data-color-theme=dark] .liquid-brand-mark{width:25px;height:28px}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-header{padding:13px 14px}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-greeting{padding:24px 18px;min-height:210px;display:flex;align-items:flex-start;flex-direction:column;gap:15px}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-greeting>div{max-width:100%}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-greeting h1{font-size:33px;letter-spacing:-1.2px;margin:12px 0 8px}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-greeting p{font-size:11px;max-width:260px}html[data-design=modern][data-version="4"][data-color-theme=dark] .liquid-graphic{width:100%;right:-90px;top:70px;height:155px;opacity:.55}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-greeting>.primary{align-self:flex-start;margin:0;font-size:10px;background:#25233cdd!important}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-eyebrow{font-size:7px;letter-spacing:1px}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-metric{padding:15px 12px;min-height:116px;gap:9px}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-metric-icon{width:29px;height:31px;border-radius:9px}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-metric-icon svg{width:18px;height:18px}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-metric strong{font-size:21px}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-metric>span:nth-child(2){font-size:10px}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-metric small{font-size:9px}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-chart svg{height:170px}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-tabs{border-radius:12px}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-tool-grid>button{padding:17px 15px}html[data-design=modern][data-version="4"][data-color-theme=dark] .studio-dock{background:#101725f5;border-color:#35415b}html[data-design=modern][data-version="4"][data-color-theme=dark] .studio-dock button.active{background:#2b2540;color:#c6a4ff}}
+html[data-design=modern][data-version="4"][data-color-theme=dark] #design-picker :is(.design-version-desc,.design-version-number,.design-version-state,.design-explanation,.design-kicker,.design-preferences p){color:#a8b7d4;border-color:#39445c}
+html[data-design=modern][data-version="4"][data-color-theme=dark] #aura-navigation>button::before{display:none}
+
+/* Iridescent satin is limited to two featured cards, not the page background. */
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-greeting.liquid-surface{min-height:185px;background-color:#20143a;background-image:linear-gradient(90deg,#0f0b1fe8 0%,#19112c8a 38%,#14122224 80%),url('./assets/liquid-surface.png?v=84');background-size:cover;background-position:center 46%;border-color:#8f77be77;box-shadow:inset 0 1px 0 #eadfff22,0 12px 35px #00000025}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-greeting.liquid-surface>div{max-width:60%}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-greeting.liquid-surface h1{color:#fff;text-shadow:0 2px 14px #0d0a2580}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-greeting.liquid-surface .aura-eyebrow,html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-greeting.liquid-surface p{color:#e4e3f4;text-shadow:0 1px 7px #100c22aa}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-greeting.liquid-surface>.primary{background:#19152bd9!important;box-shadow:inset 0 1px 0 #efe6ff30,0 8px 20px #110d2855!important;border-color:#e2ceff88!important;color:#fff!important;backdrop-filter:blur(14px)}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-metric.liquid-surface{background-color:#25203c;background-image:linear-gradient(100deg,#161126dc,#17112894 65%,#21142d55),url('./assets/liquid-surface.png?v=84');background-size:cover;background-position:72% 68%;border-color:#8370b07a;box-shadow:inset 0 1px 0 #ddd0ff21}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-metric.liquid-surface:hover{background-image:linear-gradient(100deg,#161126cf,#17112880 65%,#21142d44),url('./assets/liquid-surface.png?v=84');border-color:#b89bdf}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-metric.liquid-surface strong{color:white}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-metric.liquid-surface>span:nth-child(2),html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-metric.liquid-surface small{color:#e0dbf5}
+html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-metric.liquid-surface .aura-metric-icon{background:#352953a8;border-color:#d3b8ff55;color:#ecdcff;backdrop-filter:blur(9px)}
+@media(max-width:600px){html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-greeting.liquid-surface{min-height:210px;background-position:60% 50%;background-image:linear-gradient(90deg,#100c22dd,#17102b80),url('./assets/liquid-surface.png?v=84')}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-greeting.liquid-surface>div{max-width:100%}html[data-design=modern][data-version="4"][data-color-theme=dark] .aura-metric.liquid-surface{background-position:82% 50%}}

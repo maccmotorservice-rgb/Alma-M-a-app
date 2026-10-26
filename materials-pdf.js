@@ -1,4 +1,4 @@
-import {isMaterialLow,extraBottles,bottleStock} from './inventory.js?v=83';
+import {isMaterialLow,extraBottles,bottleStock} from './inventory.js?v=84';
 export async function createMaterialsPdf(state,catalog,{now=new Date()}={}){
  const {jsPDF,autoTable}=await import('./assets/pdf-client.js');
  const doc=new jsPDF({unit:'mm',format:'a4'}),margin=16,zone='America/Guatemala';
