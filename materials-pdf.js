@@ -1,4 +1,4 @@
-import {isMaterialLow,extraBottles,bottleStock} from './inventory.js?v=81';
+import {isMaterialLow,extraBottles,bottleStock} from './inventory.js?v=82';
 export async function createMaterialsPdf(state,catalog,{now=new Date()}={}){
  const {jsPDF,autoTable}=await import('./assets/pdf-client.js');
  const doc=new jsPDF({unit:'mm',format:'a4'}),margin=16,zone='America/Guatemala';
@@ -8,7 +8,7 @@ export async function createMaterialsPdf(state,catalog,{now=new Date()}={}){
  doc.setFont('helvetica','bold');doc.setFontSize(20);doc.setTextColor(65,43,27);doc.text('Alma Mía',margin,22);
  doc.setFontSize(14);doc.text('Reporte de materias primas',margin,32);
  doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(80);doc.text(date+' (Guatemala)',margin,40);
- const missing=state.materials.filter(m=>m.stock===0),low=state.materials.filter(isMaterialLow).sort((a,b)=>a.stock-b.stock);
+ const missing=state.materials.filter(m=>!m.discontinued&&m.stock===0),low=state.materials.filter(m=>!m.discontinued&&isMaterialLow(m)).sort((a,b)=>a.stock-b.stock);
  doc.text(`Faltantes: ${missing.length}   |   Por terminar: ${low.length}`,margin,48);
  let y=59;
  const name=m=>{const p=m.kind==='Esencia'?catalog.find(p=>p.id===m.id.slice(4)):null;return m.name+(p?'\nInspirado en '+(p.displayReference??p.reference):'');};
@@ -32,7 +32,7 @@ export async function downloadMaterialsPdf(state,catalog){
 
 // Supplier-facing names come from catalog references, never internal aliases.
 export function materialsQuoteEssences(state,catalog,{selectedIds}={}){
- const essences=state.materials.filter(m=>m.kind==='Esencia');
+ const essences=state.materials.filter(m=>m.kind==='Esencia'&&!m.discontinued&&!catalog.find(p=>p.id===m.id.slice(4))?.discontinued);
  if(selectedIds!==undefined&&(!Array.isArray(selectedIds)||new Set(selectedIds).size!==selectedIds.length||selectedIds.some(id=>typeof id!=='string'||!essences.some(m=>m.id===id))))throw Error('La selección de esencias no es válida. Elige esencias del catálogo sin repetirlas.');
  const selected=selectedIds===undefined?essences.filter(m=>m.stock===0||isMaterialLow(m)):essences.filter(m=>selectedIds.includes(m.id));
  return selected.map(material=>{

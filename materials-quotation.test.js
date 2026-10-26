@@ -40,8 +40,8 @@ test('normal PDF keeps internal names while the supplier PDF contains only real 
  const state=fixture(),before=JSON.stringify(state),normal=await createMaterialsPdf(state,catalog,{now}),quote=await createMaterialsQuotationPdf(state,catalog,{now,quantities:{'ess-01':750},includeAlcohol:true,alcoholMl:4000});
  const normalText=await normal.blob.text(),quoteText=await quote.blob.text();assert.match(normalText,/^%PDF-/);assert.match(normalText,/Mediterranean Asset/);assert.match(quoteText,/^%PDF-/);assert.match(quoteText,/Armani/);assert.match(quoteText,/Chic for Men EDT/);assert.match(quoteText,/750 ml/);assert.doesNotMatch(quoteText,/Mediterranean Asset|Peppered Suede|Sugared Leather|Galaxolide|Existencias|Faltantes|Alma M/);assert.equal(quote.data.items.length,4);assert.match(quote.filename,/2026-10-22/);assert.equal(JSON.stringify(state),before);
 });
-test('a full 112-essence supplier request paginates and keeps all names and quantities',async()=>{
- const state=initialState(catalog),before=JSON.stringify(state),quote=await createMaterialsQuotationPdf(state,catalog,{now});assert.equal(quote.data.items.length,112);assert.equal(quote.data.totalMl,28000);assert.ok(quote.pages>=3);assert.ok(quote.blob.size>20000);assert.equal(JSON.stringify(state),before);
+test('a full active-essence supplier request paginates and keeps all names and quantities',async()=>{
+ const state=initialState(catalog),before=JSON.stringify(state),quote=await createMaterialsQuotationPdf(state,catalog,{now});assert.equal(quote.data.items.length,catalog.filter(p=>!p.discontinued).length);assert.equal(quote.data.totalMl,catalog.filter(p=>!p.discontinued).length*250);assert.ok(quote.pages>=3);assert.ok(quote.blob.size>20000);assert.equal(JSON.stringify(state),before);
 });
 
 test('an explicit editable selection can remove report essences and add available catalog essences',()=>{

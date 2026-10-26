@@ -1,7 +1,7 @@
-import {cloneData,randomId} from './clone-data.js?v=81';
-import {emptyStripLibrary,validateStripLibrary} from './strip-library-data.js?v=81';
-import {resolveCancellationReason} from './cancellation.js?v=81';
-import {validateSalesNotes,activeSalesNoteForBatch,buildSalesNote,editSalesNote,salesCategory} from './sales.js?v=81';
+import {cloneData,randomId} from './clone-data.js?v=82';
+import {emptyStripLibrary,validateStripLibrary} from './strip-library-data.js?v=82';
+import {resolveCancellationReason} from './cancellation.js?v=82';
+import {validateSalesNotes,activeSalesNoteForBatch,buildSalesNote,editSalesNote,salesCategory} from './sales.js?v=82';
 export function extraBottles(material){return [...(material.secondBottle?[{number:2,...material.secondBottle}]:[]),...(material.additionalBottles??[])].sort((a,b)=>a.number-b.number);}
 export function bottleStock(material,number=1){return number===1?Math.round((material.stock-extraBottles(material).reduce((n,b)=>n+b.stock,0))*1000)/1000:extraBottles(material).find(b=>b.number===number)?.stock??0;}
 export function isMaterialLow(material){
@@ -11,21 +11,21 @@ export function isMaterialLow(material){
 }
 export function bottleInfo(material,number){return extraBottles(material).find(b=>b.number===number);}
 function bottleRef(material,number){return number===2?material.secondBottle:material.additionalBottles?.find(b=>b.number===number);}
-export function initialState(catalog){return {version:1,salesNotes:[],customers:[],batches:[],stripLibrary:emptyStripLibrary(),unitSettings:{quarterMl:62.5,gallonMl:4000},materials:[{id:'alcohol',name:'Alcohol',kind:'Base',stock:0,min:500},{id:'galaxolide',name:'Galaxolide',kind:'Fijador',stock:0,min:100},...catalog.map(p=>({id:'ess-'+p.id,name:p.name,kind:'Esencia',stock:0,min:30}))],ready:{},movements:[]};}
-export function applyMovement(state,{type,id,amount,note=''}){const s=cloneData(state);if(!Number.isFinite(amount)||amount<=0)throw Error('Introduce una cantidad mayor que cero.');const m=s.materials.find(m=>m.id===id);if(!m)throw Error('Insumo no encontrado.');const delta=type==='entry'?amount:type==='exit'?-amount:NaN;if(!Number.isFinite(delta))throw Error('Movimiento inválido.');if(m.stock+delta<0)throw Error('No hay suficientes existencias.');changeTotal(m,m.stock+delta);s.movements.unshift({date:new Date().toISOString(),label:m.name,detail:note,delta,unit:'ml'});return s;}
+export function initialState(catalog){return {version:1,salesNotes:[],customers:[],batches:[],stripLibrary:emptyStripLibrary(),unitSettings:{quarterMl:62.5,gallonMl:4000},materials:[{id:'alcohol',name:'Alcohol',kind:'Base',stock:0,min:500},{id:'galaxolide',name:'Galaxolide',kind:'Fijador',stock:0,min:100},...catalog.map(p=>({id:'ess-'+p.id,name:p.name,kind:'Esencia',stock:0,min:30,...(p.discontinued?{discontinued:true}:{})}))],ready:{},movements:[]};}
+export function applyMovement(state,{type,id,amount,note=''}){const s=cloneData(state);if(!Number.isFinite(amount)||amount<=0)throw Error('Introduce una cantidad mayor que cero.');const m=s.materials.find(m=>m.id===id);if(!m)throw Error('Insumo no encontrado.');if(m.discontinued)throw Error('Este insumo está descontinuado y solo se conserva en el historial.');const delta=type==='entry'?amount:type==='exit'?-amount:NaN;if(!Number.isFinite(delta))throw Error('Movimiento inválido.');if(m.stock+delta<0)throw Error('No hay suficientes existencias.');changeTotal(m,m.stock+delta);s.movements.unshift({date:new Date().toISOString(),label:m.name,detail:note,delta,unit:'ml'});return s;}
 export function recipeFor(size){
  if(![50,100].includes(size))throw Error('Presentación inválida.');
  const scale=size/100;return {essence:30*scale,fixative:2*scale,alcohol:68*scale};
 }
 export function produce(state,{id,size,qty},catalog){
- if(!catalog.some(p=>p.id===id)||![50,100].includes(size)||!Number.isSafeInteger(qty)||qty<1)throw Error('Revisa el perfume, la presentación y el número de envases.');
+ if(!catalog.some(p=>p.id===id&&!p.discontinued)||![50,100].includes(size)||!Number.isSafeInteger(qty)||qty<1)throw Error('Revisa el perfume, la presentación y el número de envases.');
  const recipe=recipeFor(size),s=cloneData(state),needs=[['ess-'+id,qty*recipe.essence],['galaxolide',qty*recipe.fixative],['alcohol',qty*recipe.alcohol]];
  for(const[key,n]of needs){const m=s.materials.find(x=>x.id===key);if(!m||m.stock+0.000001<n)throw Error('Existencias insuficientes: '+(m?.name||key));}
  for(const[key,n]of needs){const m=s.materials.find(x=>x.id===key);changeTotal(m,m.stock-n);}
  s.ready[id+'-'+size]=(s.ready[id+'-'+size]||0)+qty;
  s.movements.unshift({date:new Date().toISOString(),label:catalog.find(p=>p.id===id).name,detail:`Preparación · ${size} ml · Por envase: ${recipe.essence} ml esencia, ${recipe.fixative} ml galaxolide, ${recipe.alcohol} ml alcohol`,delta:qty,unit:'frascos'});return s;
 }
-export function readyMovement(state,{id,size,qty,type},catalog){if(!catalog.some(p=>p.id===id)||![50,100].includes(size)||!Number.isInteger(qty)||qty<1||!['entry','delivery'].includes(type))throw Error('Revisa el perfume y la cantidad de frascos.');const s=cloneData(state),key=id+'-'+size,delta=type==='entry'?qty:-qty;if((s.ready[key]||0)+delta<0)throw Error('No hay suficientes perfumes listos.');s.ready[key]=(s.ready[key]||0)+delta;s.movements.unshift({date:new Date().toISOString(),label:catalog.find(p=>p.id===id).name,detail:(type==='entry'?'Ingreso de perfume ya preparado':'Entrega')+` · ${size} ml`,delta,unit:'frascos'});return s;}
+export function readyMovement(state,{id,size,qty,type},catalog){if(!catalog.some(p=>p.id===id&&!p.discontinued)||![50,100].includes(size)||!Number.isInteger(qty)||qty<1||!['entry','delivery'].includes(type))throw Error('Revisa el perfume y la cantidad de frascos.');const s=cloneData(state),key=id+'-'+size,delta=type==='entry'?qty:-qty;if((s.ready[key]||0)+delta<0)throw Error('No hay suficientes perfumes listos.');s.ready[key]=(s.ready[key]||0)+delta;s.movements.unshift({date:new Date().toISOString(),label:catalog.find(p=>p.id===id).name,detail:(type==='entry'?'Ingreso de perfume ya preparado':'Entrega')+` · ${size} ml`,delta,unit:'frascos'});return s;}
 export function removeReadyStock(state,{id,size,qty,reasonCode,reason='',expectedStock},catalog){
  if(!['test','other'].includes(reasonCode))throw Error('Selecciona el motivo para eliminar stock.');
  const explanation=resolveCancellationReason(reasonCode,reason),stock=state.ready[id+'-'+size]??0;
@@ -42,7 +42,7 @@ export function productionPreview(state,items,catalog,purpose={type:'stock'},bat
  const customer=purpose.type!=='stock'&&purpose.customerId?(state.customers??[]).find(c=>c.id===purpose.customerId):null;
  if(purpose.type!=='stock'&&purpose.customerId&&!customer)throw Error('Selecciona un cliente registrado o registra uno nuevo.');
  if((state.batches??[]).some(b=>b.id===batchId))throw Error('Este lote ya fue confirmado.');
- const seen=new Set(),rows=items.map(item=>{const p=catalog.find(p=>p.id===item.id),key=item.id+'-'+item.size;if(!p||![50,100].includes(item.size)||!Number.isSafeInteger(item.qty)||item.qty<1||seen.has(key))throw Error('Revisa los perfumes, las presentaciones y las cantidades del lote.');seen.add(key);return {id:p.id,name:p.name,reference:p.displayReference??p.reference,category:p.category,line:p.line,size:item.size,qty:item.qty,completed:0};});
+ const seen=new Set(),rows=items.map(item=>{const p=catalog.find(p=>p.id===item.id),key=item.id+'-'+item.size;if(!p||p.discontinued||![50,100].includes(item.size)||!Number.isSafeInteger(item.qty)||item.qty<1||seen.has(key))throw Error('Revisa los perfumes, las presentaciones y las cantidades del lote.');seen.add(key);return {id:p.id,name:p.name,reference:p.displayReference??p.reference,category:p.category,line:p.line,size:item.size,qty:item.qty,completed:0};});
  const totals=rows.reduce((t,item)=>{const r=recipeFor(item.size);t.qty+=item.qty;t.volumeMl+=item.size*item.qty;t.essenceMl+=r.essence*item.qty;t.fixativeMl+=r.fixative*item.qty;t.alcoholMl+=r.alcohol*item.qty;return t;},{qty:0,volumeMl:0,essenceMl:0,fixativeMl:0,alcoholMl:0});
  return {id:batchId,number:Math.max(0,...(state.batches??[]).map(b=>b.number))+1,date:new Date().toISOString(),purpose:customer?{type:purpose.type,customerId:customer.id,customerName:customer.name}:{type:purpose.type},items:rows,totals};
 }
@@ -104,7 +104,7 @@ function validateBatches(batches,catalog){
 }
 export function setMaterialStock(state,{id,amount,factor=1,unit='ml'}){
  if(!Number.isFinite(amount)||amount<0||!Number.isFinite(factor)||factor<=0||!Number.isFinite(amount*factor))throw Error('Introduce una cantidad válida.');
- const next=cloneData(state),m=next.materials.find(m=>m.id===id);if(!m)throw Error('Materia prima no encontrada.');
+ const next=cloneData(state),m=next.materials.find(m=>m.id===id);if(!m)throw Error('Materia prima no encontrada.');if(m.discontinued)throw Error('Esta materia prima está descontinuada.');
  const previous=m.stock;changeTotal(m,amount*factor);
  next.movements.unshift({date:new Date().toISOString(),label:m.name,detail:`Actualización de existencias: ${amount} ${unit} (antes ${previous} ml)`,delta:Math.round((m.stock-previous)*1000)/1000,unit:'ml'});
  return next;
@@ -124,14 +124,14 @@ function changeTotal(material,total){
 }
 export function setNumberedBottle(state,{id,number,stock,capacity}){
  if(!Number.isSafeInteger(number)||number<1||!Number.isFinite(stock)||stock<0||!Number.isFinite(capacity)||capacity<=0||(number>1&&stock>capacity))throw Error('Revisa el número, capacidad y existencias del frasco.');
- const next=cloneData(state),m=next.materials.find(m=>m.id===id);if(!m)throw Error('Materia prima no encontrada.');const before=bottleStock(m,number),previous=m.stock;
+ const next=cloneData(state),m=next.materials.find(m=>m.id===id);if(!m)throw Error('Materia prima no encontrada.');if(m.discontinued)throw Error('Esta materia prima está descontinuada.');const before=bottleStock(m,number),previous=m.stock;
  if(number===2)m.secondBottle={capacity,stock};else if(number>2){m.additionalBottles??=[];const old=m.additionalBottles.find(b=>b.number===number);if(old)Object.assign(old,{capacity,stock});else m.additionalBottles.push({number,capacity,stock});}
  m.stock=Math.round((previous-before+stock)*1000)/1000;next.movements.unshift({date:new Date().toISOString(),label:m.name,detail:`Actualización: frasco ${number}, ${stock} ml de ${capacity} ml`,delta:Math.round((stock-before)*1000)/1000,unit:'ml'});return next;
 }
 export function setBottleStocks(state,{id,firstStock,secondBottle=null}){
  if(!Number.isFinite(firstStock)||firstStock<0)throw Error('Revisa cuánto queda en el primer frasco.');
  if(secondBottle&&(!Number.isFinite(secondBottle.capacity)||secondBottle.capacity<=0||!Number.isFinite(secondBottle.stock)||secondBottle.stock<0||secondBottle.stock>secondBottle.capacity))throw Error('El segundo frasco necesita una capacidad válida y existencias entre cero y su capacidad.');
- const next=cloneData(state),m=next.materials.find(x=>x.id===id);if(!m)throw Error('Materia prima no encontrada.');const previous=m.stock;
+ const next=cloneData(state),m=next.materials.find(x=>x.id===id);if(!m)throw Error('Materia prima no encontrada.');if(m.discontinued)throw Error('Esta materia prima está descontinuada.');const previous=m.stock;
  m.stock=Math.round((firstStock+(secondBottle?.stock||0)+(m.additionalBottles??[]).reduce((n,b)=>n+b.stock,0))*1000)/1000;if(secondBottle)m.secondBottle={capacity:secondBottle.capacity,stock:Math.round(secondBottle.stock*1000)/1000};else delete m.secondBottle;
  next.movements.unshift({date:new Date().toISOString(),label:m.name,detail:`Actualización: primer frasco ${firstStock} ml${secondBottle?`, segundo frasco ${secondBottle.stock} de ${secondBottle.capacity} ml`:''}`,delta:Math.round((m.stock-previous)*1000)/1000,unit:'ml'});return next;
 }

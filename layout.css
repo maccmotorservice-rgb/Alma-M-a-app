@@ -402,3 +402,6 @@ html[data-design=modern][data-version="3"] #materials-quote-error{color:#ffb8aa}
 @media(max-width:1000px){.qc-workspace{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:600px){.qc-settings,.qc-totals{grid-template-columns:minmax(0,1fr)}.qc-original{padding:14px}.qc-legend{font-size:12px}#qc-pdf-preview iframe{height:440px}}
 .qc-edit-area{border:0;margin:0;padding:0;min-width:0}.qc-edit-area[disabled]{opacity:.6}
+
+/* Comparison: full-width supplier document, brief summary below. */
+.qc-workspace{display:block}.qc-brief,.qc-review-details,.qc-analysis-details,.qc-export{margin:18px 0}.qc-review-details>summary,.qc-analysis-details>summary,.qc-request-review>summary{padding:14px;cursor:pointer;font-weight:600}.qc-rows{display:block}.qc-request-review .field{margin-top:14px}.qc-brief p{line-height:1.65}
