@@ -1,5 +1,5 @@
-import {createWelcomeAmbience} from './welcome-ambience.js?v=82';
-import {createWelcomeVoice} from './welcome-voice.js?v=82';
+import {createWelcomeAmbience} from './welcome-ambience.js?v=83';
+import {createWelcomeVoice} from './welcome-voice.js?v=83';
 
 /* Device-only welcome preferences. This module never reads or writes inventory. */
 export const WELCOME_IDLE_MS = 2 * 60 * 60 * 1000;
@@ -51,9 +51,9 @@ function installWelcome() {
  const tabId = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(36).slice(2)}`;
  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
  const unlocked = () => !document.body.classList.contains('access-locked');
- const eligibleScreen = () => unlocked() && root.dataset.version === '3' && document.visibilityState !== 'hidden';
+ const eligibleScreen = () => unlocked() && ['3','4'].includes(root.dataset.version) && document.visibilityState !== 'hidden';
  // Audio remains eligible while the tab is hidden; screen presentation does not.
- const introAllowed = () => soundOn && root.dataset.version === '3' && (accessIntroActive || (unlocked() && overlay && !overlay.hidden));
+ const introAllowed = () => soundOn && ['3','4'].includes(root.dataset.version) && (accessIntroActive || (unlocked() && overlay && !overlay.hidden));
  const voice = createWelcomeVoice({allowed: () => soundOn && eligibleScreen()});
  function storageGet(key) {try {return localStorage.getItem(key);} catch {try {return sessionStorage.getItem(key);} catch {return null;}}}
  function storageSet(key, value) {try {localStorage.setItem(key, value);return true;} catch {try {sessionStorage.setItem(key, value);return true;} catch {return false;}}}
@@ -82,7 +82,7 @@ function installWelcome() {
  soundOn = storageGet(SOUND_KEY) !== 'off';
 
  function updateSoundControls() {
-  const preview = document.getElementById('welcome-preview-setting'), hidePreview = root.dataset.version !== '3';if (preview && preview.hidden !== hidePreview) preview.hidden = hidePreview;
+  const preview = document.getElementById('welcome-preview-setting'), hidePreview = !['3','4'].includes(root.dataset.version);if (preview && preview.hidden !== hidePreview) preview.hidden = hidePreview;
   for (const id of ['welcome-sound', 'welcome-sound-setting', 'access-welcome-sound']) {
    const button = document.getElementById(id);if (!button) continue;
    const pressed = String(soundOn), label = id === 'welcome-sound-setting' ? `Sonido de bienvenida: ${soundOn ? 'activado' : 'desactivado'}` : `Sonido ${soundOn ? 'activado' : 'desactivado'}`;
@@ -121,7 +121,7 @@ function installWelcome() {
   try {return Promise.resolve(context.resume()).catch(() => {});} catch {return Promise.resolve();}
  }
  function warmAudio() {
-  if (!soundOn || root.dataset.version !== '3' || document.visibilityState === 'hidden') return;
+  if (!soundOn || !['3','4'].includes(root.dataset.version) || document.visibilityState === 'hidden') return;
   try {
    const context = getAudioContext();if (!context) return;
    // Start rendering in the background while authentication or the picker closes.
@@ -188,7 +188,7 @@ function installWelcome() {
  function syncPrivateAccessIntro() {
   const screen = document.getElementById('access-screen');
   const visible = !unlocked() && screen && !screen.hidden;
-  const wanted = visible && root.dataset.version === '3' && currentEligibility().due;
+  const wanted = visible && ['3','4'].includes(root.dataset.version) && currentEligibility().due;
   let control = document.getElementById('access-welcome-sound');
   if (wanted && !control) {
    const card = screen.querySelector('.access-card');
@@ -431,8 +431,8 @@ function installWelcome() {
   else if (active && !wasUnlocked) void maybeWelcome().finally(() => recordActivity());
   wasUnlocked = active;syncPrivateAccessIntro();
  }).observe(document.body, {attributes: true, attributeFilter: ['class']});
- new MutationObserver(() => {updateSoundControls();if (root.dataset.version !== '3') {pendingWelcome = null;closeWelcome();syncPrivateAccessIntro();} else {syncPrivateAccessIntro();void maybeWelcome();}}).observe(root, {attributes: true, attributeFilter: ['data-version']});
- document.addEventListener('alma:design-change', () => {addSoundSetting();if (root.dataset.version !== '3') {pendingWelcome = null;closeWelcome();syncPrivateAccessIntro();} else {syncPrivateAccessIntro();void maybeWelcome();}});
+ new MutationObserver(() => {updateSoundControls();if (!['3','4'].includes(root.dataset.version)) {pendingWelcome = null;closeWelcome();syncPrivateAccessIntro();} else {syncPrivateAccessIntro();void maybeWelcome();}}).observe(root, {attributes: true, attributeFilter: ['data-version']});
+ document.addEventListener('alma:design-change', () => {addSoundSetting();if (!['3','4'].includes(root.dataset.version)) {pendingWelcome = null;closeWelcome();syncPrivateAccessIntro();} else {syncPrivateAccessIntro();void maybeWelcome();}});
  // The design picker may be supplied by a deferred script after this module.
  const pickerObserver = new MutationObserver(() => {addSoundSetting();if (document.getElementById('welcome-sound-setting')) pickerObserver.disconnect();});
  pickerObserver.observe(document.body, {childList: true, subtree: true});
