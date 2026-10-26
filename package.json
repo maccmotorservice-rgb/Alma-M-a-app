@@ -9,7 +9,8 @@
     "build:cloud": "esbuild scripts/supabase-entry.js --bundle --format=esm --platform=browser --outfile=assets/supabase-client.js --minify --legal-comments=linked",
     "build:pdf": "esbuild scripts/pdf-entry.js --bundle --format=esm --platform=browser --outfile=assets/pdf-client.js --minify --legal-comments=linked",
     "build:ocr": "node scripts/build-ocr.mjs",
-    "build:zip": "esbuild scripts/zip-entry.js --bundle --format=esm --platform=browser --outfile=assets/zip-client.js --minify --legal-comments=linked && cp node_modules/fflate/LICENSE assets/zip-client.LICENSE.txt"
+    "build:zip": "esbuild scripts/zip-entry.js --bundle --format=esm --platform=browser --outfile=assets/zip-client.js --minify --legal-comments=linked && cp node_modules/fflate/LICENSE assets/zip-client.LICENSE.txt",
+    "build:quote-reader": "node scripts/build-quote-reader.mjs"
   },
   "engines": {
     "node": ">=20"
@@ -20,6 +21,7 @@
     "fflate": "0.8.2",
     "jspdf": "^4.2.1",
     "jspdf-autotable": "^5.0.9",
+    "pdfjs-dist": "^4.10.38",
     "tesseract.js": "7.0.0"
   },
   "devDependencies": {
