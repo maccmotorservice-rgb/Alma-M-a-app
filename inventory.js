@@ -1,7 +1,7 @@
-import {cloneData,randomId} from './clone-data.js?v=80';
-import {emptyStripLibrary,validateStripLibrary} from './strip-library-data.js?v=80';
-import {resolveCancellationReason} from './cancellation.js?v=80';
-import {validateSalesNotes,activeSalesNoteForBatch,buildSalesNote,editSalesNote,salesCategory} from './sales.js?v=80';
+import {cloneData,randomId} from './clone-data.js?v=81';
+import {emptyStripLibrary,validateStripLibrary} from './strip-library-data.js?v=81';
+import {resolveCancellationReason} from './cancellation.js?v=81';
+import {validateSalesNotes,activeSalesNoteForBatch,buildSalesNote,editSalesNote,salesCategory} from './sales.js?v=81';
 export function extraBottles(material){return [...(material.secondBottle?[{number:2,...material.secondBottle}]:[]),...(material.additionalBottles??[])].sort((a,b)=>a.number-b.number);}
 export function bottleStock(material,number=1){return number===1?Math.round((material.stock-extraBottles(material).reduce((n,b)=>n+b.stock,0))*1000)/1000:extraBottles(material).find(b=>b.number===number)?.stock??0;}
 export function isMaterialLow(material){
