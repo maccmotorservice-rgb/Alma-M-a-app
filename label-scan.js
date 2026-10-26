@@ -1,4 +1,4 @@
-import {readyBatch} from './inventory.js?v=81';
+import {readyBatch} from './inventory.js?v=82';
 export const MAX_SCANNED_PRODUCTS=20;
 const normalize=s=>String(s??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');
 const words=s=>String(s??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,' ').trim().split(/\s+/).filter(Boolean);

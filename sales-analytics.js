@@ -1,8 +1,8 @@
-import {salesNoteStatus,salesPaymentSummary} from './sales.js?v=81';
+import {salesNoteStatus,salesPaymentSummary} from './sales.js?v=82';
 const norm=s=>String(s??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');
 export function resolveSalesProduct(item,catalog){if(item.productId)return catalog.find(p=>p.id===item.productId);const reference=norm(item.reference),exact=catalog.find(p=>[p.reference,p.displayReference,p.guideReference].some(r=>norm(r)===reference));if(exact)return exact;const prefix=catalog.filter(p=>norm(p.reference).length>=4&&reference.startsWith(norm(p.reference))).sort((a,b)=>norm(b.reference).length-norm(a.reference).length)[0];return prefix??catalog.find(p=>norm(p.name)===norm(item.name));}
 export function salesAnalytics(notes,catalog,year){
- const months=Array.from({length:12},(_,i)=>({month:i+1,salesCents:0,collectedCents:0,replacementCents:0,resultCents:0,perfumes:0,notes:0})),products=new Map(catalog.map(p=>[p.id,{id:p.id,name:p.name,reference:p.displayReference??p.reference,units:0,gifts:0,salesCents:0,inCatalog:true,gender:p.category}]));let extraUnits=0;
+ const months=Array.from({length:12},(_,i)=>({month:i+1,salesCents:0,collectedCents:0,replacementCents:0,resultCents:0,perfumes:0,notes:0})),products=new Map(catalog.map(p=>[p.id,{id:p.id,name:p.name,reference:p.displayReference??p.reference,units:0,gifts:0,salesCents:0,inCatalog:!p.discontinued,gender:p.category}]));let extraUnits=0;
  for(const note of notes??[]){if(salesNoteStatus(note)!=='active')continue;const invoiceYear=Number(note.date.slice(0,4));if(note.paymentType==='cash'&&invoiceYear===year)months[Number(note.date.slice(5,7))-1].collectedCents+=note.totals.totalCents;if(note.paymentType==='credit')for(const payment of note.payments??[])if(Number(payment.date.slice(0,4))===year)months[Number(payment.date.slice(5,7))-1].collectedCents+=payment.amountCents;
   if(invoiceYear!==year)continue;const month=months[Number(note.date.slice(5,7))-1];month.notes++;month.salesCents+=note.totals.totalCents;
   // Largest remainders allocate the exact discounted invoice total to its lines.
