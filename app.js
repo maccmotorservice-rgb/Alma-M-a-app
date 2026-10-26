@@ -1,24 +1,25 @@
-import {createQuotationComparator} from './quotation-comparator-panel.js?v=82';
-import {materialsQuoteEssences} from './materials-pdf.js?v=82';
-import {productionPurposeLabel} from './inventory.js?v=82';
-import {cloneData} from './clone-data.js?v=82';
-import {createStripLibrarySync} from './strip-library-sync.js?v=82';
-import {mountPdfActions} from './pdf-share.js?v=82';
-import {filterMaterialStock,materialStockCounts,materialStatus,productStockView} from './stock-views.js?v=82';
-import {createStockDictation} from './stock-dictation.js?v=82';
-import {createStripsPanel} from './strips.js?v=82';
-import {createLabelsPanel} from './labels.js?v=82';
-import {createStockScanner} from './stock-scanner.js?v=82';
-import {hasAppAccess,defaultCloudConfig,clearBusinessCache} from './access.js?v=82';
-import {annualSalesCards,salesReportHtml} from './sales-reports.js?v=82';
-import {cancellationFields,mountCancellationFields,readCancellationFields} from './cancellation.js?v=82';
-import {catalogCategories,catalogCategoryMatches,filterCatalog,perfumeMatches} from './catalog-tools.js?v=82';
-import {activeSalesNoteForBatch,salesAccounts,salesMoney} from './sales.js?v=82';
-import {createSalesPanel} from './sales-panel.js?v=82';
-import {CloudInventory} from './cloud.js?v=82';
-import {createDictationPanel} from './dictation.js?v=82';
-import {initialState,applyMovement,recipeFor,registerCustomer,productionPreview,confirmProduction,completedQuantity,batchProgress,completeBatchItem,completeBatchWithExtras,cancelBatch,readyBatch,setBottleStocks,readyMovement,validateBackup,attributeSessionChanges,extraBottles,bottleStock,isMaterialLow,removeReadyStock} from './inventory.js?v=82';
-import {localStore,sessionStore} from './browser-storage.js?v=82';
+import {auraOverviewHtml,initAuraNavigation} from './aura.js?v=83';
+import {createQuotationComparator} from './quotation-comparator-panel.js?v=83';
+import {materialsQuoteEssences} from './materials-pdf.js?v=83';
+import {productionPurposeLabel} from './inventory.js?v=83';
+import {cloneData} from './clone-data.js?v=83';
+import {createStripLibrarySync} from './strip-library-sync.js?v=83';
+import {mountPdfActions} from './pdf-share.js?v=83';
+import {filterMaterialStock,materialStockCounts,materialStatus,productStockView} from './stock-views.js?v=83';
+import {createStockDictation} from './stock-dictation.js?v=83';
+import {createStripsPanel} from './strips.js?v=83';
+import {createLabelsPanel} from './labels.js?v=83';
+import {createStockScanner} from './stock-scanner.js?v=83';
+import {hasAppAccess,defaultCloudConfig,clearBusinessCache} from './access.js?v=83';
+import {annualSalesCards,salesReportHtml} from './sales-reports.js?v=83';
+import {cancellationFields,mountCancellationFields,readCancellationFields} from './cancellation.js?v=83';
+import {catalogCategories,catalogCategoryMatches,filterCatalog,perfumeMatches} from './catalog-tools.js?v=83';
+import {activeSalesNoteForBatch,salesAccounts,salesMoney} from './sales.js?v=83';
+import {createSalesPanel} from './sales-panel.js?v=83';
+import {CloudInventory} from './cloud.js?v=83';
+import {createDictationPanel} from './dictation.js?v=83';
+import {initialState,applyMovement,recipeFor,registerCustomer,productionPreview,confirmProduction,completedQuantity,batchProgress,completeBatchItem,completeBatchWithExtras,cancelBatch,readyBatch,setBottleStocks,readyMovement,validateBackup,attributeSessionChanges,extraBottles,bottleStock,isMaterialLow,removeReadyStock} from './inventory.js?v=83';
+import {localStore,sessionStore} from './browser-storage.js?v=83';
 
 // Export startup so the small loader can report load failures without leaving
 // the access screen waiting forever. Keep top-level await out of this entry.
@@ -26,7 +27,7 @@ export const portalReady=(async()=>{
 async function loadCatalog(){
  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),12000);
  try{
-  const response=await fetch('./catalog.json?v=82',{signal:controller.signal});
+  const response=await fetch('./catalog.json?v=83',{signal:controller.signal});
   if(!response.ok)throw Error('Catálogo no disponible.');
   const data=await response.json();if(!Array.isArray(data)||!data.length)throw Error('Catálogo no válido.');
   return data;
@@ -95,7 +96,7 @@ $('#date').textContent=new Intl.DateTimeFormat('es-MX',{day:'numeric',month:'lon
 function title(k,t,sub,action=''){return `<div class="page-title"><div><div class="eyeline">${k}</div><h1>${t}</h1><p>${sub}</p></div>${action}</div>`;}
 const action=(text,type,cls='primary',data='')=>`<button class="${cls}" data-action="${type}" ${data}>${text}</button>`;
 function historyRows(list){return list.map(m=>`<div class="row"><div><strong>${esc(m.label)}</strong><small>${esc(m.detail)} · ${new Date(m.date).toLocaleString('es-MX',{dateStyle:'medium',timeStyle:'short'})}</small><small class="movement-actor">Realizado por: ${esc(m.performedBy??'Sin registrar')}</small></div><span class="badge ${m.delta>0?'green':''}">${m.delta>0?'+':''}${num(m.delta)} ${m.unit}</span></div>`).join('');}
-function overview(){const ready=Object.entries(state.ready).filter(([key])=>!product(key.split('-')[0])?.discontinued).reduce((a,[,b])=>a+b,0),ess=state.materials.filter(m=>!m.discontinued).filter(m=>m.kind==='Esencia'),low=state.materials.filter(m=>!m.discontinued).filter(m=>m.stock===0||isMaterialLow(m)),value=Object.entries(state.ready).filter(([key])=>!product(key.split('-')[0])?.discontinued).reduce((a,[k,n])=>{const[id,size]=k.split('-');return a+n*product(id)['price'+size]},0);return title('RESUMEN','Inventario y producción','Control de materias primas, stock de perfumes y órdenes de producción.',action('+ Registrar movimiento','material'))+`<div class="stats">${[['Esencias disponibles',ess.filter(m=>m.stock>0).length,'de '+liveCatalog.length+' fragancias','Catálogo oficial 2026'],['Stock de producto',ready,'unidades','Producto terminado disponible'],['Valor del stock',money(value),'','Precio de catálogo · MXN'],['Alertas de reposición',low.length,'insumos','Agotados o próximos a terminar']].map(([l,n,u,h])=>`<div class="card"><div class="stat-label">${l}</div><div class="number">${n} <small>${u}</small></div><div class="hint">${h}</div></div>`).join('')}</div>${financialOverview()}${annualSalesCards(state,catalog,salesReportYear)}<div class="hero"><div><h2>Producción de perfumes</h2><p>Genera una orden para un pedido de cliente o para reposición de stock.</p>${action('Iniciar producción','produce','secondary')}</div><div class="bottle-art" aria-hidden="true"><div class="bottle"></div><div class="bottle large"></div><div class="bottle"></div></div></div><div class="columns"><div class="card"><div class="section-head"><h2>Materias primas base</h2><button class="text-button" data-view="materials">Ver todos<span class="classic-symbol"> ↗</span><svg class="action-arrow modern-only" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 18 18 6M6 6h12v12"/></svg></button></div>${state.materials.slice(0,2).map(m=>`<div class="row"><div><strong>${m.name}</strong><small>${m.kind} · Mínimo ${quantity(m,m.min)}</small></div><div><strong>${quantity(m)}</strong> <span class="badge ${m.stock>0&&!isMaterialLow(m)?'green':''}">${m.stock>0&&!isMaterialLow(m)?'Disponible':'Reabastecer'}</span></div></div>`).join('')}<p>Existencias de alcohol y galaxolide. Los mínimos de inventario determinan las alertas de reposición.</p></div><div class="card"><div class="section-head"><h2>Actividad reciente</h2><button class="text-button" data-view="history">Ver todo<span class="classic-symbol"> ↗</span><svg class="action-arrow modern-only" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 18 18 6M6 6h12v12"/></svg></button></div>${state.movements.length?historyRows(state.movements.slice(0,4)):'<div class="empty"><div class="empty-symbol">↗</div>No hay movimientos registrados.</div>'}</div></div>`;}
+function overview(){const ready=Object.entries(state.ready).filter(([key])=>!product(key.split('-')[0])?.discontinued).reduce((a,[,b])=>a+b,0),ess=state.materials.filter(m=>!m.discontinued).filter(m=>m.kind==='Esencia'),low=state.materials.filter(m=>!m.discontinued).filter(m=>m.stock===0||isMaterialLow(m)),value=Object.entries(state.ready).filter(([key])=>!product(key.split('-')[0])?.discontinued).reduce((a,[k,n])=>{const[id,size]=k.split('-');return a+n*product(id)['price'+size]},0);return auraOverviewHtml(state,catalog,cloud?.member?.display_name||sessionUser)+title('RESUMEN','Inventario y producción','Control de materias primas, stock de perfumes y órdenes de producción.',action('+ Registrar movimiento','material'))+`<div class="stats">${[['Esencias disponibles',ess.filter(m=>m.stock>0).length,'de '+liveCatalog.length+' fragancias','Catálogo oficial 2026'],['Stock de producto',ready,'unidades','Producto terminado disponible'],['Valor del stock',money(value),'','Precio de catálogo · MXN'],['Alertas de reposición',low.length,'insumos','Agotados o próximos a terminar']].map(([l,n,u,h])=>`<div class="card"><div class="stat-label">${l}</div><div class="number">${n} <small>${u}</small></div><div class="hint">${h}</div></div>`).join('')}</div>${financialOverview()}${annualSalesCards(state,catalog,salesReportYear)}<div class="hero"><div><h2>Producción de perfumes</h2><p>Genera una orden para un pedido de cliente o para reposición de stock.</p>${action('Iniciar producción','produce','secondary')}</div><div class="bottle-art" aria-hidden="true"><div class="bottle"></div><div class="bottle large"></div><div class="bottle"></div></div></div><div class="columns"><div class="card"><div class="section-head"><h2>Materias primas base</h2><button class="text-button" data-view="materials">Ver todos<span class="classic-symbol"> ↗</span><svg class="action-arrow modern-only" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 18 18 6M6 6h12v12"/></svg></button></div>${state.materials.slice(0,2).map(m=>`<div class="row"><div><strong>${m.name}</strong><small>${m.kind} · Mínimo ${quantity(m,m.min)}</small></div><div><strong>${quantity(m)}</strong> <span class="badge ${m.stock>0&&!isMaterialLow(m)?'green':''}">${m.stock>0&&!isMaterialLow(m)?'Disponible':'Reabastecer'}</span></div></div>`).join('')}<p>Existencias de alcohol y galaxolide. Los mínimos de inventario determinan las alertas de reposición.</p></div><div class="card"><div class="section-head"><h2>Actividad reciente</h2><button class="text-button" data-view="history">Ver todo<span class="classic-symbol"> ↗</span><svg class="action-arrow modern-only" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 18 18 6M6 6h12v12"/></svg></button></div>${state.movements.length?historyRows(state.movements.slice(0,4)):'<div class="empty"><div class="empty-symbol">↗</div>No hay movimientos registrados.</div>'}</div></div>`;}
 function materials(){
  const groups=['Bases y fijadores',...perfumeGroups],base=state.materials.filter(m=>!m.discontinued).filter(m=>(kind==='Todos'||m.kind===kind)&&(materialGroup==='Todas'||materialGroupName(m)===materialGroup)&&(m.kind==='Esencia'?matches(product(m.id.slice(4)),search):normalize(m.name).includes(normalize(search)))),counts=materialStockCounts(base),list=filterMaterialStock(base,{status:materialAvailability,sort:materialSort});
  const row=m=>{const status=materialStatus(m),bottles=extraBottles(m);return `<tr data-material-id="${esc(m.id)}" data-stock-status="${status}"><td><strong class="stock-item-name">${esc(m.name)}</strong>${m.kind==='Esencia'?`<small>Inspirado en ${esc(product(m.id.slice(4)).displayReference??product(m.id.slice(4)).reference)}</small>`:''}<small class="stock-collection">${esc(materialGroupName(m))}</small></td><td><span class="stock-type">${esc(m.kind)}</span></td><td><strong class="stock-amount">${bottles.length?num(m.stock)+' ml':quantity(m)}</strong>${m.id!=='galaxolide'?`<small>${num(m.stock)} ml en total</small>`:''}${bottles.length?`<details class="stock-bottles"><summary>Ver ${bottles.length+1} frascos</summary>${bottleDescription(m)}</details>`:''}</td><td><span class="stock-minimum">${m.kind==='Esencia'?'1/4 de cada frasco':quantity(m,m.min)}</span></td><td><span class="badge ${status==='available'?'green':status==='empty'?'report-missing':'stock-low'}">${status==='available'?'Disponible':status==='empty'?'Agotado':'Próximo a agotarse'}</span></td><td>${action('Actualizar','stock-update','secondary',`data-id="${m.id}"`)} ${m.kind==='Esencia'?'':action('Cambiar mínimo','minimum','text-button',`data-id="${m.id}"`)}</td></tr>`;};
@@ -206,6 +207,7 @@ const stockVoice=createStockDictation({catalog:liveCatalog,getState:()=>state,sa
 const stripSync=createStripLibrarySync({getCloud:()=>cloud,getLibrary:()=>state.stripLibrary,canAccess:()=>hasAppAccess(cloud),onChange:()=>{void strips.libraryChanged().catch(()=>{});}});
 const strips=createStripsPanel({catalog:liveCatalog,notify:toast,sync:stripSync,allowed:()=>hasAppAccess(cloud)&&['strips','strip-designer'].includes(view),getView:()=>view,onNavigate:next=>{view=next;search='';render();window.scrollTo({top:0});}});
 const labels=createLabelsPanel({catalog:liveCatalog,notify:toast,allowed:()=>hasAppAccess(cloud)&&view==='labels'});
+initAuraNavigation();
 const comparator=createQuotationComparator({catalog,getState:()=>state,allowed:()=>hasAppAccess(cloud)&&view==='quote-comparator'});
 const scanner=createStockScanner({catalog:liveCatalog,getState:()=>state,save:async next=>persist(next),notify:toast,allowed:()=>hasAppAccess(cloud)&&view==='scanner'});
 window.addEventListener('pagehide',()=>{dictation.stop();stockVoice.stop();scanner.stop();});
@@ -297,7 +299,7 @@ async function prepareMaterialsPdf(button){
  button.disabled=true;button.textContent='Preparando PDF…';preview.hidden=false;status.textContent='Preparando vista previa…';const quoteError=$('#materials-quote-error');if(quoteError)quoteError.textContent='';
  try{
   if(storageError)throw Error('Recupera el respaldo antes de generar el reporte.');
-  const module=await import('./materials-pdf.js?v=82'),result=mode==='quote'?await module.createMaterialsQuotationPdf(snapshot,catalog,options):await module.createMaterialsPdf(snapshot,catalog);
+  const module=await import('./materials-pdf.js?v=83'),result=mode==='quote'?await module.createMaterialsQuotationPdf(snapshot,catalog,options):await module.createMaterialsPdf(snapshot,catalog);
   if(!active())return;
   materialsPdfHandle=mountPdfActions(output,{blob:result.blob,filename:result.filename,title:mode==='quote'?'Solicitud de cotización':'Reporte de materias primas'});
   const open=document.createElement('a');open.href=materialsPdfHandle.url;open.target='_blank';open.rel='noopener noreferrer';open.className='secondary';open.textContent='Abrir PDF';output.prepend(open);
@@ -317,7 +319,7 @@ async function prepareProductionPdf(batch,{draft=false}={}){
  const active=()=>token===productionPdfEpoch&&hasAppAccess(cloud)&&dialog.open&&output.isConnected&&dialog.contains(output);
  output.innerHTML='<button type="button" class="secondary" disabled>Preparando PDF…</button>';
  try{
-  const {createProductionPdf}=await import('./production-pdf.js?v=82'),result=await createProductionPdf(snapshot,{draft});
+  const {createProductionPdf}=await import('./production-pdf.js?v=83'),result=await createProductionPdf(snapshot,{draft});
   if(!active())return;
   output.replaceChildren();productionPdfHandle=mountPdfActions(output,{blob:result.blob,filename:result.filename,title:draft?'Lista de producción · Borrador':'Lista de producción '+batchNumber(snapshot)});
  }catch(error){if(active()){output.innerHTML=`<p role="alert">No se pudo preparar el PDF: ${esc(error.message)}</p><button type="button" class="secondary" id="production-pdf-retry">Reintentar PDF</button>`;$('#production-pdf-retry').onclick=()=>prepareProductionPdf(snapshot,{draft});}}

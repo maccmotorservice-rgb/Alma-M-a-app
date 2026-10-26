@@ -30,7 +30,7 @@
  const dock = document.createElement('nav');dock.className = 'studio-dock studio-only';dock.setAttribute('aria-label', 'Accesos principales');
  dock.innerHTML = [['overview', 'Inicio'], ['ready', 'Stock'], ['batches', 'Producir'], ['sales', 'Ventas']].map(([route, label]) => `<button type="button" data-view="${route}" data-dock-view="${route}">${icon(route)}<span>${label}</span></button>`).join('') + '<button type="button" data-studio-search aria-label="Buscar herramienta"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="10" cy="10" r="6"/><path d="m15 15 5 5"/></svg><span>Buscar</span></button>';document.body.append(dock);
  let view = 'overview';
- new ResizeObserver(() => {if (root.dataset.version === '3') aside.style.setProperty('--studio-panel-height', nav.getBoundingClientRect().height + 'px');}).observe(nav);
+ new ResizeObserver(() => {if (['3','4'].includes(root.dataset.version)) aside.style.setProperty('--studio-panel-height', nav.getBoundingClientRect().height + 'px');}).observe(nav);
  function syncNavigation() {
   const parent = {dictation: 'materials', 'material-report': 'materials', scanner: 'ready', 'stock-dictation': 'ready', 'sales-report': 'sales'}[view] ?? view;
   const group = Object.keys(groups).find(key => groups[key].includes(parent)) ?? 'overview';
@@ -56,12 +56,12 @@
   if (event.target.closest('[data-studio-print-note],[data-studio-new-note]')) {newSalesNote();return;}
   if (event.target.closest('[data-studio-search]')) document.querySelector('#quick-open')?.click();
   const metric = event.target.closest('[data-studio-metric-route]');
-  if (metric && root.dataset.version === '3') openRoute(metric.dataset.studioMetricRoute);
+  if (metric && ['3','4'].includes(root.dataset.version)) openRoute(metric.dataset.studioMetricRoute);
  });
  document.addEventListener('keydown', event => {
   if (!(event.target instanceof Element)) return;
   const metric = event.target.closest('[data-studio-metric-route]');
-  if (root.dataset.version === '3' && metric && ['Enter', ' '].includes(event.key)) {event.preventDefault();metric.click();}
+  if (['3','4'].includes(root.dataset.version) && metric && ['Enter', ' '].includes(event.key)) {event.preventDefault();metric.click();}
  });
  function decorateMetrics(content) {
   const routes = ['materials', 'ready', 'ready', 'material-report'];
@@ -69,7 +69,7 @@
    if (!routes[index]) return;
    card.dataset.studioMetricRoute = routes[index];
    if (!card.querySelector('.studio-metric-arrow')) card.insertAdjacentHTML('beforeend', `<span class="studio-metric-arrow studio-only">${arrow}</span>`);
-   if (root.dataset.version === '3') {card.setAttribute('role', 'button');card.tabIndex = 0;card.setAttribute('aria-label', card.querySelector('.stat-label').textContent + ': ' + card.querySelector('.number').textContent.trim() + '. Ver detalle');}
+   if (['3','4'].includes(root.dataset.version)) {card.setAttribute('role', 'button');card.tabIndex = 0;card.setAttribute('aria-label', card.querySelector('.stat-label').textContent + ': ' + card.querySelector('.number').textContent.trim() + '. Ver detalle');}
    else {card.removeAttribute('role');card.removeAttribute('tabindex');card.removeAttribute('aria-label');}
   });
  }
