@@ -18,7 +18,27 @@ export function matchQuoteProduct(description,catalog){
  if(!ranked.length)return {productId:'',candidates:[]};
  const best=ranked.filter(p=>p.score===ranked[0].score);return {productId:best.length===1?best[0].id:'',candidates:ranked.slice(0,5).map(p=>p.id)};
 }
+export function quoteDocumentMetadata(lines){
+ const joined=lines.map(l=>l.text).join('\n'),currencies=[...new Set(joined.match(/\b(?:MXN|USD|GTQ)\b/g)??[])];
+ const metadata={currency:currencies.length===1?currencies[0]:'',provider:/euroclich[eé]/i.test(joined)?'Eurocliché':'',taxPercent:'0',officialTotal:'',itemCount:null};
+ const header=lines.findIndex(l=>/Art[ií]culos/i.test(l.text)&&/Subtotal/i.test(l.text)&&/IVA/i.test(l.text));
+ if(header>=0){const summary=lines.slice(header+1,header+4).find(l=>(l.text.match(/\$\s*[\d,.]+/g)??[]).length>=3);if(summary){const amounts=summary.text.match(/\$\s*[\d,.]+/g).map(quoteMoneyCents),subtotal=amounts[amounts.length-3],tax=amounts[amounts.length-2],total=amounts[amounts.length-1],count=summary.text.match(/^\s*(\d+)\s/);metadata.itemCount=count?Number(count[1]):null;metadata.officialTotal=(total/100).toFixed(2);metadata.reportedSubtotal=(subtotal/100).toFixed(2);metadata.reportedTax=(tax/100).toFixed(2);if(subtotal>0)metadata.taxPercent=String(Math.round(tax/subtotal*10000)/100);}}
+ return metadata;
+}
+function structuredQuoteRows(lines,catalog){
+ const rows=[];
+ for(let i=0;i<lines.length;i++){
+  const line=lines[i],match=line.text.match(/^\s*(\d{1,3})\s+(\d+(?:[.,]\d+)?)\s*(kg|g|ml|lt|l)\s+([A-Z0-9-]+)\b/i),prices=line.text.match(/\$\s*\d[\d.,]*/g);
+  if(!match||!prices||prices.length<2)continue;
+  const previous=lines[i-1],next=lines[i+1],alias=previous?.page===line.page&&!/Precio Unit|Inspirad[ao]|\$|^\s*#/.test(previous.text)?previous.text.trim():'',inspiration=next?.page===line.page&&/Inspirad[ao]\s+en/i.test(next.text)?next.text.trim():'';
+  const reference=inspiration.replace(/^Inspirad[ao]\s+en\s*/i,''),gender=alias.match(/(?:^|\s)([MFU])(?:\.|\s|$)/)?.[1],category={M:'Caballero',F:'Dama',U:'Unisex'}[gender],candidates=category?catalog.filter(p=>p.category===category):catalog;
+  const resolved=matchQuoteProduct(reference||alias,candidates),unit=match[3].toLowerCase(),qty=Number(match[2].replace(',','.'));
+  rows.push({key:'row-'+rows.length,description:[alias,inspiration].filter(Boolean).join(' · ')||line.text,productId:resolved.productId,candidates:resolved.candidates,amount:(quoteMoneyCents(prices[prices.length-1])/100).toFixed(2),quantityMl:['ml','l','lt'].includes(unit)?String(qty*(unit==='ml'?1:1000)):'',sourceQuantity:match[2]+' '+unit,supplierCode:match[4],supplierNumber:Number(match[1]),unitPrice:prices[prices.length-2],page:line.page,y:line.y,include:null});
+ }
+ return rows;
+}
 export function quoteRowsFromLines(lines,catalog){
+ const structured=structuredQuoteRows(lines,catalog);if(structured.length)return structured;
  const rows=[];
  for(const line of lines){const text=String(line.text??'').trim();if(!text||/^(?:sub\s*total|total|iva\b|impuesto|descuento|env[ií]o|flete|saldo|p[aá]gina|fecha|tel[eé]fono|rfc\b|clabe\b|cuenta\b|cotizaci[oó]n\b|vigencia|direcci[oó]n|domicilio|correo|www\.|https?:)/i.test(text))continue;
  const match=matchQuoteProduct(text,catalog),price=text.match(/(?:\$|MXN\s*|USD\s*|GTQ\s*)?\d[\d.,]*(?:\s*(?:MXN|USD|GTQ))?\s*$/i),hasLetters=/[a-záéíóúñ]{3}/i.test(text);
@@ -34,7 +54,7 @@ export function quoteRowsFromLines(lines,catalog){
 export function pendingMaterialNeeds(state){
  const needs={};for(const b of state.batches??[]){if(b.status==='cancelled')continue;for(const i of b.items??[]){const pending=Math.max(0,i.qty-completedQuantity(i));if(!pending)continue;const recipe=recipeFor(i.size);for(const [key,ml] of [['ess-'+i.id,recipe.essence],['alcohol',recipe.alcohol],['galaxolide',recipe.fixative]])needs[key]=(needs[key]??0)+ml*pending;}}return needs;
 }
-export function analyzeQuotation(rows,state,catalog,{now=new Date()}={}){
+export function analyzeQuotation(rows,state,catalog,{now=new Date(),taxPercent='0',fixedCharges='0',officialTotal=''}={}){
  const needs=pendingMaterialNeeds(state),quoted=new Set(),sales={};
  const cutoff=now.getTime()-90*86400000;
  for(const note of state.salesNotes??[]){const date=Date.parse(note.date+'T12:00:00Z');if(note.status==='cancelled'||!Number.isFinite(date)||date<cutoff||date>now.getTime())continue;for(const i of note.items??[]){const p=resolveSalesProduct(i,catalog);if(p)sales[p.id]=(sales[p.id]??0)+i.qty;}}
@@ -51,8 +71,15 @@ export function analyzeQuotation(rows,state,catalog,{now=new Date()}={}){
   const unresolved=!material&&row.productId!=='outside';
   return {...row,product:p,material,status,pendingMl,deficitMl,recommend,reason,cents,amountError,quantityError,quantityMl,insufficientQuantity:quantityMl!==null&&deficitMl>quantityMl,recentUnits:p?sales[p.id]??0:null,keep:row.include===null||row.include===undefined?recommend:row.include===true,unresolved};
  });
- const known=analyzed.filter(r=>r.cents!==null&&!r.amountError),sum=items=>items.reduce((n,r)=>n+r.cents,0),totalCents=sum(known),selectedCents=sum(known.filter(r=>r.keep)),savingsCents=totalCents-selectedCents;
+ const known=analyzed.filter(r=>r.cents!==null&&!r.amountError),sum=items=>items.reduce((n,r)=>n+r.cents,0),subtotalCents=sum(known),selectedSubtotalCents=sum(known.filter(r=>r.keep));
+ const rate=Number(taxPercent);let calculationError='',charges=0,reported=null;
+ try{charges=quoteMoneyCents(fixedCharges)??0;reported=quoteMoneyCents(officialTotal);}catch(error){calculationError=error.message;}
+ if(!Number.isFinite(rate)||rate<0||rate>100||String(taxPercent).trim()==='')calculationError='Indica un IVA válido entre 0 y 100 %.';
+ const taxFor=items=>Number.isFinite(rate)?items.reduce((n,r)=>n+Math.round(r.cents*rate/100),0):0,taxCents=taxFor(known),selectedTaxCents=taxFor(known.filter(r=>r.keep));
+ const calculatedTotalCents=subtotalCents+taxCents+charges,difference=reported===null?0:reported-calculatedTotalCents,roundingCents=Math.abs(difference)<=5?difference:0;
+ if(reported!==null&&Math.abs(difference)>5)calculationError='Los renglones, IVA y cargos no coinciden con el total del proveedor. Revisa los importes antes de confirmar.';
+ const totalCents=calculatedTotalCents+roundingCents,selectedCents=selectedSubtotalCents+selectedTaxCents+(known.some(r=>r.keep)?charges:0)+(subtotalCents?Math.round(roundingCents*selectedSubtotalCents/subtotalCents):0),savingsCents=totalCents-selectedCents;
  const missing=(state.materials??[]).filter(m=>m.kind==='Esencia'&&(m.stock===0||isMaterialLow(m))&&!quoted.has(m.id)).map(m=>({id:m.id,product:catalog.find(p=>p.id===m.id.slice(4)),status:m.stock===0?'missing':'low'}));
- const complete=analyzed.length>0&&analyzed.every(r=>String(r.description??'').trim()&&r.cents!==null&&!r.amountError&&!r.quantityError&&!r.unresolved)&&[totalCents,selectedCents,savingsCents].every(Number.isSafeInteger);
- return {rows:analyzed,missing,totalCents,selectedCents,savingsCents,complete,unresolved:analyzed.filter(r=>r.unresolved).length,unpriced:analyzed.filter(r=>r.cents===null||r.amountError).length};
+ const complete=!calculationError&&analyzed.length>0&&analyzed.every(r=>String(r.description??'').trim()&&r.cents!==null&&!r.amountError&&!r.quantityError&&!r.unresolved)&&[subtotalCents,selectedSubtotalCents,taxCents,selectedTaxCents,totalCents,selectedCents,savingsCents].every(Number.isSafeInteger);
+ return {rows:analyzed,missing,subtotalCents,selectedSubtotalCents,taxPercent:rate,taxCents,selectedTaxCents,fixedChargesCents:charges,officialTotalCents:reported,roundingCents,calculationError,totalCents,selectedCents,savingsCents,complete,unresolved:analyzed.filter(r=>r.unresolved).length,unpriced:analyzed.filter(r=>r.cents===null||r.amountError).length};
 }
