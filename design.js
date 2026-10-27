@@ -59,6 +59,19 @@ function updateEffects(){
  if(!effectsActive()){for(const animation of runningAnimations)animation.cancel();runningAnimations.clear();}
 }
 function animateElement(element,frames,options){if(!effectsActive()||!element?.animate||document.body.classList.contains('access-locked'))return;const animation=element.animate(frames,options);runningAnimations.add(animation);const clean=()=>runningAnimations.delete(animation);animation.addEventListener('finish',clean,{once:true});animation.addEventListener('cancel',clean,{once:true});}
+// Short feedback animations share the existing effects/reduced-motion lifecycle.
+document.addEventListener('pointerdown',event=>{
+ if(!effectsActive()||event.button!==0||!(event.target instanceof Element))return;
+ const target=event.target.closest('#content button,#aura-navigation button,dialog button,.label-option');
+ if(!target||target.matches(':disabled,.friendly-search-clear')||!target.getBoundingClientRect().width)return;
+ const transform=getComputedStyle(target).transform,base=transform==='none'?'':transform;
+ animateElement(target,[{transform:base+' scale(1)'},{transform:base+' scale(.975)',offset:.4},{transform:base+' scale(1)'}],{duration:190,easing:'ease-out'});
+},{capture:true});
+document.addEventListener('change',event=>{
+ if(!effectsActive()||!(event.target instanceof Element))return;
+ const control=event.target;if(!control.matches('#content select,dialog select,#content input[type=checkbox],dialog input[type=checkbox]'))return;
+ const key=control.dataset.friendlyKey,id=control.id;requestAnimationFrame(()=>{const current=key?[...document.querySelectorAll('[data-friendly-key]')].find(el=>el.dataset.friendlyKey===key):id?document.getElementById(id):control;if(!current?.isConnected)return;const target=current.closest('.label-option,.sales-size-option,.field')||current;animateElement(target,[{opacity:.72},{opacity:1}],{duration:210,easing:'ease-out'});});
+},{capture:true});
 effectsToggle.addEventListener('click',()=>{effectsEnabled=!effectsEnabled;try{localStorage.setItem('alma-mia-effects',effectsEnabled?'on':'off');}catch{}updateEffects();});
 reducedMotion.addEventListener('change',updateEffects);updateEffects();
 document.addEventListener('alma:view-change',()=>{for(const animation of runningAnimations)animation.cancel();runningAnimations.clear();animateElement(document.querySelector('#content'),[{opacity:.55,transform:'translateY(7px)'},{opacity:1,transform:'translateY(0)'}],{duration:210,easing:'cubic-bezier(.2,.7,.2,1)'});});
