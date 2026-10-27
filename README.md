@@ -546,3 +546,7 @@ El botón de sol/luna en la cabecera alterna entre **claro** y **oscuro** y guar
 ### Bienvenida sin desplazamiento y movimiento visible (v86)
 
 La bienvenida de Liquid se ajusta al alto disponible, incluidos móviles pequeños y pantallas en horizontal. El fondo y sus luces se animan en capas recortadas dentro de la pantalla, con un movimiento más perceptible y sin ampliar el área desplazable. Mientras está abierta se bloquea el desplazamiento de la página; al cerrarla se restablece. Se mantienen los controles de sonido, los efectos y la preferencia del sistema de reducir movimiento. No modifica inventario ni datos de negocio.
+
+### Fondo líquido animado en tiempo real (v87)
+
+La bienvenida Liquid sustituye el desplazamiento de una imagen por un lienzo que dibuja ondas de color con curvas cambiantes en cada fotograma. El movimiento se limita a 30 fotogramas por segundo y a 1200 píxeles de lado mayor. Se detiene al cerrar la bienvenida, ocultar la pestaña o desactivar efectos. Respeta reducir movimiento del sistema; el botón **Activar fondo animado / Pausar fondo animado** permite controlar el fondo directamente y activarlo expresamente. La preferencia de pausa se conserva en este navegador. La bienvenida sigue sin desplazamiento y no modifica datos de negocio.

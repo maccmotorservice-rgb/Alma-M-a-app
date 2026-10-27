@@ -1,5 +1,5 @@
-import {createWelcomeAmbience} from './welcome-ambience.js?v=86';
-import {createWelcomeVoice} from './welcome-voice.js?v=86';
+import {createWelcomeAmbience} from './welcome-ambience.js?v=87';
+import {createWelcomeVoice} from './welcome-voice.js?v=87';
 
 /* Device-only welcome preferences. This module never reads or writes inventory. */
 export const WELCOME_IDLE_MS = 2 * 60 * 60 * 1000;
@@ -39,6 +39,55 @@ export function welcomeEligibility(state = {}, now = Date.now()) {
 
 export function claimWelcome(state, now = Date.now()) {
  return {...mergeWelcomeState(state), lastWelcomeAt: now, lastWelcomeDay: welcomeDay(now), lastActivityAt: now};
+}
+
+// Draw the liquid itself each frame: this is not a pan over a generated image.
+function installLiquidWelcome(overlay) {
+ const root = document.documentElement, scene = overlay.querySelector('.welcome-scene');
+ const canvas = document.createElement('canvas');canvas.className = 'welcome-liquid-canvas';canvas.setAttribute('aria-hidden', 'true');scene.append(canvas);
+ const context = canvas.getContext('2d');if (!context) return;
+ const button = document.createElement('button');button.type = 'button';button.className = 'welcome-motion';overlay.querySelector('.welcome-controls').append(button);
+ const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+ let enabled = true;try {enabled = localStorage.getItem('alma-mia-welcome-motion') !== 'off';} catch {}
+ let explicitPlay = false, frame = 0, previous = 0, time = 0, width = 0, height = 0;
+ const liquid = () => root.dataset.design === 'modern' && root.dataset.version === '4';
+ const allowed = () => enabled && (explicitPlay || (!reduced.matches && root.dataset.effects !== 'off'));
+ const visible = () => liquid() && !overlay.hidden && !document.hidden && !overlay.classList.contains('welcome-paused');
+ function draw(t) {
+  const w = canvas.width, h = canvas.height;context.clearRect(0, 0, w, h);
+  const base = context.createLinearGradient(0, 0, w, h);base.addColorStop(0, '#111635');base.addColorStop(.5, '#402065');base.addColorStop(1, '#0a2444');context.fillStyle = base;context.fillRect(0, 0, w, h);
+  // Broad ribbons with independently changing curves and metallic highlight edges.
+  for (let i = 0; i < 5; i++) {
+   const phase = t * .72 + i * 1.31;
+   const y = h * (.08 + i * .21), amplitude = h * .24;
+   const a = y + Math.sin(phase) * amplitude, b = y + Math.cos(phase * 1.23) * amplitude;
+   const c = y + Math.sin(phase * .91 + 2) * amplitude, end = y + Math.cos(phase + 1) * amplitude;
+   const ribbon = context.createLinearGradient(0, y - h * .12, w, y + h * .3);
+   const colors = [['#2557af','#6be6ed','#6862e4'],['#472aa8','#ae91ff','#e9b8ec'],['#a23488','#f5b9a9','#7053c2'],['#145e83','#7ae1dc','#4a50ab'],['#3b287b','#b49bf7','#30577b']][i];
+   ribbon.addColorStop(0, colors[0]);ribbon.addColorStop(.48 + Math.sin(phase) * .15, colors[1]);ribbon.addColorStop(1, colors[2]);
+   context.beginPath();context.moveTo(-w * .1, a);context.bezierCurveTo(w * .25, b - h * .35, w * .6, c + h * .35, w * 1.1, end);context.lineTo(w * 1.1, end + h * .27);context.bezierCurveTo(w * .6, c + h * .52, w * .25, b - h * .12, -w * .1, a + h * .27);context.closePath();context.fillStyle = ribbon;context.fill();
+   context.beginPath();context.moveTo(-w * .1, a);context.bezierCurveTo(w * .25, b - h * .35, w * .6, c + h * .35, w * 1.1, end);context.strokeStyle = '#e3e5ff70';context.lineWidth = Math.max(1, w / 650);context.stroke();
+  }
+  const shade = context.createRadialGradient(w * .5, h * .5, 0, w * .5, h * .5, Math.max(w,h) * .7);shade.addColorStop(0, '#090e2420');shade.addColorStop(1, '#080d3260');context.fillStyle = shade;context.fillRect(0, 0, w, h);
+ }
+ function tick(now) {
+  frame = 0;if (!visible() || !allowed()) return;
+  if (!previous || now - previous >= 32) {time += previous ? Math.min((now - previous) / 1000, .08) : 0;previous = now;draw(time);}
+  frame = requestAnimationFrame(tick);
+ }
+ function sync() {
+  cancelAnimationFrame(frame);frame = 0;previous = 0;
+  button.hidden = !liquid();button.textContent = allowed() ? 'Pausar fondo animado' : 'Activar fondo animado';button.setAttribute('aria-pressed', String(allowed()));
+  if (!visible()) return;
+  const bounds = scene.getBoundingClientRect(), scale = Math.min(devicePixelRatio || 1, 1.5, 1200 / Math.max(bounds.width, bounds.height));
+  const nextWidth = Math.max(1, Math.round(bounds.width * scale)), nextHeight = Math.max(1, Math.round(bounds.height * scale));
+  if (width !== nextWidth || height !== nextHeight) {width = canvas.width = nextWidth;height = canvas.height = nextHeight;}
+  draw(time);if (allowed()) frame = requestAnimationFrame(tick);
+ }
+ button.onclick = () => {enabled = !allowed();explicitPlay = enabled;try {localStorage.setItem('alma-mia-welcome-motion', enabled ? 'on' : 'off');} catch {}sync();};
+ new MutationObserver(sync).observe(overlay, {attributes:true, attributeFilter:['hidden','class']});
+ new MutationObserver(() => {explicitPlay = false;sync();}).observe(root, {attributes:true, attributeFilter:['data-design','data-version','data-effects']});
+ new ResizeObserver(sync).observe(scene);document.addEventListener('visibilitychange', sync);reduced.addEventListener('change', () => {explicitPlay = false;sync();});sync();
 }
 
 function installWelcome() {
@@ -308,6 +357,7 @@ function installWelcome() {
    overlay.setAttribute('role', 'dialog');overlay.setAttribute('aria-modal', 'true');overlay.setAttribute('aria-labelledby', 'welcome-greeting');overlay.setAttribute('aria-describedby', 'welcome-copy');
    overlay.innerHTML = '<div class="welcome-scene" aria-hidden="true"><div class="welcome-orbit welcome-orbit-one"></div><div class="welcome-orbit welcome-orbit-two"></div><div class="welcome-orbit welcome-orbit-three"></div></div><div class="welcome-card"><button type="button" class="welcome-close" id="welcome-close" aria-label="Cerrar bienvenida">×</button><div class="welcome-mark"><img src="./assets/logo.png" alt="Alma Mía"></div><p class="welcome-eyebrow">ALMA MÍA · CONTROL INTERNO</p><h1 class="welcome-greeting" id="welcome-greeting"></h1><p class="welcome-copy" id="welcome-copy">Consulta inventario, notas de venta y reportes.</p><div class="welcome-controls"><button type="button" class="welcome-enter" id="welcome-enter">Acceder a mi portal <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M6 18 18 6M6 6h12v12"/></svg></button><button type="button" class="welcome-sound" id="welcome-sound" aria-pressed="true"></button></div></div>';
    document.body.append(overlay);
+   installLiquidWelcome(overlay);
    document.getElementById('welcome-close').onclick = () => closeWelcome();
    document.getElementById('welcome-sound').onclick = toggleSound;
    document.getElementById('welcome-enter').onclick = async () => {
