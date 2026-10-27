@@ -1,4 +1,4 @@
-import {cloneData} from './clone-data.js?v=95';
+import {cloneData} from './clone-data.js?v=96';
 export const printSupplyItems=[{id:'strips-100',name:'Tiras de 100 ml',kind:'Tiras',size:100},{id:'strips-50',name:'Tiras de 50 ml',kind:'Tiras',size:50},{id:'labels-100',name:'Etiquetas de 100 ml',kind:'Etiquetas',size:100},{id:'labels-50',name:'Etiquetas de 50 ml',kind:'Etiquetas',size:50}];
 export function validatePrintStock(input){
  if(!input||typeof input!=='object'||Array.isArray(input)||Object.entries(input).some(([id,stock])=>!printSupplyItems.some(item=>item.id===id)||(stock!==null&&(!Number.isSafeInteger(stock)||stock<0))))throw Error('Stock de tiras y etiquetas inválido.');

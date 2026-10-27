@@ -1,4 +1,4 @@
-import {isMaterialLow,extraBottles,bottleStock} from './inventory.js?v=95';
+import {isMaterialLow,extraBottles,bottleStock} from './inventory.js?v=96';
 export async function createMaterialsPdf(state,catalog,{now=new Date()}={}){
  const {jsPDF,autoTable}=await import('./assets/pdf-client.js');
  const doc=new jsPDF({unit:'mm',format:'a4'}),margin=16,zone='America/Guatemala';
@@ -71,7 +71,7 @@ export async function createMaterialsQuotationPdf(state,catalog,{now=new Date(),
 }
 
 export async function createEssenceDirectoryPdf(state,catalog,{now=new Date()}={}){
- const {essenceDirectory}=await import('./material-registry.js?v=95');
+ const {essenceDirectory}=await import('./material-registry.js?v=96');
  const items=essenceDirectory(state,catalog),{jsPDF,autoTable}=await import('./assets/pdf-client.js');
  const doc=new jsPDF({unit:'mm',format:'a4'}),margin=16;
  doc.setProperties({title:'Lista de esencias · Alma Mía',subject:'Esencias activas y descontinuadas',author:'Alma Mía'});

@@ -1,28 +1,29 @@
-import {initFriendlyFilters} from './friendly-filters.js?v=95';
-import {printSupplyItems,applyPrintStock} from './print-stock.js?v=95';
-import {catalogForState,registerMaterial,discontinueMaterial,essenceDirectory,catalogPriceGroups,catalogPriceTargets,setCatalogPrices} from './material-registry.js?v=95';
-import {auraOverviewHtml,initAuraNavigation,workspaceAreaHtml} from './aura.js?v=95';
-import {createQuotationComparator} from './quotation-comparator-panel.js?v=95';
-import {materialsQuoteEssences} from './materials-pdf.js?v=95';
-import {productionPurposeLabel} from './inventory.js?v=95';
-import {cloneData} from './clone-data.js?v=95';
-import {createStripLibrarySync} from './strip-library-sync.js?v=95';
-import {mountPdfActions} from './pdf-share.js?v=95';
-import {filterMaterialStock,materialStockCounts,materialStatus,productStockView} from './stock-views.js?v=95';
-import {createStockDictation} from './stock-dictation.js?v=95';
-import {createStripsPanel} from './strips.js?v=95';
-import {createLabelsPanel} from './labels.js?v=95';
-import {createStockScanner} from './stock-scanner.js?v=95';
-import {hasAppAccess,defaultCloudConfig,clearBusinessCache} from './access.js?v=95';
-import {annualSalesCards,salesReportHtml} from './sales-reports.js?v=95';
-import {cancellationFields,mountCancellationFields,readCancellationFields} from './cancellation.js?v=95';
-import {catalogCategories,catalogCategoryMatches,filterCatalog,perfumeMatches} from './catalog-tools.js?v=95';
-import {activeSalesNoteForBatch,salesAccounts,salesMoney} from './sales.js?v=95';
-import {createSalesPanel} from './sales-panel.js?v=95';
-import {CloudInventory} from './cloud.js?v=95';
-import {createDictationPanel} from './dictation.js?v=95';
-import {initialState,applyMovement,recipeFor,registerCustomer,productionPreview,confirmProduction,completedQuantity,batchProgress,completeBatchItem,completeBatchWithExtras,cancelBatch,readyBatch,setBottleStocks,readyMovement,validateBackup,attributeSessionChanges,extraBottles,bottleStock,isMaterialLow,removeReadyStock} from './inventory.js?v=95';
-import {localStore,sessionStore} from './browser-storage.js?v=95';
+import {initDashboardMotion} from './dashboard-motion.js?v=96';
+import {initFriendlyFilters} from './friendly-filters.js?v=96';
+import {printSupplyItems,applyPrintStock} from './print-stock.js?v=96';
+import {catalogForState,registerMaterial,discontinueMaterial,essenceDirectory,catalogPriceGroups,catalogPriceTargets,setCatalogPrices} from './material-registry.js?v=96';
+import {auraOverviewHtml,initAuraNavigation,workspaceAreaHtml} from './aura.js?v=96';
+import {createQuotationComparator} from './quotation-comparator-panel.js?v=96';
+import {materialsQuoteEssences} from './materials-pdf.js?v=96';
+import {productionPurposeLabel} from './inventory.js?v=96';
+import {cloneData} from './clone-data.js?v=96';
+import {createStripLibrarySync} from './strip-library-sync.js?v=96';
+import {mountPdfActions} from './pdf-share.js?v=96';
+import {filterMaterialStock,materialStockCounts,materialStatus,productStockView} from './stock-views.js?v=96';
+import {createStockDictation} from './stock-dictation.js?v=96';
+import {createStripsPanel} from './strips.js?v=96';
+import {createLabelsPanel} from './labels.js?v=96';
+import {createStockScanner} from './stock-scanner.js?v=96';
+import {hasAppAccess,defaultCloudConfig,clearBusinessCache} from './access.js?v=96';
+import {annualSalesCards,salesReportHtml} from './sales-reports.js?v=96';
+import {cancellationFields,mountCancellationFields,readCancellationFields} from './cancellation.js?v=96';
+import {catalogCategories,catalogCategoryMatches,filterCatalog,perfumeMatches} from './catalog-tools.js?v=96';
+import {activeSalesNoteForBatch,salesAccounts,salesMoney} from './sales.js?v=96';
+import {createSalesPanel} from './sales-panel.js?v=96';
+import {CloudInventory} from './cloud.js?v=96';
+import {createDictationPanel} from './dictation.js?v=96';
+import {initialState,applyMovement,recipeFor,registerCustomer,productionPreview,confirmProduction,completedQuantity,batchProgress,completeBatchItem,completeBatchWithExtras,cancelBatch,readyBatch,setBottleStocks,readyMovement,validateBackup,attributeSessionChanges,extraBottles,bottleStock,isMaterialLow,removeReadyStock} from './inventory.js?v=96';
+import {localStore,sessionStore} from './browser-storage.js?v=96';
 
 // Export startup so the small loader can report load failures without leaving
 // the access screen waiting forever. Keep top-level await out of this entry.
@@ -30,7 +31,7 @@ export const portalReady=(async()=>{
 async function loadCatalog(){
  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),12000);
  try{
-  const response=await fetch('./catalog.json?v=95',{signal:controller.signal});
+  const response=await fetch('./catalog.json?v=96',{signal:controller.signal});
   if(!response.ok)throw Error('Catálogo no disponible.');
   const data=await response.json();if(!Array.isArray(data)||!data.length)throw Error('Catálogo no válido.');
   return data;
@@ -267,7 +268,7 @@ const stockVoice=createStockDictation({catalog:liveCatalog,getState:()=>state,sa
 const stripSync=createStripLibrarySync({getCloud:()=>cloud,getLibrary:()=>state.stripLibrary,canAccess:()=>hasAppAccess(cloud),onChange:()=>{void strips.libraryChanged().catch(()=>{});}});
 const strips=createStripsPanel({catalog:liveCatalog,notify:toast,sync:stripSync,allowed:()=>hasAppAccess(cloud)&&['strips','strip-designer'].includes(view),getView:()=>view,onNavigate:next=>{view=next;search='';render();window.scrollTo({top:0});}});
 const labels=createLabelsPanel({catalog:liveCatalog,notify:toast,allowed:()=>hasAppAccess(cloud)&&view==='labels'});
-initAuraNavigation();initFriendlyFilters();
+initAuraNavigation();initFriendlyFilters();initDashboardMotion();
 const comparator=createQuotationComparator({catalog,getState:()=>state,allowed:()=>hasAppAccess(cloud)&&view==='quote-comparator'});
 const scanner=createStockScanner({catalog:liveCatalog,getState:()=>state,save:async next=>persist(next),notify:toast,allowed:()=>hasAppAccess(cloud)&&view==='scanner'});
 window.addEventListener('pagehide',()=>{dictation.stop();stockVoice.stop();scanner.stop();});
@@ -353,7 +354,7 @@ async function prepareCatalogPdf(){
  const active=()=>token===catalogPdfEpoch&&hasAppAccess(cloud)&&view==='catalog-pdf'&&output?.isConnected;
  try{
   if(storageError)throw Error('Recupera el respaldo antes de generar el catálogo.');
-  const {createOfficialCatalogPdf}=await import('./official-catalog.js?v=95'),result=await createOfficialCatalogPdf(snapshot);if(!active())return;
+  const {createOfficialCatalogPdf}=await import('./official-catalog.js?v=96'),result=await createOfficialCatalogPdf(snapshot);if(!active())return;
   catalogPdfHandle=mountPdfActions(output,{blob:result.blob,filename:result.filename,title:'Catálogo Alma Mía 2026'});
   const open=document.createElement('a');open.href=catalogPdfHandle.url;open.target='_blank';open.rel='noopener noreferrer';open.className='secondary';open.textContent='Abrir PDF';output.prepend(open);
   const frame=document.createElement('iframe');frame.title='Catálogo oficial Alma Mía PDF';frame.src=catalogPdfHandle.url;viewer.replaceChildren(frame);
@@ -375,7 +376,7 @@ async function prepareMaterialsPdf(button){
  button.disabled=true;button.textContent='Preparando PDF…';preview.hidden=false;status.textContent='Preparando vista previa…';const quoteError=$('#materials-quote-error');if(quoteError)quoteError.textContent='';
  try{
   if(storageError)throw Error('Recupera el respaldo antes de generar el reporte.');
-  const module=await import('./materials-pdf.js?v=95'),result=mode==='directory'?await module.createEssenceDirectoryPdf(snapshot,catalog):mode==='quote'?await module.createMaterialsQuotationPdf(snapshot,catalog,options):await module.createMaterialsPdf(snapshot,catalog);
+  const module=await import('./materials-pdf.js?v=96'),result=mode==='directory'?await module.createEssenceDirectoryPdf(snapshot,catalog):mode==='quote'?await module.createMaterialsQuotationPdf(snapshot,catalog,options):await module.createMaterialsPdf(snapshot,catalog);
   if(!active())return;
   materialsPdfHandle=mountPdfActions(output,{blob:result.blob,filename:result.filename,title:mode==='directory'?'Lista de esencias':mode==='quote'?'Solicitud de cotización':'Reporte de materias primas'});
   const open=document.createElement('a');open.href=materialsPdfHandle.url;open.target='_blank';open.rel='noopener noreferrer';open.className='secondary';open.textContent='Abrir PDF';output.prepend(open);
@@ -395,7 +396,7 @@ async function prepareProductionPdf(batch,{draft=false}={}){
  const active=()=>token===productionPdfEpoch&&hasAppAccess(cloud)&&dialog.open&&output.isConnected&&dialog.contains(output);
  output.innerHTML='<button type="button" class="secondary" disabled>Preparando PDF…</button>';
  try{
-  const {createProductionPdf}=await import('./production-pdf.js?v=95'),result=await createProductionPdf(snapshot,{draft});
+  const {createProductionPdf}=await import('./production-pdf.js?v=96'),result=await createProductionPdf(snapshot,{draft});
   if(!active())return;
   output.replaceChildren();productionPdfHandle=mountPdfActions(output,{blob:result.blob,filename:result.filename,title:draft?'Lista de producción · Borrador':'Lista de producción '+batchNumber(snapshot)});
  }catch(error){if(active()){output.innerHTML=`<p role="alert">No se pudo preparar el PDF: ${esc(error.message)}</p><button type="button" class="secondary" id="production-pdf-retry">Reintentar PDF</button>`;$('#production-pdf-retry').onclick=()=>prepareProductionPdf(snapshot,{draft});}}
