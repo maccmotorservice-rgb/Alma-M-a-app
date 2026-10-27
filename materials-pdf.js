@@ -1,4 +1,4 @@
-import {isMaterialLow,extraBottles,bottleStock} from './inventory.js?v=89';
+import {isMaterialLow,extraBottles,bottleStock} from './inventory.js?v=90';
 export async function createMaterialsPdf(state,catalog,{now=new Date()}={}){
  const {jsPDF,autoTable}=await import('./assets/pdf-client.js');
  const doc=new jsPDF({unit:'mm',format:'a4'}),margin=16,zone='America/Guatemala';
@@ -68,4 +68,24 @@ export async function createMaterialsQuotationPdf(state,catalog,{now=new Date(),
  }
  const filenameDate=new Intl.DateTimeFormat('en-CA',{timeZone:zone,year:'numeric',month:'2-digit',day:'2-digit'}).format(now);
  return {blob:doc.output('blob'),filename:`Solicitud-Cotizacion-Esencias-${filenameDate}.pdf`,data,pages};
+}
+
+export async function createEssenceDirectoryPdf(state,catalog,{now=new Date()}={}){
+ const {essenceDirectory}=await import('./material-registry.js?v=90');
+ const items=essenceDirectory(state,catalog),{jsPDF,autoTable}=await import('./assets/pdf-client.js');
+ const doc=new jsPDF({unit:'mm',format:'a4'}),margin=16;
+ doc.setProperties({title:'Lista de esencias · Alma Mía',subject:'Esencias activas y descontinuadas',author:'Alma Mía'});
+ doc.setFont('helvetica','bold');doc.setFontSize(20);doc.text('Alma Mía · Lista de esencias',margin,24);
+ doc.setFont('helvetica','normal');doc.setFontSize(10);doc.text(new Intl.DateTimeFormat('es-MX',{timeZone:'America/Guatemala',dateStyle:'long'}).format(now),margin,33);
+ let y=46;
+ for(const [title,retired] of [['Esencias activas',false],['Descontinuadas',true]]){
+  const rows=items.filter(item=>item.discontinued===retired);
+  if(y>245){doc.addPage();y=24;}
+  doc.setFont('helvetica','bold');doc.setFontSize(13);doc.text(title,margin,y);
+  if(!rows.length){doc.setFont('helvetica','normal');doc.setFontSize(10);doc.text('No hay esencias en esta sección.',margin,y+10);y+=25;continue;}
+  autoTable(doc,{startY:y+5,head:[['Nombre comercial','Perfume original / casa productora','Categoría']],body:rows.map(item=>[item.name,[item.reference,item.brand].filter(Boolean).join(' — '),item.category]),theme:'striped',margin:{left:margin,right:margin,top:20,bottom:20},styles:{font:'helvetica',fontSize:9,cellPadding:3,overflow:'linebreak',textColor:35},headStyles:{fillColor:[231,233,242],textColor:35},columnStyles:{0:{cellWidth:58},1:{cellWidth:94},2:{cellWidth:26}},rowPageBreak:'avoid'});
+  y=doc.lastAutoTable.finalY+16;
+ }
+ const pages=doc.getNumberOfPages();for(let i=1;i<=pages;i++){doc.setPage(i);doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(100);doc.text('Alma Mía · Lista de esencias',margin,287);doc.text(`${i} / ${pages}`,194,287,{align:'right'});}
+ return {blob:doc.output('blob'),filename:'Alma-Mia-Lista-Esencias.pdf'};
 }
