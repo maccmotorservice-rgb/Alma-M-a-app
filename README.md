@@ -542,3 +542,7 @@ Liquid recupera la bienvenida con imagen de fondo y movimiento suave. Se incorpo
 El inicio separa **Accesos principales**, **Resumen de tu negocio** y **Más herramientas**. Los seis botones grandes abren lotes, notas, materia prima, producto terminado, comparador y creador de tiras. Los accesos a todas las demás funciones siguen disponibles en los menús y herramientas. Los botones miden al menos 185 px de alto en móvil y el diseño evita desbordamiento horizontal.
 
 El botón de sol/luna en la cabecera alterna entre **claro** y **oscuro** y guarda la preferencia en este navegador. Las dos opciones también están habilitadas en el selector de diseño para Liquid. La apariencia clara conserva los paneles y formularios claros, manteniendo el color y el contraste de los accesos liquid; no cambia la organización ni los datos. No se requieren SQL ni migraciones de inventario.
+
+### Bienvenida sin desplazamiento y movimiento visible (v86)
+
+La bienvenida de Liquid se ajusta al alto disponible, incluidos móviles pequeños y pantallas en horizontal. El fondo y sus luces se animan en capas recortadas dentro de la pantalla, con un movimiento más perceptible y sin ampliar el área desplazable. Mientras está abierta se bloquea el desplazamiento de la página; al cerrarla se restablece. Se mantienen los controles de sonido, los efectos y la preferencia del sistema de reducir movimiento. No modifica inventario ni datos de negocio.
