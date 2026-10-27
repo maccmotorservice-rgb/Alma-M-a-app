@@ -1,6 +1,6 @@
-import {randomId} from './clone-data.js?v=88';
-import {emptyStripLibrary,validateStripLibrary,validateStripRecord} from './strip-library-data.js?v=88';
-import {listStripMetadata,readStripRecord,writeStripRecord,removeStripRecord,updateStripRecord} from './strip-library-store.js?v=88';
+import {randomId} from './clone-data.js?v=89';
+import {emptyStripLibrary,validateStripLibrary,validateStripRecord} from './strip-library-data.js?v=89';
+import {listStripMetadata,readStripRecord,writeStripRecord,removeStripRecord,updateStripRecord} from './strip-library-store.js?v=89';
 
 const editKey=record=>record?._sync?.editId;
 const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));

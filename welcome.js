@@ -1,5 +1,5 @@
-import {createWelcomeAmbience} from './welcome-ambience.js?v=88';
-import {createWelcomeVoice} from './welcome-voice.js?v=88';
+import {createWelcomeAmbience} from './welcome-ambience.js?v=89';
+import {createWelcomeVoice} from './welcome-voice.js?v=89';
 
 /* Device-only welcome preferences. This module never reads or writes inventory. */
 export const WELCOME_IDLE_MS = 2 * 60 * 60 * 1000;
@@ -41,11 +41,66 @@ export function claimWelcome(state, now = Date.now()) {
  return {...mergeWelcomeState(state), lastWelcomeAt: now, lastWelcomeDay: welcomeDay(now), lastActivityAt: now};
 }
 
+// A lit, iridescent surface: moving folds change their normals and reflections.
+// Render into a private GPU canvas, then copy immediately into the visible canvas.
+function createLiquidSurface() {
+ const surface = document.createElement('canvas');
+ const gl = surface.getContext('webgl', {alpha:false, antialias:false, depth:false, stencil:false, powerPreference:'low-power'});
+ if (!gl) return null;
+ const vertex = 'attribute vec2 position;void main(){gl_Position=vec4(position,0.0,1.0);}';
+ const fragment = `precision mediump float;
+ uniform vec2 resolution;uniform float time;
+ float fold(vec2 p){
+  p+=vec2(.42*sin(p.y*1.25+time*.34),.32*cos(p.x*1.1-time*.27));
+  return sin(p.x*1.45+p.y*1.75+.95*sin(p.y*1.4-p.x*.65+time*.36)+time*.28)
+   +.25*sin(p.x*2.4-p.y*1.8-time*.24);
+ }
+ vec3 pearl(float v){
+  vec3 violet=vec3(.31,.12,.66),blue=vec3(.20,.37,.80),cyan=vec3(.42,.84,.88),pink=vec3(.91,.53,.73);
+  vec3 c=mix(violet,blue,smoothstep(-1.1,.0,v));
+  c=mix(c,cyan,smoothstep(-.15,.8,v));
+  return mix(c,pink,smoothstep(.40,1.05,v));
+ }
+ void main(){
+  vec2 uv=gl_FragCoord.xy/resolution;vec2 p=(gl_FragCoord.xy-.5*resolution)/min(resolution.x,resolution.y)*3.2;
+  float h=fold(p),e=.018;
+  vec2 slope=vec2(fold(p+vec2(e,0.0))-fold(p-vec2(e,0.0)),fold(p+vec2(0.0,e))-fold(p-vec2(0.0,e)))/(2.0*e);
+  vec3 n=normalize(vec3(-slope*.7,1.0));vec3 view=vec3(0.0,0.0,1.0);
+  vec3 light=normalize(vec3(-.55,.7,1.2));
+  float diffuse=max(dot(n,light),0.0);
+  vec3 halfLight=normalize(light+view);
+  float sheen=pow(max(dot(n,halfLight),0.0),18.0);
+  float sharp=pow(max(dot(n,normalize(normalize(vec3(.45,-.25,1.5))+view)),0.0),48.0);
+  vec3 reflection=reflect(-view,n);
+  float stripe=exp(-pow((reflection.x*.75+reflection.y*.65+.16*sin(time*.25))/.16,2.0));
+  float edge=pow(1.0-max(n.z,0.0),2.0);
+  vec3 colour=pearl(h*.65+p.x*.12+sin(time*.2)*.18);
+  colour*=.38+diffuse*.72;
+  colour+=vec3(.76,.88,1.0)*sheen*.55;
+  colour+=vec3(1.0,.78,.65)*stripe*.5;
+  colour+=vec3(.67,.55,1.0)*edge*.45;
+  // Broad studio reflections, with a fine highlight instead of flat outlines.
+  colour+=vec3(1.0,.92,.83)*sharp*.14;
+  float vignette=1.0-.24*length((uv-.5)*1.25);colour*=vignette;
+  gl_FragColor=vec4(colour,1.0);
+ }`;
+ function shader(type, source) {const result=gl.createShader(type);gl.shaderSource(result,source);gl.compileShader(result);if(!gl.getShaderParameter(result,gl.COMPILE_STATUS)) {gl.deleteShader(result);return null;}return result;}
+ const vs=shader(gl.VERTEX_SHADER,vertex),fs=shader(gl.FRAGMENT_SHADER,fragment);
+ if (!vs || !fs) return null;
+ const program=gl.createProgram();gl.attachShader(program,vs);gl.attachShader(program,fs);gl.linkProgram(program);gl.deleteShader(vs);gl.deleteShader(fs);
+ if (!gl.getProgramParameter(program,gl.LINK_STATUS)) return null;
+ gl.useProgram(program);const buffer=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buffer);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+ const position=gl.getAttribLocation(program,'position');gl.enableVertexAttribArray(position);gl.vertexAttribPointer(position,2,gl.FLOAT,false,0,0);
+ const resolution=gl.getUniformLocation(program,'resolution'),time=gl.getUniformLocation(program,'time');
+ return (context,w,h,t)=>{if(gl.isContextLost())return false;if(surface.width!==w||surface.height!==h){surface.width=w;surface.height=h;gl.viewport(0,0,w,h);}gl.uniform2f(resolution,w,h);gl.uniform1f(time,t);gl.drawArrays(gl.TRIANGLE_STRIP,0,4);context.drawImage(surface,0,0);return true;};
+}
+
 // Draw the liquid itself each frame: this is not a pan over a generated image.
 function installLiquidWelcome(overlay) {
  const root = document.documentElement, scene = overlay.querySelector('.welcome-scene');
  const canvas = document.createElement('canvas');canvas.className = 'welcome-liquid-canvas';canvas.setAttribute('aria-hidden', 'true');scene.append(canvas);
  const context = canvas.getContext('2d');if (!context) return;
+ const renderSurface = createLiquidSurface();
  const button = document.createElement('button');button.type = 'button';button.className = 'welcome-motion';overlay.querySelector('.welcome-controls').append(button);
  // Autoplay was explicitly requested for this welcome; pause lasts only until it closes.
  let enabled = true, wasHidden = overlay.hidden;
@@ -54,7 +109,9 @@ function installLiquidWelcome(overlay) {
  const allowed = () => enabled;
  const visible = () => liquid() && !overlay.hidden && !document.hidden && !overlay.classList.contains('welcome-paused');
  function draw(t) {
-  const w = canvas.width, h = canvas.height;context.clearRect(0, 0, w, h);
+  const w = canvas.width, h = canvas.height;
+  if (renderSurface?.(context,w,h,t)) return;
+  context.clearRect(0, 0, w, h);
   const base = context.createLinearGradient(0, 0, w, h);base.addColorStop(0, '#111635');base.addColorStop(.5, '#402065');base.addColorStop(1, '#0a2444');context.fillStyle = base;context.fillRect(0, 0, w, h);
   // Broad ribbons with independently changing curves and metallic highlight edges.
   for (let i = 0; i < 5; i++) {
@@ -64,7 +121,7 @@ function installLiquidWelcome(overlay) {
    const c = y + Math.sin(phase * .91 + 2) * amplitude, end = y + Math.cos(phase + 1) * amplitude;
    const ribbon = context.createLinearGradient(0, y - h * .12, w, y + h * .3);
    const colors = [['#2557af','#6be6ed','#6862e4'],['#472aa8','#ae91ff','#e9b8ec'],['#a23488','#f5b9a9','#7053c2'],['#145e83','#7ae1dc','#4a50ab'],['#3b287b','#b49bf7','#30577b']][i];
-   ribbon.addColorStop(0, colors[0]);ribbon.addColorStop(.48 + Math.sin(phase) * .15, colors[1]);ribbon.addColorStop(1, colors[2]);
+   ribbon.addColorStop(0, colors[0]);ribbon.addColorStop(.3, colors[2]);ribbon.addColorStop(.46 + Math.sin(phase) * .08, '#f0dcea');ribbon.addColorStop(.57, colors[1]);ribbon.addColorStop(.72, colors[0]);ribbon.addColorStop(1, colors[2]);
    context.beginPath();context.moveTo(-w * .1, a);context.bezierCurveTo(w * .25, b - h * .35, w * .6, c + h * .35, w * 1.1, end);context.lineTo(w * 1.1, end + h * .27);context.bezierCurveTo(w * .6, c + h * .52, w * .25, b - h * .12, -w * .1, a + h * .27);context.closePath();context.fillStyle = ribbon;context.fill();
    context.beginPath();context.moveTo(-w * .1, a);context.bezierCurveTo(w * .25, b - h * .35, w * .6, c + h * .35, w * 1.1, end);context.strokeStyle = '#e3e5ff70';context.lineWidth = Math.max(1, w / 650);context.stroke();
   }

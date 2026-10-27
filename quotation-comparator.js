@@ -1,5 +1,5 @@
-import {isMaterialLow,completedQuantity,recipeFor} from './inventory.js?v=88';
-import {resolveSalesProduct} from './sales-analytics.js?v=88';
+import {isMaterialLow,completedQuantity,recipeFor} from './inventory.js?v=89';
+import {resolveSalesProduct} from './sales-analytics.js?v=89';
 export const quoteStatuses={missing:{label:'Agotada',color:'#dc2626'},low:{label:'Por agotarse',color:'#ea580c'},available:{label:'Con existencias',color:'#b28b00'},outside:{label:'Fuera del catálogo',color:'#9333ea'}};
 export const normalizeQuoteName=value=>String(value??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
 export function quoteMoneyCents(value){

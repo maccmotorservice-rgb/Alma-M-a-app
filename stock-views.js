@@ -1,5 +1,5 @@
-import {isMaterialLow} from './inventory.js?v=88';
-import {perfumeMatches} from './catalog-tools.js?v=88';
+import {isMaterialLow} from './inventory.js?v=89';
+import {perfumeMatches} from './catalog-tools.js?v=89';
 export function materialStatus(material){return material.stock===0?'empty':isMaterialLow(material)?'low':'available';}
 export function filterMaterialStock(materials,{status='all',sort='quantity-desc'}={}){const list=materials.filter(m=>!m.discontinued).filter(m=>status==='empty'?m.stock===0:status==='low'?m.stock===0||isMaterialLow(m):true);const name=(a,b)=>a.name.localeCompare(b.name,'es',{numeric:true});return [...list].sort(sort==='quantity-desc'?(a,b)=>b.stock-a.stock||name(a,b):sort==='quantity-asc'?(a,b)=>a.stock-b.stock||name(a,b):sort==='name'?name:()=>0);}
 export function materialStockCounts(materials){materials=materials.filter(m=>!m.discontinued);return {all:materials.length,low:materials.filter(m=>m.stock===0||isMaterialLow(m)).length,empty:materials.filter(m=>m.stock===0).length};}
