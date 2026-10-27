@@ -1,5 +1,5 @@
-import {createWelcomeAmbience} from './welcome-ambience.js?v=90';
-import {createWelcomeVoice} from './welcome-voice.js?v=90';
+import {createWelcomeAmbience} from './welcome-ambience.js?v=91';
+import {createWelcomeVoice} from './welcome-voice.js?v=91';
 
 /* Device-only welcome preferences. This module never reads or writes inventory. */
 export const WELCOME_IDLE_MS = 2 * 60 * 60 * 1000;
