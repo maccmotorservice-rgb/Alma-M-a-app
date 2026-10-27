@@ -1,4 +1,4 @@
-import {salesMoney,salesGroups,salesDate,salesCapacity,salesFilename,salesPaymentSummary,salesSourceLabel} from './sales.js?v=94';
+import {salesMoney,salesGroups,salesDate,salesCapacity,salesFilename,salesPaymentSummary,salesSourceLabel} from './sales.js?v=95';
 export async function createSalesPdf(note,{logo=true}={}){
  const {jsPDF,autoTable}=await import('./assets/pdf-client.js');const doc=new jsPDF({unit:'mm',format:'a4'}),margin=16,width=178;
  doc.setProperties({title:['Nota de venta',note.customer].filter(Boolean).join(' · '),author:'Alma Mía Perfumes',subject:'Nota de venta'});

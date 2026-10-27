@@ -600,3 +600,11 @@ Estos cambios solo afectan la interfaz; no cambian existencias, notas, precios, 
 Se añaden elevación de 3 px y sombra suave al pasar el mouse por tarjetas, un movimiento leve de iconos/flechas, pulsación breve al presionar botones y confirmación visual al cambiar listas o casillas. No se alteran colores en reposo, dimensiones ni distribución. Los controles desplegables que se vuelven a renderizar mantienen su animación de selección. El hover se limita a dispositivos con mouse; la pulsación también funciona al tocar.
 
 Se reutiliza el control **Más → Efectos visuales** y se respeta reducir movimiento del sistema. Las animaciones activas se cancelan al desactivar efectos o cambiar de pantalla. No modifica datos de negocio.
+
+### Fondos estables y movimiento en todo el dashboard (v95)
+
+Se corrige la tarjeta destacada de ventas: en modo claro una regla dejaba su fondo blanco en reposo y otra restauraba la textura oscura al pasar el mouse sin corregir el texto. Ahora conserva la misma superficie de textura y contraste antes/durante el hover, con máscara oscura y texto claro. Las texturas de los accesos principales usan capas no negativas por encima de su superficie sólida y por debajo del contenido, para que no dependan de la composición de un transform.
+
+El hover se extiende a todos los recuadros del dashboard: bienvenida del inicio, accesos principales, indicadores, gráfica, prioridades, herramientas, lotes recientes y las tarjetas del resumen ampliado. Se elevan 5 px con sombra; cuando hay una tarjeta interactiva dentro de otra, se evita mover ambas a la vez. Al cambiar de sección, las tarjetas entran escalonadas con movimiento vertical, conservando opacidad y legibilidad. La selección usa un anillo temporal en vez de desvanecer texto o fondos.
+
+El menú Más muestra explícitamente **Animaciones: activadas/desactivadas** o **Animaciones: movimiento reducido**, según las preferencias efectivas. Sigue disponible el control de efectos y se respeta reducir movimiento. No se alteran datos ni medidas del diseño en reposo.

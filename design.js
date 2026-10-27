@@ -57,6 +57,7 @@ function updateEffects(){
  effectsToggle.textContent=reducedMotion.matches?'Efectos: movimiento reducido':effectsEnabled?'Efectos visuales: activados':'Efectos visuales: desactivados';
  effectsToggle.title=reducedMotion.matches?'Tu dispositivo tiene activada la preferencia de reducir movimiento.':'Activar o desactivar los efectos visuales de este navegador';
  if(!effectsActive()){for(const animation of runningAnimations)animation.cancel();runningAnimations.clear();}
+ document.dispatchEvent(new CustomEvent('alma:effects-change'));
 }
 function animateElement(element,frames,options){if(!effectsActive()||!element?.animate||document.body.classList.contains('access-locked'))return;const animation=element.animate(frames,options);runningAnimations.add(animation);const clean=()=>runningAnimations.delete(animation);animation.addEventListener('finish',clean,{once:true});animation.addEventListener('cancel',clean,{once:true});}
 // Short feedback animations share the existing effects/reduced-motion lifecycle.
@@ -70,11 +71,17 @@ document.addEventListener('pointerdown',event=>{
 document.addEventListener('change',event=>{
  if(!effectsActive()||!(event.target instanceof Element))return;
  const control=event.target;if(!control.matches('#content select,dialog select,#content input[type=checkbox],dialog input[type=checkbox]'))return;
- const key=control.dataset.friendlyKey,id=control.id;requestAnimationFrame(()=>{const current=key?[...document.querySelectorAll('[data-friendly-key]')].find(el=>el.dataset.friendlyKey===key):id?document.getElementById(id):control;if(!current?.isConnected)return;const target=current.closest('.label-option,.sales-size-option,.field')||current;animateElement(target,[{opacity:.72},{opacity:1}],{duration:210,easing:'ease-out'});});
+ const key=control.dataset.friendlyKey,id=control.id;requestAnimationFrame(()=>{const current=key?[...document.querySelectorAll('[data-friendly-key]')].find(el=>el.dataset.friendlyKey===key):id?document.getElementById(id):control;if(!current?.isConnected)return;const target=current.closest('.label-option,.sales-size-option,.field')||current;const shadow=getComputedStyle(target).boxShadow;animateElement(target,[{boxShadow:shadow},{boxShadow:'0 0 0 3px rgba(165,135,224,.48)',offset:.35},{boxShadow:shadow}],{duration:360,easing:'ease-out'});});
 },{capture:true});
 effectsToggle.addEventListener('click',()=>{effectsEnabled=!effectsEnabled;try{localStorage.setItem('alma-mia-effects',effectsEnabled?'on':'off');}catch{}updateEffects();});
 reducedMotion.addEventListener('change',updateEffects);updateEffects();
-document.addEventListener('alma:view-change',()=>{for(const animation of runningAnimations)animation.cancel();runningAnimations.clear();animateElement(document.querySelector('#content'),[{opacity:.55,transform:'translateY(7px)'},{opacity:1,transform:'translateY(0)'}],{duration:210,easing:'cubic-bezier(.2,.7,.2,1)'});});
+document.addEventListener('alma:view-change',()=>{
+ for(const animation of runningAnimations)animation.cancel();runningAnimations.clear();
+ const content=document.querySelector('#content');
+ const cards=[...content.querySelectorAll('.workspace-area-action,.aura-metric,.liquid-action,.finished-stock-card,.catalog-editor-action')].slice(0,12);
+ if(root.dataset.version==='4'&&cards.length){for(const [index,card] of cards.entries()){const transform=getComputedStyle(card).transform,base=transform==='none'?'':transform;animateElement(card,[{transform:base+' translateY(14px)'},{transform:base+' translateY(0)'}],{duration:360,delay:Math.min(index*28,140),fill:'backwards',easing:'cubic-bezier(.16,1,.3,1)'});}}
+ else animateElement(content,[{transform:'translateY(7px)'},{transform:'translateY(0)'}],{duration:230,easing:'cubic-bezier(.2,.7,.2,1)'});
+});
 nav.addEventListener('pointermove',event=>{if(!effectsActive()||event.pointerType!=='mouse')return;const button=event.target.closest('button');if(!button)return;cancelAnimationFrame(pointerFrame);pointerFrame=requestAnimationFrame(()=>{if(!effectsActive())return;const box=button.getBoundingClientRect();button.style.setProperty('--pointer-x',`${event.clientX-box.left}px`);button.style.setProperty('--pointer-y',`${event.clientY-box.top}px`);});});
 nav.addEventListener('pointerleave',()=>{cancelAnimationFrame(pointerFrame);});
 for(const dialog of document.querySelectorAll('dialog'))new MutationObserver(()=>{if(dialog.open)animateElement(dialog,[{opacity:.65,transform:'translateY(9px) scale(.99)'},{opacity:1,transform:'translateY(0) scale(1)'}],{duration:180,easing:'ease-out'});}).observe(dialog,{attributes:true,attributeFilter:['open']});
