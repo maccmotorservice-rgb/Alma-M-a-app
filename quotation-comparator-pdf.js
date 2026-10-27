@@ -1,4 +1,4 @@
-import {quoteStatuses,quotationBriefSummary,compareRequestedQuotation} from './quotation-comparator.js?v=89';
+import {quoteStatuses,quotationBriefSummary,compareRequestedQuotation} from './quotation-comparator.js?v=90';
 const rgb=hex=>[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16));
 export async function createComparisonPdf({document:source,analysis,currency,provider='',comparison=null,reviewed=false,catalog=[],now=new Date()}){
  if(!source?.pages?.length||!analysis?.rows?.length)throw Error('Carga la cotización del proveedor antes de preparar el PDF.');

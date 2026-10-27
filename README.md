@@ -560,3 +560,11 @@ Materia prima adopta la cuadrícula de tarjetas de producto terminado: categorí
 ### Superficie liquid gradient con volumen (v89)
 
 La bienvenida Liquid dibuja una superficie iridiscente con pliegues que cambian de forma y reflejos móviles. Un shader WebGL calcula iluminación y reflejos sobre los pliegues, con degradados violeta, azul, cian y rosa. Si WebGL no está disponible, se mantiene una versión animada en Canvas 2D con degradados nacarados. El inicio automático, la pausa, el ajuste a pantalla y la detención al cerrar u ocultar la pestaña se conservan. No usa nuevas imágenes generadas ni modifica datos de negocio.
+
+### Alta de materias primas y lista imprimible de esencias (v90)
+
+**Materia prima → Agregar materia prima** exige nombre comercial y existencias iniciales en ml, incluso para un saldo de cero. Para una esencia también exige nombre original, casa productora, categoría y colección; los precios de venta son opcionales. Las nuevas esencias usan su nombre comercial dentro de Alma Mía y su referencia original en solicitudes al proveedor. También se pueden agregar bases y fijadores. Las altas se incluyen en la sincronización y en respaldos JSON, sin reemplazar registros anteriores.
+
+**Descontinuar** retira una materia prima de las opciones activas después de confirmar, conservando saldo e historial. Alcohol y galaxolide permanecen como insumos de la fórmula. K (King) de Dolce & Gabbana, nombre comercial Spiced Cypress Water, se marca descontinuado como Ralph Fresh; no se borran sus notas, lotes ni movimientos anteriores.
+
+**Materia prima → Lista de esencias / PDF** enumera todas las esencias dadas de alta, incluidas las que tengan saldo cero, y muestra las bajas en una sección **Descontinuadas**. El PDF solo incluye nombre comercial, referencia/casa productora y categoría: no contiene capacidades, existencias, fracciones ni mínimos. Ofrece vista previa, abrir, imprimir, descargar y compartir por WhatsApp mediante el menú del dispositivo; cuando el navegador no permite compartir archivos, se descarga para adjuntarlo en WhatsApp. El documento usa todas las esencias, sin limitarse a los filtros de stock. No se requieren cambios SQL.
