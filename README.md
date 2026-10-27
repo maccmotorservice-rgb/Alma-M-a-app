@@ -594,3 +594,9 @@ Los filtros con tres o más opciones en pestañas se presentan como listas nativ
 El inicio conserva el área de herramientas elegida al volver a renderizar por cambios de datos y sus pestañas se desplazan horizontalmente en pantallas estrechas. La selección del menú se resuelve por área para todas las rutas, pantallas secundarias y modos de notas: una nota nueva pertenece a Producción, mientras la edición de una nota guardada mantiene Ventas. El indicador usa `aria-current`, con colores explícitos para claro y oscuro, y todos los accesos mantienen una base de color visible. También se corrige el resaltado de Compras al entrar en su pantalla de área. Los estilos de selección prevalecen sobre los estilos generales de botones.
 
 Estos cambios solo afectan la interfaz; no cambian existencias, notas, precios, clientes ni respaldos. No se requiere SQL.
+
+### Animaciones sutiles de interacción (v94)
+
+Se añaden elevación de 3 px y sombra suave al pasar el mouse por tarjetas, un movimiento leve de iconos/flechas, pulsación breve al presionar botones y confirmación visual al cambiar listas o casillas. No se alteran colores en reposo, dimensiones ni distribución. Los controles desplegables que se vuelven a renderizar mantienen su animación de selección. El hover se limita a dispositivos con mouse; la pulsación también funciona al tocar.
+
+Se reutiliza el control **Más → Efectos visuales** y se respeta reducir movimiento del sistema. Las animaciones activas se cancelan al desactivar efectos o cambiar de pantalla. No modifica datos de negocio.
