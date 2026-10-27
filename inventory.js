@@ -1,9 +1,9 @@
-import {validatePrintStock} from './print-stock.js?v=92';
-import {materialRegistry,catalogForState} from './material-registry.js?v=92';
-import {cloneData,randomId} from './clone-data.js?v=92';
-import {emptyStripLibrary,validateStripLibrary} from './strip-library-data.js?v=92';
-import {resolveCancellationReason} from './cancellation.js?v=92';
-import {validateSalesNotes,activeSalesNoteForBatch,buildSalesNote,editSalesNote,salesCategory} from './sales.js?v=92';
+import {validatePrintStock} from './print-stock.js?v=93';
+import {materialRegistry,catalogForState} from './material-registry.js?v=93';
+import {cloneData,randomId} from './clone-data.js?v=93';
+import {emptyStripLibrary,validateStripLibrary} from './strip-library-data.js?v=93';
+import {resolveCancellationReason} from './cancellation.js?v=93';
+import {validateSalesNotes,activeSalesNoteForBatch,buildSalesNote,editSalesNote,salesCategory} from './sales.js?v=93';
 export function extraBottles(material){return [...(material.secondBottle?[{number:2,...material.secondBottle}]:[]),...(material.additionalBottles??[])].sort((a,b)=>a.number-b.number);}
 export function bottleStock(material,number=1){return number===1?Math.round((material.stock-extraBottles(material).reduce((n,b)=>n+b.stock,0))*1000)/1000:extraBottles(material).find(b=>b.number===number)?.stock??0;}
 export function isMaterialLow(material){
