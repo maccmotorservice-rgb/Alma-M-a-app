@@ -1,4 +1,4 @@
-import {cloneData,randomId} from './clone-data.js?v=92';
+import {cloneData,randomId} from './clone-data.js?v=93';
 const norm=value=>String(value??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim().toLowerCase();
 const validPrice=value=>typeof value==='number'&&Number.isFinite(value)&&value>=0&&value<=1000000&&Math.abs(value*100-Math.round(value*100))<.000001;
 const text=(value,label)=>{if(typeof value!=='string'||!value.trim()||value.trim().length>120)throw Error('Indica '+label+' (máximo 120 caracteres).');return value.trim();};

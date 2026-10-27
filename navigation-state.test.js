@@ -1,0 +1,5 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {navigationAreaForView,workspaceAreas}from'./aura.js';
+test('todas las rutas del menú mantienen un área activa, incluidos accesos secundarios y formularios',()=>{
+ for(const area of workspaceAreas){assert.equal(navigationAreaForView('area-'+area.id),area.id);for(const [route]of area.items)assert.equal(navigationAreaForView(route),area.id);}
+ for(const route of ['dictation','stock-dictation','scanner'])assert.equal(navigationAreaForView(route),'inventory');assert.equal(navigationAreaForView('catalog-pdf'),'catalog');assert.equal(navigationAreaForView('sales',{salesEditor:true}),'production');assert.equal(navigationAreaForView('sales'),'sales');assert.equal(navigationAreaForView('sales',{salesEditor:true,salesEditing:true}),'sales');assert.equal(navigationAreaForView('history'),'more');assert.equal(navigationAreaForView('cloud'),'more');assert.equal(navigationAreaForView('overview'),'home');assert.equal(navigationAreaForView('area-missing'),null);
+});
