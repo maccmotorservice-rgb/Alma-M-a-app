@@ -1,25 +1,25 @@
-import {auraOverviewHtml,initAuraNavigation} from './aura.js?v=86';
-import {createQuotationComparator} from './quotation-comparator-panel.js?v=86';
-import {materialsQuoteEssences} from './materials-pdf.js?v=86';
-import {productionPurposeLabel} from './inventory.js?v=86';
-import {cloneData} from './clone-data.js?v=86';
-import {createStripLibrarySync} from './strip-library-sync.js?v=86';
-import {mountPdfActions} from './pdf-share.js?v=86';
-import {filterMaterialStock,materialStockCounts,materialStatus,productStockView} from './stock-views.js?v=86';
-import {createStockDictation} from './stock-dictation.js?v=86';
-import {createStripsPanel} from './strips.js?v=86';
-import {createLabelsPanel} from './labels.js?v=86';
-import {createStockScanner} from './stock-scanner.js?v=86';
-import {hasAppAccess,defaultCloudConfig,clearBusinessCache} from './access.js?v=86';
-import {annualSalesCards,salesReportHtml} from './sales-reports.js?v=86';
-import {cancellationFields,mountCancellationFields,readCancellationFields} from './cancellation.js?v=86';
-import {catalogCategories,catalogCategoryMatches,filterCatalog,perfumeMatches} from './catalog-tools.js?v=86';
-import {activeSalesNoteForBatch,salesAccounts,salesMoney} from './sales.js?v=86';
-import {createSalesPanel} from './sales-panel.js?v=86';
-import {CloudInventory} from './cloud.js?v=86';
-import {createDictationPanel} from './dictation.js?v=86';
-import {initialState,applyMovement,recipeFor,registerCustomer,productionPreview,confirmProduction,completedQuantity,batchProgress,completeBatchItem,completeBatchWithExtras,cancelBatch,readyBatch,setBottleStocks,readyMovement,validateBackup,attributeSessionChanges,extraBottles,bottleStock,isMaterialLow,removeReadyStock} from './inventory.js?v=86';
-import {localStore,sessionStore} from './browser-storage.js?v=86';
+import {auraOverviewHtml,initAuraNavigation} from './aura.js?v=87';
+import {createQuotationComparator} from './quotation-comparator-panel.js?v=87';
+import {materialsQuoteEssences} from './materials-pdf.js?v=87';
+import {productionPurposeLabel} from './inventory.js?v=87';
+import {cloneData} from './clone-data.js?v=87';
+import {createStripLibrarySync} from './strip-library-sync.js?v=87';
+import {mountPdfActions} from './pdf-share.js?v=87';
+import {filterMaterialStock,materialStockCounts,materialStatus,productStockView} from './stock-views.js?v=87';
+import {createStockDictation} from './stock-dictation.js?v=87';
+import {createStripsPanel} from './strips.js?v=87';
+import {createLabelsPanel} from './labels.js?v=87';
+import {createStockScanner} from './stock-scanner.js?v=87';
+import {hasAppAccess,defaultCloudConfig,clearBusinessCache} from './access.js?v=87';
+import {annualSalesCards,salesReportHtml} from './sales-reports.js?v=87';
+import {cancellationFields,mountCancellationFields,readCancellationFields} from './cancellation.js?v=87';
+import {catalogCategories,catalogCategoryMatches,filterCatalog,perfumeMatches} from './catalog-tools.js?v=87';
+import {activeSalesNoteForBatch,salesAccounts,salesMoney} from './sales.js?v=87';
+import {createSalesPanel} from './sales-panel.js?v=87';
+import {CloudInventory} from './cloud.js?v=87';
+import {createDictationPanel} from './dictation.js?v=87';
+import {initialState,applyMovement,recipeFor,registerCustomer,productionPreview,confirmProduction,completedQuantity,batchProgress,completeBatchItem,completeBatchWithExtras,cancelBatch,readyBatch,setBottleStocks,readyMovement,validateBackup,attributeSessionChanges,extraBottles,bottleStock,isMaterialLow,removeReadyStock} from './inventory.js?v=87';
+import {localStore,sessionStore} from './browser-storage.js?v=87';
 
 // Export startup so the small loader can report load failures without leaving
 // the access screen waiting forever. Keep top-level await out of this entry.
@@ -27,7 +27,7 @@ export const portalReady=(async()=>{
 async function loadCatalog(){
  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),12000);
  try{
-  const response=await fetch('./catalog.json?v=86',{signal:controller.signal});
+  const response=await fetch('./catalog.json?v=87',{signal:controller.signal});
   if(!response.ok)throw Error('Catálogo no disponible.');
   const data=await response.json();if(!Array.isArray(data)||!data.length)throw Error('Catálogo no válido.');
   return data;
@@ -299,7 +299,7 @@ async function prepareMaterialsPdf(button){
  button.disabled=true;button.textContent='Preparando PDF…';preview.hidden=false;status.textContent='Preparando vista previa…';const quoteError=$('#materials-quote-error');if(quoteError)quoteError.textContent='';
  try{
   if(storageError)throw Error('Recupera el respaldo antes de generar el reporte.');
-  const module=await import('./materials-pdf.js?v=86'),result=mode==='quote'?await module.createMaterialsQuotationPdf(snapshot,catalog,options):await module.createMaterialsPdf(snapshot,catalog);
+  const module=await import('./materials-pdf.js?v=87'),result=mode==='quote'?await module.createMaterialsQuotationPdf(snapshot,catalog,options):await module.createMaterialsPdf(snapshot,catalog);
   if(!active())return;
   materialsPdfHandle=mountPdfActions(output,{blob:result.blob,filename:result.filename,title:mode==='quote'?'Solicitud de cotización':'Reporte de materias primas'});
   const open=document.createElement('a');open.href=materialsPdfHandle.url;open.target='_blank';open.rel='noopener noreferrer';open.className='secondary';open.textContent='Abrir PDF';output.prepend(open);
@@ -319,7 +319,7 @@ async function prepareProductionPdf(batch,{draft=false}={}){
  const active=()=>token===productionPdfEpoch&&hasAppAccess(cloud)&&dialog.open&&output.isConnected&&dialog.contains(output);
  output.innerHTML='<button type="button" class="secondary" disabled>Preparando PDF…</button>';
  try{
-  const {createProductionPdf}=await import('./production-pdf.js?v=86'),result=await createProductionPdf(snapshot,{draft});
+  const {createProductionPdf}=await import('./production-pdf.js?v=87'),result=await createProductionPdf(snapshot,{draft});
   if(!active())return;
   output.replaceChildren();productionPdfHandle=mountPdfActions(output,{blob:result.blob,filename:result.filename,title:draft?'Lista de producción · Borrador':'Lista de producción '+batchNumber(snapshot)});
  }catch(error){if(active()){output.innerHTML=`<p role="alert">No se pudo preparar el PDF: ${esc(error.message)}</p><button type="button" class="secondary" id="production-pdf-retry">Reintentar PDF</button>`;$('#production-pdf-retry').onclick=()=>prepareProductionPdf(snapshot,{draft});}}
