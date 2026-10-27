@@ -550,3 +550,9 @@ La bienvenida de Liquid se ajusta al alto disponible, incluidos móviles pequeñ
 ### Fondo líquido animado en tiempo real (v87)
 
 La bienvenida Liquid sustituye el desplazamiento de una imagen por un lienzo que dibuja ondas de color con curvas cambiantes en cada fotograma. El movimiento se limita a 30 fotogramas por segundo y a 1200 píxeles de lado mayor. Se detiene al cerrar la bienvenida, ocultar la pestaña o desactivar efectos. Respeta reducir movimiento del sistema; el botón **Activar fondo animado / Pausar fondo animado** permite controlar el fondo directamente y activarlo expresamente. La preferencia de pausa se conserva en este navegador. La bienvenida sigue sin desplazamiento y no modifica datos de negocio.
+
+### Inicio automático del fondo y materia prima en tarjetas (v88)
+
+Por petición del usuario, el fondo líquido arranca automáticamente cada vez que se abre la bienvenida, independientemente de las preferencias anteriores de efectos o pausa y de reducir movimiento. **Pausar fondo animado** detiene solo esa bienvenida; al volver a abrirla se inicia de nuevo. Ocultar la pestaña o cerrar la bienvenida sigue deteniendo el dibujo. No se activa sonido automáticamente por este cambio.
+
+Materia prima adopta la cuadrícula de tarjetas de producto terminado: categoría y número, nombre, referencia y casa productora, existencias totales, umbral de alerta, estado y actualización. Los frascos adicionales conservan su desglose desplegable; las bases conservan el cambio de mínimo. El orden inicial es alfabético y siguen disponibles los órdenes por cantidad y colección, filtros, búsqueda, dictado y reporte de reposición. Se adapta de cuatro columnas a una según el ancho y respeta claro/oscuro. No migra ni modifica existencias.

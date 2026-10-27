@@ -1,5 +1,5 @@
-import {createWelcomeAmbience} from './welcome-ambience.js?v=87';
-import {createWelcomeVoice} from './welcome-voice.js?v=87';
+import {createWelcomeAmbience} from './welcome-ambience.js?v=88';
+import {createWelcomeVoice} from './welcome-voice.js?v=88';
 
 /* Device-only welcome preferences. This module never reads or writes inventory. */
 export const WELCOME_IDLE_MS = 2 * 60 * 60 * 1000;
@@ -47,11 +47,11 @@ function installLiquidWelcome(overlay) {
  const canvas = document.createElement('canvas');canvas.className = 'welcome-liquid-canvas';canvas.setAttribute('aria-hidden', 'true');scene.append(canvas);
  const context = canvas.getContext('2d');if (!context) return;
  const button = document.createElement('button');button.type = 'button';button.className = 'welcome-motion';overlay.querySelector('.welcome-controls').append(button);
- const reduced = matchMedia('(prefers-reduced-motion: reduce)');
- let enabled = true;try {enabled = localStorage.getItem('alma-mia-welcome-motion') !== 'off';} catch {}
- let explicitPlay = false, frame = 0, previous = 0, time = 0, width = 0, height = 0;
+ // Autoplay was explicitly requested for this welcome; pause lasts only until it closes.
+ let enabled = true, wasHidden = overlay.hidden;
+ let frame = 0, previous = 0, time = 0, width = 0, height = 0;
  const liquid = () => root.dataset.design === 'modern' && root.dataset.version === '4';
- const allowed = () => enabled && (explicitPlay || (!reduced.matches && root.dataset.effects !== 'off'));
+ const allowed = () => enabled;
  const visible = () => liquid() && !overlay.hidden && !document.hidden && !overlay.classList.contains('welcome-paused');
  function draw(t) {
   const w = canvas.width, h = canvas.height;context.clearRect(0, 0, w, h);
@@ -84,10 +84,10 @@ function installLiquidWelcome(overlay) {
   if (width !== nextWidth || height !== nextHeight) {width = canvas.width = nextWidth;height = canvas.height = nextHeight;}
   draw(time);if (allowed()) frame = requestAnimationFrame(tick);
  }
- button.onclick = () => {enabled = !allowed();explicitPlay = enabled;try {localStorage.setItem('alma-mia-welcome-motion', enabled ? 'on' : 'off');} catch {}sync();};
- new MutationObserver(sync).observe(overlay, {attributes:true, attributeFilter:['hidden','class']});
- new MutationObserver(() => {explicitPlay = false;sync();}).observe(root, {attributes:true, attributeFilter:['data-design','data-version','data-effects']});
- new ResizeObserver(sync).observe(scene);document.addEventListener('visibilitychange', sync);reduced.addEventListener('change', () => {explicitPlay = false;sync();});sync();
+ button.onclick = () => {enabled = !enabled;sync();};
+ new MutationObserver(() => {if (wasHidden && !overlay.hidden) enabled = true;wasHidden = overlay.hidden;sync();}).observe(overlay, {attributes:true, attributeFilter:['hidden','class']});
+ new MutationObserver(sync).observe(root, {attributes:true, attributeFilter:['data-design','data-version']});
+ new ResizeObserver(sync).observe(scene);document.addEventListener('visibilitychange', sync);sync();
 }
 
 function installWelcome() {

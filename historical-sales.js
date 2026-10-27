@@ -1,6 +1,6 @@
-import {cloneData} from './clone-data.js?v=87';
-import {validateSalesNotes,salesPaymentSummary} from './sales.js?v=87';
-import {historicalSignature} from './sales-analytics.js?v=87';
+import {cloneData} from './clone-data.js?v=88';
+import {validateSalesNotes,salesPaymentSummary} from './sales.js?v=88';
+import {historicalSignature} from './sales-analytics.js?v=88';
 export function historicalMatch(existing,note,catalog){return existing.find(n=>n.importSource?.sha256===note.importSource?.sha256||n.id===note.id||historicalSignature(n,catalog)===historicalSignature(note,catalog));}
 export function mergeHistoricalSales(state,incoming,catalog,actor,at=new Date().toISOString()){
  if(!['Luis','Ximena'].includes(actor))throw Error('Inicia sesión antes de cargar las notas.');
