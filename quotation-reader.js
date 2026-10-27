@@ -1,4 +1,4 @@
-import './quotation-reader-compat.js?v=87';
+import './quotation-reader-compat.js?v=88';
 // Local document reader: no document contents leave the browser.
 export function linesFromPdfItems(items,viewport,page){
  const groups=[];
@@ -22,7 +22,7 @@ export function createQuotationReader(){
    if(/\.pdf$/i.test(file.name)||file.type==='application/pdf'){
     // PDF.js legacy build also supports Safari without Promise.withResolvers.
     if(!Promise.withResolvers)Promise.withResolvers=function(){let resolve,reject;const promise=new Promise((res,rej)=>{resolve=res;reject=rej;});return {promise,resolve,reject};};
-    const pdfjs=await import('./assets/quote-reader/pdf.mjs?v=87');check();pdfjs.GlobalWorkerOptions.workerSrc=new URL('./assets/quote-reader/pdf.worker.mjs?v=87',import.meta.url).href;
+    const pdfjs=await import('./assets/quote-reader/pdf.mjs?v=88');check();pdfjs.GlobalWorkerOptions.workerSrc=new URL('./assets/quote-reader/pdf.worker.mjs?v=88',import.meta.url).href;
     const bytes=new Uint8Array(await file.arrayBuffer());check();const task=pdfjs.getDocument({data:bytes,isEvalSupported:false,useSystemFonts:true,stopAtErrors:true});pdfTask=task;
     const doc=await task.promise;check();if(doc.numPages>15)throw Error('Carga hasta 15 páginas por cotización.');
     for(let n=1;n<=doc.numPages;n++){check();onProgress(`Abriendo página ${n} de ${doc.numPages}…`);const page=await doc.getPage(n),base=page.getViewport({scale:1}),scale=Math.min(2,1600/base.width,2000/base.height),viewport=page.getViewport({scale}),canvas=document.createElement('canvas');canvas.width=Math.ceil(viewport.width);canvas.height=Math.ceil(viewport.height);await page.render({canvasContext:canvas.getContext('2d'),viewport}).promise;check();const content=await page.getTextContent();await append(canvas,n,linesFromPdfItems(content.items,viewport,n));page.cleanup();}

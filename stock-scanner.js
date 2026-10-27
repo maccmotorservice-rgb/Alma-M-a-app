@@ -1,7 +1,7 @@
-import {randomId} from './clone-data.js?v=87';
-import {readLabel,resolveLabelReadings,scannedStockItems,confirmScannedStock,MAX_SCANNED_PRODUCTS} from './label-scan.js?v=87';
-import {createLabelReader,normalizeLabelPhoto} from './label-ocr.js?v=87';
-import {perfumeMatches} from './catalog-tools.js?v=87';
+import {randomId} from './clone-data.js?v=88';
+import {readLabel,resolveLabelReadings,scannedStockItems,confirmScannedStock,MAX_SCANNED_PRODUCTS} from './label-scan.js?v=88';
+import {createLabelReader,normalizeLabelPhoto} from './label-ocr.js?v=88';
+import {perfumeMatches} from './catalog-tools.js?v=88';
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export function createStockScanner({catalog,getState,save,notify,allowed,reader=createLabelReader()}){
  let rows=[],stream=null,busy=false,saving=false,generation=0,review=false,status='Escanea una sola etiqueta por foto.',cameraError='',cameraStarting=false,lastPhotoUrl=null,capturing=false;
