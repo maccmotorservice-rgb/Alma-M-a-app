@@ -1,7 +1,7 @@
-import {cloneData,randomId} from './clone-data.js?v=88';
-import {STRIP_LIBRARY_BUCKET,MAX_STRIP_ASSET_BYTES,STRIP_ASSET_PART_BYTES,validateStripAsset,validateStripLibrary,mergeStripLibrary} from './strip-library-data.js?v=88';
-import {EVIDENCE_BUCKET,validateEvidenceFile,validateEvidenceMetadata} from './evidence.js?v=88';
-import {inspectStripImageBlob} from './strip-image-format.js?v=88';
+import {cloneData,randomId} from './clone-data.js?v=89';
+import {STRIP_LIBRARY_BUCKET,MAX_STRIP_ASSET_BYTES,STRIP_ASSET_PART_BYTES,validateStripAsset,validateStripLibrary,mergeStripLibrary} from './strip-library-data.js?v=89';
+import {EVIDENCE_BUCKET,validateEvidenceFile,validateEvidenceMetadata} from './evidence.js?v=89';
+import {inspectStripImageBlob} from './strip-image-format.js?v=89';
 export function validateCloudConfig(value){
  const url=new URL(String(value.url??'').trim());if(url.protocol!=='https:'||!url.hostname.endsWith('.supabase.co')||url.username||url.password||url.pathname!=='/')throw Error('Usa la Project URL de Supabase: https://tu-proyecto.supabase.co');
  const key=String(value.key??'').trim();if(key.startsWith('sb_secret_'))throw Error('Usa la clave publicable o anon. Nunca una clave secreta ni service_role.');
