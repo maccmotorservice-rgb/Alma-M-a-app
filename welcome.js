@@ -1,5 +1,5 @@
-import {createWelcomeAmbience} from './welcome-ambience.js?v=85';
-import {createWelcomeVoice} from './welcome-voice.js?v=85';
+import {createWelcomeAmbience} from './welcome-ambience.js?v=86';
+import {createWelcomeVoice} from './welcome-voice.js?v=86';
 
 /* Device-only welcome preferences. This module never reads or writes inventory. */
 export const WELCOME_IDLE_MS = 2 * 60 * 60 * 1000;
@@ -297,7 +297,7 @@ function installWelcome() {
   accessIntroActive = false;clearTimeout(focusTimer);welcomeEpoch++;introAttemptId++;introPending = false;introAttempting = false;
   if (!preserveAudio) stopAudio(locked, .18);
   if (!overlay) return;
-  overlay.hidden = true;if (document.body.classList.contains('welcome-open')) document.body.classList.remove('welcome-open');restoreRegions();
+  overlay.hidden = true;root.classList.remove('welcome-open');if (document.body.classList.contains('welcome-open')) document.body.classList.remove('welcome-open');restoreRegions();
   if (!locked && returnFocus?.isConnected && !returnFocus.closest('[inert]')) returnFocus.focus({preventScroll: true});
   returnFocus = null;
  }
@@ -342,7 +342,7 @@ function installWelcome() {
   returnFocus = document.activeElement;
   inertRegions = [...document.body.children].filter(element => element !== overlay && !/^(SCRIPT|LINK|STYLE)$/.test(element.tagName)).map(element => [element, element.inert]);
   for (const [element] of inertRegions) element.inert = true;
-  welcomeEpoch++;introPending = true;introStarted = false;introAttempting = false;overlay.classList.remove('welcome-paused');overlay.hidden = false;accessIntroActive = false;document.body.classList.add('welcome-open');updateSoundControls();
+  welcomeEpoch++;introPending = true;introStarted = false;introAttempting = false;overlay.classList.remove('welcome-paused');overlay.hidden = false;accessIntroActive = false;document.body.classList.add('welcome-open');root.classList.add('welcome-open');updateSoundControls();
   // Move focus once; keyboard users can choose sound or continue immediately.
   focusTimer = setTimeout(() => {if (!overlay.hidden) document.getElementById('welcome-enter').focus({preventScroll: true});}, 30);
   if (!reducedMotion.matches && root.dataset.effects !== 'off') overlay.querySelector('.welcome-card').animate?.([{opacity: 0, transform: 'translateY(18px) scale(.975)'}, {opacity: 1, transform: 'translateY(0) scale(1)'}], {duration: 700, easing: 'cubic-bezier(.16,1,.3,1)'});

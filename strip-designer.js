@@ -1,4 +1,4 @@
-import {inspectStripImageBlob} from './strip-image-format.js?v=85';
+import {inspectStripImageBlob} from './strip-image-format.js?v=86';
 // Print geometry is in millimetres; previews and PDFs share this renderer.
 // This module only creates artwork. It never changes stock or business records.
 export const STRIP_DESIGN_SIZES=Object.freeze({
