@@ -1,5 +1,6 @@
-import {cloneData,randomId} from './clone-data.js?v=90';
+import {cloneData,randomId} from './clone-data.js?v=91';
 const norm=value=>String(value??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim().toLowerCase();
+const validPrice=value=>typeof value==='number'&&Number.isFinite(value)&&value>=0&&value<=1000000&&Math.abs(value*100-Math.round(value*100))<.000001;
 const text=(value,label)=>{if(typeof value!=='string'||!value.trim()||value.trim().length>120)throw Error('Indica '+label+' (máximo 120 caracteres).');return value.trim();};
 
 export function materialRegistry(state={},baseCatalog=[]){
@@ -14,11 +15,13 @@ export function materialRegistry(state={},baseCatalog=[]){
  const baseIds=new Set(['alcohol','galaxolide']);
  for(const m of bases){if(!m||typeof m.id!=='string'||!/^raw-[a-zA-Z0-9-]+$/.test(m.id)||baseIds.has(m.id)||!['Base','Fijador'].includes(m.kind))throw Error('Materia prima personalizada inválida.');text(m.name,'el nombre comercial');if(names.has(norm(m.name)))throw Error('Hay nombres comerciales repetidos.');names.add(norm(m.name));baseIds.add(m.id);}
  for(const id of discontinued)if(!(id.startsWith('ess-')?ids.has(id.slice(4)):baseIds.has(id)))throw Error('Materia prima descontinuada desconocida.');
- return {products:cloneData(products),bases:cloneData(bases),discontinued:[...discontinued]};
+ const prices=state.catalogPriceOverrides??{};
+ if(!prices||typeof prices!=='object'||Array.isArray(prices)||Object.entries(prices).some(([id,value])=>!ids.has(id)||!value||!validPrice(value.price50)||!validPrice(value.price100)))throw Error('Precios personalizados del catálogo inválidos.');
+ return {products:cloneData(products),bases:cloneData(bases),discontinued:[...discontinued],prices:cloneData(prices)};
 }
 export function catalogForState(baseCatalog,state={}){
  const registry=materialRegistry(state,baseCatalog),retired=new Set(registry.discontinued);
- return [...baseCatalog.filter(p=>!p.custom),...registry.products].map(p=>({...p,...(retired.has('ess-'+p.id)?{discontinued:true}:{})}));
+ return [...baseCatalog.filter(p=>!p.custom),...registry.products].map(p=>({...p,...registry.prices[p.id],...(retired.has('ess-'+p.id)?{discontinued:true}:{})}));
 }
 export function registerMaterial(state,input,catalog){
  catalog=catalogForState(catalog,state);
@@ -48,4 +51,23 @@ export function discontinueMaterial(state,id){
 }
 export function essenceDirectory(state,catalog){
  return state.materials.filter(m=>m.kind==='Esencia').map(m=>{const p=catalog.find(p=>p.id===m.id.slice(4));return {name:m.name,reference:p?.reference??'',brand:p?.brand??'',category:p?.category??'',discontinued:Boolean(m.discontinued||p?.discontinued)};}).sort((a,b)=>a.name.localeCompare(b.name,'es',{numeric:true}));
+}
+
+// Unisex is its own group, so group price changes never overlap.
+export const catalogPriceGroups=[['designer','Diseñador'],['niche','Nicho'],['unisex','Unisex']];
+export function catalogPriceTargets(catalog,scope,id){
+ const active=catalog.filter(p=>!p.discontinued);
+ if(scope==='individual')return active.filter(p=>p.id===id);
+ if(scope==='group')return active.filter(p=>id==='unisex'?p.category==='Unisex':id==='designer'?p.category!=='Unisex'&&p.line==='Diseñador':id==='niche'?p.category!=='Unisex'&&p.line==='Nicho':false);
+ return [];
+}
+export function setCatalogPrices(state,{scope,id,price50,price100,expected},catalog){
+ catalog=catalogForState(catalog,state);
+ const number=value=>{if(value===null||value===undefined||String(value).trim()===''||!validPrice(Number(value)))throw Error('Indica ambos precios en MXN, con un máximo de dos decimales y entre 0 y 1,000,000.');return Number(value);};
+ const prices={price50:number(price50),price100:number(price100)},targets=catalogPriceTargets(catalog,scope,id);
+ if(!targets.length)throw Error('Selecciona perfumes activos para cambiar sus precios.');
+ if(expected&&JSON.stringify(targets.map(p=>({id:p.id,price50:p.price50,price100:p.price100})))!==JSON.stringify(expected))throw Error('El catálogo cambió en otra sesión. Revisa los perfumes y vuelve a confirmar.');
+ const next=cloneData(state);next.catalogPriceOverrides={...(next.catalogPriceOverrides??{})};
+ for(const p of targets)next.catalogPriceOverrides[p.id]={...prices};
+ return next;
 }
