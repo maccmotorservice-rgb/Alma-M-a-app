@@ -78,7 +78,7 @@ html[data-design=modern]:is([data-version="3"],[data-version="4"]) aside #main-n
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) aside #main-navigation button>span:not(.classic-symbol){font-size:11px;line-height:1.5;color:inherit;margin:0;white-space:normal}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) aside #main-navigation .nav-icon{display:block;width:18px;height:18px;flex-shrink:0;opacity:1;margin:0;color:inherit}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) aside #main-navigation .studio-nav-description{display:none}
-html[data-design=modern]:is([data-version="3"],[data-version="4"]) aside #main-navigation button:is(:hover,.active){background:#b5f5cc0d;border-color:#b5f5cc22;color:#d5f8e4;box-shadow:none}
+html[data-design=modern]:is([data-version="3"],[data-version="4"]) aside #main-navigation button:is(:where(:not([data-dashboard-card])):hover,.active){background:#b5f5cc0d;border-color:#b5f5cc22;color:#d5f8e4;box-shadow:none}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) aside #main-navigation button.active{background:linear-gradient(90deg,#b5f5cc1c,#92d7eb0b);border-color:#9ee8c538;color:#c4f8d9;font-weight:700}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) aside #main-navigation button.active:before{content:'';display:block;position:absolute;left:-2px;top:12px;bottom:12px;width:3px;border-radius:5px;background:#b5f5cc;box-shadow:0 0 10px #b5f5cc66}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) aside #main-navigation button:after{display:none}
@@ -120,11 +120,11 @@ html[data-design=modern]:is([data-version="3"],[data-version="4"]) footer{margin
 /* Forms and actions: consistent surfaces, clear state, comfortable targets. */
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) :is(.primary,.secondary){display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:43px;padding:11px 16px;border-radius:10px;font-size:12px;font-weight:650;line-height:1.5;white-space:normal;text-align:center;text-decoration:none;box-shadow:none;letter-spacing:0}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) .primary{background:#b5f5cc;border-color:#b5f5cc;color:#11251e;box-shadow:0 4px 15px #b5f5cc10}
-html[data-design=modern]:is([data-version="3"],[data-version="4"]) .primary:hover:not(:disabled){background:#d1ffdf;border-color:#d1ffdf;color:#11251e;box-shadow:0 6px 23px #b5f5cc20}
+html[data-design=modern]:is([data-version="3"],[data-version="4"]) .primary:where(:not([data-dashboard-card])):hover:not(:disabled){background:#d1ffdf;border-color:#d1ffdf;color:#11251e;box-shadow:0 6px 23px #b5f5cc20}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) .secondary{background:#172235;border-color:#34445b;color:#d6e1ee}
-html[data-design=modern]:is([data-version="3"],[data-version="4"]) .secondary:hover:not(:disabled){background:#213149;border-color:#526a86;color:#f0f5fc}
+html[data-design=modern]:is([data-version="3"],[data-version="4"]) .secondary:where(:not([data-dashboard-card])):hover:not(:disabled){background:#213149;border-color:#526a86;color:#f0f5fc}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) .text-button{color:#a3d9e8;border-radius:7px;font-size:11px;line-height:1.6;padding:8px 9px}
-html[data-design=modern]:is([data-version="3"],[data-version="4"]) .text-button:hover{background:#9bd8ec12;color:#d1f2ff}
+html[data-design=modern]:is([data-version="3"],[data-version="4"]) .text-button:where(:not([data-dashboard-card])):hover{background:#9bd8ec12;color:#d1f2ff}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) .text-button svg{flex-shrink:0}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) :is(input,select,textarea){font:400 13px/1.6 Manrope,sans-serif;padding:11px 12px;border:1px solid #34435a;border-radius:9px;background:#0c1320;color:#e8f0fb;box-shadow:none;max-width:100%;min-width:0}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) :is(input,textarea)::placeholder{color:#8da0bb;opacity:1}
@@ -147,7 +147,7 @@ html[data-design=modern]:is([data-version="3"],[data-version="4"]) :is(.batch-ch
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) :is(#form-error,#production-error,#batch-cancel-error,#dictation-error,#dictation-save-error,#sales-error,#sales-pdf-error,#sales-payment-error,.dictation-warning){color:#ffb8aa}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) :is(.sales-cancel-button,.sales-card-cancellation,.batch-cancellation-info strong){color:#ffb8ae}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) .sales-cancel-button{background:#fd9e8d0b;border-color:#fd9e8d35}
-html[data-design=modern]:is([data-version="3"],[data-version="4"]) .sales-cancel-button:hover{background:#fd9e8d17;border-color:#fd9e8d65}
+html[data-design=modern]:is([data-version="3"],[data-version="4"]) .sales-cancel-button:where(:not([data-dashboard-card])):hover{background:#fd9e8d17;border-color:#fd9e8d65}
 
 /* A compact information-first overview. */
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) #content:has(>.hero){display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px 20px;align-items:start}
@@ -173,7 +173,7 @@ html[data-design=modern]:is([data-version="3"],[data-version="4"]) #content .her
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) .studio-hero-label{font:650 9px/1.6 Manrope,sans-serif;letter-spacing:1.9px;color:#a8ded5;display:inline-flex;align-items:center;gap:8px}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) .studio-hero-label:before{content:'';width:5px;height:5px;border-radius:50%;background:#b5f5cc;box-shadow:0 0 9px #b5f5cc66}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) .hero .secondary{background:#b5f5cc;border-color:#b5f5cc;color:#11251e;font-size:11px;min-height:41px;padding:10px 15px}
-html[data-design=modern]:is([data-version="3"],[data-version="4"]) .hero .secondary:hover{background:#d1ffdf;border-color:#d1ffdf;color:#11251e}
+html[data-design=modern]:is([data-version="3"],[data-version="4"]) .hero .secondary:where(:not([data-dashboard-card])):hover{background:#d1ffdf;border-color:#d1ffdf;color:#11251e}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) .bottle-art{display:none}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) .studio-launchpad{grid-column:7/-1;order:3;align-self:stretch;min-width:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:22px;border:1px solid #2a384e;border-radius:18px;background:linear-gradient(145deg,#121c2b,#101725)}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) .studio-section-cap{display:flex;align-items:center;justify-content:space-between;gap:12px;grid-column:1/-1;color:#9eafc7;font-size:9px;letter-spacing:1.7px;font-weight:650;margin:0}
@@ -216,7 +216,7 @@ html[data-design=modern]:is([data-version="3"],[data-version="4"]) .inventory-me
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) #content .inventory-metric{border:1px solid #2c3a51;border-radius:16px;background:linear-gradient(140deg,#162133,#101725);color:#d5e3f4;padding:23px;box-shadow:none;text-align:left;min-width:0}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) #content .inventory-metric :is(span,small){color:#b2c2d9}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) #content .inventory-metric>strong{font-size:35px;font-weight:650;letter-spacing:-1.2px;color:#edf6ff}
-html[data-design=modern]:is([data-version="3"],[data-version="4"]) #content .inventory-metric:is(:hover,[aria-pressed=true]){background:#1b2b3e;border-color:#78c0ba;color:#eef8ff;box-shadow:none}
+html[data-design=modern]:is([data-version="3"],[data-version="4"]) #content .inventory-metric:is(:where(:not([data-dashboard-card])):hover,[aria-pressed=true]){background:#1b2b3e;border-color:#78c0ba;color:#eef8ff;box-shadow:none}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) #content .inventory-metric[aria-pressed=true]::after{background:#b5f5cc;box-shadow:0 0 0 4px #b5f5cc15}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) #content .inventory-metric.metric-low>strong{color:#ffd18b}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) #content .inventory-metric.metric-empty>strong{color:#ffb3a7}
@@ -225,7 +225,7 @@ html[data-design=modern]:is([data-version="3"],[data-version="4"]) .inventory-co
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) .inventory-list-heading :is(p,small),html[data-design=modern]:is([data-version="3"],[data-version="4"]) .inventory-summary-note,html[data-design=modern]:is([data-version="3"],[data-version="4"]) .inventory-filter-line>span{color:#a2b5cc}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) #content .group-tabs{display:flex;flex-wrap:wrap;gap:7px}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) #content .group-tabs button{background:#121d2e;border:1px solid #32435c;color:#b9c9de;padding:9px 13px;border-radius:9px;min-height:40px;font:550 11px/1.6 Manrope,sans-serif;box-shadow:none}
-html[data-design=modern]:is([data-version="3"],[data-version="4"]) #content .group-tabs button:is(:hover,[aria-pressed=true]){background:#b5f5cc15;border-color:#8ad3ba66;color:#d4f9e2;box-shadow:none}
+html[data-design=modern]:is([data-version="3"],[data-version="4"]) #content .group-tabs button:is(:where(:not([data-dashboard-card])):hover,[aria-pressed=true]){background:#b5f5cc15;border-color:#8ad3ba66;color:#d4f9e2;box-shadow:none}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) #content .group-tabs button[aria-pressed=true]{background:#b5f5cc1a;border-color:#9be6c9;color:#dcffeb;font-weight:650}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) #content .group-tabs button[aria-pressed=true] :is(span,strong,small){color:#d9ffea;background:#b5f5cc0d}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) .stock-category-tabs button>span{background:#25384d;color:#bacfe1;border-radius:5px}
@@ -252,7 +252,7 @@ html[data-design=modern]:is([data-version="3"],[data-version="4"]) th,html[data-
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) td{background:transparent;color:#d1dfef;border-color:#26364c;font-size:12px;padding:18px 16px}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) td small{color:#9eafc8;font-size:11px;line-height:1.7}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) .group-heading span{color:#a3b9d1}
-html[data-design=modern]:is([data-version="3"],[data-version="4"]) tbody tr:not(.group-heading):hover>td{background:#18263a;color:#e3eefb}
+html[data-design=modern]:is([data-version="3"],[data-version="4"]) tbody tr:not(.group-heading):where(:not([data-dashboard-card])):hover>td{background:#18263a;color:#e3eefb}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) :is(.stock-history,.materials-history,.batch-history) td:before{color:#9fb4cf}
 
 /* Fragrance cards, print tools and selection lists. */
@@ -266,7 +266,7 @@ html[data-design=modern]:is([data-version="3"],[data-version="4"]) .prices small
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) .olfactory-profile{border-color:#304159;background:#152236;color:#bbccdf}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) .olfactory-profile :is(p,small){color:#abc0d7}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) :is(.label-option,.strip-card,.sales-result){background:#111c2c;color:#d9e6f5;border-color:#2d3d55;border-radius:11px}
-html[data-design=modern]:is([data-version="3"],[data-version="4"]) :is(.label-option,.strip-card,.sales-result):is(:hover,:has(input:checked)){background:#b5f5cc0c;border-color:#7ebda8;box-shadow:none}
+html[data-design=modern]:is([data-version="3"],[data-version="4"]) :is(.label-option,.strip-card,.sales-result):is(:where(:not([data-dashboard-card])):hover,:has(input:checked)){background:#b5f5cc0c;border-color:#7ebda8;box-shadow:none}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) :is(.label-option,.strip-card,.sales-result):has(input:checked){box-shadow:inset 3px 0 #a4e8c0}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) :is(.label-option,.sales-result):has(input:checked) strong{color:#dcffeb}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) :is(.label-option,.sales-result) small{color:#a3b8d0}
@@ -309,7 +309,7 @@ html[data-design=modern]:is([data-version="3"],[data-version="4"]) .sales-rankin
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) .sales-rank-product strong{color:#e3efff}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) .sales-rank-tags>span{background:#21334b;color:#b8d1e8}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) .sales-month-button{color:#b2c6de;background:transparent;border-color:transparent}
-html[data-design=modern]:is([data-version="3"],[data-version="4"]) .sales-month-button:is(:hover,[aria-pressed=true]){background:#b5f5cc0d;color:#dcf8e8;border-color:#b5f5cc45}
+html[data-design=modern]:is([data-version="3"],[data-version="4"]) .sales-month-button:is(:where(:not([data-dashboard-card])):hover,[aria-pressed=true]){background:#b5f5cc0d;color:#dcf8e8;border-color:#b5f5cc45}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) .sales-month-track{background:#23334b}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) .sales-month-track>span{background:#6b9cb7}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) .sales-month-button[aria-pressed=true] .sales-month-track>span{background:linear-gradient(#b5f5cc,#70b6d1)}
@@ -344,7 +344,7 @@ html[data-design=modern]:is([data-version="3"],[data-version="4"]) .modal-top bu
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) #quick-navigation{background:#111b2b;border-color:#3c506c}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) #quick-search{background:#0b1320;color:#e9f3ff;border-color:#3d5371}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) #quick-results>button{color:#d5e7f8}
-html[data-design=modern]:is([data-version="3"],[data-version="4"]) #quick-results>button:is([data-highlighted],:hover){background:#b5f5cc0b;border-color:#99dbbf55}
+html[data-design=modern]:is([data-version="3"],[data-version="4"]) #quick-results>button:is([data-highlighted],:where(:not([data-dashboard-card])):hover){background:#b5f5cc0b;border-color:#99dbbf55}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) .quick-result-icon{background:#1e3448;color:#a9dce7}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) #quick-results>button[data-highlighted] .quick-result-icon{background:#2b4a55;color:#d6f6f8}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) #quick-results small{color:#a8bed6}
@@ -380,7 +380,7 @@ html[data-design=modern]:is([data-version="3"],[data-version="4"]) :is(.sales-do
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) :is(.sales-document,.official-list) :is(th,td){font-size:11px;letter-spacing:0;text-transform:none;border-color:#ccc;padding:12px 8px}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) :is(.sales-document,.official-list) th{background:#eee}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) :is(.sales-document,.official-list) td{background:#fff}
-html[data-design=modern]:is([data-version="3"],[data-version="4"]) :is(.sales-document,.official-list) tbody tr:hover>td{background:#fff;color:#222}
+html[data-design=modern]:is([data-version="3"],[data-version="4"]) :is(.sales-document,.official-list) tbody tr:where(:not([data-dashboard-card])):hover>td{background:#fff;color:#222}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) :is(.sales-document,.official-list) :is(.sales-payment-summary,.production-totals,.sales-total){background:#f5f5f5;border-color:#ccc;color:#222}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) :is(.sales-document,.official-list) .sales-document-head img{filter:none}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) :is(.sales-document,.official-list) .production-actions{background:#fff;border-color:#ccc}
@@ -403,13 +403,13 @@ html[data-design=modern]:is([data-version="3"],[data-version="4"]) .welcome-orbi
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) .welcome-orbit-three{border-color:#b5f5cc1a}
 
 /* Motion answers an interaction and respects both user switches. */
-@media(hover:hover) and (pointer:fine){
+@media(hover:where(:not([data-dashboard-card])):hover) and (pointer:fine){
  html[data-design=modern]:is([data-version="3"],[data-version="4"])[data-effects=on] :is(.primary,.secondary,.product,.sales-note-card,.inventory-metric,.studio-launch-grid>button){transition:transform .2s cubic-bezier(.2,.7,.2,1),border-color .2s,box-shadow .2s,background-color .2s}
- html[data-design=modern]:is([data-version="3"],[data-version="4"])[data-effects=on] .studio-launch-grid>button:hover{transform:translateY(-2px);background:#20324a;border-color:#76b7bd;box-shadow:0 8px 20px #0002}
- html[data-design=modern]:is([data-version="3"],[data-version="4"])[data-effects=on] :is(.product,.sales-note-card):hover{transform:translateY(-2px);background:#142135;border-color:#526e8c;box-shadow:0 10px 24px #0002}
- html[data-design=modern]:is([data-version="3"],[data-version="4"])[data-effects=on] #content .stats>.card:hover{background:linear-gradient(135deg,#1a2b41,#152132);border-color:#5d8499;transform:translateY(-2px);box-shadow:0 8px 25px #0002}
- html[data-design=modern]:is([data-version="3"],[data-version="4"])[data-effects=on] :is(.label-option,.sales-result,.stock-presentation):hover{background:#1a2d42;border-color:#79a9b7}
- html[data-design=modern]:is([data-version="3"],[data-version="4"])[data-effects=on] aside #main-navigation button:hover .nav-icon{transform:translateY(-1px);color:#c8ffde}
+ html[data-design=modern]:is([data-version="3"],[data-version="4"])[data-effects=on] .studio-launch-grid>button:where(:not([data-dashboard-card])):hover{transform:translateY(-2px);background:#20324a;border-color:#76b7bd;box-shadow:0 8px 20px #0002}
+ html[data-design=modern]:is([data-version="3"],[data-version="4"])[data-effects=on] :is(.product,.sales-note-card):where(:not([data-dashboard-card])):hover{transform:translateY(-2px);background:#142135;border-color:#526e8c;box-shadow:0 10px 24px #0002}
+ html[data-design=modern]:is([data-version="3"],[data-version="4"])[data-effects=on] #content .stats>.card:where(:not([data-dashboard-card])):hover{background:linear-gradient(135deg,#1a2b41,#152132);border-color:#5d8499;transform:translateY(-2px);box-shadow:0 8px 25px #0002}
+ html[data-design=modern]:is([data-version="3"],[data-version="4"])[data-effects=on] :is(.label-option,.sales-result,.stock-presentation):where(:not([data-dashboard-card])):hover{background:#1a2d42;border-color:#79a9b7}
+ html[data-design=modern]:is([data-version="3"],[data-version="4"])[data-effects=on] aside #main-navigation button:where(:not([data-dashboard-card])):hover .nav-icon{transform:translateY(-1px);color:#c8ffde}
 }
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) .studio-dock{display:none}
 body.access-locked .studio-dock,body.access-locked #studio-welcome{display:none!important}
@@ -457,7 +457,7 @@ html:not(:is([data-version="3"],[data-version="4"])) #main-navigation .studio-pr
  html[data-design=modern]:is([data-version="3"],[data-version="4"]) .interaction-toolbar{margin:20px 0 27px}
  html[data-design=modern]:is([data-version="3"],[data-version="4"]) .studio-dock{position:fixed;left:50%;bottom:13px;translate:-50% 0;width:min(470px,calc(100vw - 30px));display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:3px;padding:7px;background:#152134f0;border:1px solid #405572;backdrop-filter:blur(18px);border-radius:17px;box-shadow:0 12px 45px #0007;z-index:25}
  html[data-design=modern]:is([data-version="3"],[data-version="4"]) .studio-dock button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-height:51px;padding:8px 2px;background:transparent;border:1px solid transparent;border-radius:10px;color:#adbed6;font:600 9px/1.5 Manrope,sans-serif;text-align:center;white-space:normal;box-shadow:none;transform:none}
- html[data-design=modern]:is([data-version="3"],[data-version="4"]) .studio-dock button:is([data-current],:hover){background:#b5f5cc12;border-color:#b5f5cc30;color:#d0ffe0;box-shadow:none;transform:none}
+ html[data-design=modern]:is([data-version="3"],[data-version="4"]) .studio-dock button:is([data-current],:where(:not([data-dashboard-card])):hover){background:#b5f5cc12;border-color:#b5f5cc30;color:#d0ffe0;box-shadow:none;transform:none}
  html[data-design=modern]:is([data-version="3"],[data-version="4"]) .studio-dock button:before,html[data-design=modern]:is([data-version="3"],[data-version="4"]) .studio-dock button:after{display:none}
  html[data-design=modern]:is([data-version="3"],[data-version="4"]) .studio-dock button>span{color:inherit;font-size:9px;line-height:1.4;margin:0}
  html[data-design=modern]:is([data-version="3"],[data-version="4"]) .studio-dock :is(svg,.nav-icon){display:block;width:18px;height:18px;color:inherit;opacity:1;margin:0}
@@ -610,7 +610,7 @@ html[data-design=modern]:is([data-version="3"],[data-version="4"]) .studio-orbit
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) .studio-orbit-node.node-one{left:19px;top:45px}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) .studio-orbit-node.node-two{right:3px;top:101px;background:#b4aaf1;box-shadow:0 0 14px #b4aaf166}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) .studio-orbit-node.node-three{bottom:12px;left:60px;background:#9eddec;box-shadow:0 0 14px #9eddec66}
-@media(hover:hover) and (pointer:fine){html[data-design=modern]:is([data-version="3"],[data-version="4"])[data-effects=on] .studio-production-visual{transition:transform .5s cubic-bezier(.2,.7,.2,1)}html[data-design=modern]:is([data-version="3"],[data-version="4"])[data-effects=on] .hero:hover .studio-production-visual{transform:rotate(7deg)}}
+@media(hover:where(:not([data-dashboard-card])):hover) and (pointer:fine){html[data-design=modern]:is([data-version="3"],[data-version="4"])[data-effects=on] .studio-production-visual{transition:transform .5s cubic-bezier(.2,.7,.2,1)}html[data-design=modern]:is([data-version="3"],[data-version="4"])[data-effects=on] .hero:where(:not([data-dashboard-card])):hover .studio-production-visual{transform:rotate(7deg)}}
 @media(max-width:1250px){html[data-design=modern]:is([data-version="3"],[data-version="4"]) .studio-production-visual{width:115px;right:10px;scale:.8;transform-origin:right center}html[data-design=modern]:is([data-version="3"],[data-version="4"]) .hero>div:first-child{max-width:calc(100% - 95px)}html[data-design=modern]:is([data-version="3"],[data-version="4"]) .studio-launch-grid>button{flex-wrap:wrap;gap:7px}html[data-design=modern]:is([data-version="3"],[data-version="4"]) .studio-launch-icon{width:25px;height:25px}html[data-design=modern]:is([data-version="3"],[data-version="4"]) .studio-launch-grid>button>svg{display:none}html[data-design=modern]:is([data-version="3"],[data-version="4"]) .studio-launch-grid>button>span:nth-child(2){flex-basis:calc(100% - 35px)}}
 @media(max-width:760px){html[data-design=modern]:is([data-version="3"],[data-version="4"]) .hero>div:first-child{max-width:calc(100% - 110px)}html[data-design=modern]:is([data-version="3"],[data-version="4"]) .studio-production-visual{right:18px;scale:.85}html[data-design=modern]:is([data-version="3"],[data-version="4"]) .studio-launch-grid{gap:10px}html[data-design=modern]:is([data-version="3"],[data-version="4"]) .studio-launch-grid>button{display:flex;flex-wrap:wrap;gap:10px;padding:14px 12px}html[data-design=modern]:is([data-version="3"],[data-version="4"]) .studio-launch-icon{width:29px;height:29px}html[data-design=modern]:is([data-version="3"],[data-version="4"]) .studio-launch-grid>button>span:nth-child(2){flex-basis:100%}html[data-design=modern]:is([data-version="3"],[data-version="4"]) .studio-launch-grid>button>svg{display:none}html[data-design=modern]:is([data-version="3"],[data-version="4"]) .studio-launch-grid strong{font-size:11px}html[data-design=modern]:is([data-version="3"],[data-version="4"]) .studio-launch-grid small{font-size:9px}}
 @media(max-width:500px){html[data-design=modern]:is([data-version="3"],[data-version="4"]) .studio-production-visual{display:none}html[data-design=modern]:is([data-version="3"],[data-version="4"]) .hero>div:first-child{max-width:100%}html[data-design=modern]:is([data-version="3"],[data-version="4"]) .studio-launch-grid>button{min-height:115px}html[data-design=modern]:is([data-version="3"],[data-version="4"]) .studio-metric-arrow{right:13px;bottom:15px;width:13px;height:13px}html[data-design=modern]:is([data-version="3"],[data-version="4"]) .studio-metric-arrow svg{width:13px;height:13px}}
@@ -623,7 +623,7 @@ html[data-design=modern]:is([data-version="3"],[data-version="4"]) #quick-open k
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) #content th{color:#b8cce2;background:#182338;border-color:#30435d}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) #content :is(.group-heading th,.group-heading span){color:#b8cce2}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) #content .inventory-metric.metric-product-all{background:linear-gradient(140deg,#162133,#101725);border-color:#2c3a51;box-shadow:none}
-html[data-design=modern]:is([data-version="3"],[data-version="4"]) #content .inventory-metric.metric-product-all:is(:hover,[aria-pressed=true]){background:#1b2b3e;border-color:#78c0ba;box-shadow:none}
+html[data-design=modern]:is([data-version="3"],[data-version="4"]) #content .inventory-metric.metric-product-all:is(:where(:not([data-dashboard-card])):hover,[aria-pressed=true]){background:#1b2b3e;border-color:#78c0ba;box-shadow:none}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) #content .inventory-metric.metric-product-all :is(strong,span,small){color:#d5e3f4}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) #content :is(.sales-note-card-top,.sales-note-context,.sales-note-figures span,.sales-card-details p,.sales-selected-card>p,.sales-selected-subtotal>span,.sales-review-help,.sales-filter-label,.sales-ranking-title>span,.sales-ranking-caption,.sales-rank-values>span,.sales-rank-values>small,.sales-rank-product p,.sales-report-period>span,.sales-month-button,.sales-month-title>span,.sales-month-detail>div>span){color:#a7bbd4}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) #content :is(.sales-ranking-title h3,.sales-rank-product h4,.sales-rank-values>strong,.sales-month-detail>div:not(.sales-month-title)>strong,.sales-selection-empty h3){color:#e3efff}
@@ -638,12 +638,12 @@ html[data-design=modern]:is([data-version="3"],[data-version="4"]) .sales-select
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) #content .sales-month-title>span{color:#a7bbd4}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) #content .sales-metric>span{color:#aabbd2}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) .batch-section summary span{color:#aebfd4}
-html[data-design=modern]:is([data-version="3"],[data-version="4"]) #content .group-tabs button[aria-pressed=true]:hover{background:#b5f5cc1a;border-color:#9be6c9;color:#dcffeb}
-@media(hover:hover) and (pointer:fine){
- html[data-design=modern]:is([data-version="3"],[data-version="4"])[data-effects=on] #content:has(>.hero)>.hero:hover{background:radial-gradient(ellipse at 95% 10%,#6a5caa36,transparent 65%),radial-gradient(ellipse at 0 95%,#55c7b225,transparent 70%),#111e30;border-color:#75a8a166;box-shadow:0 10px 32px #0002;transform:translateY(-2px)}
- html[data-design=modern]:is([data-version="3"],[data-version="4"])[data-effects=on] #content:has(>.hero)>.columns>.card:hover{background:#142135;border-color:#496b84;box-shadow:0 8px 25px #0002;transform:translateY(-2px)}
- html[data-design=modern]:is([data-version="3"],[data-version="4"])[data-effects=on] #content:has(>.hero)>.stats>.card:hover{background:linear-gradient(135deg,#1a2b41,#152132);border-color:#5d8499;box-shadow:0 8px 25px #0002;transform:translateY(-2px)}
- html[data-design=modern]:is([data-version="3"],[data-version="4"])[data-effects=on] .sales-month-button:hover{background:#b5f5cc0d;color:#dcf8e8}
+html[data-design=modern]:is([data-version="3"],[data-version="4"]) #content .group-tabs button[aria-pressed=true]:where(:not([data-dashboard-card])):hover{background:#b5f5cc1a;border-color:#9be6c9;color:#dcffeb}
+@media(hover:where(:not([data-dashboard-card])):hover) and (pointer:fine){
+ html[data-design=modern]:is([data-version="3"],[data-version="4"])[data-effects=on] #content:has(>.hero)>.hero:where(:not([data-dashboard-card])):hover{background:radial-gradient(ellipse at 95% 10%,#6a5caa36,transparent 65%),radial-gradient(ellipse at 0 95%,#55c7b225,transparent 70%),#111e30;border-color:#75a8a166;box-shadow:0 10px 32px #0002;transform:translateY(-2px)}
+ html[data-design=modern]:is([data-version="3"],[data-version="4"])[data-effects=on] #content:has(>.hero)>.columns>.card:where(:not([data-dashboard-card])):hover{background:#142135;border-color:#496b84;box-shadow:0 8px 25px #0002;transform:translateY(-2px)}
+ html[data-design=modern]:is([data-version="3"],[data-version="4"])[data-effects=on] #content:has(>.hero)>.stats>.card:where(:not([data-dashboard-card])):hover{background:linear-gradient(135deg,#1a2b41,#152132);border-color:#5d8499;box-shadow:0 8px 25px #0002;transform:translateY(-2px)}
+ html[data-design=modern]:is([data-version="3"],[data-version="4"])[data-effects=on] .sales-month-button:where(:not([data-dashboard-card])):hover{background:#b5f5cc0d;color:#dcf8e8}
 }
 /* Operational labels remain readable at normal browser zoom. */
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) aside #main-navigation button,html[data-design=modern]:is([data-version="3"],[data-version="4"]) aside #main-navigation button>span:not(.classic-symbol){font-size:12.5px;line-height:1.5}
@@ -667,11 +667,11 @@ html[data-design=modern]:is([data-version="3"],[data-version="4"]) #content summ
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) #design-picker button:focus-visible{outline:3px solid #88d7eb;outline-offset:3px}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) #content .empty-symbol::before{background:#1b2e46 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='%23acd7e8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 5h16v14H4zM4 13h5l2 3h2l2-3h5'/%3E%3C/svg%3E") center/22px no-repeat;border:1px solid #3c5875}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) #sales-results .sales-group-actions button{background:#1b2c43;border-color:#37516e;color:#b8dcef}
-html[data-design=modern]:is([data-version="3"],[data-version="4"]) #sales-results .sales-group-actions button:hover{background:#27415a;border-color:#6a9cb6;color:#d7efff}
+html[data-design=modern]:is([data-version="3"],[data-version="4"]) #sales-results .sales-group-actions button:where(:not([data-dashboard-card])):hover{background:#27415a;border-color:#6a9cb6;color:#d7efff}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) dialog #selected-perfumes .empty{color:#adbed6;background:transparent}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) dialog .sales-payment-history>summary{color:#b0c3dc}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) dialog .group-tabs button{background:#15243a;border-color:#3a526f;color:#b9cfe7;border-radius:9px;min-height:40px;font-size:11px;padding:9px 13px;box-shadow:none}
-html[data-design=modern]:is([data-version="3"],[data-version="4"]) dialog .group-tabs button:is(:hover,[aria-pressed=true]){background:#b5f5cc16;border-color:#9be6c988;color:#d3ffe4;box-shadow:none}
+html[data-design=modern]:is([data-version="3"],[data-version="4"]) dialog .group-tabs button:is(:where(:not([data-dashboard-card])):hover,[aria-pressed=true]){background:#b5f5cc16;border-color:#9be6c988;color:#d3ffe4;box-shadow:none}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) .sales-document .payment-badge.payment-pending{color:#80500f;background:#fff0d9;border-color:#eed3aa}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) .sales-document .payment-badge.payment-paid{color:#236244;background:#e6f4eb;border-color:#c5dfce}
 html[data-design=modern]:is([data-version="3"],[data-version="4"]) .sales-document .payment-badge.payment-unrecorded{color:#505b70;background:#eff1f5;border-color:#d5dce6}

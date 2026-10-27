@@ -1,4 +1,4 @@
-import {isMaterialLow,batchProgress} from './inventory.js?v=95';
+import {isMaterialLow,batchProgress} from './inventory.js?v=96';
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const cash=cents=>new Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',maximumFractionDigits:0}).format(cents/100);
 export const workspaceAreas=[

@@ -47,7 +47,16 @@ new MutationObserver(syncActive).observe(nav,{attributes:true,attributeFilter:['
 // Motion remains a browser preference; the OS reduced-motion setting takes priority.
 const effectsToggle=document.querySelector('#effects-toggle');
 const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)');
-let effectsEnabled=true;try{effectsEnabled=localStorage.getItem('alma-mia-effects')!=='off';}catch{}
+let effectsEnabled=true;try{
+ effectsEnabled=localStorage.getItem('alma-mia-effects')!=='off';
+ // This release explicitly enables the dashboard motion requested by the owner.
+ // Later choices remain persistent; OS reduced motion still takes priority.
+ if(localStorage.getItem('alma-mia-dashboard-motion-v96')!=='1'){
+  const previous=effectsEnabled?'on':'off';effectsEnabled=true;
+  localStorage.setItem('alma-mia-effects-before-dashboard-motion',previous);
+  localStorage.setItem('alma-mia-effects','on');localStorage.setItem('alma-mia-dashboard-motion-v96','1');
+ }
+}catch{}
 const runningAnimations=new Set();let pointerFrame=0;
 function effectsActive(){return root.dataset.design==='modern'&&effectsEnabled&&!reducedMotion.matches;}
 function updateEffects(){

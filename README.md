@@ -608,3 +608,11 @@ Se corrige la tarjeta destacada de ventas: en modo claro una regla dejaba su fon
 El hover se extiende a todos los recuadros del dashboard: bienvenida del inicio, accesos principales, indicadores, gráfica, prioridades, herramientas, lotes recientes y las tarjetas del resumen ampliado. Se elevan 5 px con sombra; cuando hay una tarjeta interactiva dentro de otra, se evita mover ambas a la vez. Al cambiar de sección, las tarjetas entran escalonadas con movimiento vertical, conservando opacidad y legibilidad. La selección usa un anillo temporal en vez de desvanecer texto o fondos.
 
 El menú Más muestra explícitamente **Animaciones: activadas/desactivadas** o **Animaciones: movimiento reducido**, según las preferencias efectivas. Sigue disponible el control de efectos y se respeta reducir movimiento. No se alteran datos ni medidas del diseño en reposo.
+
+### Cobertura completa del dashboard y fondos permanentes (v96)
+
+Los accesos liquid tienen ahora su imagen y máscara aplicadas directamente al botón, como base permanente además de sus capas decorativas. Las tarjetas claras conservan superficies opacas, y las filas de prioridades tienen un fondo claro estable. Las reglas antiguas de hover omiten los elementos controlados por `dashboard-motion.js`: el movimiento no cambia imágenes, fondos ni colores del texto.
+
+Un controlador de eventos de mouse aplica la elevación a cada recuadro del inicio y de su resumen desplegable, incluidos accesos, indicadores, gráfica, prioridades, herramientas, tarjetas financieras y enlaces por áreas. También cubre las doce tarjetas mensuales del reporte de ventas. El elemento más cercano recibe el movimiento para evitar elevar dos contenedores anidados a la vez. Se usa el tipo real de evento de puntero; no se depende de que el dispositivo declare un mouse como puntero principal, de modo que funciona también en equipos táctiles con mouse. Los diseños modernos comparten este comportamiento.
+
+Esta actualización activa los efectos una sola vez por navegador, conforme a la petición de animaciones. La preferencia anterior se guarda en `alma-mia-effects-before-dashboard-motion`; las decisiones posteriores de activar/desactivar se conservan, y reducir movimiento del sistema sigue teniendo prioridad. No modifica inventarios, ventas, notas, precios ni clientes.
