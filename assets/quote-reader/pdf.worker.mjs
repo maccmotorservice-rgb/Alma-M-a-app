@@ -1,4 +1,4 @@
-import '../../quotation-reader-compat.js?v=91';
+import '../../quotation-reader-compat.js?v=92';
 /**
  * @licstart The following is the entire license notice for the
  * JavaScript code in this page
