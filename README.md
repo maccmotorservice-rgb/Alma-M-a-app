@@ -616,3 +616,8 @@ Los accesos liquid tienen ahora su imagen y máscara aplicadas directamente al b
 Un controlador de eventos de mouse aplica la elevación a cada recuadro del inicio y de su resumen desplegable, incluidos accesos, indicadores, gráfica, prioridades, herramientas, tarjetas financieras y enlaces por áreas. También cubre las doce tarjetas mensuales del reporte de ventas. El elemento más cercano recibe el movimiento para evitar elevar dos contenedores anidados a la vez. Se usa el tipo real de evento de puntero; no se depende de que el dispositivo declare un mouse como puntero principal, de modo que funciona también en equipos táctiles con mouse. Los diseños modernos comparten este comportamiento.
 
 Esta actualización activa los efectos una sola vez por navegador, conforme a la petición de animaciones. La preferencia anterior se guarda en `alma-mia-effects-before-dashboard-motion`; las decisiones posteriores de activar/desactivar se conservan, y reducir movimiento del sistema sigue teniendo prioridad. No modifica inventarios, ventas, notas, precios ni clientes.
+
+
+### Distribución del nombre al imprimir etiquetas (v97)
+
+**Imprimir etiquetas** coloca siempre la primera palabra del perfume en la línea superior y todas las palabras restantes juntas en la segunda, tanto en 100 ml como en 50 ml. Los nombres de una sola palabra conservan una línea. El tamaño se ajusta al ancho disponible sin mover palabras de una línea a otra. Se conservan las plantillas, medidas, cantidades por perfume y distribución del pliego.
