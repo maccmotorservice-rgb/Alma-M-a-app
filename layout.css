@@ -405,3 +405,18 @@ html[data-design=modern][data-version="3"] #materials-quote-error{color:#ffb8aa}
 
 /* Comparison: full-width supplier document, brief summary below. */
 .qc-workspace{display:block}.qc-brief,.qc-review-details,.qc-analysis-details,.qc-export{margin:18px 0}.qc-review-details>summary,.qc-analysis-details>summary,.qc-request-review>summary{padding:14px;cursor:pointer;font-weight:600}.qc-rows{display:block}.qc-request-review .field{margin-top:14px}.qc-brief p{line-height:1.65}
+
+/* Label rows are editable independently for each perfume and presentation. */
+.label-selection .label-selected-list{padding-left:20px}
+.label-selection .label-selected-item{display:block;padding:16px 0;min-width:0}
+.label-selected-header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}
+.label-selected-header strong{overflow-wrap:anywhere}
+.label-row-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.label-row-controls .field{margin:0;min-width:0}
+.label-row-controls input{width:100%;box-sizing:border-box}
+.label-row-controls small{font-size:11px;line-height:1.5;opacity:.85}
+.label-item-count{margin:10px 0 0;font-size:12px}
+.label-selection-summary{font-weight:600}
+.label-count-error:not(:empty){color:#bc3131;padding:12px;border:1px solid currentColor;border-radius:10px}
+html[data-color-theme="dark"] .label-count-error:not(:empty){color:#ffb9ac}
+@media(max-width:380px){.label-row-controls{gap:10px}.label-row-controls .field{font-size:12px}}

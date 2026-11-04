@@ -621,3 +621,10 @@ Esta actualización activa los efectos una sola vez por navegador, conforme a la
 ### Distribución del nombre al imprimir etiquetas (v97)
 
 **Imprimir etiquetas** coloca siempre la primera palabra del perfume en la línea superior y todas las palabras restantes juntas en la segunda, tanto en 100 ml como en 50 ml. Los nombres de una sola palabra conservan una línea. El tamaño se ajusta al ancho disponible sin mover palabras de una línea a otra. Se conservan las plantillas, medidas, cantidades por perfume y distribución del pliego.
+
+
+### Filas por presentación y búsqueda continua en etiquetas (v98)
+
+Cada perfume seleccionado en **Imprimir etiquetas** tiene controles independientes de filas de 100 y 50 ml. Comienzan en una fila de cada presentación; se puede indicar de 0 a 100 filas enteras, conservando al menos una por perfume. Una fila de 100 ml imprime 7 etiquetas y una de 50 ml imprime 8. El resumen calcula las filas, etiquetas y pliegos necesarios antes de generar el PDF. Las cantidades permanecen al buscar o cambiar de categoría, y editar una cantidad descarta el PDF anterior.
+
+Las filas repetidas conservan las medidas, separación, transparencia, orden de selección y distribución del nombre; al llenarse una hoja continúan en la siguiente. Limpiar la selección o cerrar sesión restablece las cantidades. El decorador de buscadores conserva el foco, el cursor y la selección de texto al envolver un campo que está activo, de modo que se puede escribir seguido después de filtrar la lista.
