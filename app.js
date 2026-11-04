@@ -1,5 +1,5 @@
 import {initDashboardMotion} from './dashboard-motion.js?v=96';
-import {initFriendlyFilters} from './friendly-filters.js?v=96';
+import {initFriendlyFilters} from './friendly-filters.js?v=98';
 import {printSupplyItems,applyPrintStock} from './print-stock.js?v=96';
 import {catalogForState,registerMaterial,discontinueMaterial,essenceDirectory,catalogPriceGroups,catalogPriceTargets,setCatalogPrices} from './material-registry.js?v=96';
 import {auraOverviewHtml,initAuraNavigation,workspaceAreaHtml} from './aura.js?v=96';
@@ -12,7 +12,7 @@ import {mountPdfActions} from './pdf-share.js?v=96';
 import {filterMaterialStock,materialStockCounts,materialStatus,productStockView} from './stock-views.js?v=96';
 import {createStockDictation} from './stock-dictation.js?v=96';
 import {createStripsPanel} from './strips.js?v=96';
-import {createLabelsPanel} from './labels.js?v=97';
+import {createLabelsPanel} from './labels.js?v=98';
 import {createStockScanner} from './stock-scanner.js?v=96';
 import {hasAppAccess,defaultCloudConfig,clearBusinessCache} from './access.js?v=96';
 import {annualSalesCards,salesReportHtml} from './sales-reports.js?v=96';

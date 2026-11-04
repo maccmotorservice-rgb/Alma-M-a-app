@@ -28,10 +28,13 @@ export function initFriendlyFilters(){
  }
  function enhanceSearch(input){
   if(input.closest('.friendly-search')){const clear=input.closest('.friendly-search').querySelector('button');if(clear)clear.hidden=!input.value;return;}
+  // Moving an active input into its wrapper can blur it after a list refresh.
+  const focused=document.activeElement===input,start=input.selectionStart,end=input.selectionEnd,direction=input.selectionDirection;
   const wrapper=document.createElement('div'),clear=document.createElement('button');wrapper.className='friendly-search';input.before(wrapper);wrapper.append(input);input.type='search';input.inputMode='search';input.autocomplete='off';input.spellcheck=false;
   clear.type='button';clear.className='friendly-search-clear';clear.textContent='Limpiar';clear.setAttribute('aria-label','Limpiar búsqueda');clear.hidden=!input.value;wrapper.append(clear);
   input.addEventListener('input',()=>{clear.hidden=!input.value;});
   clear.onclick=()=>{const id=input.id;input.value='';input.dispatchEvent(new Event('input',{bubbles:true}));const current=id?document.getElementById(id):input;current?.focus({preventScroll:true});};
+  if(focused){input.focus({preventScroll:true});if(start!==null&&end!==null)try{input.setSelectionRange(start,end,direction||'none');}catch{}}
  }
  function scan(){
   scheduled=false;
