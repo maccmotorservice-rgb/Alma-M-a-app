@@ -1,4 +1,5 @@
 import {catalogCategories,filterCatalog} from './catalog-tools.js?v=96';
+import {labelNamePlacement} from './label-name-metrics.js?v=99';
 export const labelName=name=>{const s=String(name).trim().toLocaleLowerCase('es');return s.charAt(0).toLocaleUpperCase('es')+s.slice(1);};
 export function labelRowCounts(selection={}){
  if(!selection||typeof selection!=='object')throw Error('La selección de filas no es válida.');
@@ -42,7 +43,7 @@ export async function buildLabelsPdf(products){
   if(row.page!==current){doc.addPage([580,980],'portrait');current=row.page;}
   const is100=row.size===100,left=(is100?104/822:113/751)*row.w,base=64/(is100?822:751)*row.w*72/25.4;
   const fitted=fitLabelName(products[row.index].name,row.w-left-7,(s,size)=>{doc.setFontSize(size);return doc.getTextWidth(s);},base);
-  const center=(is100?280/554:247/443)*row.h,lineHeight=fitted.size*25.4/72*1.12,first=center-(fitted.lines.length-1)*lineHeight/2+fitted.size*25.4/72*.35;
+  const {first,lineHeight}=labelNamePlacement(fitted.lines,fitted.size,row.size);
   for(let j=0;j<row.copies;j++){
    const x=row.x+j*(row.w+10);doc.addImage(templates[is100?0:1],'PNG',x,row.y,row.w,row.h,'label-'+row.size,'FAST');doc.setFontSize(fitted.size);fitted.lines.forEach((line,k)=>doc.text(line,x+left,row.y+first+k*lineHeight));
   }
