@@ -628,3 +628,10 @@ Esta actualización activa los efectos una sola vez por navegador, conforme a la
 Cada perfume seleccionado en **Imprimir etiquetas** tiene controles independientes de filas de 100 y 50 ml. Comienzan en una fila de cada presentación; se puede indicar de 0 a 100 filas enteras, conservando al menos una por perfume. Una fila de 100 ml imprime 7 etiquetas y una de 50 ml imprime 8. El resumen calcula las filas, etiquetas y pliegos necesarios antes de generar el PDF. Las cantidades permanecen al buscar o cambiar de categoría, y editar una cantidad descarta el PDF anterior.
 
 Las filas repetidas conservan las medidas, separación, transparencia, orden de selección y distribución del nombre; al llenarse una hoja continúan en la siguiente. Limpiar la selección o cerrar sesión restablece las cantidades. El decorador de buscadores conserva el foco, el cursor y la selección de texto al envolver un campo que está activo, de modo que se puede escribir seguido después de filtrar la lista.
+
+
+### Centrado vertical del nombre en etiquetas (v99)
+
+El nombre se centra en el espacio entre el borde inferior visible del logotipo y el borde superior de la información de capacidad, según las medidas reales de cada plantilla de 50 y 100 ml. El cálculo usa los límites visibles de las letras de Helvetica, incluidas letras que bajan como «g» o «y», acentos y nombres de una o dos líneas. Así el espacio por arriba y por abajo queda equilibrado aun cuando cambia el nombre o su tamaño.
+
+La posición horizontal, tipografía, tamaño ajustado, salto tras la primera palabra, plantillas y cantidades de filas se conservan. Los límites verticales se derivan de las métricas de Adobe Helvetica; el módulo incluye su aviso y licencia.
